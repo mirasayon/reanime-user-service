@@ -1,0 +1,185 @@
+generator client {
+  provider               = "prisma-client"
+  output                 = "../../orm"
+  runtime                = "nodejs"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("MAIN_DATABASE_CONNECTION_URL")
+}
+
+enum AnimeStatus {
+  WATCHING
+  ABANDONED
+  PLANNED
+  COMPLETED
+}
+
+enum AccountType {
+  USER
+  ADMIN
+  MODERATOR
+  DEVELOPER
+  TESTER
+}
+model Account {
+  id                        String                            @id @default(cuid())
+  created_at                 DateTime                          @default(now())         @db.Timestamptz
+  updated_at                 DateTime                          @updatedAt              @db.Timestamptz
+
+  type                      AccountType                       @default(USER)
+  email                     String?                           @unique
+  username                  String                            @unique
+  password_hash             String
+  is_activated               Boolean                           @default(false)
+  activation_link            String?
+
+  profile                   Profile?
+  sessions                  Session[]
+  // Indexes for quick lookups
+  @@index([email])
+  @@index([username])
+  @@index([type])
+  @@index([is_activated])
+  @@index([activation_link])
+}
+
+model Session {
+  id                       String           @id @default(cuid())
+  token                    String           @unique() @db.VarChar(577)
+  created_at                DateTime         @default(now()) @db.Timestamptz
+  updated_at                DateTime         @updatedAt @db.Timestamptz
+  expires_at                DateTime?        @db.Timestamptz
+
+
+  ip_address               String?
+  user_agent               String?
+  by_account               Account          @relation(fields: [by_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_account_id            String
+
+  @@index([by_account_id])
+  @@index([ip_address])
+  @@index([user_agent])
+  @@index([expires_at])
+}
+
+model Profile {
+  id                       String             @id @default(cuid())
+  created_at               DateTime           @default(now()) @db.Timestamptz
+  updated_at               DateTime           @updatedAt @db.Timestamptz
+  avatar_url_hash          String?
+  cover_url_hash           String?
+  bio                      String?
+  by_account               Account            @relation(fields: [by_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_account_id            String             @unique
+  nickname                 String?
+
+  comments                 Comment[]
+  replies_to_comment       Reply[]
+  reply_votes              ReplyVote[]
+  comment_votes            CommentVote[]
+
+  anime_votes              AnimeFavorite[]
+  // Anime list entries
+  anime_list_entries       MarkedAnimeCollection[]
+}
+
+model MarkedAnimeCollection {
+  id                          String   @id @default(cuid())
+  created_at                   DateTime @default(now()) @db.Timestamptz
+  updated_at                   DateTime @updatedAt @db.Timestamptz
+
+  profile                     Profile     @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  profile_id                  String
+  anime_id                     Int         @db.Integer
+  status                      AnimeStatus
+
+  @@unique([profile_id, anime_id])
+  @@index([profile_id])
+  @@index([anime_id])
+  @@index([status])
+}
+
+model AnimeFavorite {
+  id                           String                    @id @default(cuid())
+  created_at                    DateTime                 @default(now()) @db.Timestamptz
+  updated_at                    DateTime                 @updatedAt @db.Timestamptz
+
+  profile                      Profile                   @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  profile_id                   String
+  anime_id                     Int                       @db.Integer
+  vote                         Boolean
+
+  @@unique([profile_id, anime_id])
+  @@index([profile_id])
+  @@index([anime_id])
+  @@index([vote])
+}
+
+model Reply {
+  id                              String                  @id @default(cuid())
+  created_at                       DateTime               @default(now()) @db.Timestamptz
+  updated_at                       DateTime               @updatedAt @db.Timestamptz
+
+  content                         String				          @db.Text
+  by_profile                      Profile                 @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile_id                   String
+
+  is_visible                      Boolean                 @default(true)
+  to_comment                      Comment                 @relation(fields: [to_comment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  to_comment_id                   String
+
+  ratings                         ReplyVote[]
+}
+
+model Comment {
+  id                              String                  @id @default(cuid())
+  created_at                       DateTime               @default(now()) @db.Timestamptz
+  updated_at                       DateTime               @updatedAt @db.Timestamptz
+  content                         String	                @db.Text
+  is_visible                      Boolean                 @default(true)
+
+  by_profile                      Profile                 @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile_id                   String
+  anime_id                        Int                     @db.Integer
+  ratings                         CommentVote[]
+  replies                         Reply[]
+  @@index([anime_id])
+}
+
+model CommentVote {
+  id                                   String   @id @default(cuid())
+  created_at                            DateTime @default(now()) @db.Timestamptz
+  updated_at                            DateTime @updatedAt @db.Timestamptz
+
+  by_profile                           Profile   @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile_id                        String
+
+  comment                              Comment @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  comment_id                           String
+  vote                                 Boolean
+
+  @@unique([by_profile_id, comment_id])
+  @@index([comment_id])
+  @@index([by_profile_id]) 
+}
+
+model ReplyVote {
+  id                                    String   @id @default(cuid())
+  created_at                            DateTime @default(now()) @db.Timestamptz
+  updated_at                            DateTime @updatedAt @db.Timestamptz
+
+  by_profile                            Profile  @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile_id                         String
+  reply                                 Reply    @relation(fields: [reply_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  reply_id                              String
+  vote                                  Boolean
+
+  @@unique([by_profile_id, reply_id])
+  @@index([reply_id])
+  @@index([by_profile_id])
+}

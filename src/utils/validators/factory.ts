@@ -1,0 +1,49 @@
+import { BadRequestException } from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import type { mid_auth_dto } from "[T]/auth.js";
+import type e from "express";
+import type { ZodType } from "zod";
+import type z from "zod";
+const Factory_Validator_Util_Class = new (class Factory_Validator_Util_Class {
+    create = <
+        RequestType extends e.Request & {
+            dto?: z.infer<Zod_x_Schema_type>;
+            auth?: mid_auth_dto;
+        },
+        Zod_x_Schema_type extends ZodType = ZodType,
+        A extends any = any,
+    >(
+        schema: Zod_x_Schema_type,
+        get_req_body?: (req: RequestType) => Promise<A>,
+    ) => {
+        return async (req: RequestType, res: e.Response, next: e.NextFunction) => {
+            try {
+                /**
+                 * If schema itself is for undefined. Then body alse must be undefined
+                 */
+                let rawData = undefined;
+                if (get_req_body) {
+                    rawData = await get_req_body(req);
+                }
+                const parsed = await schema.safeParseAsync(rawData);
+                if (parsed.success) {
+                    req.dto = parsed.data;
+                    next();
+                    return;
+                }
+                const errorList = parsed.error.issues.map(({ path, message }) => {
+                    return `${path.join(".")} -- ${message}` as const;
+                });
+                throw new BadRequestException(errorList);
+            } catch (error) {
+                return next(error);
+            }
+        };
+    };
+})();
+
+/** Validator middleware factory function.
+ *  Used to create validator middleware.
+ *  @see {@link Factory_Validator_Util_Class.create}
+ */
+export const vmfactory = Factory_Validator_Util_Class.create;
+

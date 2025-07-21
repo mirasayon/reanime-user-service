@@ -1,0 +1,11 @@
+/node_modules
+.env.*
+.env
+/dist
+/src/db/orm
+public.pem
+private.pem
+get-help-from-ai.md
+todo.md
+/src/tests/play.ts
+frequent-scripts.md
