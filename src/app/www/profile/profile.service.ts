@@ -1,8 +1,5 @@
 import { serviceUtils } from "#/utils/service.js";
-import {
-    BadRequestException,
-    NotFoundException,
-} from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { BadRequestException, NotFoundException } from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
 import { Profile_Model as model } from "[www]/profile/profile.model.js";
 
 /** Service Class with all methods for comments */
@@ -28,7 +25,7 @@ export const Profile_Service = new (class Profile_Service {
         const found_user = await model.find_profile_by_its_id(profile_id);
         return found_user;
     };
-    explore_the_profile = async (username: string) => {
+    other_profiles = async (username: string) => {
         const found_account = await model.find_profile_by_username(username);
         if (!found_account) {
             throw new NotFoundException(["Аккаунт с таким айди не найден"]);
@@ -58,10 +55,7 @@ export const Profile_Service = new (class Profile_Service {
     set_avatar_check = async (profile_id: string) => {
         const found_profile = await model.find_profile_by_its_id(profile_id);
         if (found_profile.avatar_url_hash) {
-            throw new BadRequestException([
-                "You need update avatar but you are uploading",
-                found_profile.avatar_url_hash,
-            ]);
+            throw new BadRequestException(["You need update avatar but you are uploading", found_profile.avatar_url_hash]);
         }
     };
     set_avatar = async (data: { profile_id: string; avatar_hash: string }) => {
@@ -93,3 +87,4 @@ export const Profile_Service = new (class Profile_Service {
         return { updated_profile };
     };
 })();
+

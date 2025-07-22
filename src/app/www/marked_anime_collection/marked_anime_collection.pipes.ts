@@ -1,27 +1,24 @@
 import type { Request_dto_auth as _ } from "[T]/request_with_dto.js";
 import { vmfactory as m } from "#/utils/validators/factory.js";
-import {
-    animeMarkedCollection_schemas as schema,
-    Types,
-} from "@xamarin.city/reanime/user-service/validators/marked_anime_collection.js";
+import { animeMarkedCollection_schemas as schema, dto } from "@xamarin.city/reanime/user-service/validators/marked_anime_collection.js";
 
 namespace rd {
-    export type get_all_list = _<Types.Inputs.get_all_list>;
-    export type explore_for_anime = _<Types.Inputs.explore_for_anime, { anime_id: string }>;
-    export type get_list_of_completed = _<Types.Inputs.get_list_of_completed>;
-    export type get_list_of_planned = _<Types.Inputs.get_list_of_planned>;
-    export type get_list_of_abandoned = _<Types.Inputs.get_list_of_abandoned>;
-    export type get_list_of_watching = _<Types.Inputs.get_list_of_watching>;
+    export type get_all_list = _<dto.get_all_list>;
+    export type explore_for_anime = _<dto.explore_for_anime, { anime_id: string }>;
+    export type get_list_of_completed = _<dto.get_list_of_completed>;
+    export type get_list_of_planned = _<dto.get_list_of_planned>;
+    export type get_list_of_abandoned = _<dto.get_list_of_abandoned>;
+    export type get_list_of_watching = _<dto.get_list_of_watching>;
 
-    export type create_1_completed = _<Types.Inputs.create_1_completed, { anime_id: string }>;
-    export type create_1_planned = _<Types.Inputs.create_1_planned, { anime_id: string }>;
-    export type create_1_abandoned = _<Types.Inputs.create_1_abandoned, { anime_id: string }>;
-    export type create_1_watching = _<Types.Inputs.create_1_watching, { anime_id: string }>;
+    export type create_1_completed = _<dto.create_1_completed, { anime_id: string }>;
+    export type create_1_planned = _<dto.create_1_planned, { anime_id: string }>;
+    export type create_1_abandoned = _<dto.create_1_abandoned, { anime_id: string }>;
+    export type create_1_watching = _<dto.create_1_watching, { anime_id: string }>;
 
-    export type delete_completed = _<Types.Inputs.delete_completed, { anime_id: string }>;
-    export type delete_planned = _<Types.Inputs.delete_planned, { anime_id: string }>;
-    export type delete_abandoned = _<Types.Inputs.delete_abandoned, { anime_id: string }>;
-    export type delete_watching = _<Types.Inputs.delete_watching, { anime_id: string }>;
+    export type delete_completed = _<dto.delete_completed, { anime_id: string }>;
+    export type delete_planned = _<dto.delete_planned, { anime_id: string }>;
+    export type delete_abandoned = _<dto.delete_abandoned, { anime_id: string }>;
+    export type delete_watching = _<dto.delete_watching, { anime_id: string }>;
 }
 export type { rd as MarkedAnimeCollection_ReqDtos };
 
@@ -44,3 +41,4 @@ export const MarkedAnimeCollection_ReqPipes = new (class MarkedAnimeCollection_R
     delete_abandoned = m<rd.delete_abandoned>(schema.delete_abandoned, async (req) => req.params.anime_id);
     delete_watching = m<rd.delete_watching>(schema.delete_watching, async (req) => req.params.anime_id);
 })();
+

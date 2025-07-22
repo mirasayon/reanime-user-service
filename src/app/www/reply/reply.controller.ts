@@ -67,12 +67,12 @@ export const Reply_Controller = new (class Reply_Controller {
     };
 
     /** Reports the comment  by user */
-    report = async (req: REQDTO.report, reply: e.Response) => {
+    report = async (req: REQDTO.report_reply, reply: e.Response) => {
         const { dto, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         throw new NotImplementedException("report reply controller");
     };
     /** Reply to the comment by user */
-    create_reply = async (req: REQDTO.create, reply: e.Response) => {
+    create_reply = async (req: REQDTO.create_reply, reply: e.Response) => {
         const Req = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const sr = await service.create_reply({
             content: Req.dto.content,
@@ -94,3 +94,4 @@ export const Reply_Controller = new (class Reply_Controller {
         return xResponse.accepted(reply, { data: deleted_reply, message: "Successfully deleted reply" });
     };
 })();
+

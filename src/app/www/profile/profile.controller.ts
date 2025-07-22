@@ -9,9 +9,9 @@ import { MediaServerNotAvalableException } from "@xamarin.city/reanime/user-serv
 
 export const Profile_Controller = new (class Profile_Controller {
     /** Controller for create one comment by user */
-    explore_the_profile = async (req: Profile_ReqDtos.explore_the_user, res: e.Response) => {
+    other_profiles = async (req: Profile_ReqDtos.other_profiles, res: e.Response) => {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
-        const sr = await service.explore_the_profile(dto);
+        const sr = await service.other_profiles(dto);
         const data = sr;
         return xResponse.accepted(res, { data, message: "Successfully retrieved user profile information" });
     };
@@ -28,15 +28,13 @@ export const Profile_Controller = new (class Profile_Controller {
         const data = sr;
         return xResponse.accepted(res, { data, message: "Successfully updated user profile information" });
     };
-    view_my_profile = async (req: Profile_ReqDtos.view_my_profile, res: e.Response) => {
+    my_profile = async (req: Profile_ReqDtos.my_profile, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
         const sr = await service.view_my_profile(auth.profile.id);
         const data = sr;
         return xResponse.ok(res, { data, message: "Successfully retrieved current user profile information" });
     };
-    static noImage_error_response = new BadRequestException([
-        "No file uploaded. Please upload an image file for the avatar.",
-    ]);
+    static noImage_error_response = new BadRequestException(["No file uploaded. Please upload an image file for the avatar."]);
 
     set_avatar = async (req: Profile_ReqDtos.set_avatar, res: e.Response) => {
         if (!req.file) {
@@ -92,3 +90,4 @@ export const Profile_Controller = new (class Profile_Controller {
         });
     };
 })();
+

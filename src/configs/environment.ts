@@ -1,4 +1,4 @@
-import type { Mode, NodeEnv } from "@xamarin.city/reanime/types/env.js";
+import type { WorkingMode, NodeEnv } from "@xamarin.city/reanime/types/env.js";
 import { env } from "node:process";
 
 /** Environment variables configuration class */
@@ -20,7 +20,7 @@ class EnvironmentClass {
     /** Standard NODE_ENVIRONMENT. Running mode for application. */
     NODE_ENVIRONMENT = env.NODE_ENVIRONMENT as NodeEnv;
     /** Custom running mode info object.  */
-    mode: Mode = {
+    mode: WorkingMode = {
         dev: this.NODE_ENVIRONMENT === "development",
         test: this.NODE_ENVIRONMENT === "test",
         prod: this.NODE_ENVIRONMENT === "production",
@@ -89,6 +89,5 @@ export const cEnv = new EnvironmentClass([
  * It will use the development URL if the environment is set to development,
  * and the production URL if the environment is set to production.
  */
-export const media_server_url = cEnv.mode.prod
-    ? cEnv.service_chain.media_service.url.prod
-    : cEnv.service_chain.media_service.url.dev;
+export const media_server_url = cEnv.mode.prod ? cEnv.service_chain.media_service.url.prod : cEnv.service_chain.media_service.url.dev;
+

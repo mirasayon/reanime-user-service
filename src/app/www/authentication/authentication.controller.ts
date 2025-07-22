@@ -6,11 +6,9 @@ import { Authentication_Service as sevice } from "[www]/authentication/authentic
 import { xResponse } from "@xamarin.city/reanime/user-service/patterns/response/handlers.js";
 import { Logger } from "@xamarin.city/reanime/tools/logger/chalk.js";
 export const Authentication_Controller = new (class Authentication_Controller {
-    constructor() {}
     login_via_email = async (req: Authentication_ReqDtos.login_via_email, reply: e.Response) => {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const sr = await sevice.login_via_email(dto);
-
         const data = sr;
         cookieService.set_session_token_to_client_cookie(reply, data.session);
         const message = "Пользователь успешно вошел в систему через почту";
@@ -34,10 +32,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
         return xResponse.accepted(reply, { data, message });
     };
 
-    check_username_availability = async (
-        req: Authentication_ReqDtos.check_username_availability,
-        reply: e.Response,
-    ) => {
+    check_username_availability = async (req: Authentication_ReqDtos.check_username_availability, reply: e.Response) => {
         const { dto: username } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         Logger.blue(username);
         const sr = await sevice.check_username_availability({ username });
@@ -60,3 +55,4 @@ export const Authentication_Controller = new (class Authentication_Controller {
         return xResponse.accepted(res, { message, data });
     };
 })();
+

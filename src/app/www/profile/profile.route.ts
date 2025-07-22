@@ -14,9 +14,9 @@ export const Profile_Router = (() => {
         },
     });
     const r = create_router();
-    r.get("/explore_the_profile/:username", vm.explore_the_profile, Auth_middleware, c.explore_the_profile); // Open basic data of someone else's profile by username.
+    r.get("/explore_the_profile/:username", vm.other_profiles, Auth_middleware, c.other_profiles); // Open basic data of someone else's profile by username.
 
-    r.get("/view_my_profile", vm.view_my_profile, Auth_middleware, c.view_my_profile); // Открыть свой профиль.
+    r.get("/view_my_profile", vm.my_profile, Auth_middleware, c.my_profile); // Открыть свой профиль.
 
     r.patch("/update/bio", vm.update_bio, Auth_middleware, c.update_bio);
 
@@ -55,3 +55,4 @@ export const Profile_Router = (() => {
     );
     return r;
 })();
+

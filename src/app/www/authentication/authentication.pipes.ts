@@ -1,19 +1,16 @@
 import { metadata_dto } from "#/utils/dto/meta.js";
 import { vmfactory as m } from "#/utils/validators/factory.js";
 import { Request_dto_auth as _ } from "[T]/request_with_dto.js";
-import {
-    authentication_schemas as schemas,
-    Types,
-} from "@xamarin.city/reanime/user-service/validators/authentication.js";
+import { authentication_schemas as schemas, dto } from "@xamarin.city/reanime/user-service/validators/authentication.js";
 
 /** Namespace for all validation types for Comments logic */
 namespace rd {
-    export type registration = _<Types.Inputs.registration>;
-    export type login_via_username = _<Types.Inputs.login_via_username>;
-    export type login_via_email = _<Types.Inputs.login_via_email>;
-    export type logout = _<Types.Inputs.logout>;
-    export type check_session = _<Types.Inputs.check_session>;
-    export type check_username_availability = _<Types.Inputs.check_username_availability, { username: string }>;
+    export type registration = _<dto.registration>;
+    export type login_via_username = _<dto.login_via_username>;
+    export type login_via_email = _<dto.login_via_email>;
+    export type logout = _<dto.logout>;
+    export type check_session = _<dto.check_session>;
+    export type check_username_availability = _<dto.check_username_availability, { username: string }>;
 }
 export type { rd as Authentication_ReqDtos };
 
@@ -34,10 +31,7 @@ export const Authentication_ReqPipes = new (class Authentication_ReqPipes {
 
     logout = m<rd.logout>(schemas.logout);
 
-    check_username_availability = m<rd.check_username_availability>(
-        schemas.check_username_availability,
-        async (req) => req.params.username,
-    );
+    check_username_availability = m<rd.check_username_availability>(schemas.check_username_availability, async (req) => req.params.username);
 
     login_via_email = m<rd.login_via_email>(schemas.login_via_email, async (req) => {
         return {
@@ -53,3 +47,4 @@ export const Authentication_ReqPipes = new (class Authentication_ReqPipes {
         };
     });
 })();
+
