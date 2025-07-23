@@ -1,5 +1,5 @@
 import { prisma as db } from "#/db/connect.js";
-import { NotFoundException } from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
 import type { infotype } from "[T]/informative.js";
 
 export const Profile_Model = new (class Profile_Model {
@@ -62,3 +62,4 @@ export const Profile_Model = new (class Profile_Model {
         });
     };
 })();
+

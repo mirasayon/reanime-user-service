@@ -1,11 +1,8 @@
 import type { infotype } from "[T]/informative.js";
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
 import { Account, Profile, Session } from "#/db/orm/client.js";
-import {
-    NotFoundException,
-    UnauthorizedException,
-} from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
-import { InternalServerErrorException } from "@xamarin.city/reanime/user-service/errors/server-side/exceptions.js";
+import { NotFoundException, UnauthorizedException } from "reanime/user-service/errors/client-side/exceptions.js";
+import { InternalServerErrorException } from "reanime/user-service/errors/server-side/exceptions.js";
 import { prisma as db } from "#/db/connect.js";
 
 export const Authentication_Model = new (class Authentication_Model {
@@ -131,9 +128,7 @@ export const Authentication_Model = new (class Authentication_Model {
             },
         });
         if (!account) {
-            throw new UnauthorizedException([
-                "Пользователь с такой почтой не существует. Проверьте свои учётные данные",
-            ]);
+            throw new UnauthorizedException(["Пользователь с такой почтой не существует. Проверьте свои учётные данные"]);
         }
         return account;
     };
@@ -146,12 +141,7 @@ export const Authentication_Model = new (class Authentication_Model {
         });
     };
 
-    create_account_and_profile = async (data: {
-        username: string;
-        password_hash: string;
-        nickname?: string;
-        email?: string;
-    }) => {
+    create_account_and_profile = async (data: { username: string; password_hash: string; nickname?: string; email?: string }) => {
         return await db.account.create({
             data: {
                 username: data.username,
@@ -169,3 +159,4 @@ export const Authentication_Model = new (class Authentication_Model {
         });
     };
 })();
+

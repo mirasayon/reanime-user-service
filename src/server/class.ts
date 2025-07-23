@@ -1,6 +1,6 @@
 import type { AddressInfo } from "node:net";
 import type e from "express";
-import { Logger } from "@xamarin.city/reanime/tools/logger/chalk.js";
+import { Logger } from "reanime/logger/chalk.js";
 import { cEnv } from "#/configs/environment.js";
 import { format } from "date-fns";
 import { Service_Setting } from "#/configs/settings.js";
@@ -32,10 +32,7 @@ export const Startup_Server = new (class Startup_Server {
      */
     public readonly start = async (): Promise<void> => {
         try {
-            const instance = await this.listen(
-                cEnv.config_for_this_server.server.port,
-                cEnv.config_for_this_server.server.host,
-            );
+            const instance = await this.listen(cEnv.config_for_this_server.server.port, cEnv.config_for_this_server.server.host);
             const { port, address, family } = instance.address() as AddressInfo;
 
             const time = format(new Date(), "HH:mm:ss dd.MM.yyyy");
@@ -43,9 +40,7 @@ export const Startup_Server = new (class Startup_Server {
             const altUrl = `http://${address}:${port}`;
 
             Logger.blue(`${Service_Setting.name}. Launched at ${time}`);
-            Logger.success(
-                `${family}: ${Logger.chalk.magenta(url)} / ${altUrl} ${Logger.chalk.magenta(cEnv.NODE_ENVIRONMENT)}`,
-            );
+            Logger.success(`${family}: ${Logger.chalk.magenta(url)} / ${altUrl} ${Logger.chalk.magenta(cEnv.NODE_ENVIRONMENT)}`);
 
             const shutdown = async () => {
                 Logger.sky("Shutting down...");
@@ -62,3 +57,4 @@ export const Startup_Server = new (class Startup_Server {
         }
     };
 })(Express_Main_Server);
+

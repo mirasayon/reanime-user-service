@@ -1,11 +1,14 @@
-import { xResponse } from "@xamarin.city/reanime/user-service/patterns/response/handlers.js";
+import { Reply } from "reanime/user-service/response/handlers.js";
 import type e from "express";
+
+export namespace Ping_ResponseTypes {
+    export type get = "pong";
+}
 
 export const Ping_Controller = new (class Ping_Controller {
     get = (req: e.Request, res: e.Response) => {
-        return xResponse.ok(res, {
-            data: "pong",
-            message: "OK",
-        });
+        const data: Ping_ResponseTypes.get = "pong";
+        const message = "OK";
+        return Reply.ok(res, { data, message });
     };
 })();

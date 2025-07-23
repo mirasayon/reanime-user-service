@@ -1,5 +1,5 @@
 import { cEnv } from "#/configs/environment.js";
-import { ImATeapotException } from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { ImATeapotException } from "reanime/user-service/errors/client-side/exceptions.js";
 import type e from "express";
 /** Class for guard middlewares */
 export const ApiKeyGuard = new (class ApiKeyGuard_Middleware {
@@ -11,3 +11,4 @@ export const ApiKeyGuard = new (class ApiKeyGuard_Middleware {
         throw new ImATeapotException();
     };
 })();
+

@@ -4,7 +4,7 @@ import Express, { Router } from "express";
 import { PathsConfig } from "#/configs/paths.js";
 
 /** Creates New Router with alredy configured settings */
-export const create_router = () => Router({ caseSensitive: true, strict: true });
+export const cRouter = () => Router({ caseSensitive: true, strict: true });
 /** Cookie Parser middleware  */
 export const cookie_parser = (req: e.Request, _res: e.Response, next: e.NextFunction) => {
     if (!req.headers.cookie) {
@@ -34,3 +34,4 @@ export const x_www_urlencoded_parser = Express.urlencoded({
     extended: false,
     type: "application/x-www-form-urlencoded",
 });
+

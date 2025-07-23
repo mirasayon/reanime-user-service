@@ -5,7 +5,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
     get_all_likes_by_profile_id = async (profile_id: infotype.Cuid) => {
         return await db.animeFavorite.findMany({
             where: {
-                profile_id: profile_id,
+                profile_id,
                 vote: true,
             },
         });
@@ -13,7 +13,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
     get_all_dislikes_by_profile_id = async (profile_id: infotype.Cuid) => {
         return await db.animeFavorite.findMany({
             where: {
-                profile_id: profile_id,
+                profile_id,
                 vote: false,
             },
         });
@@ -42,7 +42,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
     create_like_by_profile_id = async (profile_id: infotype.Cuid, anime_id: number) => {
         return await db.animeFavorite.create({
             data: {
-                anime_id: anime_id,
+                anime_id,
                 profile_id,
                 vote: true,
             },
@@ -51,7 +51,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
     create_dislike_by_profile_id = async (profile_id: infotype.Cuid, anime_id: number) => {
         return await db.animeFavorite.create({
             data: {
-                anime_id: anime_id,
+                anime_id,
                 profile_id,
                 vote: false,
             },
@@ -62,7 +62,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
         return await db.animeFavorite.delete({
             where: {
                 profile_id_anime_id: {
-                    anime_id: anime_id,
+                    anime_id,
                     profile_id,
                 },
                 vote: true,
@@ -73,7 +73,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
         return await db.animeFavorite.delete({
             where: {
                 profile_id_anime_id: {
-                    anime_id: anime_id,
+                    anime_id,
                     profile_id,
                 },
                 vote: false,
@@ -81,3 +81,4 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
         });
     };
 })();
+

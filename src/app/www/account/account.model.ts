@@ -1,40 +1,40 @@
 import { prisma as db } from "#/db/connect.js";
 import type { Account, Profile, Session } from "#/db/orm/client.js";
-import { NotFoundException } from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
 import type { infotype } from "[T]/informative.js";
 
 export const Account_Model = new (class Account_Model {
-    Get_account_by_its_id_throw_error = async (user_id: infotype.Cuid): Promise<Account> => {
-        const found_user = await db.account.findUnique({
+    Get_account_by_its_id_throw_error = async (account_id: infotype.Cuid): Promise<Account> => {
+        const found_account = await db.account.findUnique({
             where: {
-                id: user_id,
+                id: account_id,
             },
         });
-        if (!found_user) {
+        if (!found_account) {
             throw new NotFoundException(["Пользователь с таким идентификатором не найден"]);
         }
 
-        return found_user;
+        return found_account;
     };
 
-    Get_account_by_email_throw_error = async (user_email: infotype.Email) => {
-        const found_user = await db.account.findUnique({
+    Get_account_by_email_throw_error = async (account_email: infotype.Email) => {
+        const found_accound = await db.account.findUnique({
             where: {
-                email: user_email,
+                email: account_email,
             },
         });
-        if (!found_user) {
+        if (!found_accound) {
             throw new NotFoundException(["Пользователь с таким адресом электронной почты не найден"]);
         }
-        return found_user;
+        return found_accound;
     };
-    Get_account_by_email_No_Throw_Error = async (user_email: infotype.Email) => {
-        const found_user = await db.account.findUnique({
+    Get_account_by_email_No_Throw_Error = async (account_email: infotype.Email) => {
+        const found_account = await db.account.findUnique({
             where: {
-                email: user_email,
+                email: account_email,
             },
         });
-        return found_user;
+        return found_account;
     };
     get_account_by_its_username_no_throw_error = async (username: infotype.Username) => {
         const found_user = await db.account.findUnique({
@@ -128,9 +128,7 @@ export const Account_Model = new (class Account_Model {
             where: { by_account_id },
         });
         if (!found_profile) {
-            throw new NotFoundException([
-                "Профиль этого аккаунта не найден. Невозможно удалить пользователя, у которого нет профиля",
-            ]);
+            throw new NotFoundException(["Профиль этого аккаунта не найден. Невозможно удалить пользователя, у которого нет профиля"]);
         }
         return found_profile;
     };
@@ -152,3 +150,4 @@ export const Account_Model = new (class Account_Model {
         return deleted_sessions;
     };
 })();
+

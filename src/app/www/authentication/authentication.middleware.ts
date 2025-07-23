@@ -1,15 +1,12 @@
 import { metadata_dto } from "#/utils/dto/meta.js";
 import { global_Utilities } from "#/utils/functions.js";
 import type { Session } from "#/db/orm/client.js";
-import { Session_Token_from_user } from "#/utils/dto/session_token.js";
+import { session_token_from_request_cookies } from "#/utils/dto/session_token.js";
 import type { mid_auth_dto } from "[T]/auth.js";
 import type e from "express";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
-import {
-    BadRequestException,
-    UnauthorizedException,
-} from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { BadRequestException, UnauthorizedException } from "reanime/user-service/errors/client-side/exceptions.js";
 import { auth__metas_dont_matching } from "#/configs/frequent-errors.js";
 
 /**
@@ -21,8 +18,8 @@ import { auth__metas_dont_matching } from "#/configs/frequent-errors.js";
  * @returns true if metadata matches; otherwise throws `ClientError`
  */
 const check_meta = (session: Session, requestMeta: e.Request) => {
-    const session_Meta = metadata_dto.from.server_session_db(session);
-    const request_Meta = metadata_dto.from.client_request(requestMeta);
+    const session_Meta = metadata_dto.server_session_db(session);
+    const request_Meta = metadata_dto.client_request(requestMeta);
     const is_equal = global_Utilities.deep_equal(session_Meta, request_Meta);
     if (is_equal === true) {
         return true;
@@ -37,19 +34,13 @@ const check_meta = (session: Session, requestMeta: e.Request) => {
  * @param res - Express Response object
  * @param next - Express NextFunction for middleware chaining
  */
-export const Auth_middleware = async (
-    req: e.Request & { auth?: mid_auth_dto },
-    res: e.Response,
-    next: e.NextFunction,
-) => {
-    const req_session_token = Session_Token_from_user.request_cookie(req);
+export const Auth_middleware = async (req: e.Request & { auth?: mid_auth_dto }, res: e.Response, next: e.NextFunction) => {
+    const req_session_token = session_token_from_request_cookies(req);
     if (!req_session_token) {
         throw new UnauthorizedException(["Вы не вошли в систему. Пожалуйста, войдите в систему, чтобы продолжить"]);
     }
     const decrypted = authentication_Session_Token_Util.decrypt_session_token(req_session_token);
-    const { session, profile } = await model.find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL(
-        req_session_token,
-    );
+    const { session, profile } = await model.find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL(req_session_token);
 
     if (session.by_account_id !== decrypted.accound_id) {
         throw new UnauthorizedException(["Токен сеанса украден"]);
@@ -76,7 +67,7 @@ export const CheckAuth = async (
     pass: boolean;
     session?: Session;
 }> => {
-    const req_session_token = Session_Token_from_user.request_cookie(req);
+    const req_session_token = session_token_from_request_cookies(req);
     if (!req_session_token) {
         return HasNotBeenLogged;
     }
@@ -100,11 +91,7 @@ export const CheckAuth = async (
  * @param next
  * @returns
  */
-export const has_client_already_logged = async (
-    req: e.Request & { auth?: mid_auth_dto },
-    res: e.Response,
-    next: e.NextFunction,
-) => {
+export const has_client_already_logged = async (req: e.Request & { auth?: mid_auth_dto }, res: e.Response, next: e.NextFunction) => {
     const hasUserLogged = await CheckAuth(req);
     if (hasUserLogged.pass && hasUserLogged.session) {
         throw new BadRequestException([
@@ -113,3 +100,4 @@ export const has_client_already_logged = async (
     }
     return next();
 };
+

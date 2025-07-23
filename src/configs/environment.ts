@@ -1,4 +1,4 @@
-import type { WorkingMode, NodeEnv } from "@xamarin.city/reanime/types/env.js";
+import type { WorkingMode, NodeEnv } from "reanime/types/env.js";
 import { env } from "node:process";
 
 /** Environment variables configuration class */

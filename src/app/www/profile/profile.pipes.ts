@@ -1,6 +1,6 @@
 import { vmfactory } from "#/utils/validators/factory.js";
 import type { Request_dto_auth as _ } from "[T]/request_with_dto.js";
-import { dto, profile_schemas as schemas } from "@xamarin.city/reanime/user-service/validators/profile.js";
+import { dto, profile_schemas as schemas } from "reanime/user-service/validators/profile.js";
 
 namespace rd {
     export type update_name = _<dto.update_name>;

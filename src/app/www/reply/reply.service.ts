@@ -6,8 +6,8 @@ import {
     ForbiddenException,
     NotFoundException,
     UnauthorizedException,
-} from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
-import { NotImplementedException } from "@xamarin.city/reanime/user-service/errors/server-side/exceptions.js";
+} from "reanime/user-service/errors/client-side/exceptions.js";
+import { NotImplementedException } from "reanime/user-service/errors/server-side/exceptions.js";
 import { Reply_Model as model } from "[www]/reply/reply.model.js";
 
 /** Service Class with all methods for Replies */
@@ -104,27 +104,11 @@ export const Reply_Service = new (class Reply_Service {
         return { deleted_vote } as const;
     };
 
-    report_to_reply = async ({
-        reply_id,
-        report_details,
-        profile_id,
-    }: {
-        reply_id: string;
-        report_details: string;
-        profile_id: string;
-    }) => {
+    report_to_reply = async ({ reply_id, report_details, profile_id }: { reply_id: string; report_details: string; profile_id: string }) => {
         throw new NotImplementedException("еще не реализовано");
     };
 
-    create_reply = async ({
-        reply_to_id,
-        content,
-        profile_id,
-    }: {
-        reply_to_id: string;
-        content: string;
-        profile_id: string;
-    }) => {
+    create_reply = async ({ reply_to_id, content, profile_id }: { reply_to_id: string; content: string; profile_id: string }) => {
         const replies_count = await model.get_replies_count_on_1_comment(profile_id, reply_to_id);
         if (replies_count >= REPLIES_LIMIT_TO_ONE_COMMENT) {
             throw new ForbiddenException([
@@ -144,20 +128,13 @@ export const Reply_Service = new (class Reply_Service {
         return { deleted_reply };
     };
     /** Edites the comment by its CUID and user profile CUID */
-    edit_reply = async ({
-        new_content,
-        reply_id,
-        profile_id,
-    }: {
-        new_content: string;
-        reply_id: string;
-        profile_id: string;
-    }) => {
+    edit_reply = async ({ content, reply_id, profile_id }: { content: string; reply_id: string; profile_id: string }) => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
         if (found_reply.by_profile_id !== profile_id) {
             throw new ForbiddenException(["Этот ответ не ваш"]);
         }
-        const updated_reply = await model.update_1_reply_by_its_id(found_reply.id, new_content);
+        const updated_reply = await model.update_1_reply_by_its_id(found_reply.id, content);
         return { updated_reply };
     };
 })();
+

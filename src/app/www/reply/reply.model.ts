@@ -1,6 +1,6 @@
 import { prisma as db } from "#/db/connect.js";
 import { ReplyVote } from "#/db/orm/client.js";
-import { NotFoundException } from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
 import type { infotype } from "[T]/informative.js";
 
 export const Reply_Model = new (class Reply_Model {
@@ -13,11 +13,7 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
 
-    get_all_replies_for_1_comment_by_commment_id = async (
-        to_comment_id: infotype.Cuid,
-        page: number,
-        limit: number,
-    ) => {
+    get_all_replies_for_1_comment_by_commment_id = async (to_comment_id: infotype.Cuid, page: number, limit: number) => {
         const skip = (page - 1) * limit;
         return await db.reply.findMany({
             where: {
@@ -28,11 +24,7 @@ export const Reply_Model = new (class Reply_Model {
             orderBy: { created_at: "desc" },
         });
     };
-    create_1_reply_to_1_comment = async (
-        by_profile_id: infotype.Cuid,
-        content: string,
-        to_comment_id: infotype.Cuid,
-    ) => {
+    create_1_reply_to_1_comment = async (by_profile_id: infotype.Cuid, content: string, to_comment_id: infotype.Cuid) => {
         return await db.reply.create({
             data: {
                 by_profile_id,
@@ -66,10 +58,7 @@ export const Reply_Model = new (class Reply_Model {
 
         return found_comment;
     };
-    find_1_vote_by_reply_id_and_profile_id = async (
-        reply_id: infotype.Cuid,
-        by_profile_id: infotype.Cuid,
-    ): Promise<ReplyVote | null> => {
+    find_1_vote_by_reply_id_and_profile_id = async (reply_id: infotype.Cuid, by_profile_id: infotype.Cuid): Promise<ReplyVote | null> => {
         return await db.replyVote.findUnique({
             where: {
                 by_profile_id_reply_id: {
@@ -128,3 +117,4 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
 })();
+

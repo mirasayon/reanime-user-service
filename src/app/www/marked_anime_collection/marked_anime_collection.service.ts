@@ -1,9 +1,6 @@
 import { AnimeStatus } from "#/db/orm/enums.js";
 import type { infotype } from "#/types/informative.js";
-import {
-    ConflictException,
-    NotFoundException,
-} from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { ConflictException, NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
 import { MarkedAnimeCollection_Model as model } from "[www]/marked_anime_collection/marked_anime_collection.model.js";
 import consola from "consola";
 
@@ -41,22 +38,22 @@ export const MarkedAnimeCollection_Service = new (class MarkedAnimeCollection_Se
         return { collection };
     };
 
-    create_1_completed = async (profile_id: infotype.Cuid, anime_id: number) => {
+    create_completed = async (profile_id: infotype.Cuid, anime_id: number) => {
         await this._is_anime_in_collection(profile_id, anime_id);
         const created_comeleted_anime = await model.create_1_completed_by_profile_id(profile_id, anime_id);
         return { created_comeleted_anime };
     };
-    create_1_planned = async (profile_id: infotype.Cuid, anime_id: number) => {
+    create_planned = async (profile_id: infotype.Cuid, anime_id: number) => {
         await this._is_anime_in_collection(profile_id, anime_id);
         const created_planned_to_watch_anime = await model.create_1_plan_to_watch_by_profile_id(profile_id, anime_id);
         return { created_planned_to_watch_anime };
     };
-    create_1_abandoned = async (profile_id: infotype.Cuid, anime_id: number) => {
+    create_abandoned = async (profile_id: infotype.Cuid, anime_id: number) => {
         await this._is_anime_in_collection(profile_id, anime_id);
         const created_abandoned_anime = await model.create_1_abandoned_by_profile_id(profile_id, anime_id);
         return { created_abandoned_anime };
     };
-    create_1_watching = async (profile_id: infotype.Cuid, anime_id: number) => {
+    create_watching = async (profile_id: infotype.Cuid, anime_id: number) => {
         await this._is_anime_in_collection(profile_id, anime_id);
         const created_watching_anime = await model.create_1_watching_by_profile_id(profile_id, anime_id);
         return { created_watching_anime };
@@ -69,11 +66,7 @@ export const MarkedAnimeCollection_Service = new (class MarkedAnimeCollection_Se
     };
     delete_planned = async (profile_id: infotype.Cuid, anime_id: number) => {
         const existed = await this.__check_exact_for_deleting(profile_id, anime_id, AnimeStatus.PLANNED);
-        const deleted_plan_to_watch_anime = await model.delete_plan_to_watch_by_profile_id(
-            profile_id,
-            anime_id,
-            existed.id,
-        );
+        const deleted_plan_to_watch_anime = await model.delete_plan_to_watch_by_profile_id(profile_id, anime_id, existed.id);
         return { deleted_plan_to_watch_anime };
     };
     private readonly __check_exact_for_deleting = async (profile_id: string, anime_id: number, status: AnimeStatus) => {
@@ -98,3 +91,4 @@ export const MarkedAnimeCollection_Service = new (class MarkedAnimeCollection_Se
         return { deleted_watching_anime };
     };
 })();
+

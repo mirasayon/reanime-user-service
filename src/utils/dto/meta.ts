@@ -2,7 +2,7 @@ import type { Session } from "#/db/orm/client.js";
 import type { metaData } from "[T]/auth.js";
 import type e from "express";
 
-class From_Create_DTO {
+export const metadata_dto = new (class From_Create_DTO {
     /**
      * Returns meta from DB Session
      * @param session DB Session record from DB
@@ -26,9 +26,4 @@ class From_Create_DTO {
             agent: req.headers["user-agent"],
         };
     };
-}
-class Metadata_dto {
-    from = new From_Create_DTO();
-}
-
-export const metadata_dto = new Metadata_dto();
+})();

@@ -3,8 +3,15 @@ import bcryptjs from "bcryptjs";
 
 /** Bcrypt service */
 export const bcrypt_service = new (class App_Bcrypt_Service {
+    constructor() {
+        const EnvSalt = cEnv.crypto_config.crypto_salting_rounds;
+        if (!EnvSalt) {
+            throw new Error("No salt env config");
+        }
+        this.salt = EnvSalt;
+    }
     /** Salting rounds for creating hash */
-    private readonly salt = cEnv.crypto_config.crypto_salting_rounds;
+    private readonly salt: number;
     /**
      *
      * Compares user inputted password with its hash from the DB
@@ -26,3 +33,4 @@ export const bcrypt_service = new (class App_Bcrypt_Service {
         return hashPassword;
     };
 })();
+

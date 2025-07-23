@@ -1,9 +1,9 @@
-import { create_router } from "#/utils/tools/express.js";
+import { cRouter } from "#/utils/tools/express.js";
 import { FavoriteAnimes_Controller as c } from "[www]/favorite_animes/favorite_animes.controller.js";
 import { Favorite_Animes_ReqPipes as v } from "[www]/favorite_animes/favorite_animes.pipes.js";
 import { Auth_middleware } from "[www]/authentication/authentication.middleware.js";
 export const FavoriteAnimes_Router = (() => {
-    const r = create_router();
+    const r = cRouter();
     r.get("/get/list/likes", v.explore_likes, Auth_middleware, c.explore_likes);
     r.get("/get/list/dislikes", v.explore_dislikes, Auth_middleware, c.explore_dislikes);
 

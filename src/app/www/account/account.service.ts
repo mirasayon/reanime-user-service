@@ -9,13 +9,13 @@ import {
     ForbiddenException,
     NotFoundException,
     UnauthorizedException,
-} from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
-import { NotImplementedException } from "@xamarin.city/reanime/user-service/errors/server-side/exceptions.js";
+} from "reanime/user-service/errors/client-side/exceptions.js";
+import { NotImplementedException } from "reanime/user-service/errors/server-side/exceptions.js";
 import { email_is_used } from "#/configs/frequent-errors.js";
 /** Account Service */
 export const Account_Service = new (class Account_Service {
-    explore_me = async (user_id: infotype.Cuid): Promise<Account> => {
-        const found_user = await model.Get_account_by_its_id_throw_error(user_id);
+    explore_me = async (account_id: infotype.Cuid): Promise<Account> => {
+        const found_user = await model.Get_account_by_its_id_throw_error(account_id);
         return found_user;
     };
     update_email = async ({

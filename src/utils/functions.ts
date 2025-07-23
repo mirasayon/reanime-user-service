@@ -1,4 +1,4 @@
-import { BadRequestException } from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { BadRequestException } from "reanime/user-service/errors/client-side/exceptions.js";
 import type e from "express";
 
 export const global_Utilities = new (class global_Utilities {
@@ -62,10 +62,7 @@ export const global_Utilities = new (class global_Utilities {
      * @param spNames
      * @returns
      */
-    get_universal_search_query_values_array = <search_query_names extends string[]>(
-        query: e.Request["query"],
-        spNames: search_query_names,
-    ) => {
+    get_universal_search_query_values_array = <search_query_names extends string[]>(query: e.Request["query"], spNames: search_query_names) => {
         const spAccumulator: { [keys: string]: string } = {};
         for (const sqKey in query) {
             if (Object.hasOwn(query, sqKey)) {
@@ -89,3 +86,4 @@ export const global_Utilities = new (class global_Utilities {
         };
     };
 })();
+

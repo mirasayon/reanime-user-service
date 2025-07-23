@@ -1,8 +1,8 @@
 import { PathsConfig } from "#/configs/paths.js";
 import type { infotype } from "#/types/informative.js";
 import consola from "consola";
-import { InternalServerErrorException } from "@xamarin.city/reanime/user-service/errors/server-side/exceptions.js";
-import { ForbiddenException } from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { InternalServerErrorException } from "reanime/user-service/errors/server-side/exceptions.js";
+import { ForbiddenException } from "reanime/user-service/errors/client-side/exceptions.js";
 import node_crypto from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -28,7 +28,7 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
             return token;
         } catch (error) {
             consola.error("Error while generating session token: ", error);
-            throw new InternalServerErrorException(["Error while generating session token"], "INTERNAL_ERROR");
+            throw new InternalServerErrorException("Error while generating session token");
         }
     };
     decrypt_session_token(raw: string) {
@@ -51,3 +51,4 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
         }
     }
 })();
+

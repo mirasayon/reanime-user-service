@@ -6,7 +6,7 @@ import {
     vote_not_found,
 } from "#/configs/frequent-errors.js";
 import { AnimeFavorite } from "#/db/orm/client.js";
-import { BadRequestException, ConflictException, NotFoundException } from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { BadRequestException, ConflictException, NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
 import type { infotype } from "[T]/informative.js";
 import { FavoriteAnimes_Model as model } from "[www]/favorite_animes/favorite_animes.model.js";
 export const FavoriteAnimes_Services = new (class FavoriteAnimes_Services {

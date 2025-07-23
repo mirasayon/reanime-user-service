@@ -1,10 +1,10 @@
 import { Authentication_Controller as c } from "[www]/authentication/authentication.controller.js";
 import { Auth_middleware, has_client_already_logged } from "[www]/authentication/authentication.middleware.js";
 import { Authentication_ReqPipes as vm } from "[www]/authentication/authentication.pipes.js";
-import { create_router } from "#/utils/tools/express.js";
+import { cRouter } from "#/utils/tools/express.js";
 
 export const Authentication_Router = (() => {
-    const r = create_router();
+    const r = cRouter();
     r.post("/registration", vm.registration, has_client_already_logged, c.registration);
 
     r.post("/login/via/email", vm.login_via_email, has_client_already_logged, c.login_via_email);
@@ -17,3 +17,4 @@ export const Authentication_Router = (() => {
 
     return r;
 })();
+

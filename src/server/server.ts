@@ -4,14 +4,8 @@ import helmet from "helmet";
 import compression from "compression";
 import { cookie_parser, json_parser, static_serve } from "#/utils/tools/express.js";
 import { Entry_Point_Router } from "#/app/entry_point.route.js";
-import {
-    client_error_handler,
-    not_found_route,
-} from "@xamarin.city/reanime/user-service/errors/client-side/handler.js";
-import {
-    server_exception_handler,
-    unknown_exception_handler,
-} from "@xamarin.city/reanime/user-service/errors/server-side/handler.js";
+import { client_error_handler, not_found_route } from "reanime/user-service/errors/client-side/handler.js";
+import { server_exception_handler, unknown_exception_handler } from "reanime/user-service/errors/server-side/handler.js";
 import { dev_logger } from "#/middlewares/dev_logger.js";
 import morgan from "morgan";
 
@@ -43,3 +37,4 @@ export const Express_Main_Server = (() => {
     S.use(unknown_exception_handler);
     return S;
 })();
+

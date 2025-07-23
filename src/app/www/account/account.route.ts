@@ -1,11 +1,11 @@
 import { Account_Controller as c } from "[www]/account/account.controller.js";
 import { Account_ReqPipes as rp } from "[www]/account/account.pipes.js";
 import { Auth_middleware } from "[www]/authentication/authentication.middleware.js";
-import { create_router } from "#/utils/tools/express.js";
+import { cRouter } from "#/utils/tools/express.js";
 import { ControllerUtils } from "#/utils/controller.js";
 
 export const Account_Router = (() => {
-    const r = create_router();
+    const r = cRouter();
     // Get general information about the currently authenticated user
     r.get("/explore/me", Auth_middleware, c.explore_me);
 

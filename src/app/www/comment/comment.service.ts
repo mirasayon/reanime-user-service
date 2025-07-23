@@ -1,12 +1,8 @@
 import { vote_not_found } from "#/configs/frequent-errors.js";
 import { MAX_COMMENT_ON_ANIME_LIMIT } from "#/configs/rules.js";
 import { CommentVote } from "#/db/orm/client.js";
-import {
-    ConflictException,
-    ForbiddenException,
-    NotFoundException,
-} from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
-import { NotImplementedException } from "@xamarin.city/reanime/user-service/errors/server-side/exceptions.js";
+import { ConflictException, ForbiddenException, NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
+import { NotImplementedException } from "reanime/user-service/errors/server-side/exceptions.js";
 import { Comment_Model as model } from "[www]/comment/comment.model.js";
 
 /** Service Class with all methods for comments */
@@ -113,3 +109,4 @@ export const Comment_Service = new (class Comment_Service {
         return { updated_comment };
     };
 })();
+

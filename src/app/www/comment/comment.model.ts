@@ -1,5 +1,6 @@
 import { prisma as db } from "#/db/connect.js";
-import { NotFoundException } from "@xamarin.city/reanime/user-service/errors/client-side/exceptions.js";
+import { Comment, CommentVote } from "#/db/orm/client.js";
+import { NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
 import type { infotype } from "[T]/informative.js";
 
 export const Comment_Model = new (class Comment_Model {
@@ -19,20 +20,28 @@ export const Comment_Model = new (class Comment_Model {
         });
     };
 
-    get_all_comments_for_anime = async (args: { page: number; limit: number; anime_id: number }) => {
+    get_all_comments_for_anime = async (args: {
+        page: number;
+        limit: number;
+        anime_id: number;
+    }): Promise<
+        (Comment & {
+            ratings: CommentVote[];
+        })[]
+    > => {
         const skip = (args.page - 1) * args.limit;
 
-        return await db.comment.findMany({
+        const all = await db.comment.findMany({
             where: {
                 anime_id: args.anime_id,
             },
             skip,
             include: {
                 ratings: true,
-                replies: true,
             },
             take: args.limit,
         });
+        return all;
     };
 
     find_1_comment_by_its_id = async (comment_id: infotype.Cuid) => {
@@ -105,3 +114,4 @@ export const Comment_Model = new (class Comment_Model {
         });
     };
 })();
+
