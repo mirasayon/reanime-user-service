@@ -77,7 +77,7 @@ export const Reply_Service = new (class Reply_Service {
         return { vote: new_vote, is_updated: false };
     };
 
-    delete_dislike = async ({ reply_id, profile_id }: { reply_id: string; profile_id: string }) => {
+    delete_dislike = async ({ reply_id, profile_id }: { reply_id: string; profile_id: string }): Promise<{ deleted_vote: ReplyVote }> => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
 
         const existedVote = await model.find_1_vote_by_reply_id_and_profile_id(found_reply.id, profile_id);
@@ -90,7 +90,7 @@ export const Reply_Service = new (class Reply_Service {
         const deleted_vote = await model.Delete_vote_from_reply_by_its_id(existedVote.id);
         return { deleted_vote };
     };
-    delete_like = async ({ reply_id, profile_id }: { reply_id: string; profile_id: string }) => {
+    delete_like = async ({ reply_id, profile_id }: { reply_id: string; profile_id: string }): Promise<{ deleted_vote: ReplyVote }> => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
 
         const existedVote = await model.find_1_vote_by_reply_id_and_profile_id(found_reply.id, profile_id);
@@ -101,7 +101,7 @@ export const Reply_Service = new (class Reply_Service {
             throw new ConflictException(["Ответ дизлайкнут но вы пытаетесь удалить лайк которого нет"]);
         }
         const deleted_vote = await model.Delete_vote_from_reply_by_its_id(existedVote.id);
-        return { deleted_vote } as const;
+        return { deleted_vote };
     };
 
     report_to_reply = async ({ reply_id, report_details, profile_id }: { reply_id: string; report_details: string; profile_id: string }) => {

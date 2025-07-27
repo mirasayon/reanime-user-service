@@ -1,4 +1,4 @@
-import { Auth_middleware } from "[www]/authentication/authentication.middleware.js";
+import { Auth_middleware } from "#/middlewares/authentication.middleware.js";
 import { Profile_Controller as c } from "[www]/profile/profile.controller.js";
 import { Profile_ReqPipes as vm } from "[www]/profile/profile.pipes.js";
 import { cRouter } from "#/utils/tools/express.js";

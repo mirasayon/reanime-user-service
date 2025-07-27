@@ -12,7 +12,7 @@ import { Reply_Router } from "[www]/reply/reply.route.js";
 export const Entry_Point_Router = (() => {
     const r = cRouter();
     /** */
-    r.use(ApiKeyGuard.middleware);
+    r.use(ApiKeyGuard);
     r.use("/authentication", Authentication_Router);
     r.use("/comment", Comment_Router);
     r.use("/reply", Reply_Router);

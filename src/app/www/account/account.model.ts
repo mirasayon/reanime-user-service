@@ -2,6 +2,7 @@ import { prisma as db } from "#/db/connect.js";
 import type { Account, Profile, Session } from "#/db/orm/client.js";
 import { NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
 import type { infotype } from "[T]/informative.js";
+import { InternalServerErrorException } from "reanime/user-service/errors/server-side/exceptions.js";
 
 export const Account_Model = new (class Account_Model {
     Get_account_by_its_id_throw_error = async (account_id: infotype.Cuid): Promise<Account> => {
@@ -11,7 +12,7 @@ export const Account_Model = new (class Account_Model {
             },
         });
         if (!found_account) {
-            throw new NotFoundException(["Пользователь с таким идентификатором не найден"]);
+            throw new NotFoundException(["Аккаунт с таким айди не найден"]);
         }
 
         return found_account;
@@ -24,7 +25,7 @@ export const Account_Model = new (class Account_Model {
             },
         });
         if (!found_accound) {
-            throw new NotFoundException(["Пользователь с таким адресом электронной почты не найден"]);
+            throw new NotFoundException(["Аккаунт с такой почтой не найден"]);
         }
         return found_accound;
     };
@@ -55,7 +56,7 @@ export const Account_Model = new (class Account_Model {
             },
         });
         if (!found_user) {
-            throw new NotFoundException(["Аккаунт с таким именем ползователя не существует"]);
+            throw new NotFoundException(["Аккаунт с таким юзернеймом не существует"]);
         }
         return found_user;
     };
@@ -108,7 +109,7 @@ export const Account_Model = new (class Account_Model {
             },
         });
         if (!found_session) {
-            throw new NotFoundException(["Сеанс с таким идентификатором не найден. Проверьте токен сеанса"]);
+            throw new NotFoundException(["Сеанс с таким айди не найден. Проверьте токен сеанса"]);
         }
 
         return found_session;
@@ -128,7 +129,7 @@ export const Account_Model = new (class Account_Model {
             where: { by_account_id },
         });
         if (!found_profile) {
-            throw new NotFoundException(["Профиль этого аккаунта не найден. Невозможно удалить пользователя, у которого нет профиля"]);
+            throw new InternalServerErrorException("Ошибка сервера. Попробуйте позже");
         }
         return found_profile;
     };

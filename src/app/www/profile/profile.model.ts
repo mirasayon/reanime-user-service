@@ -10,7 +10,7 @@ export const Profile_Model = new (class Profile_Model {
             },
         });
         if (!found_profile) {
-            throw new NotFoundException(["No profile found"]);
+            throw new NotFoundException(["Профиль не найден"]);
         }
         return found_profile;
     };

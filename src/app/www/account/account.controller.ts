@@ -49,7 +49,7 @@ export const Account_Controller = new (class Account_Controller {
             account_id: auth.session.by_account_id,
         });
         const data: Account_ResponseTypes.update_username = updated_account;
-        const message = "Имя пользователя успешно обновлено";
+        const message = "Юзернейм успешно обновлен";
         return Reply.ok(res, { data, message });
     };
     get_sessions = async (req: Account_ReqDtos.get_sessions, res: e.Response) => {

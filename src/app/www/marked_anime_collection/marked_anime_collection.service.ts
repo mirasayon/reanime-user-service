@@ -8,7 +8,7 @@ export const MarkedAnimeCollection_Service = new (class MarkedAnimeCollection_Se
     private readonly _is_anime_in_collection = async (profile_id: infotype.Cuid, anime_id: number) => {
         const is_anime_in_collection = await model.is_anime_in_collection(profile_id, anime_id);
         if (is_anime_in_collection) {
-            throw new ConflictException(["Anime is already in collection"]);
+            throw new ConflictException(["Аниме уже в коллекции"]);
         }
     };
 
@@ -72,10 +72,10 @@ export const MarkedAnimeCollection_Service = new (class MarkedAnimeCollection_Se
     private readonly __check_exact_for_deleting = async (profile_id: string, anime_id: number, status: AnimeStatus) => {
         const found_anime = await model.is_anime_in_collection(profile_id, anime_id);
         if (!found_anime) {
-            throw new NotFoundException(["Anime is not in the collection"]);
+            throw new NotFoundException(["Аниме нет в коллекции"]);
         }
         if (found_anime.status !== status) {
-            throw new NotFoundException([`${status.toLowerCase()} anime not found`]);
+            throw new NotFoundException([`Аниме с таким статусом ${status.toLowerCase()} не найдено`]);
         }
         return found_anime;
     };

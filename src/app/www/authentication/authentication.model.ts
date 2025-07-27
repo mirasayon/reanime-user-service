@@ -23,7 +23,7 @@ export const Authentication_Model = new (class Authentication_Model {
         });
         if (!found_session) {
             throw new NotFoundException([
-                "No session found with this ID. Please check the Session Token. If you are not authenticated, please login first",
+                "Сеанс с таким айди не найден. Проверьте токен сеанса. Если вы не аутентифицированы, сначала войдите в систему.",
             ]);
         }
 
@@ -49,7 +49,7 @@ export const Authentication_Model = new (class Authentication_Model {
             where: { token: session_token },
         });
         if (!session) {
-            throw new UnauthorizedException(["Session not found. Please log in again."]);
+            throw new UnauthorizedException(["Сеанс не найден. Пожалуйста, войдите снова"]);
         }
         const profile = await db.profile.findUnique({
             where: {
@@ -128,7 +128,7 @@ export const Authentication_Model = new (class Authentication_Model {
             },
         });
         if (!account) {
-            throw new UnauthorizedException(["Пользователь с такой почтой не существует. Проверьте свои учётные данные"]);
+            throw new UnauthorizedException(["Неправильный пароль или почта"]);
         }
         return account;
     };

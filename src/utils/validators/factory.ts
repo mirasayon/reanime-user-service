@@ -15,27 +15,22 @@ const Factory_Validator_Util_Class = new (class Factory_Validator_Util_Class {
         get_req_body?: (req: RequestType) => Promise<A>,
     ) => {
         return async (req: RequestType, res: e.Response, next: e.NextFunction) => {
-            try {
-                /**
-                 * If schema itself is for undefined. Then body alse must be undefined
-                 */
-                let rawData = undefined;
-                if (get_req_body) {
-                    rawData = await get_req_body(req);
-                }
-                const parsed = await schema.safeParseAsync(rawData);
-                if (parsed.success) {
-                    req.dto = parsed.data;
-                    next();
-                    return;
-                }
-                const errorList = parsed.error.issues.map(({ path, message }) => {
-                    return `${path.join(".")} -- ${message}` as const;
-                });
-                throw new BadRequestException(errorList);
-            } catch (error) {
-                return next(error);
+            /**
+             * If schema itself is for undefined. Then body also must be undefined
+             */
+            let rawData = undefined;
+            if (get_req_body) {
+                rawData = await get_req_body(req);
             }
+            const parsed = await schema.safeParseAsync(rawData);
+            if (parsed.success) {
+                req.dto = parsed.data;
+                return next();
+            }
+            const errorList = parsed.error.issues.map(({ path, message }) => {
+                return `${path.join(".")} -- ${message}` as const;
+            });
+            throw new BadRequestException(errorList);
         };
     };
 })();

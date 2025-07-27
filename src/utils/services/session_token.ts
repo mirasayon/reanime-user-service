@@ -47,7 +47,7 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
             const accound_id = decrypted.toString("utf-8");
             return { session_token, accound_id };
         } catch (error) {
-            throw new ForbiddenException(["Session Token is Fake"]);
+            throw new ForbiddenException(["Токен сеанса поддельный"]);
         }
     }
 })();

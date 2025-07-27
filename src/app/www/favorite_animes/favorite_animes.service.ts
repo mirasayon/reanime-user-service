@@ -67,9 +67,8 @@ export const FavoriteAnimes_Services = new (class FavoriteAnimes_Services {
         if (!if_exists) {
             throw new NotFoundException([vote_not_found]);
         }
-
         if (if_exists.vote === false) {
-            throw new ConflictException([cannot_delete_like_if_there_is_dislike]); /**  1 */
+            throw new ConflictException([cannot_delete_like_if_there_is_dislike]);
         }
         const deleted = await model.delete_like_by_profile_id(if_exists.profile_id, if_exists.anime_id);
         return { deleted };
@@ -80,9 +79,8 @@ export const FavoriteAnimes_Services = new (class FavoriteAnimes_Services {
         if (!if_exists) {
             throw new NotFoundException([vote_not_found]);
         }
-
         if (if_exists.vote === true) {
-            throw new ConflictException([cannot_delete_dislike_if_there_is_like]); /** ! */
+            throw new ConflictException([cannot_delete_dislike_if_there_is_like]);
         }
         const deleted = await model.delete_dislike_by_profile_id(if_exists.profile_id, if_exists.anime_id);
         return { deleted };

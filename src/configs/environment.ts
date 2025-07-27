@@ -1,15 +1,27 @@
 import type { WorkingMode, NodeEnv } from "reanime/types/env.js";
 import { env } from "node:process";
-
-/** Environment variables configuration class */
-class EnvironmentClass {
-    constructor(required_env_variables: string[]) {
-        for (const eVar of required_env_variables) {
-            if (!Object.hasOwn(env, eVar)) {
-                throw new Error(`Env var ${eVar} is required!`);
+const required_env_variables = [
+    "SERVER_PORT_NUMBER",
+    "NODE_ENVIRONMENT",
+    "SERVER_HOSTNAME",
+    "MAIN_DATABASE_CONNECTION_URL",
+    "REANIME_FRONTEND_URL_PROD",
+    "REANIME_FRONTEND_URL_DEV",
+    "API_KEY_TO_THIS_SERVER",
+    "REANIME_MEDIA_SERVICE_API_KEY",
+    "SALT_ROUND_NUMBER",
+    "REANIME_MEDIA_SERVICE_URL_DEV",
+    "REANIME_MEDIA_SERVICE_URL_PROD",
+];
+/** Environment variables configuration */
+export const cEnv = new (class EnvironmentClass {
+    constructor() {
+        for (const _var of required_env_variables) {
+            if (!Object.hasOwn(env, _var)) {
+                throw new Error(`Env var ${_var} is required!`);
             }
-            if (typeof env[eVar] !== "string") {
-                throw new Error(`Env var ${eVar} must be a string!`);
+            if (typeof env[_var] !== "string") {
+                throw new Error(`Env var ${_var} must be a string!`);
             }
             if (!["development", "test", "production"].includes(env.NODE_ENVIRONMENT!)) {
                 throw new Error(`Invalid NODE_ENVIRONMENT value: ${env.NODE_ENVIRONMENT}`);
@@ -69,21 +81,7 @@ class EnvironmentClass {
             host: env.SERVER_HOSTNAME as string,
         },
     };
-}
-/** Environment variables configuration class instance */
-export const cEnv = new EnvironmentClass([
-    "SERVER_PORT_NUMBER",
-    "NODE_ENVIRONMENT",
-    "SERVER_HOSTNAME",
-    "MAIN_DATABASE_CONNECTION_URL",
-    "REANIME_FRONTEND_URL_PROD",
-    "REANIME_FRONTEND_URL_DEV",
-    "API_KEY_TO_THIS_SERVER",
-    "REANIME_MEDIA_SERVICE_API_KEY",
-    "SALT_ROUND_NUMBER",
-    "REANIME_MEDIA_SERVICE_URL_DEV",
-    "REANIME_MEDIA_SERVICE_URL_PROD",
-]);
+})();
 /**
  * Media server URL based on the current environment.
  * It will use the development URL if the environment is set to development,

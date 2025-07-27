@@ -43,7 +43,7 @@ export const ControllerUtils = new (class ControllerUtilsFunctions {
         if (ping.data === "pong") {
             return next();
         }
-        throw new MediaServerNotAvalableException("Media server is not responding as expected");
+        throw new MediaServerNotAvalableException("Медиасервер не отвечает");
     };
 })();
 

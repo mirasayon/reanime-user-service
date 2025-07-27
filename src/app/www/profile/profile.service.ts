@@ -39,7 +39,7 @@ export const Profile_Service = new (class Profile_Service {
         const found_profile = await model.find_profile_by_its_id(profile_id);
 
         if (!found_profile.avatar_url_hash) {
-            throw new BadRequestException(["You need to set the avatar but are trying to upload"]);
+            throw new BadRequestException(["Вам нужно установить аватар, но вы пытаетесь обновить"]);
         }
         return { avatar_url_hash: found_profile.avatar_url_hash, id: found_profile.id };
     };
@@ -48,24 +48,20 @@ export const Profile_Service = new (class Profile_Service {
         const found_profile = await model.find_profile_by_its_id(profile_id);
 
         if (!found_profile.avatar_url_hash) {
-            throw new BadRequestException(["Avatar not found"]);
+            throw new BadRequestException(["Аватар не найден"]);
         }
         return { avatar_url_hash: found_profile.avatar_url_hash };
     };
     set_avatar_check = async (profile_id: string) => {
         const found_profile = await model.find_profile_by_its_id(profile_id);
         if (found_profile.avatar_url_hash) {
-            throw new BadRequestException(["You need update avatar but you are uploading", found_profile.avatar_url_hash]);
+            throw new BadRequestException(["Вам нужно обновить аватар, но вы загружаете"]);
         }
     };
     set_avatar = async (data: { profile_id: string; avatar_hash: string }) => {
         const found_profile = await model.find_profile_by_its_id(data.profile_id);
         if (found_profile.avatar_url_hash) {
-            throw new BadRequestException([
-                "You need update avatar but you are uploading",
-                `${data.avatar_hash}`,
-                `${found_profile.avatar_url_hash}`,
-            ]);
+            throw new BadRequestException(["Вам нужно обновить аватар, но вы загружаете"]);
         }
         const updated_profile = await model.update_avatar_by_id(found_profile.id, data.avatar_hash);
         return { updated_profile };

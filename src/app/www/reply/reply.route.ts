@@ -1,4 +1,4 @@
-import { Auth_middleware } from "[www]/authentication/authentication.middleware.js";
+import { Auth_middleware } from "#/middlewares/authentication.middleware.js";
 import { Reply_Controller as c } from "[www]/reply/reply.controller.js";
 import { Reply_ReqPipes as vm } from "[www]/reply/reply.pipes.js";
 import { cRouter } from "#/utils/tools/express.js";

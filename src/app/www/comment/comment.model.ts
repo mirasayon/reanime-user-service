@@ -52,7 +52,7 @@ export const Comment_Model = new (class Comment_Model {
         });
 
         if (!found_comment) {
-            throw new NotFoundException(["Comment with this ID not found"]);
+            throw new NotFoundException(["Комментарий с этим айди не найден"]);
         }
         return found_comment;
     };

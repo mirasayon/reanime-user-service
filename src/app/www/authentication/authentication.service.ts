@@ -24,13 +24,13 @@ export const Authentication_Service = new (class Authentication_Service {
     login_via_username = async ({ username, password, ip, agent }: { username: string; password: string; ip?: string; agent?: string }) => {
         const account = await model.find_1_account_by_username(username);
         if (!account) {
-            throw new UnauthorizedException(["Пользователь с таким именем не существует. Проверьте свои учётные данные"]);
+            throw new UnauthorizedException(["Неправильный пароль или юзернейм"]);
         }
 
         const is_correct = await bcrypt_service.compare_raw_to_hash(password, account.password_hash);
 
         if (!is_correct) {
-            throw new UnauthorizedException(["Incorrect password. Please try again."]);
+            throw new UnauthorizedException(["Неправильный пароль или юзернейм"]);
         }
 
         const sessions_count = await model.get_count_of_sessions_by_account_id(account.id);
@@ -53,7 +53,7 @@ export const Authentication_Service = new (class Authentication_Service {
 
         const is_correct = await bcrypt_service.compare_raw_to_hash(password, account.password_hash);
         if (!is_correct) {
-            throw new UnauthorizedException(["Неверный пароль"]);
+            throw new UnauthorizedException(["Неправильный пароль или почта"]);
         }
 
         const sessions_count = await model.get_count_of_sessions_by_account_id(account.id);
@@ -116,8 +116,8 @@ export const Authentication_Service = new (class Authentication_Service {
         });
 
         if (!account.profile) {
-            consola.fatal("This accound does not have a profile:", account);
-            throw new InternalServerErrorException("Unexpected Internal Service Error");
+            consola.fatal("This accound does not have a profile: ", account);
+            throw new InternalServerErrorException("Неожиданная внутренняя ошибка сервиса");
         }
         const session = await model.create_user_session(account.id, creds);
         return { account, session };

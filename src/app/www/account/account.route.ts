@@ -1,6 +1,6 @@
 import { Account_Controller as c } from "[www]/account/account.controller.js";
 import { Account_ReqPipes as rp } from "[www]/account/account.pipes.js";
-import { Auth_middleware } from "[www]/authentication/authentication.middleware.js";
+import { Auth_middleware } from "#/middlewares/authentication.middleware.js";
 import { cRouter } from "#/utils/tools/express.js";
 import { ControllerUtils } from "#/utils/controller.js";
 

@@ -35,7 +35,7 @@ export const Comment_Service = new (class Comment_Service {
         const existedVote = await model.find_1_vote_by_comment_id_and_profile_id(found_comment.id, args.profile_id);
         if (existedVote) {
             if (existedVote.vote === false) {
-                throw new ConflictException(["Профиль уже дизлайкнул этот комментарий"]);
+                throw new ConflictException(["Дизлайк на этот комментарий уже поставлен"]);
             }
             const updated_vote = await model.update_1_vote_to_comment(existedVote.id, !existedVote.vote);
             return { vote: updated_vote, is_updated: true };

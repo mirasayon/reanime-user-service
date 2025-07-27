@@ -41,7 +41,7 @@ export const Reply_Model = new (class Reply_Model {
         });
 
         if (!found_reply) {
-            throw new NotFoundException(["The reply does not exist."]);
+            throw new NotFoundException(["Ответ не существует."]);
         }
         return found_reply;
     };
@@ -53,7 +53,7 @@ export const Reply_Model = new (class Reply_Model {
             },
         });
         if (!found_comment) {
-            throw new NotFoundException(["Comment with this ID is not found"]);
+            throw new NotFoundException(["Комментарий с этим айди не найден"]);
         }
 
         return found_comment;

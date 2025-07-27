@@ -25,7 +25,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const { account, session } = await services.registration(dto);
         const data: Authentication_ResponseTypes.registration = { account, session };
-        const message = "Принято. Пользователь зарегистрирован и вошёл в систему";
+        const message = "Пользователь успешно зарегистрирован и вошёл в систему";
         return Reply.accepted(reply, { data, message });
     };
 
@@ -39,7 +39,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
     check_session = async (req: Authentication_ReqDtos.check_session, reply: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
         const data: Authentication_ResponseTypes.check_session = auth;
-        const message = "Ваша сессия";
+        const message = "Ваша текущая сессия";
         return Reply.ok(reply, { data, message });
     };
     logout = async (req: Authentication_ReqDtos.logout, res: e.Response) => {
