@@ -1,5 +1,5 @@
 import { Authentication_Controller as c } from "[www]/authentication/authentication.controller.js";
-import { Auth_middleware, has_client_already_logged } from "#/middlewares/authentication.middleware.js";
+import { Auth_middleware, has_client_already_logged } from "#/middlewares/authentication.js";
 import { Authentication_ReqPipes as vm } from "[www]/authentication/authentication.pipes.js";
 import { cRouter } from "#/utils/tools/express.js";
 

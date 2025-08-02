@@ -5,7 +5,7 @@
 /src/db/orm
 public.pem
 private.pem
-get-help-from-ai.md
-todo.md
+get-help.md
+
+
 /src/tests/play.ts
-frequent-scripts.md

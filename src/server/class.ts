@@ -21,10 +21,11 @@ export const start = async (): Promise<void> => {
         Logger.success(`${family}: ${Logger.chalk.magenta(url)} / ${altUrl} ${Logger.chalk.magenta(cEnv.NODE_ENVIRONMENT)}`);
 
         const shutdown = async () => {
+            instance.close(() => {
+                // process.exit(0);
+            });
             Logger.sky("Shutting down...");
-            await prisma.$disconnect();
-            Logger.sky("db disconnected");
-            instance.close(() => process.exit(0));
+            await prisma.$disconnect().then(() => Logger.sky("db disconnected"));
         };
 
         process.on("SIGINT", shutdown);

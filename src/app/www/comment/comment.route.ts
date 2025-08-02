@@ -1,4 +1,4 @@
-import { Auth_middleware } from "#/middlewares/authentication.middleware.js";
+import { Auth_middleware } from "#/middlewares/authentication.js";
 import { Comment_Controller as c } from "[www]/comment/comment.controller.js";
 import { Comment_ReqPipes as rp } from "[www]/comment/comment.pipes.js";
 import { cRouter } from "#/utils/tools/express.js";
