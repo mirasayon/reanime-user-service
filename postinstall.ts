@@ -4,6 +4,7 @@ import { existsSync } from "node:fs";
 import { cp, mkdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+/** root */
 const _dirname = dirname(fileURLToPath(import.meta.url));
 const MESSAGES = {
     start: chalk.magenta("Copying Prisma DLL apps to ./dist"),
@@ -24,7 +25,7 @@ async function copyDirectory(src: string, dest: string): Promise<void> {
     await cp(src, dest, { recursive: true, force: true });
 }
 
-(async function main() {
+async function main() {
     const sourcePath = join(_dirname, "src", "db", "orm");
     const destPath = join(_dirname, "dist", "db", "orm");
     log(MESSAGES.start);
@@ -35,4 +36,5 @@ async function copyDirectory(src: string, dest: string): Promise<void> {
         console.error(MESSAGES.error(err));
         process.exit(1);
     }
-})();
+}
+main();
