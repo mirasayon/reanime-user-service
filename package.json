@@ -12,13 +12,13 @@
         "start-prod": "node --env-file=.env.production ./dist/server/startup.js",
         "start-test": "node --enable-source-maps --env-file=.env.test ./dist/server/startup.js",
         "ts:inspect": "tsc --watch --noEmit --project ./tsconfig.json",
-        "post_build": "rimraf src/db/orm && tsx postinstall.ts",
+        "post_build": "tsx post_build.ts",
         "generate_client:dev": "dotenv -e .env.development -- prisma generate",
         "generate_client:test": "dotenv -e .env.test -- prisma generate",
         "generate_client:prod": "dotenv -e .env.production -- prisma generate",
-        "build:dev": "rimraf dist && npm run generate_client:dev && post_build && npm run compile",
-        "build:test": "rimraf dist && npm run generate_client:test && post_build && npm run compile",
-        "build:prod": "rimraf dist && npm run generate_client:prod && post_build && npm run compile"
+        "build:dev": "rimraf dist src/db/orm && npm run generate_client:dev && npm run post_build && npm run compile",
+        "build:test": "rimraf dist src/db/orm && npm run generate_client:test && npm run post_build && npm run compile",
+        "build:prod": "rimraf dist src/db/orm && npm run generate_client:prod && npm run post_build && npm run compile"
     },
     "dependencies": {
         "@prisma/adapter-pg": "^6.13.0",
@@ -39,7 +39,7 @@
         "multer": "^2.0.2",
         "pg": "^8.16.3",
         "prisma": "^6.13.0",
-        "reanime": "http://192.168.0.105:8081/reanime-0.1.6.tgz",
+        "reanime": "http://192.168.0.105:5640/reanime-0.1.6.tgz",
         "zod": "^4.0.14"
     },
     "devDependencies": {
