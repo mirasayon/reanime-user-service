@@ -1,12 +1,22 @@
 import type e from "express";
 /**
- * Returns Session Token from web request
- * @param req Request object itself
- * @returns meta from web request
+ * Returns Session Token from web request;s headers
+ * @param req Express Request object
+ * @returns Session Token
  */
-export const session_token_from_request_cookies = (req: e.Request): string | null => {
-    if (typeof req.cookies.session_token === "string") {
-        return req.cookies.session_token;
+export const bearer_session_token_from_headers = (req: e.Request): string | null => {
+    const authHeader = req.headers["authorization"];
+    if (!authHeader || typeof authHeader !== "string") {
+        return null;
+    }
+    const [scheme, token] = authHeader.split(" ");
+
+    if (scheme !== "Bearer" || !token) {
+        return null;
+    }
+    if (typeof token === "string") {
+        return token;
     }
     return null;
 };
+

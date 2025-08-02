@@ -3,10 +3,10 @@
     "version": "0.2.0",
     "type": "module",
     "scripts": {
-        "dev:node": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/startup.js",
+        "dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/startup.js",
         "compile:watch": "tspc --watch --project ./tsconfig.json",
         "compile": "tspc --project ./tsconfig.json",
-        "dev": "tsx watch --env-file=.env.development ./src/server/startup.ts",
+        "dex": "tsx watch --env-file=.env.development ./src/server/startup.ts",
         "test-common": "node --enable-source-maps --env-file=.env.test ./dist/tests/common.js",
         "dev-test": "node --enable-source-maps --env-file=.env.test --watch ./dist/tests/play.js",
         "start:prod": "node --env-file=.env.production ./dist/server/startup.js",
@@ -40,7 +40,7 @@
         "multer": "^2.0.2",
         "pg": "^8.16.3",
         "prisma": "^6.13.0",
-        "reanime": "http://192.168.0.105:5640/reanime-0.1.6.tgz",
+        "reanime": "http://192.168.0.105:5640/reanime-0.1.9.tgz",
         "zod": "^4.0.14"
     },
     "devDependencies": {

@@ -1,7 +1,7 @@
 import { metadata_dto } from "#/utils/dto/meta.js";
 import { global_Utilities } from "#/utils/functions.js";
 import type { Session } from "#/db/orm/client.js";
-import { session_token_from_request_cookies } from "#/utils/dto/session_token.js";
+import { bearer_session_token_from_headers } from "#/utils/dto/session_token.js";
 import type { mid_auth_dto } from "[T]/auth.js";
 import type e from "express";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
@@ -35,7 +35,7 @@ const check_meta = (session: Session, requestMeta: e.Request) => {
  * @param next - Express NextFunction for middleware chaining
  */
 export const Auth_middleware = async (req: e.Request & { auth?: mid_auth_dto }, res: e.Response, next: e.NextFunction) => {
-    const req_session_token = session_token_from_request_cookies(req);
+    const req_session_token = bearer_session_token_from_headers(req);
     if (!req_session_token) {
         throw new UnauthorizedException(["Вы не вошли в систему. Пожалуйста, войдите в систему, чтобы продолжить"]);
     }
@@ -67,7 +67,7 @@ export const CheckAuth = async (
     pass: boolean;
     session?: Session;
 }> => {
-    const req_session_token = session_token_from_request_cookies(req);
+    const req_session_token = bearer_session_token_from_headers(req);
     if (!req_session_token) {
         return HasNotBeenLogged;
     }

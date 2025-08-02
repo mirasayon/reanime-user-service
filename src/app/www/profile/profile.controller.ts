@@ -11,8 +11,8 @@ import { Profile_ResponseTypes } from "reanime/user-service/response/response-da
 export const Profile_Controller = new (class Profile_Controller {
     /** Controller for create one comment by user */
     other_profiles = async (req: Profile_ReqDtos.other_profiles, res: e.Response) => {
-        const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
-        const sr = await service.other_profiles(dto);
+        const { dto: username } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
+        const sr = await service.other_profiles(username);
         const data: Profile_ResponseTypes.other_profiles = sr;
         const message = "Информация профиля другого пользователя успешно получена";
         return Reply.ok(res, { data, message });

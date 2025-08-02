@@ -1,6 +1,7 @@
 import { prisma as db } from "#/db/connect.js";
 import { NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
 import type { infotype } from "[T]/informative.js";
+import { Account, Profile } from "#/db/orm/client.js";
 
 export const Profile_Model = new (class Profile_Model {
     find_profile_by_its_id = async (profile_id: infotype.Cuid) => {
@@ -15,13 +16,32 @@ export const Profile_Model = new (class Profile_Model {
         return found_profile;
     };
     find_profile_by_username = async (username: infotype.Cuid) => {
-        const found = await db.account.findUnique({
+        const account = await db.account.findUnique({
             where: { username },
             include: {
                 profile: true,
             },
         });
-        return found;
+        return account;
+    };
+
+    find_profile_by_username_and_return_account_and_profile = async (username: infotype.Cuid): Promise<{ account: Account; profile: Profile }> => {
+        const account = await db.account.findUnique({
+            where: { username },
+        });
+        if (!account) {
+            throw new NotFoundException(["Аккаунт с таким юзернеймом не найден"]);
+        }
+        const profile = await db.profile.findUnique({
+            where: {
+                by_account_id: account.id,
+            },
+        });
+
+        if (!profile) {
+            throw new NotFoundException(["Профиль с таким аккант айди не найден"]);
+        }
+        return { account, profile };
     };
     update_bio_by_id = async (profile_id: infotype.Cuid, bio?: string) => {
         return await db.profile.update({

@@ -2,7 +2,12 @@ import { bcrypt_service } from "#/utils/services/bcrypt.js";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
 import consola from "consola";
 import { infotype } from "#/types/informative.js";
-import { ConflictException, ForbiddenException, UnauthorizedException } from "reanime/user-service/errors/client-side/exceptions.js";
+import {
+    BadRequestException,
+    ConflictException,
+    ForbiddenException,
+    UnauthorizedException,
+} from "reanime/user-service/errors/client-side/exceptions.js";
 import { InternalServerErrorException } from "reanime/user-service/errors/server-side/exceptions.js";
 import { SAMETIME_SESSIONS_LIMIT } from "#/configs/rules.js";
 
@@ -86,6 +91,7 @@ export const Authentication_Service = new (class Authentication_Service {
         ip,
         agent,
         password,
+        password_repeat,
     }: {
         nickname?: string;
         email?: string;
@@ -93,7 +99,11 @@ export const Authentication_Service = new (class Authentication_Service {
         ip?: string;
         agent?: string;
         password: string;
+        password_repeat: string;
     }) => {
+        if (password_repeat !== password) {
+            throw new BadRequestException(["Пароли не совпадают"]);
+        }
         const creds = {
             nickname,
             email,

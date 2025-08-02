@@ -1,6 +1,7 @@
 import { serviceUtils } from "#/utils/service.js";
 import { BadRequestException, NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
 import { Profile_Model as model } from "[www]/profile/profile.model.js";
+import { Account, Profile } from "#/db/orm/client.js";
 
 /** Service Class with all methods for comments */
 export const Profile_Service = new (class Profile_Service {
@@ -21,11 +22,12 @@ export const Profile_Service = new (class Profile_Service {
         const updated_profile = await model.update_nickname_by_id(found_profile.id, new_nickname);
         return { updated_profile };
     };
-    view_my_profile = async (profile_id: string) => {
-        const found_user = await model.find_profile_by_its_id(profile_id);
-        return found_user;
+    view_my_profile = async (username: string): Promise<{ account: Account; profile: Profile }> => {
+        const found_profile = await model.find_profile_by_username_and_return_account_and_profile(username);
+
+        return found_profile;
     };
-    other_profiles = async (username: string) => {
+    other_profiles = async (username: string): Promise<Profile> => {
         const found_account = await model.find_profile_by_username(username);
         if (!found_account) {
             throw new NotFoundException(["Аккаунт с таким айди не найден"]);
