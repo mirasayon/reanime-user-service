@@ -16,7 +16,7 @@ export const Profile_Router = (() => {
     const r = cRouter();
     r.get("/explore_others_profile/:username", vm.other_profiles, c.other_profiles); // Open basic data of someone else's profile by username.
 
-    r.get("/view_my_profile", vm.my_profile, Auth_middleware, c.my_profile); // Открыть свой профиль.
+    r.get("/view_my_profile", vm.my_profile, Auth_middleware, c.view_my_profile); // Открыть свой профиль.
 
     r.patch("/update/bio", vm.update_bio, Auth_middleware, c.update_bio);
 

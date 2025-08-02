@@ -13,7 +13,7 @@ export const Profile_Controller = new (class Profile_Controller {
     other_profiles = async (req: Profile_ReqDtos.other_profiles, res: e.Response) => {
         const { dto: username } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const sr = await service.other_profiles(username);
-        const data: Profile_ResponseTypes.other_profiles = sr;
+        const data: Profile_ResponseTypes.view_other_profiles = sr;
         const message = "Информация профиля другого пользователя успешно получена";
         return Reply.ok(res, { data, message });
     };
@@ -32,10 +32,10 @@ export const Profile_Controller = new (class Profile_Controller {
         const message = "Био успешно обновлена";
         return Reply.accepted(res, { data, message });
     };
-    my_profile = async (req: Profile_ReqDtos.my_profile, res: e.Response) => {
+    view_my_profile = async (req: Profile_ReqDtos.my_profile, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const sr = await service.view_my_profile(auth.profile.id);
-        const data: Profile_ResponseTypes.my_profile = sr;
+        const sr = await service.view_my_profile(auth.session.by_account_id);
+        const data: Profile_ResponseTypes.view_my_profile = sr;
         const message = "Информация о текущем профиле пользователя успешно получена";
         return Reply.ok(res, { data, message });
     };

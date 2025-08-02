@@ -22,20 +22,15 @@ export const Profile_Service = new (class Profile_Service {
         const updated_profile = await model.update_nickname_by_id(found_profile.id, new_nickname);
         return { updated_profile };
     };
-    view_my_profile = async (username: string): Promise<{ account: Account; profile: Profile }> => {
-        const found_profile = await model.find_profile_by_username_and_return_account_and_profile(username);
+    view_my_profile = async (accound_id: string): Promise<{ account: Account; profile: Profile }> => {
+        const found_profile = await model.find_by_account_id_AND_return_account_and_profile(accound_id);
 
         return found_profile;
     };
-    other_profiles = async (username: string): Promise<Profile> => {
+    other_profiles = async (username: string): Promise<{ profile: Profile; account: Account }> => {
         const found_account = await model.find_profile_by_username(username);
-        if (!found_account) {
-            throw new NotFoundException(["Аккаунт с таким айди не найден"]);
-        }
-        if (!found_account.profile) {
-            throw new NotFoundException(["Профиль с таким айди не найден"]);
-        }
-        return found_account.profile;
+
+        return found_account;
     };
     readonly __check_if_has_avatar = async (profile_id: string) => {
         const found_profile = await model.find_profile_by_its_id(profile_id);

@@ -15,22 +15,31 @@ export const Profile_Model = new (class Profile_Model {
         }
         return found_profile;
     };
-    find_profile_by_username = async (username: infotype.Cuid) => {
+    find_profile_by_username = async (username: infotype.Cuid): Promise<{ account: Account; profile: Profile }> => {
         const account = await db.account.findUnique({
             where: { username },
-            include: {
-                profile: true,
+        });
+
+        if (!account) {
+            throw new NotFoundException(["Аккаунт с таким айди не найден"]);
+        }
+        const profile = await db.profile.findUnique({
+            where: {
+                by_account_id: account.id,
             },
         });
-        return account;
+        if (!profile) {
+            throw new NotFoundException(["Профиль с таким аккант айди не найден"]);
+        }
+        return { account, profile };
     };
 
-    find_profile_by_username_and_return_account_and_profile = async (username: infotype.Cuid): Promise<{ account: Account; profile: Profile }> => {
+    find_by_account_id_AND_return_account_and_profile = async (accound_id: infotype.Cuid): Promise<{ account: Account; profile: Profile }> => {
         const account = await db.account.findUnique({
-            where: { username },
+            where: { id: accound_id },
         });
         if (!account) {
-            throw new NotFoundException(["Аккаунт с таким юзернеймом не найден"]);
+            throw new NotFoundException(["Аккаунт с таким айди не найден"]);
         }
         const profile = await db.profile.findUnique({
             where: {

@@ -10,6 +10,7 @@ import {
 } from "reanime/user-service/errors/client-side/exceptions.js";
 import { InternalServerErrorException } from "reanime/user-service/errors/server-side/exceptions.js";
 import { SAMETIME_SESSIONS_LIMIT } from "#/configs/rules.js";
+import { Account } from "#/db/orm/client.js";
 
 /**
  * Service class responsible for handling authentication logic.
@@ -24,6 +25,11 @@ export const Authentication_Service = new (class Authentication_Service {
         return {
             deleted_session_token: deleted_session.token,
         };
+    };
+
+    check_session = async (accound_id: string): Promise<{ account: Account }> => {
+        const account = await model.find_account_by_ids_id(accound_id);
+        return { account };
     };
 
     login_via_username = async ({ username, password, ip, agent }: { username: string; password: string; ip?: string; agent?: string }) => {

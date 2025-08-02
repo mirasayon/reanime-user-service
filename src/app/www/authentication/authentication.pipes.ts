@@ -22,12 +22,7 @@ export const Authentication_ReqPipes = new (class Authentication_ReqPipes {
         };
     });
 
-    check_session = m<rd.check_session>(schemas.check_session, async (req) => {
-        return {
-            ...metadata_dto.client_request(req),
-            ...req.cookies,
-        };
-    });
+    check_session = m<rd.check_session>(schemas.check_session);
 
     logout = m<rd.logout>(schemas.logout);
 
