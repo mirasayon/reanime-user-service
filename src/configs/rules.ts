@@ -6,7 +6,7 @@ import { cEnv } from "./environment.js";
 export const SAMETIME_SESSIONS_LIMIT = 10;
 
 /** minutes, how often user can update profile */
-export const REQUESTS_TO_MEDIA_SERVICE_INTERVAL_IN_MINUTES = cEnv.mode.dev ? 0 : 5;
+export const REQUESTS_TO_MEDIA_SERVICE_INTERVAL_IN_MINUTES = cEnv.mode.prod ? 5 : 0;
 
 export const REPLIES_LIMIT_TO_ONE_COMMENT = 5 as const;
 
