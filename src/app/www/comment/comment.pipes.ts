@@ -1,7 +1,7 @@
 import { global_Utilities } from "#/utils/functions.js";
 import { vmfactory as m } from "#/utils/validators/factory.js";
 import type { Request_dto_auth as _ } from "[T]/request_with_dto.js";
-import { dto, comment_schemas } from "reanime/user-service/validators/comment.js";
+import { dto, comment_schemas } from "@reanime.art/user-service/user-service/validators/comment.js";
 
 namespace rd {
     export type create = _<dto.create, { anime_id: string }>;

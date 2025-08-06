@@ -1,8 +1,8 @@
 import { PathsConfig } from "#/configs/paths.js";
 import type { infotype } from "#/types/informative.js";
 import consola from "consola";
-import { InternalServerErrorException } from "reanime/user-service/errors/server-side/exceptions.js";
-import { ForbiddenException } from "reanime/user-service/errors/client-side/exceptions.js";
+import { InternalServerErrorException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
+import { ForbiddenException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
 import node_crypto from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";

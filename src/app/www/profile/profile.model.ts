@@ -1,5 +1,5 @@
 import { prisma as db } from "#/db/connect.js";
-import { NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
+import { NotFoundException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
 import type { infotype } from "[T]/informative.js";
 import { Account, Profile } from "#/db/orm/client.js";
 

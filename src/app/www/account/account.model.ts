@@ -1,8 +1,8 @@
 import { prisma as db } from "#/db/connect.js";
 import type { Account, Profile, Session } from "#/db/orm/client.js";
-import { NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
+import { NotFoundException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
 import type { infotype } from "[T]/informative.js";
-import { InternalServerErrorException } from "reanime/user-service/errors/server-side/exceptions.js";
+import { InternalServerErrorException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
 
 export const Account_Model = new (class Account_Model {
     Get_account_by_its_id_throw_error = async (account_id: infotype.Cuid): Promise<Account> => {

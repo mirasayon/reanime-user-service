@@ -1,6 +1,6 @@
 import { prisma as db } from "#/db/connect.js";
 import { AnimeStatus } from "#/db/orm/enums.js";
-import { NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
+import { NotFoundException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
 import type { infotype } from "[T]/informative.js";
 
 export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Model {

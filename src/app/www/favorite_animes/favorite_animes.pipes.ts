@@ -1,6 +1,6 @@
 import type { Request_dto_auth as _ } from "[T]/request_with_dto.js";
 import { vmfactory as m } from "#/utils/validators/factory.js";
-import { favoriteAnimes_schemas as schemas, dto } from "reanime/user-service/validators/favorite_animes.js";
+import { favoriteAnimes_schemas as schemas, dto } from "@reanime.art/user-service/user-service/validators/favorite_animes.js";
 namespace rd {
     export type explore_likes = _<dto.explore_likes>;
     export type explore_dislikes = _<dto.explore_dislikes>;

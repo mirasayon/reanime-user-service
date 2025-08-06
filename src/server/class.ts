@@ -1,5 +1,5 @@
 import type { AddressInfo } from "node:net";
-import { Logger } from "reanime/logger/chalk.js";
+import { Logger } from "@reanime.art/user-service/logger/chalk.js";
 import { cEnv } from "#/configs/environment.js";
 import { format } from "date-fns";
 import { Service_Setting } from "#/configs/settings.js";

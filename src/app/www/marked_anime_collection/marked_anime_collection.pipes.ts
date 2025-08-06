@@ -1,6 +1,6 @@
 import type { Request_dto_auth as _ } from "[T]/request_with_dto.js";
 import { vmfactory as m } from "#/utils/validators/factory.js";
-import { animeMarkedCollection_schemas as schema, dto } from "reanime/user-service/validators/marked_anime_collection.js";
+import { animeMarkedCollection_schemas as schema, dto } from "@reanime.art/user-service/user-service/validators/marked_anime_collection.js";
 
 namespace rd {
     export type get_all_list = _<dto.get_all_list>;

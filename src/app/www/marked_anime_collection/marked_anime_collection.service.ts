@@ -1,6 +1,6 @@
 import { AnimeStatus } from "#/db/orm/enums.js";
 import type { infotype } from "#/types/informative.js";
-import { ConflictException, NotFoundException } from "reanime/user-service/errors/client-side/exceptions.js";
+import { ConflictException, NotFoundException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
 import { MarkedAnimeCollection_Model as model } from "[www]/marked_anime_collection/marked_anime_collection.model.js";
 import consola from "consola";
 

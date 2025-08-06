@@ -7,8 +7,8 @@ import {
     ConflictException,
     ForbiddenException,
     UnauthorizedException,
-} from "reanime/user-service/errors/client-side/exceptions.js";
-import { InternalServerErrorException } from "reanime/user-service/errors/server-side/exceptions.js";
+} from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
+import { InternalServerErrorException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
 import { SAMETIME_SESSIONS_LIMIT } from "#/configs/rules.js";
 import { Account } from "#/db/orm/client.js";
 

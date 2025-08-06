@@ -1,6 +1,6 @@
 import { cEnv, media_server_url } from "#/configs/environment.js";
-import { Logger } from "reanime/logger/chalk.js";
-import { MediaServerNotAvalableException } from "reanime/user-service/errors/server-side/exceptions.js";
+import { Logger } from "@reanime.art/user-service/logger/chalk.js";
+import { MediaServerNotAvalableException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
 import axios from "axios";
 import consola from "consola";
 import type e from "express";

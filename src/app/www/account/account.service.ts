@@ -9,8 +9,8 @@ import {
     ForbiddenException,
     NotFoundException,
     UnauthorizedException,
-} from "reanime/user-service/errors/client-side/exceptions.js";
-import { NotImplementedException } from "reanime/user-service/errors/server-side/exceptions.js";
+} from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
+import { NotImplementedException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
 import { email_is_used } from "#/configs/frequent-errors.js";
 /** Account Service */
 export const Account_Service = new (class Account_Service {

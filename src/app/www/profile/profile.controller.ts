@@ -3,10 +3,10 @@ import { ControllerUtils } from "#/utils/controller.js";
 import { type Profile_ReqDtos } from "[www]/profile/profile.pipes.js";
 import { Profile_Service as service } from "[www]/profile/profile.service.js";
 import { serviceUtils } from "#/utils/service.js";
-import { Reply } from "reanime/user-service/response/handlers.js";
-import { MediaServerNotAvalableException } from "reanime/user-service/errors/server-side/exceptions.js";
+import { Reply } from "@reanime.art/user-service/user-service/response/handlers.js";
+import { MediaServerNotAvalableException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
 import { media_incorrect, noImage_error_response } from "#/configs/frequent-errors.js";
-import { Profile_ResponseTypes } from "reanime/user-service/response/response-data-types.js";
+import { Profile_ResponseTypes } from "@reanime.art/user-service/user-service/response/response-data-types.js";
 
 export const Profile_Controller = new (class Profile_Controller {
     /** Controller for create one comment by user */

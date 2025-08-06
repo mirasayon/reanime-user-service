@@ -1,8 +1,8 @@
 import type { infotype } from "[T]/informative.js";
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
 import { Account, Profile, Session } from "#/db/orm/client.js";
-import { NotFoundException, UnauthorizedException } from "reanime/user-service/errors/client-side/exceptions.js";
-import { InternalServerErrorException } from "reanime/user-service/errors/server-side/exceptions.js";
+import { NotFoundException, UnauthorizedException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
+import { InternalServerErrorException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
 import { prisma as db } from "#/db/connect.js";
 
 export const Authentication_Model = new (class Authentication_Model {
