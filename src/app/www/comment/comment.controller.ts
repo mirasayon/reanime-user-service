@@ -2,9 +2,9 @@ import type e from "express";
 import { ControllerUtils } from "#/utils/controller.js";
 import { Comment_ReqDtos } from "[www]/comment/comment.pipes.js";
 import { Comment_Service as service } from "[www]/comment/comment.service.js";
-import { Reply } from "@reanime.art/user-service/user-service/response/handlers.js";
-import { NotImplementedException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
-import type { Comment_ResponseTypes } from "@reanime.art/user-service/user-service/response/response-data-types.js";
+import { Reply } from "@reanime.art/user-service/response/handlers.js";
+import { NotImplementedException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
+import type { Comment_ResponseTypes } from "@reanime.art/user-service/types/responses/routes/comment.js";
 
 export const Comment_Controller = new (class Comment_Controller {
     /** Controller for create one comment by user */

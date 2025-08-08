@@ -1,9 +1,9 @@
 import { ControllerUtils } from "#/utils/controller.js";
-import { Reply } from "@reanime.art/user-service/user-service/response/handlers.js";
+import { Reply } from "@reanime.art/user-service/response/handlers.js";
 import { Account_Service as service } from "[www]/account/account.service.js";
 import type { Account_ReqDtos } from "[www]/account/account.pipes.js";
 import type e from "express";
-import { Account_ResponseTypes } from "@reanime.art/user-service/user-service/response/response-data-types.js";
+import { Account_ResponseTypes } from "@reanime.art/user-service/types/responses/routes/account.js";
 
 export const Account_Controller = new (class Account_Controller {
     explore_me = async (req: Account_ReqDtos.explore_me, res: e.Response) => {

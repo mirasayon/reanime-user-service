@@ -1,8 +1,8 @@
 import { vote_not_found } from "#/configs/frequent-errors.js";
 import { MAX_COMMENT_ON_ANIME_LIMIT } from "#/configs/rules.js";
 import { CommentVote } from "#/db/orm/client.js";
-import { ConflictException, ForbiddenException, NotFoundException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
-import { NotImplementedException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
+import { ConflictException, ForbiddenException, NotFoundException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import { NotImplementedException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
 import { Comment_Model as model } from "[www]/comment/comment.model.js";
 
 /** Service Class with all methods for comments */

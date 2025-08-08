@@ -1,6 +1,6 @@
 import { cEnv, media_server_url } from "#/configs/environment.js";
-import { Logger } from "@reanime.art/user-service/logger/chalk.js";
-import { MediaServerNotAvalableException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
+import { chalk, Logger } from "@reanime.art/user-service/logger/chalk.js";
+import { MediaServerNotAvalableException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
 import axios from "axios";
 import consola from "consola";
 import type e from "express";
@@ -25,7 +25,7 @@ export const ControllerUtils = new (class ControllerUtilsFunctions {
                 headers: this.media_service_api_key_header,
             });
             if (try_ping.data === "pong") {
-                consola.success(`The media service is available: ${Logger.chalk.blueBright(media_server_url)}`);
+                consola.success(`The media service is available: ${chalk.blueBright(media_server_url)}`);
             }
         } catch (error) {
             consola.warn(`The media service did not respond: ${error}`);

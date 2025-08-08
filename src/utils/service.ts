@@ -1,14 +1,7 @@
 import { media_server_url } from "#/configs/environment.js";
 import { ControllerUtils } from "#/utils/controller.js";
-import {
-    BadRequestException,
-    ConflictException,
-    UnauthorizedException,
-} from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
-import {
-    InternalServerErrorException,
-    MediaServerNotAvalableException,
-} from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
+import { BadRequestException, ConflictException, UnauthorizedException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import { InternalServerErrorException, MediaServerNotAvalableException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
 import axios, { AxiosError } from "axios";
 import consola from "consola";
 import FormData from "form-data";

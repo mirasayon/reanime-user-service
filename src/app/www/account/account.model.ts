@@ -1,11 +1,11 @@
 import { prisma as db } from "#/db/connect.js";
 import type { Account, Profile, Session } from "#/db/orm/client.js";
-import { NotFoundException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
-import type { infotype } from "[T]/informative.js";
-import { InternalServerErrorException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
+import { NotFoundException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import type { AccountEmail, AccountUsername, ClientSessionToken, ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
+import { InternalServerErrorException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
 
 export const Account_Model = new (class Account_Model {
-    Get_account_by_its_id_throw_error = async (account_id: infotype.Cuid): Promise<Account> => {
+    Get_account_by_its_id_throw_error = async (account_id: ObjectCuid): Promise<Account> => {
         const found_account = await db.account.findUnique({
             where: {
                 id: account_id,
@@ -18,7 +18,7 @@ export const Account_Model = new (class Account_Model {
         return found_account;
     };
 
-    Get_account_by_email_throw_error = async (account_email: infotype.Email) => {
+    Get_account_by_email_throw_error = async (account_email: AccountEmail) => {
         const found_accound = await db.account.findUnique({
             where: {
                 email: account_email,
@@ -29,7 +29,7 @@ export const Account_Model = new (class Account_Model {
         }
         return found_accound;
     };
-    Get_account_by_email_No_Throw_Error = async (account_email: infotype.Email) => {
+    Get_account_by_email_No_Throw_Error = async (account_email: AccountEmail) => {
         const found_account = await db.account.findUnique({
             where: {
                 email: account_email,
@@ -37,7 +37,7 @@ export const Account_Model = new (class Account_Model {
         });
         return found_account;
     };
-    get_account_by_its_username_no_throw_error = async (username: infotype.Username) => {
+    get_account_by_its_username_no_throw_error = async (username: AccountUsername) => {
         const found_user = await db.account.findUnique({
             where: {
                 username,
@@ -49,7 +49,7 @@ export const Account_Model = new (class Account_Model {
         return found_user;
     };
 
-    get_account_by_its_username_Throw_error = async (username: infotype.Username) => {
+    get_account_by_its_username_Throw_error = async (username: AccountUsername) => {
         const found_user = await db.account.findUnique({
             where: {
                 username,
@@ -61,7 +61,7 @@ export const Account_Model = new (class Account_Model {
         return found_user;
     };
 
-    update_email_for_one = async (account_id: infotype.Cuid, new_email: infotype.Email) => {
+    update_email_for_one = async (account_id: ObjectCuid, new_email: AccountEmail) => {
         return await db.account.update({
             where: {
                 id: account_id,
@@ -72,7 +72,7 @@ export const Account_Model = new (class Account_Model {
         });
     };
 
-    update_password_hash_account = async (account_id: infotype.Cuid, password_hash: infotype.Email) => {
+    update_password_hash_account = async (account_id: ObjectCuid, password_hash: AccountEmail) => {
         return await db.account.update({
             where: {
                 id: account_id,
@@ -83,7 +83,7 @@ export const Account_Model = new (class Account_Model {
         });
     };
 
-    update_username_for_account = async (account_id: infotype.Cuid, username: infotype.Email) => {
+    update_username_for_account = async (account_id: ObjectCuid, username: AccountEmail) => {
         return await db.account.update({
             where: {
                 id: account_id,
@@ -95,14 +95,14 @@ export const Account_Model = new (class Account_Model {
     };
 
     /** SESSION */
-    find_all_sessions_by_account_id = async (account_id: infotype.Cuid) => {
+    find_all_sessions_by_account_id = async (account_id: ObjectCuid) => {
         return await db.session.findMany({
             where: {
                 by_account_id: account_id,
             },
         });
     };
-    find_one_session_by_its_token = async (session_token: infotype.session_token): Promise<Session> => {
+    find_one_session_by_its_token = async (session_token: ClientSessionToken): Promise<Session> => {
         const found_session = await db.session.findUnique({
             where: {
                 token: session_token,
@@ -115,7 +115,7 @@ export const Account_Model = new (class Account_Model {
         return found_session;
     };
 
-    delete_one_session_by_its_token = async (session_token: infotype.session_token) => {
+    delete_one_session_by_its_token = async (session_token: ClientSessionToken) => {
         return await db.session.delete({
             where: {
                 token: session_token,
@@ -124,7 +124,7 @@ export const Account_Model = new (class Account_Model {
     };
     /** END SESSION */
 
-    find_profile_by_account_id = async (by_account_id: infotype.Cuid): Promise<Profile> => {
+    find_profile_by_account_id = async (by_account_id: ObjectCuid): Promise<Profile> => {
         const found_profile = await db.profile.findUnique({
             where: { by_account_id },
         });
@@ -134,7 +134,7 @@ export const Account_Model = new (class Account_Model {
         return found_profile;
     };
 
-    delete_account_by_its_id = async (account_id: infotype.Cuid) => {
+    delete_account_by_its_id = async (account_id: ObjectCuid) => {
         return await db.account.delete({
             where: {
                 id: account_id,

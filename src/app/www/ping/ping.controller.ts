@@ -1,4 +1,4 @@
-import { Reply } from "@reanime.art/user-service/user-service/response/handlers.js";
+import { Reply } from "@reanime.art/user-service/response/handlers.js";
 import type e from "express";
 
 export namespace Ping_ResponseTypes {

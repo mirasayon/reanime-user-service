@@ -1,13 +1,13 @@
-import type { infotype } from "[T]/informative.js";
+import type { ClientSessionToken, ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
 import { Account, Profile, Session } from "#/db/orm/client.js";
-import { NotFoundException, UnauthorizedException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
-import { InternalServerErrorException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
+import { NotFoundException, UnauthorizedException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import { InternalServerErrorException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
 import { prisma as db } from "#/db/connect.js";
 
 export const Authentication_Model = new (class Authentication_Model {
     constructor() {}
-    find_1_session_by_its_token = async (session_token: infotype.session_token) => {
+    find_1_session_by_its_token = async (session_token: ClientSessionToken) => {
         return await db.session.findUnique({
             where: {
                 token: session_token,
@@ -26,7 +26,7 @@ export const Authentication_Model = new (class Authentication_Model {
         return accound;
     };
     /** Migrated from account module */
-    find_one_session_by_its_token = async (session_token: infotype.session_token): Promise<Session> => {
+    find_one_session_by_its_token = async (session_token: ClientSessionToken): Promise<Session> => {
         const found_session = await db.session.findUnique({
             where: {
                 token: session_token,
@@ -42,7 +42,7 @@ export const Authentication_Model = new (class Authentication_Model {
     };
 
     /** Migrated from account module */
-    delete_one_session_by_its_token = async (session_token: infotype.session_token) => {
+    delete_one_session_by_its_token = async (session_token: ClientSessionToken) => {
         return await db.session.delete({
             where: {
                 token: session_token,
@@ -51,7 +51,7 @@ export const Authentication_Model = new (class Authentication_Model {
     };
 
     find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL = async (
-        session_token: infotype.session_token,
+        session_token: ClientSessionToken,
     ): Promise<{
         session: Session;
         profile: Profile;
@@ -80,7 +80,7 @@ export const Authentication_Model = new (class Authentication_Model {
         return { session, profile };
     };
     create_user_session = async (
-        new_account_id: infotype.Cuid,
+        new_account_id: ObjectCuid,
         meta: {
             name?: string;
             email?: string;
@@ -101,7 +101,7 @@ export const Authentication_Model = new (class Authentication_Model {
         return new_session;
     };
 
-    delete_1_session_by_its_token = async (session_token: infotype.session_token) => {
+    delete_1_session_by_its_token = async (session_token: ClientSessionToken) => {
         return await db.session.delete({
             where: {
                 token: session_token,
@@ -144,7 +144,7 @@ export const Authentication_Model = new (class Authentication_Model {
         return account;
     };
 
-    get_count_of_sessions_by_account_id = async (by_account_id: infotype.Cuid) => {
+    get_count_of_sessions_by_account_id = async (by_account_id: ObjectCuid) => {
         return await db.session.count({
             where: {
                 by_account_id,

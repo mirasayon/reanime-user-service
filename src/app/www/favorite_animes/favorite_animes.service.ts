@@ -6,26 +6,26 @@ import {
     vote_not_found,
 } from "#/configs/frequent-errors.js";
 import { AnimeFavorite } from "#/db/orm/client.js";
-import { BadRequestException, ConflictException, NotFoundException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
-import type { infotype } from "[T]/informative.js";
+import { BadRequestException, ConflictException, NotFoundException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import type { ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
 import { FavoriteAnimes_Model as model } from "[www]/favorite_animes/favorite_animes.model.js";
 export const FavoriteAnimes_Services = new (class FavoriteAnimes_Services {
-    explore_likes = async (profile_id: infotype.Cuid) => {
+    explore_likes = async (profile_id: ObjectCuid) => {
         const likes = await model.get_all_likes_by_profile_id(profile_id);
         return { likes };
     };
 
-    explore_dislikes = async (profile_id: infotype.Cuid) => {
+    explore_dislikes = async (profile_id: ObjectCuid) => {
         const dislikes = await model.get_all_dislikes_by_profile_id(profile_id);
         return { dislikes };
     };
-    view_vote_on_anime = async (profile_id: infotype.Cuid, anime_id: number) => {
+    view_vote_on_anime = async (profile_id: ObjectCuid, anime_id: number) => {
         const vote = await model.get_the_vote_from_anime_id_and_profile_id(profile_id, anime_id);
 
         return { vote };
     };
     add_like_to_anime = async (
-        profile_id: infotype.Cuid,
+        profile_id: ObjectCuid,
         anime_id: number,
     ): Promise<{
         vote: AnimeFavorite;
@@ -44,7 +44,7 @@ export const FavoriteAnimes_Services = new (class FavoriteAnimes_Services {
         return { vote: created, is_updated: false };
     };
     add_dislike_to_anime = async (
-        profile_id: infotype.Cuid,
+        profile_id: ObjectCuid,
         anime_id: number,
     ): Promise<{
         vote: AnimeFavorite;
@@ -62,7 +62,7 @@ export const FavoriteAnimes_Services = new (class FavoriteAnimes_Services {
         const created = await model.create_dislike_by_profile_id(profile_id, anime_id);
         return { vote: created, is_updated: false };
     };
-    delete_like_from_anime = async (profile_id: infotype.Cuid, anime_id: number) => {
+    delete_like_from_anime = async (profile_id: ObjectCuid, anime_id: number) => {
         const if_exists = await model.get_the_vote_from_anime_id_and_profile_id(profile_id, anime_id);
         if (!if_exists) {
             throw new NotFoundException([vote_not_found]);
@@ -74,7 +74,7 @@ export const FavoriteAnimes_Services = new (class FavoriteAnimes_Services {
         return { deleted };
     };
 
-    delete_dislike_from_anime = async (profile_id: infotype.Cuid, anime_id: number) => {
+    delete_dislike_from_anime = async (profile_id: ObjectCuid, anime_id: number) => {
         const if_exists = await model.get_the_vote_from_anime_id_and_profile_id(profile_id, anime_id);
         if (!if_exists) {
             throw new NotFoundException([vote_not_found]);

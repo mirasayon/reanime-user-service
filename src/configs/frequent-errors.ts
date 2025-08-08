@@ -1,4 +1,4 @@
-import { BadRequestException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
+import { BadRequestException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
 
 export const vote_not_found = "Лайк или дизлайк не найден" as const;
 export const profile_has_already_liked_anime = "Лайк уже оставлен на это аниме";

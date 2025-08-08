@@ -6,8 +6,8 @@ import {
     ForbiddenException,
     NotFoundException,
     UnauthorizedException,
-} from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
-import { NotImplementedException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
+} from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import { NotImplementedException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
 import { Reply_Model as model } from "[www]/reply/reply.model.js";
 
 /** Service Class with all methods for Replies */

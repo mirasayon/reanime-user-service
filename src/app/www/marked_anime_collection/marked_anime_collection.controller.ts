@@ -1,9 +1,9 @@
 import { ControllerUtils } from "#/utils/controller.js";
-import { Reply } from "@reanime.art/user-service/user-service/response/handlers.js";
+import { Reply } from "@reanime.art/user-service/response/handlers.js";
 import { MarkedAnimeCollection_Service as service } from "[www]/marked_anime_collection/marked_anime_collection.service.js";
 import type { MarkedAnimeCollection_ReqDtos as RTDO } from "[www]/marked_anime_collection/marked_anime_collection.pipes.js";
 import type e from "express";
-import type { MarkedAnimeCollection_ResponseTypes } from "@reanime.art/user-service/user-service/response/response-data-types.js";
+import type { MarkedAnimeCollection_ResponseTypes } from "@reanime.art/user-service/types/responses/routes/marked-anime-list.js";
 
 export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection_Controller {
     get_all_list = async (req: RTDO.get_all_list, res: e.Response) => {

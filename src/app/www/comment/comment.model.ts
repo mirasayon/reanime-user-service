@@ -1,16 +1,16 @@
 import { prisma as db } from "#/db/connect.js";
 import { Comment, CommentVote } from "#/db/orm/client.js";
-import { NotFoundException } from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
-import type { infotype } from "[T]/informative.js";
+import { NotFoundException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import type { ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
 
 export const Comment_Model = new (class Comment_Model {
-    get_comment_count_on_1_anime = async (by_profile_id: infotype.Cuid, anime_id: number) => {
+    get_comment_count_on_1_anime = async (by_profile_id: ObjectCuid, anime_id: number) => {
         return await db.comment.count({
             where: { by_profile_id, anime_id },
         });
     };
 
-    create_1_comment = async (by_profile_id: infotype.Cuid, content: string, anime_id: number) => {
+    create_1_comment = async (by_profile_id: ObjectCuid, content: string, anime_id: number) => {
         return db.comment.create({
             data: {
                 anime_id,
@@ -44,7 +44,7 @@ export const Comment_Model = new (class Comment_Model {
         return all;
     };
 
-    find_1_comment_by_its_id = async (comment_id: infotype.Cuid) => {
+    find_1_comment_by_its_id = async (comment_id: ObjectCuid) => {
         const found_comment = await db.comment.findUnique({
             where: {
                 id: comment_id,
@@ -57,7 +57,7 @@ export const Comment_Model = new (class Comment_Model {
         return found_comment;
     };
 
-    find_1_vote_by_comment_id_and_profile_id = async (comment_id: infotype.Cuid, by_profile_id: infotype.Cuid) => {
+    find_1_vote_by_comment_id_and_profile_id = async (comment_id: ObjectCuid, by_profile_id: ObjectCuid) => {
         return await db.commentVote.findUnique({
             where: {
                 by_profile_id_comment_id: {
@@ -68,7 +68,7 @@ export const Comment_Model = new (class Comment_Model {
         });
     };
 
-    create_1_vote_to_comment = async (comment_id: infotype.Cuid, by_profile_id: infotype.Cuid, vote: boolean) => {
+    create_1_vote_to_comment = async (comment_id: ObjectCuid, by_profile_id: ObjectCuid, vote: boolean) => {
         return await db.commentVote.create({
             data: {
                 vote,
@@ -85,7 +85,7 @@ export const Comment_Model = new (class Comment_Model {
             },
         });
     };
-    update_1_vote_to_comment = async (old_reply_id: infotype.Cuid, vote: boolean) => {
+    update_1_vote_to_comment = async (old_reply_id: ObjectCuid, vote: boolean) => {
         return await db.commentVote.update({
             where: {
                 id: old_reply_id,
@@ -95,7 +95,7 @@ export const Comment_Model = new (class Comment_Model {
             },
         });
     };
-    delete_1_comment = async (comment_id: infotype.Cuid) => {
+    delete_1_comment = async (comment_id: ObjectCuid) => {
         return db.comment.delete({
             where: {
                 id: comment_id,
@@ -103,7 +103,7 @@ export const Comment_Model = new (class Comment_Model {
         });
     };
 
-    update_1_comment_by_its_id = async (reply_id: infotype.Cuid, new_content: string) => {
+    update_1_comment_by_its_id = async (reply_id: ObjectCuid, new_content: string) => {
         return await db.comment.update({
             where: {
                 id: reply_id,

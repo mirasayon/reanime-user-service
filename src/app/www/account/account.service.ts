@@ -1,4 +1,10 @@
-import type { infotype } from "[T]/informative.js";
+import type {
+    AccountEmail,
+    AccountUsername,
+    ClientSessionToken,
+    ObjectCuid,
+    RawUserPassword,
+} from "@reanime.art/user-service/types/inputs/infotype.js";
 import { bcrypt_service } from "#/utils/services/bcrypt.js";
 import { serviceUtils } from "#/utils/service.js";
 import { Account_Model as model } from "[www]/account/account.model.js";
@@ -9,12 +15,12 @@ import {
     ForbiddenException,
     NotFoundException,
     UnauthorizedException,
-} from "@reanime.art/user-service/user-service/errors/client-side/exceptions.js";
-import { NotImplementedException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
+} from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import { NotImplementedException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
 import { email_is_used } from "#/configs/frequent-errors.js";
 /** Account Service */
 export const Account_Service = new (class Account_Service {
-    explore_me = async (account_id: infotype.Cuid): Promise<Account> => {
+    explore_me = async (account_id: ObjectCuid): Promise<Account> => {
         const found_user = await model.Get_account_by_its_id_throw_error(account_id);
         return found_user;
     };
@@ -23,9 +29,9 @@ export const Account_Service = new (class Account_Service {
         new_email,
         by_account_id,
     }: {
-        current_email: infotype.Email;
-        new_email: infotype.Email;
-        by_account_id: infotype.Cuid;
+        current_email: AccountEmail;
+        new_email: AccountEmail;
+        by_account_id: ObjectCuid;
     }): Promise<{
         updated_account: Account;
     }> => {
@@ -44,7 +50,7 @@ export const Account_Service = new (class Account_Service {
         return { updated_account };
     };
 
-    set_email = async ({ email, account_id }: { email: infotype.Email; account_id: infotype.Cuid }): Promise<{ updated_account: Account }> => {
+    set_email = async ({ email, account_id }: { email: AccountEmail; account_id: ObjectCuid }): Promise<{ updated_account: Account }> => {
         const account_by_id = await model.Get_account_by_its_id_throw_error(account_id);
         if (account_by_id.email) {
             throw new BadRequestException(["У этой учетной записи уже есть адрес электронной почты, вам нужно обновить его настройках"]);
@@ -61,9 +67,9 @@ export const Account_Service = new (class Account_Service {
         current_password,
         account_id,
     }: {
-        account_id: infotype.Cuid;
-        current_password: infotype.RawUserPassword;
-        new_password: infotype.RawUserPassword;
+        account_id: ObjectCuid;
+        current_password: RawUserPassword;
+        new_password: RawUserPassword;
     }): Promise<{ updated_account: Account }> => {
         const found_user = await model.Get_account_by_its_id_throw_error(account_id);
 
@@ -82,8 +88,8 @@ export const Account_Service = new (class Account_Service {
         new_username,
         account_id,
     }: {
-        new_username: infotype.Username;
-        account_id: infotype.Cuid;
+        new_username: AccountUsername;
+        account_id: ObjectCuid;
     }): Promise<{
         updated_account: Account;
     }> => {
@@ -99,12 +105,12 @@ export const Account_Service = new (class Account_Service {
         const updated_account = await model.update_username_for_account(found_user.id, new_username);
         return { updated_account };
     };
-    get_sessions = async (account_id: infotype.Cuid): Promise<{ sessions: Session[] }> => {
+    get_sessions = async (account_id: ObjectCuid): Promise<{ sessions: Session[] }> => {
         const found_account = await model.Get_account_by_its_id_throw_error(account_id);
         const sessions = await model.find_all_sessions_by_account_id(found_account.id);
         return { sessions };
     };
-    terminate_other_sessions = async (session_token: infotype.session_token, account_id: infotype.Cuid) => {
+    terminate_other_sessions = async (session_token: ClientSessionToken, account_id: ObjectCuid) => {
         const found_account = await model.Get_account_by_its_id_throw_error(account_id);
         const this_session_id = (await model.find_one_session_by_its_token(session_token)).id;
 
@@ -114,7 +120,7 @@ export const Account_Service = new (class Account_Service {
     };
 
     delete_account = async (
-        account_id: infotype.Cuid,
+        account_id: ObjectCuid,
     ): Promise<{
         deleted_account: Account;
     }> => {

@@ -1,5 +1,5 @@
 import type { AddressInfo } from "node:net";
-import { Logger } from "@reanime.art/user-service/logger/chalk.js";
+import { chalk, Logger } from "@reanime.art/user-service/logger/chalk.js";
 import { cEnv } from "#/configs/environment.js";
 import { format } from "date-fns";
 import { Service_Setting } from "#/configs/settings.js";
@@ -18,7 +18,7 @@ export const start = async (): Promise<void> => {
         const altUrl = `http://${address}:${port}`;
 
         Logger.blue(`${Service_Setting.name}. Launched at ${time}`);
-        Logger.success(`${family}: ${Logger.chalk.magenta(url)} / ${altUrl} ${Logger.chalk.magenta(cEnv.NODE_ENVIRONMENT)}`);
+        Logger.success(`${family}: ${chalk.magenta(url)} / ${altUrl} ${chalk.magenta(cEnv.NODE_ENVIRONMENT)}`);
 
         const shutdown = async () => {
             instance.close(() => {

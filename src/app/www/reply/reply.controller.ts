@@ -2,9 +2,9 @@ import type e from "express";
 import { ControllerUtils } from "#/utils/controller.js";
 import type { Reply_ReqDtos as REQDTO } from "[www]/reply/reply.pipes.js";
 import { Reply_Service as service } from "[www]/reply/reply.service.js";
-import { Reply } from "@reanime.art/user-service/user-service/response/handlers.js";
-import { NotImplementedException } from "@reanime.art/user-service/user-service/errors/server-side/exceptions.js";
-import type { Reply_ResponseTypes } from "@reanime.art/user-service/user-service/response/response-data-types.js";
+import { Reply } from "@reanime.art/user-service/response/handlers.js";
+import { NotImplementedException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
+import type { Reply_ResponseTypes } from "@reanime.art/user-service/types/responses/routes/comment-reply.js";
 export const Reply_Controller = new (class Reply_Controller {
     /** Edit the comment by user */
     edit_reply = async (req: REQDTO.edit_reply, res: e.Response) => {
