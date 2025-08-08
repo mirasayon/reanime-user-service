@@ -24,7 +24,7 @@
     "dependencies": {
         "@prisma/adapter-pg": "^6.13.0",
         "@prisma/client": "^6.13.0",
-        "@reanime.art/user-service": "http://192.168.0.105:5640/reanime.art-user-service-0.2.5.tgz",
+        "@reanime.art/user-service": "http://192.168.0.105:5640/reanime.art-user-service-0.2.6.tgz",
         "axios": "^1.11.0",
         "bcryptjs": "^3.0.2",
         "compression": "^1.8.1",
