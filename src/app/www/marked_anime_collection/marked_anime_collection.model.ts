@@ -7,9 +7,9 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     delete_watching_by_profile_id = async (profile_id: ObjectCuid, anime_id: number, id: string) => {
         return await db.markedAnimeCollection.delete({
             where: {
-                profile_id,
-                id,
-                anime_id,
+                profile_id: profile_id,
+                id: id,
+                anime_id: anime_id,
                 status: AnimeStatus.WATCHING,
             },
         });
@@ -24,8 +24,8 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
         return await db.markedAnimeCollection.findUnique({
             where: {
                 profile_id_anime_id: {
-                    profile_id,
-                    anime_id,
+                    profile_id: profile_id,
+                    anime_id: anime_id,
                 },
             },
         });
@@ -33,19 +33,19 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     delete_abandoned_by_profile_id = async (profile_id: ObjectCuid, anime_id: number, id: string) => {
         return await db.markedAnimeCollection.delete({
             where: {
-                profile_id,
+                profile_id: profile_id,
                 status: AnimeStatus.ABANDONED,
-                id,
-                anime_id,
+                id: id,
+                anime_id: anime_id,
             },
         });
     };
     delete_plan_to_watch_by_profile_id = async (profile_id: ObjectCuid, anime_id: number, id: string) => {
         return await db.markedAnimeCollection.delete({
             where: {
-                profile_id,
-                anime_id,
-                id,
+                profile_id: profile_id,
+                anime_id: anime_id,
+                id: id,
                 status: AnimeStatus.PLANNED,
             },
         });
@@ -53,9 +53,9 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     delete_completed_by_profile_id = async (profile_id: ObjectCuid, anime_id: number, id: string) => {
         return await db.markedAnimeCollection.delete({
             where: {
-                profile_id,
-                anime_id,
-                id,
+                profile_id: profile_id,
+                anime_id: anime_id,
+                id: id,
                 status: AnimeStatus.COMPLETED,
             },
         });
@@ -64,8 +64,8 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     create_1_watching_by_profile_id = async (profile_id: ObjectCuid, anime_id: number) => {
         return await db.markedAnimeCollection.create({
             data: {
-                profile_id,
-                anime_id,
+                profile_id: profile_id,
+                anime_id: anime_id,
                 status: AnimeStatus.WATCHING,
             },
         });
@@ -73,17 +73,17 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     create_1_abandoned_by_profile_id = async (profile_id: ObjectCuid, anime_id: number) => {
         return await db.markedAnimeCollection.create({
             data: {
-                profile_id,
+                profile_id: profile_id,
                 status: AnimeStatus.ABANDONED,
-                anime_id,
+                anime_id: anime_id,
             },
         });
     };
     create_1_plan_to_watch_by_profile_id = async (profile_id: ObjectCuid, anime_id: number) => {
         return await db.markedAnimeCollection.create({
             data: {
-                profile_id,
-                anime_id,
+                profile_id: profile_id,
+                anime_id: anime_id,
                 status: AnimeStatus.PLANNED,
             },
         });
@@ -91,8 +91,8 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     create_1_completed_by_profile_id = async (profile_id: ObjectCuid, anime_id: number) => {
         return await db.markedAnimeCollection.create({
             data: {
-                profile_id,
-                anime_id,
+                profile_id: profile_id,
+                anime_id: anime_id,
                 status: AnimeStatus.COMPLETED,
             },
         });
@@ -101,7 +101,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     get_list_of_watching = async (profile_id: ObjectCuid) => {
         return await db.markedAnimeCollection.findMany({
             where: {
-                profile_id,
+                profile_id: profile_id,
                 status: AnimeStatus.WATCHING,
             },
         });
@@ -109,7 +109,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     get_list_of_abandoned = async (profile_id: ObjectCuid) => {
         return await db.markedAnimeCollection.findMany({
             where: {
-                profile_id,
+                profile_id: profile_id,
                 status: AnimeStatus.ABANDONED,
             },
         });
@@ -117,7 +117,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     get_list_of_planned = async (profile_id: ObjectCuid) => {
         return await db.markedAnimeCollection.findMany({
             where: {
-                profile_id,
+                profile_id: profile_id,
                 status: AnimeStatus.PLANNED,
             },
         });
@@ -125,7 +125,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     get_list_of_completed = async (profile_id: ObjectCuid) => {
         return await db.markedAnimeCollection.findMany({
             where: {
-                profile_id,
+                profile_id: profile_id,
                 status: AnimeStatus.COMPLETED,
             },
         });
@@ -135,7 +135,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     get_all_list_by_profile_id = async (profile_id: ObjectCuid) => {
         return await db.markedAnimeCollection.findMany({
             where: {
-                profile_id,
+                profile_id: profile_id,
             },
         });
     };
@@ -143,8 +143,8 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
         const found_vote = await db.markedAnimeCollection.findUnique({
             where: {
                 profile_id_anime_id: {
-                    anime_id,
-                    profile_id,
+                    anime_id: anime_id,
+                    profile_id: profile_id,
                 },
             },
         });
