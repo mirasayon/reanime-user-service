@@ -13,7 +13,7 @@ if (env.XPACK !== "true") {
 if (env.XPACK === "true") {
     Logger.violet("Packing tarball...");
     const _dirname = dirname(fileURLToPath(import.meta.url));
-    const packagePath = join(_dirname, "package");
+    const packagePath = join(_dirname, "package", "tarball");
     if (existsSync(packagePath)) {
         await rm(packagePath, { recursive: true, force: true });
     }

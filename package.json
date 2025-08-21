@@ -13,13 +13,20 @@
         "start:test": "node --env-file=.env.test ./dist/server/startup.js",
         "start:dev": "node --enable-source-maps --env-file=.env.development ./dist/server/startup.js",
         "inspect:hot": "tsc --watch --noEmit --project ./tsconfig.json",
-        "post-build": "node ./post-build.ts",
+        "post-build": "node ./post-app-build.ts",
         "gen_db_client:dev": "dotenv -e .env.development -- prisma generate",
         "gen_db_client:test": "dotenv -e .env.test -- prisma generate",
         "gen_db_client:prod": "dotenv -e .env.production -- prisma generate",
         "build:dev": "rimraf dist src/db/orm && npm run gen_db_client:dev && npm run post-build && npm run compile",
         "build:test": "rimraf dist src/db/orm && npm run gen_db_client:test && npm run post-build && npm run compile",
-        "build:prod": "rimraf dist src/db/orm && npm run gen_db_client:prod && npm run post-build && npm run compile"
+        "build:prod": "rimraf dist src/db/orm && npm run gen_db_client:prod && npm run post-build && npm run compile",
+        "pkg:build": "rimraf dist && tsc --build",
+        "pkg:dev": "tsx watch dist/index.js",
+        "pkg:tsi": "tsc --noEmit --watch",
+        "pkg:devc": "tsc --watch",
+        "pkg:up": "tsx ./post-up.ts && http-server ./public -p 5640",
+        "pkg:pack": "rimraf public && tsx ./postpack.ts && npm pack --pack-destination ./public",
+        "pkg:roll": "npm install && npm run build && npm run pack && npm run up"
     },
     "dependencies": {
         "@prisma/adapter-pg": "^6.14.0",
