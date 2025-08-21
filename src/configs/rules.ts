@@ -1,4 +1,4 @@
-import { EnvConfig } from "./environment.js";
+import { EnvConfig } from "./environment-variables.js";
 
 /**
  * Same time session limit

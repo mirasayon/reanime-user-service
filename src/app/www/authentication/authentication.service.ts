@@ -1,4 +1,4 @@
-import { bcrypt_service } from "#/utils/services/bcrypt.js";
+import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
 import consola from "consola";
 import { ClientSessionToken, ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
@@ -38,7 +38,7 @@ export const Authentication_Service = new (class Authentication_Service {
             throw new UnauthorizedException(["Неправильный пароль или юзернейм"]);
         }
 
-        const is_correct = await bcrypt_service.compare_raw_to_hash(password, account.password_hash);
+        const is_correct = await bcryptjsService.compare_raw_to_hash(password, account.password_hash);
 
         if (!is_correct) {
             throw new UnauthorizedException(["Неправильный пароль или юзернейм"]);
@@ -62,7 +62,7 @@ export const Authentication_Service = new (class Authentication_Service {
     login_via_email = async ({ email, password, ip, agent }: { email: string; password: string; ip?: string; agent?: string }) => {
         const account = await model.find_1_account_by_email_throw_error(email);
 
-        const is_correct = await bcrypt_service.compare_raw_to_hash(password, account.password_hash);
+        const is_correct = await bcryptjsService.compare_raw_to_hash(password, account.password_hash);
         if (!is_correct) {
             throw new UnauthorizedException(["Неправильный пароль или почта"]);
         }
@@ -124,7 +124,7 @@ export const Authentication_Service = new (class Authentication_Service {
             throw new ConflictException([`Пользователь с таким именем (${candidate.username}) уже существует. Выберите другое имя пользователя.`]);
         }
 
-        const password_hash = await bcrypt_service.create_hash(password);
+        const password_hash = await bcryptjsService.create_hash(password);
 
         const account = await model.create_account_and_profile({
             ...creds,

@@ -5,12 +5,13 @@ const required_env_variables = [
     "NODE_ENVIRONMENT",
     "SERVER_HOSTNAME",
     "MAIN_DATABASE_CONNECTION_URL",
-    "REANIME_FRONTEND_URL",
+    "WEB_FRONTEND_URL",
     "API_KEY_TO_THIS_SERVER",
-    "REANIME_MEDIA_SERVICE_API_KEY",
-    "SALT_ROUND_NUMBER",
-    "REANIME_MEDIA_SERVICE_URL",
-];
+    "MEDIA_SERVICE_API_KEY",
+    "MEDIA_SERVICE_URL",
+] as const;
+type TypeEnsuredEnvVarbs = { [name in (typeof required_env_variables)[number]]: string };
+
 function check() {
     for (const _var of required_env_variables) {
         if (!Object.hasOwn(env, _var)) {
@@ -23,12 +24,13 @@ function check() {
             throw new Error(`Invalid NODE_ENVIRONMENT value: ${env.NODE_ENVIRONMENT}`);
         }
     }
+    return env as TypeEnsuredEnvVarbs;
 }
-check();
+const EnsuredEnv = check();
 /** Environment variables configuration */
 export const EnvConfig = new (class EnvironmentClass {
     /** Standard NODE_ENVIRONMENT. Running mode for application. */
-    NODE_ENVIRONMENT = env.NODE_ENVIRONMENT as NodeEnv;
+    NODE_ENVIRONMENT = EnsuredEnv.NODE_ENVIRONMENT;
     /** Custom running mode info object.  */
     mode: WorkingMode = {
         dev: this.NODE_ENVIRONMENT === "development",
@@ -38,12 +40,12 @@ export const EnvConfig = new (class EnvironmentClass {
 
     /** Api Keys that stored in env files */
     api_keys = {
-        media_service_api_key: env.REANIME_MEDIA_SERVICE_API_KEY as string,
+        media_service_api_key: EnsuredEnv.MEDIA_SERVICE_API_KEY as string,
         /**
          * API key to access the media server.
          * This key is used to authenticate requests to the media server.
          */
-        api_key_to_this_service: env.API_KEY_TO_THIS_SERVER as string,
+        api_key_to_this_service: EnsuredEnv.API_KEY_TO_THIS_SERVER as string,
     };
 
     /** Config For Other Services */
@@ -51,28 +53,19 @@ export const EnvConfig = new (class EnvironmentClass {
         /** Media Service. Backend part */
         media_service: {
             /** Media server URL based  */
-            url: env.REANIME_MEDIA_SERVICE_URL!,
+            url: EnsuredEnv.MEDIA_SERVICE_URL!,
         },
         /** Web Frontend Server */
         web_frontend: {
-            url: env.REANIME_FRONTEND_URL!,
+            url: EnsuredEnv.WEB_FRONTEND_URL!,
         },
     };
-
-    /** Config for crypto modules */
-    crypto_config = {
-        crypto_salting_rounds: Number(env.SALT_ROUND_NUMBER as string),
-    };
-
-    /** Configs for 3rd party modules and server */
-    config_for_this_server = {
-        /** Database config */
-        db: { connection_uri: env.MAIN_DATABASE_CONNECTION_URL as string },
-        /** Port and Host Config */
-        server: {
-            port: Number(env.SERVER_PORT_NUMBER),
-            host: env.SERVER_HOSTNAME as string,
-        },
+    /** Database config */
+    // db = { connection_uri: EnsuredEnv.MAIN_DATABASE_CONNECTION_URL };
+    /** Port and Host Config */
+    server = {
+        port: Number(EnsuredEnv.SERVER_PORT_NUMBER),
+        host: EnsuredEnv.SERVER_HOSTNAME,
     };
 })();
 

@@ -1,10 +1,10 @@
 /node_modules
-.env.*
-.env
+/.env.test
+/.env.development
+/.env.production
 /dist
 /src/db/orm
-public.pem
-private.pem
-drafts.md
- 
+/public.pem
+/private.pem
+/drafts.md
 /src/tests/play.ts

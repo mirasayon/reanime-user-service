@@ -5,7 +5,7 @@ import type {
     ObjectCuid,
     RawUserPassword,
 } from "@reanime.art/user-service/types/inputs/infotype.js";
-import { bcrypt_service } from "#/utils/services/bcrypt.js";
+import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import { serviceUtils } from "#/utils/service.js";
 import { Account_Model as model } from "[www]/account/account.model.js";
 import type { Account, Session } from "#/db/orm/client.js";
@@ -76,11 +76,11 @@ export const Account_Service = new (class Account_Service {
         if (new_password === current_password) {
             throw new BadRequestException(["Новый введенный пароль и текущий пароль совпадают"]);
         }
-        const matches = await bcrypt_service.compare_raw_to_hash(current_password, found_user.password_hash);
+        const matches = await bcryptjsService.compare_raw_to_hash(current_password, found_user.password_hash);
         if (!matches) {
             throw new UnauthorizedException(["Текущий пароль неверный"]);
         }
-        const new_password_hash = await bcrypt_service.create_hash(new_password);
+        const new_password_hash = await bcryptjsService.create_hash(new_password);
         const updated_account = await model.update_password_hash_account(found_user.id, new_password_hash);
         return { updated_account };
     };

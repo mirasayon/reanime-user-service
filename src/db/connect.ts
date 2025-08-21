@@ -1,4 +1,4 @@
-import { EnvConfig } from "#/configs/environment.js";
+import { EnvConfig } from "#/configs/environment-variables.js";
 import { create_client } from "./adapter.js";
 /** Prisma Client Instance Type */
 export type PrismaClientType = ReturnType<typeof create_client>;

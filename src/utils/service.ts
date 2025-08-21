@@ -1,4 +1,4 @@
-import { EnvConfig } from "#/configs/environment.js";
+import { EnvConfig } from "#/configs/environment-variables.js";
 import { ControllerUtils } from "#/utils/controller.js";
 import { BadRequestException, ConflictException, UnauthorizedException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
 import { InternalServerErrorException, MediaServerNotAvalableException } from "@reanime.art/user-service/errors/server-side/exceptions.js";

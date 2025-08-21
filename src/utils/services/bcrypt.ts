@@ -1,17 +1,10 @@
-import { EnvConfig } from "#/configs/environment.js";
+import { cryptoConfig } from "#/configs/crypto.config.js";
 import bcryptjs from "bcryptjs";
 
 /** Bcrypt service */
-export const bcrypt_service = new (class App_Bcrypt_Service {
-    constructor() {
-        const EnvSalt = EnvConfig.crypto_config.crypto_salting_rounds;
-        if (!EnvSalt) {
-            throw new Error("No salt env config");
-        }
-        this.salt = EnvSalt;
-    }
+export const bcryptjsService = new (class App_Bcrypt_Service {
     /** Salting rounds for creating hash */
-    private readonly salt: number;
+    private readonly salt = cryptoConfig.saltRounds;
     /**
      *
      * Compares user inputted password with its hash from the DB
