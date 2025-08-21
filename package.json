@@ -6,14 +6,14 @@
         "dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/startup.js",
         "compile:watch": "tspc --watch --project ./tsconfig.json",
         "compile": "tspc --project ./tsconfig.json",
-        "dex": "tsx watch --env-file=.env.development ./src/server/startup.ts",
+        "dex": "node ./watch --env-file=.env.development ./src/server/startup.ts",
         "test-common": "node --enable-source-maps --env-file=.env.test ./dist/tests/common.js",
         "dev-test": "node --enable-source-maps --env-file=.env.test --watch ./dist/tests/play.js",
         "start:prod": "node --env-file=.env.production ./dist/server/startup.js",
         "start:test": "node --env-file=.env.test ./dist/server/startup.js",
         "start:dev": "node --enable-source-maps --env-file=.env.development ./dist/server/startup.js",
-        "ts:inspect": "tsc --watch --noEmit --project ./tsconfig.json",
-        "post-build": "tsx post-build.ts",
+        "inspect:hot": "tsc --watch --noEmit --project ./tsconfig.json",
+        "post-build": "node ./post-build.ts",
         "gen_db_client:dev": "dotenv -e .env.development -- prisma generate",
         "gen_db_client:test": "dotenv -e .env.test -- prisma generate",
         "gen_db_client:prod": "dotenv -e .env.production -- prisma generate",
@@ -22,8 +22,8 @@
         "build:prod": "rimraf dist src/db/orm && npm run gen_db_client:prod && npm run post-build && npm run compile"
     },
     "dependencies": {
-        "@prisma/adapter-pg": "^6.13.0",
-        "@prisma/client": "^6.13.0",
+        "@prisma/adapter-pg": "^6.14.0",
+        "@prisma/client": "^6.14.0",
         "@reanime.art/user-service": "http://192.168.0.105:5640/reanime.art-user-service-0.2.6.tgz",
         "axios": "^1.11.0",
         "bcryptjs": "^3.0.2",
@@ -39,8 +39,8 @@
         "morgan": "^1.10.1",
         "multer": "^2.0.2",
         "pg": "^8.16.3",
-        "prisma": "^6.13.0",
-        "zod": "^4.0.15"
+        "prisma": "^6.14.0",
+        "zod": "^4.0.17"
     },
     "devDependencies": {
         "@types/compression": "^1.8.1",
@@ -48,11 +48,10 @@
         "@types/express": "^5.0.3",
         "@types/morgan": "^1.9.10",
         "@types/multer": "^2.0.0",
-        "@types/node": "^24.2.0",
+        "@types/node": "^24.3.0",
         "@types/pg": "^8.15.5",
         "rimraf": "^6.0.1",
         "ts-patch": "^3.3.0",
-        "tsx": "^4.20.3",
         "typescript": "^5.9.2",
         "typescript-transform-paths": "^3.5.5"
     }
