@@ -1,19 +1,29 @@
-import chalk from "chalk";
-import { log } from "node:console";
+import { Logger } from "log-it-colored";
 import { existsSync } from "node:fs";
 import { cp, mkdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 /** root */
-const _dirname = dirname(fileURLToPath(import.meta.url));
-const MESSAGES = {
-    start: chalk.magenta("Copying Prisma DLL apps to ./dist"),
-    success: chalk.green("✔ Files copied successfully"),
-    alreadyDone: chalk.yellow("! Destination already exists, skipping copy"),
-    error: (error: unknown) => chalk.red(`✖ Error copying files: ${error}`),
-};
+const _dirname_ = dirname(fileURLToPath(import.meta.url));
+const sourcePath = join(_dirname_, "src", "db", "orm");
+const destPath = join(_dirname_, "dist", "db", "orm");
+const logMsg = new (class logMsg {
+    start = () => Logger.violet("Copying Prisma DLL apps to ./dist");
+    success = () => Logger.success("✔ Files copied successfully");
+    alreadyDone = () => Logger.yellow("! Destination already exists, skipping copy");
+    error = () => Logger.red(`✖ Error copying files: `);
+})();
+try {
+    logMsg.start();
+    await _copyDirs(sourcePath, destPath);
+    logMsg.success();
+} catch (_err) {
+    logMsg.error();
+    throw _err;
+}
+//
 
-async function copyDirectory(src: string, dest: string): Promise<void> {
+async function _copyDirs(src: string, dest: string): Promise<void> {
     // Uncomment to skip if already present:
     // if (existsSync(dest)) {
     //   return log(MESSAGES.alreadyDone);
@@ -24,17 +34,3 @@ async function copyDirectory(src: string, dest: string): Promise<void> {
     }
     await cp(src, dest, { recursive: true, force: true });
 }
-
-async function main() {
-    const sourcePath = join(_dirname, "src", "db", "orm");
-    const destPath = join(_dirname, "dist", "db", "orm");
-    log(MESSAGES.start);
-    try {
-        await copyDirectory(sourcePath, destPath);
-        log(MESSAGES.success);
-    } catch (err) {
-        console.error(MESSAGES.error(err));
-        process.exit(1);
-    }
-}
-await main();

@@ -1,12 +1,13 @@
-import { cEnv, media_server_url } from "#/configs/environment.js";
+import { EnvConfig } from "#/configs/environment.js";
 import { chalk, Logger } from "@reanime.art/user-service/logger/chalk.js";
 import { MediaServerNotAvalableException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
 import axios from "axios";
 import consola from "consola";
 import type e from "express";
+const media_server_url = EnvConfig.service_chain.media_service.url;
 export const ControllerUtils = new (class ControllerUtilsFunctions {
     public readonly media_service_api_key_header = {
-        "x-media-service-api-key": cEnv.api_keys.media_service_api_key,
+        "x-media-service-api-key": EnvConfig.api_keys.media_service_api_key,
     };
 
     /** Returns an Error if dto is not full */
@@ -21,7 +22,7 @@ export const ControllerUtils = new (class ControllerUtilsFunctions {
     /** Checks if the media service is available. If it is not available, it will simply be noted in the logs. */
     check_the_media_service = async () => {
         try {
-            const try_ping = await axios.get<"pong">(`${media_server_url}/ping`, {
+            const try_ping = await axios.get<"pong">(`${EnvConfig.service_chain.media_service.url}/ping`, {
                 headers: this.media_service_api_key_header,
             });
             if (try_ping.data === "pong") {

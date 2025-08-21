@@ -1,10 +1,10 @@
-import { cEnv } from "#/configs/environment.js";
+import { EnvConfig } from "#/configs/environment.js";
 import bcryptjs from "bcryptjs";
 
 /** Bcrypt service */
 export const bcrypt_service = new (class App_Bcrypt_Service {
     constructor() {
-        const EnvSalt = cEnv.crypto_config.crypto_salting_rounds;
+        const EnvSalt = EnvConfig.crypto_config.crypto_salting_rounds;
         if (!EnvSalt) {
             throw new Error("No salt env config");
         }
