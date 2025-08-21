@@ -1,4 +1,4 @@
-import { ResponseCode } from "../../response/constants.js";
+import { ResponseCode } from "../../response/response.constants.js";
 
 export type ClientSydeExceptionClasses =
     | BadRequestException

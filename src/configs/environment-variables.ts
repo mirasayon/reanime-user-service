@@ -1,4 +1,4 @@
-import type { WorkingMode, NodeEnv } from "%/types/env.js";
+import type { TypeServerWorkMode, NodeEnv } from "%/types/env.js";
 import { env } from "node:process";
 const required_env_variables = [
     "SERVER_PORT_NUMBER",
@@ -32,7 +32,7 @@ export const EnvConfig = new (class EnvironmentClass {
     /** Standard NODE_ENVIRONMENT. Running mode for application. */
     NODE_ENVIRONMENT = EnsuredEnv.NODE_ENVIRONMENT;
     /** Custom running mode info object.  */
-    mode: WorkingMode = {
+    mode: TypeServerWorkMode = {
         dev: this.NODE_ENVIRONMENT === "development",
         test: this.NODE_ENVIRONMENT === "test",
         prod: this.NODE_ENVIRONMENT === "production",

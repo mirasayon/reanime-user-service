@@ -1,5 +1,5 @@
 import type { Response as Res } from "express";
-import { ResponseCode, UserServiceResponseStatusCodes } from "./constants.js";
+import { ResponseCode, UserServiceResponseStatusCodes } from "./response.constants.js";
 import { UserServiceResponceBodyPattern } from "../types/responses/json-body-type.js";
 
 export function handle_response<T>({

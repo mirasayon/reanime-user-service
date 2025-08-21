@@ -1,5 +1,5 @@
 import consola from "consola";
-import { ResponseCode } from "../../response/constants.js";
+import { ResponseCode } from "../../response/response.constants.js";
 export type ServerSideExceptionClasses =
     | MediaServerErrorException
     | InternalServerErrorException

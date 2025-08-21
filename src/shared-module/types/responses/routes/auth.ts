@@ -1,4 +1,4 @@
-import type { Account, Profile, Session } from "../db/db-schema-types.js";
+import type { Account, Profile, Session } from "#/db/orm/client.js";
 
 /** RESPONSES For Auth Route */
 export namespace Authentication_ResponseTypes {

@@ -1,5 +1,5 @@
 import type { AddressInfo } from "node:net";
-import { chalk, Logger } from "%/logger/chalk.js";
+import { chalk, Logger } from "log-it-colored";
 import { EnvConfig } from "#/configs/environment-variables.js";
 import { format } from "date-fns";
 import { Service_Setting } from "#/configs/settings.js";

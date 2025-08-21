@@ -1,7 +1,7 @@
 import { z } from "zod";
 import psl from "better-psl";
 import { reserved_usernames } from "../../static/reserved_usernames.static.js";
-import { domainSuffixes } from "../../static/public-suffix.static.js";
+import { rules as domainSuffixes } from "better-psl";
 import consola from "consola";
 /** Regexp for login string.
  *

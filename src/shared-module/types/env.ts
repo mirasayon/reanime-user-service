@@ -1,6 +1,6 @@
 /** Node env type */
-export type NodeEnv = "development" | "test" | "production";
 export const NodeEnvs = ["development", "test", "production"] as const;
+export type NodeEnv = (typeof NodeEnvs)[number];
 /** Working mode */
-export type WorkingMode = { dev: boolean; test: boolean; prod: boolean };
+export type TypeServerWorkMode = { dev: boolean; test: boolean; prod: boolean };
 

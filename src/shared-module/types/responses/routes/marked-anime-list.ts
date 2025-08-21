@@ -1,4 +1,4 @@
-import type { MarkedAnimeCollection } from "../db/db-schema-types.js";
+import type { MarkedAnimeCollection } from "#/db/orm/client.js";
 
 /** RESPONSES For Marked anime list Route */
 export namespace MarkedAnimeCollection_ResponseTypes {
