@@ -1,7 +1,7 @@
 import { prisma as db } from "#/db/connect.js";
 import { ReplyVote } from "#/db/orm/client.js";
-import { NotFoundException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
-import type { ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
+import { NotFoundException } from "%/errors/client-side/exceptions.js";
+import type { ObjectCuid } from "%/types/inputs/infotype.js";
 
 export const Reply_Model = new (class Reply_Model {
     get_replies_count_on_1_comment = async (by_profile_id: ObjectCuid, to_comment_id: ObjectCuid) => {

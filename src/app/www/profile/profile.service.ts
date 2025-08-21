@@ -1,5 +1,5 @@
 import { serviceUtils } from "#/utils/service.js";
-import { BadRequestException, NotFoundException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import { BadRequestException, NotFoundException } from "%/errors/client-side/exceptions.js";
 import { Profile_Model as model } from "[www]/profile/profile.model.js";
 import { Account, Profile } from "#/db/orm/client.js";
 

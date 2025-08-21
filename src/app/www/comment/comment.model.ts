@@ -1,7 +1,7 @@
 import { prisma as db } from "#/db/connect.js";
 import { Comment, CommentVote } from "#/db/orm/client.js";
-import { NotFoundException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
-import type { ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
+import { NotFoundException } from "%/errors/client-side/exceptions.js";
+import type { ObjectCuid } from "%/types/inputs/infotype.js";
 
 export const Comment_Model = new (class Comment_Model {
     get_comment_count_on_1_anime = async (by_profile_id: ObjectCuid, anime_id: number) => {

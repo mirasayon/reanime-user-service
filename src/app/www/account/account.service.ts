@@ -1,10 +1,4 @@
-import type {
-    AccountEmail,
-    AccountUsername,
-    ClientSessionToken,
-    ObjectCuid,
-    RawUserPassword,
-} from "@reanime.art/user-service/types/inputs/infotype.js";
+import type { AccountEmail, AccountUsername, ClientSessionToken, ObjectCuid, RawUserPassword } from "%/types/inputs/infotype.js";
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import { serviceUtils } from "#/utils/service.js";
 import { Account_Model as model } from "[www]/account/account.model.js";
@@ -15,8 +9,8 @@ import {
     ForbiddenException,
     NotFoundException,
     UnauthorizedException,
-} from "@reanime.art/user-service/errors/client-side/exceptions.js";
-import { NotImplementedException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
+} from "%/errors/client-side/exceptions.js";
+import { NotImplementedException } from "%/errors/server-side/exceptions.js";
 import { email_is_used } from "#/configs/frequent-errors.js";
 /** Account Service */
 export const Account_Service = new (class Account_Service {

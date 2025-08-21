@@ -1,6 +1,6 @@
 import { EnvConfig } from "#/configs/environment-variables.js";
-import { chalk, Logger } from "@reanime.art/user-service/logger/chalk.js";
-import { MediaServerNotAvalableException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
+import { chalk, Logger } from "%/logger/chalk.js";
+import { MediaServerNotAvalableException } from "%/errors/server-side/exceptions.js";
 import axios from "axios";
 import consola from "consola";
 import type e from "express";

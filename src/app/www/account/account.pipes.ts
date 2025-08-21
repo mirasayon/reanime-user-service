@@ -1,6 +1,6 @@
 import { vmfactory } from "#/utils/validators/factory.js";
 import type { Request_dto_auth as _ } from "[T]/request_with_dto.js";
-import { account_schemas as schemas, dto } from "@reanime.art/user-service/validators/account.js";
+import { account_schemas as schemas, dto } from "%/validators/account.js";
 
 export namespace rd {
     export type explore_me = _<dto.explore_me>;

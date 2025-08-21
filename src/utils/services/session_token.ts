@@ -1,8 +1,8 @@
 import { PathsConfig } from "#/configs/paths.js";
-import type { ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
+import type { ObjectCuid } from "%/types/inputs/infotype.js";
 import consola from "consola";
-import { InternalServerErrorException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
-import { ForbiddenException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import { InternalServerErrorException } from "%/errors/server-side/exceptions.js";
+import { ForbiddenException } from "%/errors/client-side/exceptions.js";
 import { publicEncrypt, randomBytes, constants, privateDecrypt } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";

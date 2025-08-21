@@ -1,5 +1,5 @@
 import { prisma as db } from "#/db/connect.js";
-import type { ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
+import type { ObjectCuid } from "%/types/inputs/infotype.js";
 
 export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
     get_all_likes_by_profile_id = async (profile_id: ObjectCuid) => {

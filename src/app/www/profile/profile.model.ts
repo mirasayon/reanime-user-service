@@ -1,6 +1,6 @@
 import { prisma as db } from "#/db/connect.js";
-import { NotFoundException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
-import type { ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
+import { NotFoundException } from "%/errors/client-side/exceptions.js";
+import type { ObjectCuid } from "%/types/inputs/infotype.js";
 import { Account, Profile } from "#/db/orm/client.js";
 
 export const Profile_Model = new (class Profile_Model {

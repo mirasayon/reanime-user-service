@@ -1,4 +1,4 @@
-import { BadRequestException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import { BadRequestException } from "%/errors/client-side/exceptions.js";
 import type e from "express";
 
 export const global_Utilities = new (class global_Utilities {

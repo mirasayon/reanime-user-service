@@ -6,7 +6,7 @@ import type { mid_auth_dto } from "[T]/auth.js";
 import type e from "express";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
-import { BadRequestException, UnauthorizedException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
+import { BadRequestException, UnauthorizedException } from "%/errors/client-side/exceptions.js";
 import { auth__metas_dont_matching } from "#/configs/frequent-errors.js";
 
 /**

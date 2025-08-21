@@ -1,13 +1,8 @@
 import { vote_not_found } from "#/configs/frequent-errors.js";
 import { REPLIES_LIMIT_TO_ONE_COMMENT } from "#/configs/rules.js";
 import { Reply, ReplyVote } from "#/db/orm/client.js";
-import {
-    ConflictException,
-    ForbiddenException,
-    NotFoundException,
-    UnauthorizedException,
-} from "@reanime.art/user-service/errors/client-side/exceptions.js";
-import { NotImplementedException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
+import { ConflictException, ForbiddenException, NotFoundException, UnauthorizedException } from "%/errors/client-side/exceptions.js";
+import { NotImplementedException } from "%/errors/server-side/exceptions.js";
 import { Reply_Model as model } from "[www]/reply/reply.model.js";
 
 /** Service Class with all methods for Replies */

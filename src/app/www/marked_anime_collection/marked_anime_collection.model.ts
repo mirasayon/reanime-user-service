@@ -1,7 +1,7 @@
 import { prisma as db } from "#/db/connect.js";
 import { AnimeStatus } from "#/db/orm/enums.js";
-import { NotFoundException } from "@reanime.art/user-service/errors/client-side/exceptions.js";
-import type { ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
+import { NotFoundException } from "%/errors/client-side/exceptions.js";
+import type { ObjectCuid } from "%/types/inputs/infotype.js";
 
 export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Model {
     delete_watching_by_profile_id = async (profile_id: ObjectCuid, anime_id: number, id: string) => {

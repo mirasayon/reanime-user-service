@@ -1,4 +1,4 @@
-import type { WorkingMode, NodeEnv } from "@reanime.art/user-service/types/env.js";
+import type { WorkingMode, NodeEnv } from "%/types/env.js";
 import { env } from "node:process";
 const required_env_variables = [
     "SERVER_PORT_NUMBER",

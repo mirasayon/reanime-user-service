@@ -1,14 +1,9 @@
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
 import consola from "consola";
-import { ClientSessionToken, ObjectCuid } from "@reanime.art/user-service/types/inputs/infotype.js";
-import {
-    BadRequestException,
-    ConflictException,
-    ForbiddenException,
-    UnauthorizedException,
-} from "@reanime.art/user-service/errors/client-side/exceptions.js";
-import { InternalServerErrorException } from "@reanime.art/user-service/errors/server-side/exceptions.js";
+import { ClientSessionToken, ObjectCuid } from "%/types/inputs/infotype.js";
+import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "%/errors/client-side/exceptions.js";
+import { InternalServerErrorException } from "%/errors/server-side/exceptions.js";
 import { SAMETIME_SESSIONS_LIMIT } from "#/configs/rules.js";
 import { Account } from "#/db/orm/client.js";
 

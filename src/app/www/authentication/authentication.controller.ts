@@ -2,8 +2,8 @@ import type e from "express";
 import { ControllerUtils } from "#/utils/controller.js";
 import { Authentication_ReqDtos } from "[www]/authentication/authentication.pipes.js";
 import { Authentication_Service as services } from "[www]/authentication/authentication.service.js";
-import { Reply } from "@reanime.art/user-service/response/handlers.js";
-import { Authentication_ResponseTypes } from "@reanime.art/user-service/types/responses/routes/auth.js";
+import { Reply } from "%/response/handlers.js";
+import { Authentication_ResponseTypes } from "%/types/responses/routes/auth.js";
 
 export const Authentication_Controller = new (class Authentication_Controller {
     login_via_email = async (req: Authentication_ReqDtos.login_via_email, reply: e.Response) => {
