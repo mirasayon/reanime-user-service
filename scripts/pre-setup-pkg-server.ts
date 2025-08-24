@@ -10,4 +10,4 @@ if (!packageName) {
     throw new Error("No tarball in `./package/tarball` folder");
 }
 console.clear();
-Logger.violet(`npm install http://192.168.0.105:5641/${packageName}`);
+Logger.violet(`npm install http://192.168.0.105:5640/${packageName}`);
