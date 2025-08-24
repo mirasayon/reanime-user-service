@@ -3,9 +3,10 @@
 /.env.development
 /.env.production
 /dist
-/src/db/orm
+/src/databases/orm
 /public.pem
 /private.pem
 /drafts.md
 /src/tests/play.ts
-/package/tarball
+/package
+/logs

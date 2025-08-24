@@ -1,6 +1,6 @@
 generator client {
   provider               = "prisma-client"
-  output                 = "../../orm"
+  output                 = "../orm"
   runtime                = "nodejs"
   moduleFormat           = "esm"
   generatedFileExtension = "ts"

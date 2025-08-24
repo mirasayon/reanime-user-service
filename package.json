@@ -4,15 +4,15 @@
     "type": "module",
     "scripts": {
         "hot:dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/startup.js",
-        "compile:hot": "tspc --watch --project ./tsconfig.json",
-        "compile": "tspc --project ./tsconfig.json",
+        "compile:hot": "tspc --watch",
+        "compile": "tsc --build && tsc-alias",
         "hot:src": "node --watch --env-file=.env.development ./src/server/startup.ts",
         "test-common": "node --enable-source-maps --env-file=.env.test ./dist/tests/common.js",
         "dev-test": "node --enable-source-maps --env-file=.env.test --watch ./dist/tests/play.js",
         "start:prod": "node --env-file=.env.production ./dist/server/startup.js",
         "start:test": "node --env-file=.env.test ./dist/server/startup.js",
         "start:dev": "node --enable-source-maps --env-file=.env.development ./dist/server/startup.js",
-        "inspect:hot": "tsc --watch --noEmit --project ./tsconfig.json",
+        "inspect:hot": "tsc --watch --noEmit",
         "post-build": "node ./scripts/post-app-build.ts",
         "gen_db_client:dev": "dotenv -e .env.development -- prisma generate",
         "gen_db_client:test": "dotenv -e .env.test -- prisma generate",
@@ -22,8 +22,9 @@
         "build:prod": "rimraf dist src/db/orm && npm run gen_db_client:prod && npm run post-build && npm run compile",
         "pkg:setup": "node ./scripts/pre-setup-pkg-server.ts && http-server ./package/tarball -p 5640",
         "prepack": "node ./scripts/prepack-pkg.ts",
-        "pkg:xpack": "dotenv -v XPACK=true -- npm pack --pack-destination ./package/tarball",
-        "pkg:xpack:dry": "dotenv -v XPACK=true -- npm pack --dry-run"
+        "pkg:pack": "dotenv -v XPACK=true -- npm pack --pack-destination ./package/tarball",
+        "pkg:build": "rimraf ./package/dist && tsc -p ./tsconfig.package.jsonc && tsc-alias",
+        "pkg:pack:dry": "dotenv -v XPACK=true -- npm pack --dry-run"
     },
     "dependencies": {
         "@prisma/adapter-pg": "^6.14.0",
@@ -59,6 +60,7 @@
         "http-server": "^14.1.1",
         "rimraf": "^6.0.1",
         "ts-patch": "^3.3.0",
+        "tsc-alias": "^1.8.16",
         "typescript": "^5.9.2",
         "typescript-transform-paths": "^3.5.5"
     },
@@ -73,9 +75,9 @@
         "node": ">=22.18.0"
     },
     "exports": {
-        "./*": "./dist/shared/*"
+        "./*": "./package/dist/*"
     },
     "files": [
-        "./dist"
+        "./package/dist"
     ]
 }

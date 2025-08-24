@@ -1,6 +1,6 @@
-import type { PrismaClientType } from "#/db/connect.js";
-import { PrismaClient } from "#/db/orm/client.js";
+import { PrismaClient } from "#/databases/orm/client.js";
 import consola from "consola";
+import type { PrismaClientType } from "./database-connect.js";
 /** Tests for connection for the DB instance */
 export const test_db = async (db: PrismaClientType) => {
     try {

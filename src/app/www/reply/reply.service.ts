@@ -1,6 +1,6 @@
 import { vote_not_found } from "#/configs/frequent-errors.js";
 import { REPLIES_LIMIT_TO_ONE_COMMENT } from "#/configs/rules.js";
-import type { Reply, ReplyVote } from "#/db/orm/client.js";
+import type { Reply, ReplyVote } from "#/databases/orm/client.js";
 import { ConflictException, ForbiddenException, NotFoundException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
 import { Reply_Model as model } from "[www]/reply/reply.model.js";

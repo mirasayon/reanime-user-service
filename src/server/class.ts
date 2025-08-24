@@ -4,7 +4,7 @@ import { EnvConfig } from "#/configs/environment-variables.js";
 import { format } from "date-fns";
 import { Service_Setting } from "#/configs/settings.js";
 import consola from "consola";
-import { prisma } from "#/db/connect.js";
+import { prisma } from "#/providers/database-connect.js";
 import { expressMainApplication as app } from "./server.js";
 import { listen } from "#/utils/tools/express.js";
 

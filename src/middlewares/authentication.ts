@@ -1,6 +1,6 @@
 import { metadata_dto } from "#/utils/dto/meta.js";
 import { global_Utilities } from "#/utils/functions.js";
-import type { Session } from "#/db/orm/client.js";
+import type { Session } from "#/databases/orm/client.js";
 import { bearer_session_token_from_headers } from "#/utils/dto/session_token.js";
 import type { mid_auth_dto } from "[T]/auth.js";
 import type e from "express";

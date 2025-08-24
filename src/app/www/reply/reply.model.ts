@@ -1,5 +1,5 @@
-import { prisma } from "#/db/connect.js";
-import type { ReplyVote } from "#/db/orm/client.js";
+import { prisma } from "#/providers/database-connect.js";
+import type { ReplyVote } from "#/databases/orm/client.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { ObjectCuid } from "#/shared/types/inputs/infotype.js";
 

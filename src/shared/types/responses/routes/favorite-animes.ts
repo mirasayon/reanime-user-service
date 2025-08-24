@@ -1,4 +1,4 @@
-import type { AnimeFavorite } from "#/db/orm/client.js";
+import type { AnimeFavorite } from "#/databases/orm/client.js";
 
 /** RESPONSES For Favorite Animes Route */
 export namespace FavoriteAnimes_ResponseTypes {

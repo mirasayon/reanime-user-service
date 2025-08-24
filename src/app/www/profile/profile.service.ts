@@ -1,7 +1,7 @@
 import { serviceUtils } from "#/utils/service.js";
 import { BadRequestException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { Profile_Model as model } from "[www]/profile/profile.model.js";
-import type { Account, Profile } from "#/db/orm/client.js";
+import type { Account, Profile } from "#/databases/orm/client.js";
 
 /** Service Class with all methods for comments */
 export const Profile_Service = new (class Profile_Service {

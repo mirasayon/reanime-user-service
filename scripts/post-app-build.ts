@@ -3,8 +3,8 @@ import { existsSync } from "node:fs";
 import { cp, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { rootDirname } from "./paths.config.ts";
-const sourcePath = join(rootDirname, "src", "db", "orm");
-const destPath = join(rootDirname, "dist", "db", "orm");
+const sourcePath = join(rootDirname, "src", "databases", "orm");
+const destPath = join(rootDirname, "dist", "databases", "orm");
 const logMsg = new (class logMsg {
     start = () => Logger.violet("Copying Prisma DLL apps to ./dist");
     success = () => Logger.success("✔ Files copied successfully");

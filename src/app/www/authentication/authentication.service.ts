@@ -5,7 +5,7 @@ import type { ClientSessionToken, ObjectCuid } from "#/shared/types/inputs/infot
 import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import { SAMETIME_SESSIONS_LIMIT } from "#/configs/rules.js";
-import type { Account } from "#/db/orm/client.js";
+import type { Account } from "#/databases/orm/client.js";
 
 /**
  * Service class responsible for handling authentication logic.

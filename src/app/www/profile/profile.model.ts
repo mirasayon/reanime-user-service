@@ -1,7 +1,7 @@
-import { prisma } from "#/db/connect.js";
+import { prisma } from "#/providers/database-connect.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { ObjectCuid } from "#/shared/types/inputs/infotype.js";
-import type { Account, Profile } from "#/db/orm/client.js";
+import type { Account, Profile } from "#/databases/orm/client.js";
 
 export const Profile_Model = new (class Profile_Model {
     find_profile_by_its_id = async (profile_id: ObjectCuid) => {

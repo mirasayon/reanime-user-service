@@ -1,5 +1,5 @@
-import { prisma } from "#/db/connect.js";
-import { AnimeStatus } from "#/db/orm/enums.js";
+import { prisma } from "#/providers/database-connect.js";
+import { AnimeStatus } from "#/databases/orm/enums.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { ObjectCuid } from "#/shared/types/inputs/infotype.js";
 

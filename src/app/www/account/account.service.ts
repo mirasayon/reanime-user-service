@@ -2,7 +2,7 @@ import type { AccountEmail, AccountUsername, ClientSessionToken, ObjectCuid, Raw
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import { serviceUtils } from "#/utils/service.js";
 import { Account_Model as model } from "[www]/account/account.model.js";
-import type { Account, Session } from "#/db/orm/client.js";
+import type { Account, Session } from "#/databases/orm/client.js";
 import {
     BadRequestException,
     ConflictException,

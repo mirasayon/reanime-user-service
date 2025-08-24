@@ -1,5 +1,5 @@
-import { prisma } from "#/db/connect.js";
-import type { Account, Profile, Session } from "#/db/orm/client.js";
+import { prisma } from "#/providers/database-connect.js";
+import type { Account, Profile, Session } from "#/databases/orm/client.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { AccountEmail, AccountUsername, ClientSessionToken, ObjectCuid } from "#/shared/types/inputs/infotype.js";
 import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";

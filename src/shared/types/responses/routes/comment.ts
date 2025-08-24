@@ -1,4 +1,4 @@
-import type { Comment, CommentVote } from "#/db/orm/client.js";
+import type { Comment, CommentVote } from "#/databases/orm/client.js";
 
 /** RESPONSES For Comment Route */
 export namespace Comment_ResponseTypes {

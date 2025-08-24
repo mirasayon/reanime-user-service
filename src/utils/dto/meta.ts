@@ -1,4 +1,4 @@
-import type { Session } from "#/db/orm/client.js";
+import type { Session } from "#/databases/orm/client.js";
 import type { metaData } from "[T]/auth.js";
 import type e from "express";
 

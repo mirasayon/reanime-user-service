@@ -1,4 +1,4 @@
-import { AnimeStatus } from "#/db/orm/enums.js";
+import { AnimeStatus } from "#/databases/orm/enums.js";
 import type { ObjectCuid } from "#/shared/types/inputs/infotype.js";
 import { ConflictException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { MarkedAnimeCollection_Model as model } from "[www]/marked_anime_collection/marked_anime_collection.model.js";
