@@ -22,8 +22,9 @@ export const metadata_dto = new (class From_Create_DTO {
      */
     client_request = (req: e.Request): metaData => {
         return {
-            ip: req.ip,
-            agent: req.headers["user-agent"],
+            ip: req.ip ?? undefined,
+            agent: req.headers["user-agent"] ?? undefined,
         };
     };
 })();
+

@@ -3,7 +3,7 @@ import { MulterError } from "multer";
 import { Reply } from "../../response/handlers.js";
 import {
     BadRequestException,
-    ClientSydeExceptionClasses,
+    type ClientSydeExceptionClasses,
     ConflictException,
     ForbiddenException,
     ImATeapotException,

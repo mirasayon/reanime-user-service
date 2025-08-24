@@ -8,6 +8,7 @@ export type mid_auth_dto = {
 
 /** IP and User-Agent */
 export type metaData = {
-    ip?: string;
-    agent?: string;
+    ip: string | undefined;
+    agent: string | undefined;
 };
+

@@ -1,11 +1,11 @@
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
 import consola from "consola";
-import { ClientSessionToken, ObjectCuid } from "%/types/inputs/infotype.js";
-import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "%/errors/client-side/exceptions.js";
-import { InternalServerErrorException } from "%/errors/server-side/exceptions.js";
+import type { ClientSessionToken, ObjectCuid } from "#/shared/types/inputs/infotype.js";
+import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
+import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import { SAMETIME_SESSIONS_LIMIT } from "#/configs/rules.js";
-import { Account } from "#/db/orm/client.js";
+import type { Account } from "#/db/orm/client.js";
 
 /**
  * Service class responsible for handling authentication logic.
@@ -27,7 +27,17 @@ export const Authentication_Service = new (class Authentication_Service {
         return { account };
     };
 
-    login_via_username = async ({ username, password, ip, agent }: { username: string; password: string; ip?: string; agent?: string }) => {
+    login_via_username = async ({
+        username,
+        password,
+        ip,
+        agent,
+    }: {
+        username: string;
+        password: string;
+        ip: string | null;
+        agent: string | null;
+    }) => {
         const account = await model.find_1_account_by_username(username);
         if (!account) {
             throw new UnauthorizedException(["Неправильный пароль или юзернейм"]);
@@ -46,15 +56,17 @@ export const Authentication_Service = new (class Authentication_Service {
         }
 
         const session = await model.create_user_session(account.id, {
-            username,
-            password,
+            // username,
+            // password,
             ip,
             agent,
+            // email,
+            // name
         });
 
         return { account, session };
     };
-    login_via_email = async ({ email, password, ip, agent }: { email: string; password: string; ip?: string; agent?: string }) => {
+    login_via_email = async ({ email, password, ip, agent }: { email: string; password: string; ip: string | null; agent: string | null }) => {
         const account = await model.find_1_account_by_email_throw_error(email);
 
         const is_correct = await bcryptjsService.compare_raw_to_hash(password, account.password_hash);
@@ -69,8 +81,8 @@ export const Authentication_Service = new (class Authentication_Service {
         }
 
         const session = await model.create_user_session(account.id, {
-            username: account.username,
-            password,
+            // username: account.username,
+            // password,
             ip,
             agent,
         });
@@ -94,11 +106,11 @@ export const Authentication_Service = new (class Authentication_Service {
         password,
         password_repeat,
     }: {
-        nickname?: string;
-        email?: string;
+        nickname: string | null;
+        email: string | null;
         username: string;
-        ip?: string;
-        agent?: string;
+        ip: string | null;
+        agent: string | null;
         password: string;
         password_repeat: string;
     }) => {

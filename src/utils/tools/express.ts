@@ -1,7 +1,7 @@
 import type e from "express";
 import cookie from "cookie";
 import express, { Router } from "express";
-import { PathsConfig } from "#/configs/paths.js";
+import { PathsConfig } from "#/configs/paths.config.js";
 
 /** Creates New Router with alredy configured settings */
 export const cRouter = () => Router({ caseSensitive: true, strict: true });

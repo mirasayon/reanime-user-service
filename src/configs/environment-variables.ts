@@ -1,36 +1,19 @@
-import type { TypeServerWorkMode, NodeEnv } from "%/types/env.js";
-import { env } from "node:process";
-const required_env_variables = [
-    "SERVER_PORT_NUMBER",
-    "NODE_ENVIRONMENT",
-    "SERVER_HOSTNAME",
-    "MAIN_DATABASE_CONNECTION_URL",
-    "WEB_FRONTEND_URL",
-    "API_KEY_TO_THIS_SERVER",
-    "MEDIA_SERVICE_API_KEY",
-    "MEDIA_SERVICE_URL",
-] as const;
-type TypeEnsuredEnvVarbs = { [name in (typeof required_env_variables)[number]]: string };
-
-function check() {
-    for (const _var of required_env_variables) {
-        if (!Object.hasOwn(env, _var)) {
-            throw new Error(`Env var ${_var} is required!`);
-        }
-        if (typeof env[_var] !== "string") {
-            throw new Error(`Env var ${_var} must be a string!`);
-        }
-        if (!["development", "test", "production"].includes(env.NODE_ENVIRONMENT!)) {
-            throw new Error(`Invalid NODE_ENVIRONMENT value: ${env.NODE_ENVIRONMENT}`);
-        }
-    }
-    return env as TypeEnsuredEnvVarbs;
-}
-const EnsuredEnv = check();
+import type { TypeServerWorkMode } from "#/shared/types/env.js";
+import { validateEnvironment, builtInSchemas as v } from "safest-env";
+const _env = validateEnvironment({
+    SERVER_PORT_NUMBER: v.integer(),
+    NODE_ENVIRONMENT: v.enum(["development", "test", "production"] as const),
+    SERVER_HOSTNAME: v.string(),
+    MAIN_DATABASE_CONNECTION_URL: v.string(),
+    WEB_FRONTEND_URL: v.url(),
+    API_KEY_TO_THIS_SERVER: v.string(),
+    MEDIA_SERVICE_API_KEY: v.string(),
+    MEDIA_SERVICE_URL: v.url(),
+});
 /** Environment variables configuration */
 export const EnvConfig = new (class EnvironmentClass {
     /** Standard NODE_ENVIRONMENT. Running mode for application. */
-    NODE_ENVIRONMENT = EnsuredEnv.NODE_ENVIRONMENT;
+    NODE_ENVIRONMENT = _env.NODE_ENVIRONMENT;
     /** Custom running mode info object.  */
     mode: TypeServerWorkMode = {
         dev: this.NODE_ENVIRONMENT === "development",
@@ -40,12 +23,12 @@ export const EnvConfig = new (class EnvironmentClass {
 
     /** Api Keys that stored in env files */
     api_keys = {
-        media_service_api_key: EnsuredEnv.MEDIA_SERVICE_API_KEY as string,
+        media_service_api_key: _env.MEDIA_SERVICE_API_KEY as string,
         /**
          * API key to access the media server.
          * This key is used to authenticate requests to the media server.
          */
-        api_key_to_this_service: EnsuredEnv.API_KEY_TO_THIS_SERVER as string,
+        api_key_to_this_service: _env.API_KEY_TO_THIS_SERVER as string,
     };
 
     /** Config For Other Services */
@@ -53,19 +36,19 @@ export const EnvConfig = new (class EnvironmentClass {
         /** Media Service. Backend part */
         media_service: {
             /** Media server URL based  */
-            url: EnsuredEnv.MEDIA_SERVICE_URL!,
+            url: _env.MEDIA_SERVICE_URL!,
         },
         /** Web Frontend Server */
         web_frontend: {
-            url: EnsuredEnv.WEB_FRONTEND_URL!,
+            url: _env.WEB_FRONTEND_URL!,
         },
     };
     /** Database config */
     // db = { connection_uri: EnsuredEnv.MAIN_DATABASE_CONNECTION_URL };
     /** Port and Host Config */
     server = {
-        port: Number(EnsuredEnv.SERVER_PORT_NUMBER),
-        host: EnsuredEnv.SERVER_HOSTNAME,
+        port: Number(_env.SERVER_PORT_NUMBER),
+        host: _env.SERVER_HOSTNAME,
     };
 })();
 

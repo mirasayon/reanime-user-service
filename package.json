@@ -1,6 +1,6 @@
 {
     "name": "@reanime/user-service",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "type": "module",
     "scripts": {
         "hot:dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/startup.js",
@@ -13,20 +13,17 @@
         "start:test": "node --env-file=.env.test ./dist/server/startup.js",
         "start:dev": "node --enable-source-maps --env-file=.env.development ./dist/server/startup.js",
         "inspect:hot": "tsc --watch --noEmit --project ./tsconfig.json",
-        "post-build": "node ./post-app-build.ts",
+        "post-build": "node ./scripts/post-app-build.ts",
         "gen_db_client:dev": "dotenv -e .env.development -- prisma generate",
         "gen_db_client:test": "dotenv -e .env.test -- prisma generate",
         "gen_db_client:prod": "dotenv -e .env.production -- prisma generate",
         "build:dev": "rimraf dist src/db/orm && npm run gen_db_client:dev && npm run post-build && npm run compile",
         "build:test": "rimraf dist src/db/orm && npm run gen_db_client:test && npm run post-build && npm run compile",
         "build:prod": "rimraf dist src/db/orm && npm run gen_db_client:prod && npm run post-build && npm run compile",
-        "pkg:build": "rimraf dist && tsc --build",
-        "pkg:dev": "tsx watch dist/index.js",
-        "pkg:tsi": "tsc --noEmit --watch",
-        "pkg:devc": "tsc --watch",
-        "pkg:up": "tsx ./post-up.ts && http-server ./public -p 5640",
-        "pkg:pack": "rimraf public && tsx ./postpack.ts && npm pack --pack-destination ./public",
-        "pkg:roll": "npm install && npm run build && npm run pack && npm run up"
+        "pkg:setup": "node ./scripts/pre-setup-pkg-server.ts && http-server ./package/tarball -p 5640",
+        "prepack": "node ./scripts/prepack-pkg.ts",
+        "pkg:xpack": "dotenv -v XPACK=true -- npm pack --pack-destination ./package/tarball",
+        "pkg:xpack:dry": "dotenv -v XPACK=true -- npm pack --dry-run"
     },
     "dependencies": {
         "@prisma/adapter-pg": "^6.14.0",
@@ -43,12 +40,13 @@
         "express": "^5.1.0",
         "form-data": "^4.0.4",
         "helmet": "^8.1.0",
-        "log-it-colored": "^0.0.2",
+        "log-it-colored": "^0.0.3",
         "morgan": "^1.10.1",
         "multer": "^2.0.2",
         "pg": "^8.16.3",
         "prisma": "^6.14.0",
-        "zod": "^4.0.17"
+        "safest-env": "^0.0.1",
+        "zod": "^4.1.1"
     },
     "devDependencies": {
         "@types/compression": "^1.8.1",
@@ -58,9 +56,26 @@
         "@types/multer": "^2.0.0",
         "@types/node": "^24.3.0",
         "@types/pg": "^8.15.5",
+        "http-server": "^14.1.1",
         "rimraf": "^6.0.1",
         "ts-patch": "^3.3.0",
         "typescript": "^5.9.2",
         "typescript-transform-paths": "^3.5.5"
-    }
+    },
+    "author": {
+        "email": "MiraSayon@ya.ru",
+        "name": "Miralisher",
+        "url": "https://MiraSayon.com"
+    },
+    "private": true,
+    "description": "Reanime.art User Service",
+    "engines": {
+        "node": ">=22.18.0"
+    },
+    "exports": {
+        "./*": "./dist/shared/*"
+    },
+    "files": [
+        "./dist"
+    ]
 }

@@ -1,14 +1,19 @@
 import type e from "express";
 import { ControllerUtils } from "#/utils/controller.js";
-import { Authentication_ReqDtos } from "[www]/authentication/authentication.pipes.js";
+import type { Authentication_ReqDtos } from "[www]/authentication/authentication.pipes.js";
 import { Authentication_Service as services } from "[www]/authentication/authentication.service.js";
-import { Reply } from "%/response/handlers.js";
-import { Authentication_ResponseTypes } from "%/types/responses/routes/auth.js";
+import { Reply } from "#/modules/response/handlers.js";
+import type { Authentication_ResponseTypes } from "#/shared/types/responses/routes/auth.js";
 
 export const Authentication_Controller = new (class Authentication_Controller {
     login_via_email = async (req: Authentication_ReqDtos.login_via_email, reply: e.Response) => {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
-        const sr = await services.login_via_email(dto);
+        const sr = await services.login_via_email({
+            agent: dto.agent ?? null,
+            ip: dto.ip ?? null,
+            password: dto.password,
+            email: dto.email,
+        });
         const data: Authentication_ResponseTypes.login_via_email = sr;
         const message = "Пользователь успешно вошел в систему через почту";
         return Reply.accepted(reply, { data, message });
@@ -16,14 +21,27 @@ export const Authentication_Controller = new (class Authentication_Controller {
 
     login_via_username = async (req: Authentication_ReqDtos.login_via_username, reply: e.Response) => {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
-        const sr = await services.login_via_username(dto);
+        const sr = await services.login_via_username({
+            agent: dto.agent ?? null,
+            ip: dto.ip ?? null,
+            password: dto.password,
+            username: dto.username,
+        });
         const data: Authentication_ResponseTypes.login_via_username = sr;
         const message = "Пользователь успешно вошел в систему через юзернейм";
         return Reply.accepted(reply, { data, message });
     };
     registration = async (req: Authentication_ReqDtos.registration, reply: e.Response) => {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
-        const { account, session } = await services.registration(dto);
+        const { account, session } = await services.registration({
+            nickname: dto.nickname,
+            username: dto.username,
+            password: dto.password,
+            password_repeat: dto.password_repeat,
+            ip: dto.ip ?? null,
+            email: dto.email ?? null,
+            agent: dto.agent ?? null,
+        });
         const data: Authentication_ResponseTypes.registration = { account, session };
         const message = "Пользователь успешно зарегистрирован и вошёл в систему";
         return Reply.accepted(reply, { data, message });

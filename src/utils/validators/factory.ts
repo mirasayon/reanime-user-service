@@ -1,4 +1,4 @@
-import { BadRequestException } from "%/errors/client-side/exceptions.js";
+import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
 import type { mid_auth_dto } from "[T]/auth.js";
 import type e from "express";
 import type { z, ZodType } from "zod";

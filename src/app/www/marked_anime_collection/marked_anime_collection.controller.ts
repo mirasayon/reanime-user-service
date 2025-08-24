@@ -1,9 +1,9 @@
 import { ControllerUtils } from "#/utils/controller.js";
-import { Reply } from "%/response/handlers.js";
+import { Reply } from "#/modules/response/handlers.js";
 import { MarkedAnimeCollection_Service as service } from "[www]/marked_anime_collection/marked_anime_collection.service.js";
 import type { MarkedAnimeCollection_ReqDtos as RTDO } from "[www]/marked_anime_collection/marked_anime_collection.pipes.js";
 import type e from "express";
-import type { MarkedAnimeCollection_ResponseTypes } from "%/types/responses/routes/marked-anime-list.js";
+import type { MarkedAnimeCollection_ResponseTypes } from "#/shared/types/responses/routes/marked-anime-list.js";
 
 export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection_Controller {
     get_all_list = async (req: RTDO.get_all_list, res: e.Response) => {
@@ -14,7 +14,7 @@ export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection
         return Reply.ok(res, { data, message });
     };
 
-    get_for_anime = async (req: RTDO.get_all_list, res: e.Response) => {
+    get_for_anime = async (req: RTDO.get_for_anime, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const sr = await service.get_for_anime(auth.profile.id, dto);
         const data: MarkedAnimeCollection_ResponseTypes.get_for_anime = sr;

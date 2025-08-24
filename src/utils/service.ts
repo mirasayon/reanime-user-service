@@ -1,7 +1,7 @@
 import { EnvConfig } from "#/configs/environment-variables.js";
 import { ControllerUtils } from "#/utils/controller.js";
-import { BadRequestException, ConflictException, UnauthorizedException } from "%/errors/client-side/exceptions.js";
-import { InternalServerErrorException, MediaServerNotAvalableException } from "%/errors/server-side/exceptions.js";
+import { BadRequestException, ConflictException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
+import { InternalServerErrorException, MediaServerNotAvalableException } from "#/modules/errors/server-side/exceptions.js";
 import axios, { AxiosError } from "axios";
 import consola from "consola";
 import FormData from "form-data";

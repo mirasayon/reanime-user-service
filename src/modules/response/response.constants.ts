@@ -39,4 +39,4 @@ export const UserServiceResponseStatusCodes = {
     I_AM_A_TEAPOT: 418,
 } as const;
 
-export type UserServiceResponseStatusCodes = (typeof UserServiceResponseStatusCodes)[keyof typeof UserServiceResponseStatusCodes];
+export type I_UserServiceResponseStatusCodes = (typeof UserServiceResponseStatusCodes)[keyof typeof UserServiceResponseStatusCodes];

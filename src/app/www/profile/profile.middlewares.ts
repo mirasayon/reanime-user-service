@@ -2,8 +2,8 @@ import { ControllerUtils } from "#/utils/controller.js";
 import { isBefore } from "date-fns/isBefore";
 import { subMinutes } from "date-fns/subMinutes";
 import type e from "express";
-import { Profile_ReqDtos } from "./profile.pipes.js";
-import { TooManyRequestsException } from "%/errors/client-side/exceptions.js";
+import type { Profile_ReqDtos } from "./profile.pipes.js";
+import { TooManyRequestsException } from "#/modules/errors/client-side/exceptions.js";
 import { REQUESTS_TO_MEDIA_SERVICE_INTERVAL_IN_MINUTES } from "#/configs/rules.js";
 
 export const too_many_request_to_media_service = async (

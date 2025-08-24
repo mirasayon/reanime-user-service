@@ -1,6 +1,6 @@
 import { EnvConfig } from "#/configs/environment-variables.js";
 import { chalk } from "log-it-colored";
-import { MediaServerNotAvalableException } from "%/errors/server-side/exceptions.js";
+import { MediaServerNotAvalableException } from "#/modules/errors/server-side/exceptions.js";
 import axios from "axios";
 import consola from "consola";
 import type e from "express";

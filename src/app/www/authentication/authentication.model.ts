@@ -1,21 +1,21 @@
-import type { ClientSessionToken, ObjectCuid } from "%/types/inputs/infotype.js";
+import type { ClientSessionToken, ObjectCuid } from "#/shared/types/inputs/infotype.js";
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
-import { Account, Profile, Session } from "#/db/orm/client.js";
-import { NotFoundException, UnauthorizedException } from "%/errors/client-side/exceptions.js";
-import { InternalServerErrorException } from "%/errors/server-side/exceptions.js";
-import { prisma as db } from "#/db/connect.js";
+import type { Account, Profile, Session } from "#/db/orm/client.js";
+import { NotFoundException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
+import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { prisma } from "#/db/connect.js";
 
 export const Authentication_Model = new (class Authentication_Model {
     constructor() {}
     find_1_session_by_its_token = async (session_token: ClientSessionToken) => {
-        return await db.session.findUnique({
+        return await prisma.session.findUnique({
             where: {
                 token: session_token,
             },
         });
     };
     find_account_by_ids_id = async (account_id: string): Promise<Account> => {
-        const accound = await db.account.findUnique({
+        const accound = await prisma.account.findUnique({
             where: {
                 id: account_id,
             },
@@ -27,7 +27,7 @@ export const Authentication_Model = new (class Authentication_Model {
     };
     /** Migrated from account module */
     find_one_session_by_its_token = async (session_token: ClientSessionToken): Promise<Session> => {
-        const found_session = await db.session.findUnique({
+        const found_session = await prisma.session.findUnique({
             where: {
                 token: session_token,
             },
@@ -43,7 +43,7 @@ export const Authentication_Model = new (class Authentication_Model {
 
     /** Migrated from account module */
     delete_one_session_by_its_token = async (session_token: ClientSessionToken) => {
-        return await db.session.delete({
+        return await prisma.session.delete({
             where: {
                 token: session_token,
             },
@@ -56,13 +56,13 @@ export const Authentication_Model = new (class Authentication_Model {
         session: Session;
         profile: Profile;
     }> => {
-        const session = await db.session.findUnique({
+        const session = await prisma.session.findUnique({
             where: { token: session_token },
         });
         if (!session) {
             throw new UnauthorizedException(["Сеанс не найден. Пожалуйста, войдите снова"]);
         }
-        const profile = await db.profile.findUnique({
+        const profile = await prisma.profile.findUnique({
             where: {
                 by_account_id: session.by_account_id,
             },
@@ -82,15 +82,15 @@ export const Authentication_Model = new (class Authentication_Model {
     create_user_session = async (
         new_account_id: ObjectCuid,
         meta: {
-            name?: string;
-            email?: string;
-            username: string;
-            ip?: string;
-            agent?: string;
-            password: string;
+            // name: string | null;
+            // email: string | null;
+            // username: string;
+            ip: string | null;
+            agent: string | null;
+            // password: string;
         },
     ) => {
-        const new_session = await db.session.create({
+        const new_session = await prisma.session.create({
             data: {
                 by_account_id: new_account_id,
                 token: authentication_Session_Token_Util.create_session_token(new_account_id),
@@ -102,7 +102,7 @@ export const Authentication_Model = new (class Authentication_Model {
     };
 
     delete_1_session_by_its_token = async (session_token: ClientSessionToken) => {
-        return await db.session.delete({
+        return await prisma.session.delete({
             where: {
                 token: session_token,
             },
@@ -110,7 +110,7 @@ export const Authentication_Model = new (class Authentication_Model {
     };
 
     find_1_account_by_username = async (username: string): Promise<Account | null> => {
-        return await db.account.findUnique({
+        return await prisma.account.findUnique({
             where: {
                 username,
             },
@@ -118,7 +118,7 @@ export const Authentication_Model = new (class Authentication_Model {
     };
 
     find_1_account_by_username_and_return_ID = async (username: string): Promise<Account["id"] | null> => {
-        const found = await db.account.findUnique({
+        const found = await prisma.account.findUnique({
             where: {
                 username,
             },
@@ -133,7 +133,7 @@ export const Authentication_Model = new (class Authentication_Model {
     };
 
     find_1_account_by_email_throw_error = async (email: string): Promise<Account> => {
-        const account = await db.account.findUnique({
+        const account = await prisma.account.findUnique({
             where: {
                 email,
             },
@@ -145,15 +145,15 @@ export const Authentication_Model = new (class Authentication_Model {
     };
 
     get_count_of_sessions_by_account_id = async (by_account_id: ObjectCuid) => {
-        return await db.session.count({
+        return await prisma.session.count({
             where: {
                 by_account_id,
             },
         });
     };
 
-    create_account_and_profile = async (data: { username: string; password_hash: string; nickname?: string; email?: string }) => {
-        return await db.account.create({
+    create_account_and_profile = async (data: { username: string; password_hash: string; nickname: string | null; email: string | null }) => {
+        return await prisma.account.create({
             data: {
                 username: data.username,
                 email: data.email,

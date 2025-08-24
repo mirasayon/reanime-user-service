@@ -1,10 +1,7 @@
 import { cryptoConfig } from "#/configs/crypto.config.js";
 import bcryptjs from "bcryptjs";
-
 /** Bcrypt service */
 export const bcryptjsService = new (class App_Bcrypt_Service {
-    /** Salting rounds for creating hash */
-    private readonly salt = cryptoConfig.saltRounds;
     /**
      *
      * Compares user inputted password with its hash from the DB
@@ -22,7 +19,7 @@ export const bcryptjsService = new (class App_Bcrypt_Service {
      * @returns Password's hash
      */
     create_hash = async (raw_password: string) => {
-        const hashPassword = await bcryptjs.hash(raw_password, this.salt);
+        const hashPassword = await bcryptjs.hash(raw_password, cryptoConfig.saltRounds);
         return hashPassword;
     };
 })();

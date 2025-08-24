@@ -3,10 +3,11 @@ import { ControllerUtils } from "#/utils/controller.js";
 import { type Profile_ReqDtos } from "[www]/profile/profile.pipes.js";
 import { Profile_Service as service } from "[www]/profile/profile.service.js";
 import { serviceUtils } from "#/utils/service.js";
-import { Reply } from "%/response/handlers.js";
-import { MediaServerNotAvalableException } from "%/errors/server-side/exceptions.js";
+import { Reply } from "#/modules/response/handlers.js";
+import { MediaServerNotAvalableException } from "#/modules/errors/server-side/exceptions.js";
 import { media_incorrect, noImage_error_response } from "#/configs/frequent-errors.js";
-import { Profile_ResponseTypes } from "%/types/responses/routes/profile.js";
+import type { Profile_ResponseTypes } from "#/shared/types/responses/routes/profile.js";
+import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
 
 export const Profile_Controller = new (class Profile_Controller {
     /** Controller for create one comment by user */
@@ -47,6 +48,9 @@ export const Profile_Controller = new (class Profile_Controller {
         const { file, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const { id: profile_id } = auth.profile;
         await service.set_avatar_check(profile_id);
+        if (!file) {
+            throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
+        }
         const axios_res = await serviceUtils.post_to_media_server_for_SET_avatar(file, profile_id);
         if (!axios_res) {
             throw new MediaServerNotAvalableException(media_incorrect);
@@ -76,6 +80,9 @@ export const Profile_Controller = new (class Profile_Controller {
         const { auth, file } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
 
         const { avatar_url_hash } = await service.__check_if_has_avatar(auth.profile.id);
+        if (!file) {
+            throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
+        }
         const axios_res = await serviceUtils.post_to_media_server_for_UPDATE_avatar(file, auth.profile.id);
         if (!axios_res) {
             throw new MediaServerNotAvalableException(media_incorrect);

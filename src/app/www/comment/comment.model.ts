@@ -1,17 +1,17 @@
-import { prisma as db } from "#/db/connect.js";
-import { Comment, CommentVote } from "#/db/orm/client.js";
-import { NotFoundException } from "%/errors/client-side/exceptions.js";
-import type { ObjectCuid } from "%/types/inputs/infotype.js";
+import { prisma } from "#/db/connect.js";
+import type { Comment, CommentVote } from "#/db/orm/client.js";
+import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
+import type { ObjectCuid } from "#/shared/types/inputs/infotype.js";
 
 export const Comment_Model = new (class Comment_Model {
     get_comment_count_on_1_anime = async (by_profile_id: ObjectCuid, anime_id: number) => {
-        return await db.comment.count({
+        return await prisma.comment.count({
             where: { by_profile_id, anime_id },
         });
     };
 
     create_1_comment = async (by_profile_id: ObjectCuid, content: string, anime_id: number) => {
-        return db.comment.create({
+        return prisma.comment.create({
             data: {
                 anime_id,
                 by_profile_id,
@@ -31,7 +31,7 @@ export const Comment_Model = new (class Comment_Model {
     > => {
         const skip = (args.page - 1) * args.limit;
 
-        const all = await db.comment.findMany({
+        const all = await prisma.comment.findMany({
             where: {
                 anime_id: args.anime_id,
             },
@@ -45,7 +45,7 @@ export const Comment_Model = new (class Comment_Model {
     };
 
     find_1_comment_by_its_id = async (comment_id: ObjectCuid) => {
-        const found_comment = await db.comment.findUnique({
+        const found_comment = await prisma.comment.findUnique({
             where: {
                 id: comment_id,
             },
@@ -58,7 +58,7 @@ export const Comment_Model = new (class Comment_Model {
     };
 
     find_1_vote_by_comment_id_and_profile_id = async (comment_id: ObjectCuid, by_profile_id: ObjectCuid) => {
-        return await db.commentVote.findUnique({
+        return await prisma.commentVote.findUnique({
             where: {
                 by_profile_id_comment_id: {
                     comment_id,
@@ -69,7 +69,7 @@ export const Comment_Model = new (class Comment_Model {
     };
 
     create_1_vote_to_comment = async (comment_id: ObjectCuid, by_profile_id: ObjectCuid, vote: boolean) => {
-        return await db.commentVote.create({
+        return await prisma.commentVote.create({
             data: {
                 vote,
                 by_profile_id,
@@ -79,14 +79,14 @@ export const Comment_Model = new (class Comment_Model {
     };
 
     delete_1_vote_from_comment = async (existed_vote_id: string) => {
-        return await db.commentVote.delete({
+        return await prisma.commentVote.delete({
             where: {
                 id: existed_vote_id,
             },
         });
     };
     update_1_vote_to_comment = async (old_reply_id: ObjectCuid, vote: boolean) => {
-        return await db.commentVote.update({
+        return await prisma.commentVote.update({
             where: {
                 id: old_reply_id,
             },
@@ -96,7 +96,7 @@ export const Comment_Model = new (class Comment_Model {
         });
     };
     delete_1_comment = async (comment_id: ObjectCuid) => {
-        return db.comment.delete({
+        return prisma.comment.delete({
             where: {
                 id: comment_id,
             },
@@ -104,7 +104,7 @@ export const Comment_Model = new (class Comment_Model {
     };
 
     update_1_comment_by_its_id = async (reply_id: ObjectCuid, new_content: string) => {
-        return await db.comment.update({
+        return await prisma.comment.update({
             where: {
                 id: reply_id,
             },

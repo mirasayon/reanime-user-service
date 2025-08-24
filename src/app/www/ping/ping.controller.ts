@@ -1,4 +1,4 @@
-import { Reply } from "%/response/handlers.js";
+import { Reply } from "#/modules/response/handlers.js";
 import type e from "express";
 
 export namespace Ping_ResponseTypes {

@@ -1,4 +1,4 @@
-import { ApiKeyGuard } from "#/guards/api-key.js";
+import { ApiKeyGuard } from "#/guards/api-key.guard.js";
 import { Account_Router } from "[www]/account/account.route.js";
 import { Authentication_Router } from "[www]/authentication/authentication.route.js";
 import { Comment_Router } from "[www]/comment/comment.route.js";
@@ -8,20 +8,18 @@ import { Ping_Router } from "[www]/ping/ping.route.js";
 import { MarkedAnimeCollection_Router } from "[www]/marked_anime_collection/marked_anime_collection.route.js";
 import { FavoriteAnimes_Router } from "[www]/favorite_animes/favorite_animes.route.js";
 import { Reply_Router } from "[www]/reply/reply.route.js";
-/** Main Application Router. (Entry Point) */
-export const Entry_Point_Router = (() => {
-    const r = cRouter();
-    /** */
-    r.use(ApiKeyGuard);
-    r.use("/authentication", Authentication_Router);
-    r.use("/comment", Comment_Router);
-    r.use("/reply", Reply_Router);
-    r.use("/profile", Profile_Router);
-    r.use("/account", Account_Router);
-    r.use("/anime/marked_collection", MarkedAnimeCollection_Router);
-    r.use("/favorite_animes", FavoriteAnimes_Router);
-    r.use("/ping", Ping_Router);
-    /** */
-    return r;
+/** Entry Point Router */
+export const entryPointRouter = (() => {
+    const router = cRouter();
+    router.use(ApiKeyGuard);
+    router.use("/authentication", Authentication_Router);
+    router.use("/comment", Comment_Router);
+    router.use("/reply", Reply_Router);
+    router.use("/profile", Profile_Router);
+    router.use("/account", Account_Router);
+    router.use("/anime/marked_collection", MarkedAnimeCollection_Router);
+    router.use("/favorite_animes", FavoriteAnimes_Router);
+    router.use("/ping", Ping_Router);
+    return router;
 })();
 

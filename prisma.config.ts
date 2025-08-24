@@ -1,7 +1,7 @@
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { PrismaConfig } from "prisma";
-/** root */
+/** root `./` */
 const _dirname = dirname(fileURLToPath(import.meta.url));
 /** root / src / db */
 const db_path = join(_dirname, "src", "db");

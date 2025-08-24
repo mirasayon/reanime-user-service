@@ -1,7 +1,7 @@
 import type { Response as Res } from "express";
 import { ResponseCode } from "./response.constants.js";
 import { handle_response } from "./utils.js";
-import type { optionalMessage, optionalMessageAndData, optionalMessageAndErrors } from "../types/responses/json-body-type.js";
+import type { optionalMessage, optionalMessageAndData, optionalMessageAndErrors } from "../../shared/types/responses/json-body-type.js";
 
 export const Reply = new (class xReply_Service {
     ok = <T>(res: Res, { message = "OK", data }: optionalMessageAndData<T>) => {

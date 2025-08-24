@@ -2,8 +2,8 @@ import { ControllerUtils } from "#/utils/controller.js";
 import { FavoriteAnimes_Services as service } from "[www]/favorite_animes/favorite_animes.service.js";
 import type { Favorite_Animes_ReqDto } from "[www]/favorite_animes/favorite_animes.pipes.js";
 import type e from "express";
-import { Reply } from "%/response/handlers.js";
-import { FavoriteAnimes_ResponseTypes } from "%/types/responses/routes/favorite-animes.js";
+import { Reply } from "#/modules/response/handlers.js";
+import type { FavoriteAnimes_ResponseTypes } from "#/shared/types/responses/routes/favorite-animes.js";
 
 export const FavoriteAnimes_Controller = new (class FavoriteAnimes_Controller {
     explore_likes = async (req: Favorite_Animes_ReqDto.explore_likes, res: e.Response) => {

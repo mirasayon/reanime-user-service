@@ -1,10 +1,10 @@
 import { AnimeStatus } from "#/db/orm/enums.js";
-import type { ObjectCuid } from "%/types/inputs/infotype.js";
-import { ConflictException, NotFoundException } from "%/errors/client-side/exceptions.js";
+import type { ObjectCuid } from "#/shared/types/inputs/infotype.js";
+import { ConflictException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { MarkedAnimeCollection_Model as model } from "[www]/marked_anime_collection/marked_anime_collection.model.js";
 import consola from "consola";
 
-export const MarkedAnimeCollection_Service = new (class MarkedAnimeCollection_Service {
+class _MarkedAnimeCollection_Service {
     private readonly _is_anime_in_collection = async (profile_id: ObjectCuid, anime_id: number) => {
         const is_anime_in_collection = await model.is_anime_in_collection(profile_id, anime_id);
         if (is_anime_in_collection) {
@@ -90,5 +90,6 @@ export const MarkedAnimeCollection_Service = new (class MarkedAnimeCollection_Se
         const deleted_watching_anime = await model.delete_watching_by_profile_id(profile_id, anime_id, existed.id);
         return { deleted_watching_anime };
     };
-})();
+}
+export const MarkedAnimeCollection_Service = new _MarkedAnimeCollection_Service();
 

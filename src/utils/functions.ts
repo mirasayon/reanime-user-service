@@ -1,4 +1,4 @@
-import { BadRequestException } from "%/errors/client-side/exceptions.js";
+import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
 import type e from "express";
 
 export const global_Utilities = new (class global_Utilities {
@@ -26,12 +26,6 @@ export const global_Utilities = new (class global_Utilities {
             }
         }
         return true;
-    };
-
-    sleep = async (ms: number): Promise<void> => {
-        return await new Promise((resolve: () => void, reject) => {
-            return setTimeout(resolve, ms);
-        });
     };
 
     /**

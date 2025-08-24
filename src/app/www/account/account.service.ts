@@ -1,4 +1,4 @@
-import type { AccountEmail, AccountUsername, ClientSessionToken, ObjectCuid, RawUserPassword } from "%/types/inputs/infotype.js";
+import type { AccountEmail, AccountUsername, ClientSessionToken, ObjectCuid, RawUserPassword } from "#/shared/types/inputs/infotype.js";
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import { serviceUtils } from "#/utils/service.js";
 import { Account_Model as model } from "[www]/account/account.model.js";
@@ -9,8 +9,8 @@ import {
     ForbiddenException,
     NotFoundException,
     UnauthorizedException,
-} from "%/errors/client-side/exceptions.js";
-import { NotImplementedException } from "%/errors/server-side/exceptions.js";
+} from "#/modules/errors/client-side/exceptions.js";
+import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
 import { email_is_used } from "#/configs/frequent-errors.js";
 /** Account Service */
 export const Account_Service = new (class Account_Service {
