@@ -34,3 +34,4 @@ export namespace dto {
     export type terminate_other_sessions = z.infer<Schemas["terminate_other_sessions"]>;
     export type delete_account = z.infer<Schemas["delete_account"]>;
 }
+

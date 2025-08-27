@@ -1,6 +1,6 @@
 import type { Request_dto_auth as _ } from "#/types/dto-middleware-shape.js";
 import { vmfactory as m } from "#/utils/validators/factory.js";
-import { animeMarkedCollection_schemas as schema, type dto } from "&/validators/marked_anime_collection.js";
+import { animeMarkedCollection_schemas as schema, type dto } from "#/shared/validators/marked-anime-collection.validator.routes.js";
 
 namespace rd {
     export type get_all_list = _<dto.get_all_list>;
