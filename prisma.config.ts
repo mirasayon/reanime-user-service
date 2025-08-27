@@ -3,10 +3,10 @@ import { fileURLToPath } from "node:url";
 import type { PrismaConfig } from "prisma";
 /** root `./` */
 const _dirname = dirname(fileURLToPath(import.meta.url));
-/** root / src / db */
-const db_path = join(_dirname, "src", "databases");
+/** . / prisma */
+const db_path = join(_dirname, "prisma");
 export default {
-    schema: join(db_path, "schemas", "schema.prisma"),
+    schema: join(db_path, "schemas", "index.prisma"),
     migrations: {
         path: join(db_path, "migrations"),
     },
@@ -17,3 +17,4 @@ export default {
         path: join(db_path, "queries"),
     },
 } satisfies PrismaConfig;
+

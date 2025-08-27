@@ -1,9 +1,9 @@
 import { prisma } from "#/providers/database-connect.js";
-import type { Account, Profile, Session } from "#/databases/orm/client.js";
+import type { Account, AvatarPicture, CoverPicture, Profile, Session } from "#/databases/orm/client.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { iAccountEmail, iAccountUsername, iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
-
+export type ProfileWithCoverAndAvatarData = Profile & { cover: CoverPicture | null } & { avatar: AvatarPicture | null };
 export const Account_Model = new (class Account_Model {
     Get_account_by_its_id_throw_error = async (account_id: iObjectCuid): Promise<Account> => {
         const found_account = await prisma.account.findUnique({
@@ -124,9 +124,9 @@ export const Account_Model = new (class Account_Model {
     };
     /** END SESSION */
 
-    find_profile_by_account_id = async (by_account_id: iObjectCuid): Promise<Profile> => {
+    find_profile_by_account_id = async (account_id: iObjectCuid): Promise<Profile> => {
         const found_profile = await prisma.profile.findUnique({
-            where: { by_account_id },
+            where: { by_account_id: account_id },
         });
         if (!found_profile) {
             throw new InternalServerErrorException("Ошибка сервера. Попробуйте позже");
@@ -134,6 +134,16 @@ export const Account_Model = new (class Account_Model {
         return found_profile;
     };
 
+    find_profile_by_account_id_with_data_about_cover_and_avatar = async (account_id: iObjectCuid): Promise<ProfileWithCoverAndAvatarData> => {
+        const found_profile = await prisma.profile.findUnique({
+            where: { by_account_id: account_id },
+            include: { cover: true, avatar: true },
+        });
+        if (!found_profile) {
+            throw new InternalServerErrorException("Ошибка сервера. Попробуйте позже");
+        }
+        return found_profile;
+    };
     delete_account_by_its_id = async (account_id: iObjectCuid) => {
         return await prisma.account.delete({
             where: {

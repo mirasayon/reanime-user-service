@@ -5,7 +5,7 @@ import { Profile_Service as service } from "[www]/profile/profile.service.js";
 import { serviceUtils } from "#/utils/service.js";
 import { Reply } from "#/modules/response/handlers.js";
 import { MediaServerNotAvalableException } from "#/modules/errors/server-side/exceptions.js";
-import { media_incorrect, noImage_error_response } from "#/configs/frequent-errors.js";
+import { incorrect_media, noImage_error_response } from "#/configs/frequent-errors.js";
 import type { Profile_ResponseTypes } from "#/shared/response-patterns/profile.routes.js";
 import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
 
@@ -53,13 +53,13 @@ export const Profile_Controller = new (class Profile_Controller {
         }
         const axios_res = await serviceUtils.post_to_media_server_for_SET_avatar(file, profile_id);
         if (!axios_res) {
-            throw new MediaServerNotAvalableException(media_incorrect);
+            throw new MediaServerNotAvalableException(incorrect_media);
         }
-        const { updated_profile } = await service.set_avatar({
+        const { new_avatar } = await service.set_avatar({
             profile_id: auth.profile.id,
             avatar_hash: axios_res.data.avatar_hash,
         });
-        const data: Profile_ResponseTypes.set_avatar = updated_profile.avatar_url_hash as string;
+        const data: Profile_ResponseTypes.set_avatar = new_avatar.url;
         const message = "Аватарка успешно загружена";
         return Reply.accepted(res, { data, message });
     };
@@ -68,8 +68,8 @@ export const Profile_Controller = new (class Profile_Controller {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
 
         const { avatar_url_hash } = await service.__check_if_has_avatar_for_delete(auth.profile.id);
-        const { updated_profile } = await service.delete_avatar(auth.profile.id, avatar_url_hash);
-        const data: Profile_ResponseTypes.delete_avatar = updated_profile;
+        const { deleted_avatar } = await service.delete_avatar(auth.profile.id, avatar_url_hash);
+        const data: Profile_ResponseTypes.delete_avatar = deleted_avatar;
         const message = "Аватарка успешно удалена";
         return Reply.accepted(res, { data, message });
     };
@@ -85,13 +85,13 @@ export const Profile_Controller = new (class Profile_Controller {
         }
         const axios_res = await serviceUtils.post_to_media_server_for_UPDATE_avatar(file, auth.profile.id);
         if (!axios_res) {
-            throw new MediaServerNotAvalableException(media_incorrect);
+            throw new MediaServerNotAvalableException(incorrect_media);
         }
-        const { updated_profile } = await service.update_avatar({
+        const { updated_avatar } = await service.update_avatar({
             profile_id: auth.profile.id,
             avatar_hash: axios_res.data.avatar_hash,
         });
-        const data: Profile_ResponseTypes.update_avatar = updated_profile.avatar_url_hash as string;
+        const data: Profile_ResponseTypes.update_avatar = updated_avatar.url;
         const message = "Аватарка успешно обновлена";
         return Reply.accepted(res, { data, message });
     };

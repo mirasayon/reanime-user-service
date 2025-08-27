@@ -119,16 +119,16 @@ export const Account_Service = new (class Account_Service {
         deleted_account: Account;
     }> => {
         const found_account = await model.Get_account_by_its_id_throw_error(account_id);
-        const found_profile = await model.find_profile_by_account_id(found_account.id);
-        if (found_profile.cover_url_hash) {
+        const found_profile = await model.find_profile_by_account_id_with_data_about_cover_and_avatar(found_account.id);
+        if (found_profile.cover) {
             throw new NotImplementedException("Мы пока не можем удалять обложки");
         }
-        if (found_profile.avatar_url_hash) {
-            await serviceUtils.request_to_media_service_to_delete_avatar(found_profile.id, found_profile.avatar_url_hash);
+        if (found_profile.avatar) {
+            await serviceUtils.request_to_media_service_to_delete_avatar(found_profile.id, found_profile.avatar.url);
         }
         const deleted_account = await model.delete_account_by_its_id(found_account.id);
         return {
-            deleted_account,
+            deleted_account: deleted_account,
         };
     };
 })();

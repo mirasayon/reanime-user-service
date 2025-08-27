@@ -1,7 +1,7 @@
 import { prisma } from "#/providers/database-connect.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import type { Account, Profile } from "#/databases/orm/client.js";
+import type { Account, AvatarPicture, Profile } from "#/databases/orm/client.js";
 
 export const Profile_Model = new (class Profile_Model {
     find_profile_by_its_id = async (profile_id: iObjectCuid) => {
@@ -9,6 +9,18 @@ export const Profile_Model = new (class Profile_Model {
             where: {
                 id: profile_id,
             },
+        });
+        if (!found_profile) {
+            throw new NotFoundException(["Профиль не найден"]);
+        }
+        return found_profile;
+    };
+    find_profile_by_its_id_with_avatar_data = async (profile_id: iObjectCuid) => {
+        const found_profile = await prisma.profile.findUnique({
+            where: {
+                id: profile_id,
+            },
+            include: { avatar: true },
         });
         if (!found_profile) {
             throw new NotFoundException(["Профиль не найден"]);
@@ -69,24 +81,28 @@ export const Profile_Model = new (class Profile_Model {
         });
     };
 
-    update_avatar_by_id = async (profile_id: iObjectCuid, avatar_url_hash: string | null) => {
-        return await prisma.profile.update({
+    update_avatar_by_id = async (profile_id: iObjectCuid, avatar_url_hash: string | null): Promise<AvatarPicture> => {
+        if (avatar_url_hash === null) {
+            return await prisma.avatarPicture.delete({
+                where: {
+                    by_profile_id: profile_id,
+                },
+            });
+        }
+        return await prisma.avatarPicture.update({
             where: {
-                id: profile_id,
+                by_profile_id: profile_id,
             },
             data: {
-                avatar_url_hash,
+                url: avatar_url_hash,
             },
         });
     };
 
-    delete_avatar_from_profile = async (profile_id: iObjectCuid) => {
-        return await prisma.profile.update({
+    delete_avatar_from_profile = async (profile_id: iObjectCuid): Promise<AvatarPicture> => {
+        return await prisma.avatarPicture.delete({
             where: {
-                id: profile_id,
-            },
-            data: {
-                avatar_url_hash: null,
+                by_profile_id: profile_id,
             },
         });
     };

@@ -1,19 +1,20 @@
-import type { MarkedAnimeCollection } from "#/databases/orm/client.js";
+import type { AnimeBookmark } from "#/databases/orm/client.js";
 
 /** RESPONSES For Marked anime list Route */
 export namespace MarkedAnimeCollection_ResponseTypes {
-    export type get_all_list = MarkedAnimeCollection[];
-    export type get_for_anime = MarkedAnimeCollection;
-    export type get_list_of_completed = MarkedAnimeCollection[];
-    export type get_list_of_planned = MarkedAnimeCollection[];
-    export type get_list_of_abandoned = MarkedAnimeCollection[];
-    export type get_list_of_watching = MarkedAnimeCollection[];
-    export type create_watching = MarkedAnimeCollection;
-    export type create_planned = MarkedAnimeCollection;
-    export type create_abandoned = MarkedAnimeCollection;
-    export type create_completed = MarkedAnimeCollection;
-    export type delete_abandoned = MarkedAnimeCollection;
-    export type delete_watching = MarkedAnimeCollection;
-    export type delete_planned = MarkedAnimeCollection;
-    export type delete_completed = MarkedAnimeCollection;
+    export type get_all_list = AnimeBookmark[];
+    export type get_for_anime = AnimeBookmark;
+    export type get_list_of_completed = AnimeBookmark[];
+    export type get_list_of_planned = AnimeBookmark[];
+    export type get_list_of_abandoned = AnimeBookmark[];
+    export type get_list_of_watching = AnimeBookmark[];
+    export type create_watching = AnimeBookmark;
+    export type create_planned = AnimeBookmark;
+    export type create_abandoned = AnimeBookmark;
+    export type create_completed = AnimeBookmark;
+    export type delete_abandoned = AnimeBookmark;
+    export type delete_watching = AnimeBookmark;
+    export type delete_planned = AnimeBookmark;
+    export type delete_completed = AnimeBookmark;
 }
+
