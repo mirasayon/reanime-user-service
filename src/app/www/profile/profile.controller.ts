@@ -10,7 +10,7 @@ import type { Profile_ResponseTypes } from "#/shared/types/responses/routes/prof
 import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
 
 export const Profile_Controller = new (class Profile_Controller {
-    /** Controller for create one comment by user */
+    /** Controller for create one comment by profile */
     other_profiles = async (req: Profile_ReqDtos.other_profiles, res: e.Response) => {
         const { dto: username } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const sr = await service.other_profiles(username);

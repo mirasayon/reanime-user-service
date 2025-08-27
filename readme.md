@@ -9,6 +9,7 @@ First code: october 19, 2024
 ### How to create pem keys:
 
 ```bash
-	openssl genrsa -out private.pem 2048
-	openssl rsa -in private.pem -pubout -out public.pem
+	openssl genrsa -out ./keys/private.pem 2048
+	openssl rsa -in ./keys/private.pem -pubout -out public.pem
 ```
+

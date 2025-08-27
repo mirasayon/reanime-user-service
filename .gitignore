@@ -4,9 +4,7 @@
 /.env.production
 /dist
 /src/databases/orm
-/public.pem
-/private.pem
+/keys
 /drafts.md
 /src/tests/play.ts
-/package
 /logs

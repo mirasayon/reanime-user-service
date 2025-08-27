@@ -1,16 +1,10 @@
-import { PathsConfig } from "#/configs/paths.config.js";
 import type { ObjectCuid } from "#/shared/types/inputs/infotype.js";
 import consola from "consola";
 import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import { ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { publicEncrypt, randomBytes, constants, privateDecrypt } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
-const publicKey = await readFile(join(PathsConfig.root, "public.pem"), { encoding: "utf-8" });
-const privateKey = await readFile(join(PathsConfig.root, "private.pem"), { encoding: "utf-8" });
-if (!publicKey || !privateKey) {
-    throw new Error("`./public.pem` or/and `./private.pem` doesn't exist");
-}
+import { keysPrivateKey, keysPublicKey } from "#/configs/paths.config.js";
+
 export const authentication_Session_Token_Util = new (class Authentication_Session_Token_Util {
     create_session_token = (account_id: ObjectCuid) => {
         try {
@@ -18,7 +12,7 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
             const buffer = Buffer.from(account_id, "utf-8");
             const salt = publicEncrypt(
                 {
-                    key: publicKey,
+                    key: keysPublicKey,
                     padding: constants.RSA_PKCS1_OAEP_PADDING,
                     oaepHash: "sha256",
                 },
@@ -26,8 +20,8 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
             ).toString("hex");
             const token = `${rand}_${salt}` as const;
             return token;
-        } catch (error) {
-            consola.error("Error while generating session token: ", error);
+        } catch (_error) {
+            consola.error("Error while generating session token: ", _error);
             throw new InternalServerErrorException("Ошибка генерации токена сеанса");
         }
     };
@@ -40,7 +34,7 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
             const buffer = Buffer.from(encryptedBase64, "hex");
             const decrypted = privateDecrypt(
                 {
-                    key: privateKey,
+                    key: keysPrivateKey,
                     padding: constants.RSA_PKCS1_OAEP_PADDING,
                     oaepHash: "sha256",
                 },

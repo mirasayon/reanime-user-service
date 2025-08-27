@@ -6,7 +6,7 @@ import { Reply } from "#/modules/response/handlers.js";
 import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
 import type { Reply_ResponseTypes } from "#/shared/types/responses/routes/comment-reply.js";
 export const Reply_Controller = new (class Reply_Controller {
-    /** Edit the comment by user */
+    /** Edit the comment by profile */
     edit_reply = async (req: REQDTO.edit_reply, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const { updated_reply } = await service.edit_reply({ ...dto, profile_id: auth.profile.id });
@@ -77,12 +77,12 @@ export const Reply_Controller = new (class Reply_Controller {
         return Reply.accepted(res, { data, message });
     };
 
-    /** Reports the comment  by user */
+    /** Reports the comment  by profile */
     report = async (req: REQDTO.report_reply, reply: e.Response) => {
         const { dto, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         throw new NotImplementedException("report reply controller");
     };
-    /** Reply to the comment by user */
+    /** Reply to the comment by profile */
     create_reply = async (req: REQDTO.create_reply, reply: e.Response) => {
         const Req = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const { created_reply } = await service.create_reply({

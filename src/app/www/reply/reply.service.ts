@@ -122,7 +122,7 @@ export const Reply_Service = new (class Reply_Service {
         const deleted_reply = await model.delete_1_reply(found_reply.id);
         return { deleted_reply };
     };
-    /** Edites the comment by its CUID and user profile CUID */
+    /** Edites the comment by its ID and profile profile ID */
     edit_reply = async ({ content, reply_id, profile_id }: { content: string; reply_id: string; profile_id: string }) => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
         if (found_reply.by_profile_id !== profile_id) {

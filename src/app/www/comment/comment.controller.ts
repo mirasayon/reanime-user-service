@@ -7,7 +7,7 @@ import { NotImplementedException } from "#/modules/errors/server-side/exceptions
 import type { Comment_ResponseTypes } from "#/shared/types/responses/routes/comment.js";
 
 export const Comment_Controller = new (class Comment_Controller {
-    /** Controller for create one comment by user */
+    /** Controller for create one comment by profile */
     create_comment = async (req: Comment_ReqDtos.create, res: e.Response) => {
         const { dto, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
 
@@ -22,7 +22,7 @@ export const Comment_Controller = new (class Comment_Controller {
         return Reply.accepted(res, { data, message });
     };
 
-    /** Edit the comment by user */
+    /** Edit the comment by profile */
     update_comment = async (req: Comment_ReqDtos.update, res: e.Response) => {
         const { dto, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
 
@@ -96,7 +96,7 @@ export const Comment_Controller = new (class Comment_Controller {
         return Reply.ok(res, { data, message });
     };
 
-    /** Reports the comment  by user */
+    /** Reports the comment  by profile */
     report = async (req: Comment_ReqDtos.report, reply: e.Response) => {
         throw new NotImplementedException("report comment controller");
     };

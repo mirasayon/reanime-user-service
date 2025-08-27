@@ -14,7 +14,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
             },
         });
     };
-    /** Checks if an anime is in a user's collection
+    /** Checks if an anime is in a profile collection
      *
      * @param profile_id
      * @param anime_id

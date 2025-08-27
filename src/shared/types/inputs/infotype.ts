@@ -1,13 +1,13 @@
-/** Represents a user's email address */
+/** Represents a account email address */
 export type AccountEmail = string;
 
 /** Represents a unique CUID identifier (e.g. user ID) */
 export type ObjectCuid = string;
 
-/** Represents a user's raw (non-hashed) password */
+/** Represents a account raw (non-hashed) password */
 export type RawUserPassword = string;
 
-/** Represents a user's display name or username */
+/** Represents a profile display name or username */
 export type AccountUsername = string;
 export type ProfileName = string;
 
@@ -16,3 +16,4 @@ export type AnimeId = number;
 
 /** Represents a Session's Token. 577 char length */
 export type ClientSessionToken = string;
+

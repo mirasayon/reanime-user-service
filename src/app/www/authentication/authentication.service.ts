@@ -91,11 +91,11 @@ export const Authentication_Service = new (class Authentication_Service {
     };
 
     /**
-     * Registers a new user by creating an account, a profile,
+     * Registers a new account by creating an account, a profile,
      * hashing the password, and initializing a session.
      *
-     * @param reg_creds - Data provided by the user during registration.
-     * @returns An object containing the newly created user and their session.
+     * @param reg_creds - Data provided by the account during registration.
+     * @returns An object containing the newly created account and their session.
      */
     registration = async ({
         nickname,

@@ -99,7 +99,7 @@ export const Comment_Service = new (class Comment_Service {
         const deleted_comment = await model.delete_1_comment(found_comment.id);
         return { deleted_comment };
     };
-    /** Edites the comment by its CUID and user profile CUID */
+    /** Edites the comment by its ID and profile ID */
     update_comment = async (args: { new_content: string; comment_id: string; profile_id: string }) => {
         const found_one = await model.find_1_comment_by_its_id(args.comment_id);
         if (found_one.by_profile_id !== args.profile_id) {

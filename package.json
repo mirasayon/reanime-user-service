@@ -9,7 +9,7 @@
         "hot:src": "node --watch --env-file=.env.development ./src/server/startup.ts",
         "test-common": "node --enable-source-maps --env-file=.env.test ./dist/tests/common.js",
         "dev-test": "node --enable-source-maps --env-file=.env.test --watch ./dist/tests/play.js",
-        "start:prod": "node --env-file=.env.production ./dist/server/startup.js",
+        "start:production": "node --env-file=.env.production ./dist/server/startup.js",
         "start:test": "node --env-file=.env.test ./dist/server/startup.js",
         "start:dev": "node --enable-source-maps --env-file=.env.development ./dist/server/startup.js",
         "inspect:hot": "tsc --watch --noEmit",
@@ -19,12 +19,7 @@
         "gen_db_client:prod": "dotenv -e .env.production -- prisma generate",
         "build:dev": "rimraf dist src/db/orm && npm run gen_db_client:dev && npm run post-build && npm run compile",
         "build:test": "rimraf dist src/db/orm && npm run gen_db_client:test && npm run post-build && npm run compile",
-        "build:prod": "rimraf dist src/db/orm && npm run gen_db_client:prod && npm run post-build && npm run compile",
-        "pkg:setup": "node ./scripts/pre-setup-pkg-server.ts && http-server ./package/tarball -p 5640",
-        "prepack": "node ./scripts/prepack-pkg.ts",
-        "pkg:pack": "dotenv -v XPACK=true -- npm pack --pack-destination ./package/tarball",
-        "pkg:build": "rimraf ./package/dist && tsc -p ./tsconfig.package.jsonc && tsc-alias",
-        "pkg:pack:dry": "dotenv -v XPACK=true -- npm pack --dry-run"
+        "build:prod": "rimraf dist src/db/orm && npm run gen_db_client:prod && npm run post-build && npm run compile"
     },
     "dependencies": {
         "@prisma/adapter-pg": "^6.14.0",
@@ -47,7 +42,7 @@
         "pg": "^8.16.3",
         "prisma": "^6.14.0",
         "safest-env": "^0.0.1",
-        "zod": "^4.1.1"
+        "zod": "^4.1.3"
     },
     "devDependencies": {
         "@types/compression": "^1.8.1",
@@ -73,11 +68,6 @@
     "description": "Reanime.art User Service",
     "engines": {
         "node": ">=22.18.0"
-    },
-    "exports": {
-        "./*": "./package/dist/*"
-    },
-    "files": [
-        "./package/dist"
-    ]
+    }
 }
+
