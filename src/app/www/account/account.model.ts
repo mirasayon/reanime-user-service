@@ -1,11 +1,11 @@
 import { prisma } from "#/providers/database-connect.js";
 import type { Account, Profile, Session } from "#/databases/orm/client.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import type { AccountEmail, AccountUsername, ClientSessionToken, ObjectCuid } from "#/shared/types/inputs/infotype.js";
+import type { iAccountEmail, iAccountUsername, iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 
 export const Account_Model = new (class Account_Model {
-    Get_account_by_its_id_throw_error = async (account_id: ObjectCuid): Promise<Account> => {
+    Get_account_by_its_id_throw_error = async (account_id: iObjectCuid): Promise<Account> => {
         const found_account = await prisma.account.findUnique({
             where: {
                 id: account_id,
@@ -18,7 +18,7 @@ export const Account_Model = new (class Account_Model {
         return found_account;
     };
 
-    Get_account_by_email_throw_error = async (account_email: AccountEmail) => {
+    Get_account_by_email_throw_error = async (account_email: iAccountEmail) => {
         const found_accound = await prisma.account.findUnique({
             where: {
                 email: account_email,
@@ -29,7 +29,7 @@ export const Account_Model = new (class Account_Model {
         }
         return found_accound;
     };
-    Get_account_by_email_No_Throw_Error = async (account_email: AccountEmail) => {
+    Get_account_by_email_No_Throw_Error = async (account_email: iAccountEmail) => {
         const found_account = await prisma.account.findUnique({
             where: {
                 email: account_email,
@@ -37,7 +37,7 @@ export const Account_Model = new (class Account_Model {
         });
         return found_account;
     };
-    get_account_by_its_username_no_throw_error = async (username: AccountUsername) => {
+    get_account_by_its_username_no_throw_error = async (username: iAccountUsername) => {
         const found_user = await prisma.account.findUnique({
             where: {
                 username,
@@ -49,7 +49,7 @@ export const Account_Model = new (class Account_Model {
         return found_user;
     };
 
-    get_account_by_its_username_Throw_error = async (username: AccountUsername) => {
+    get_account_by_its_username_Throw_error = async (username: iAccountUsername) => {
         const found_user = await prisma.account.findUnique({
             where: {
                 username,
@@ -61,7 +61,7 @@ export const Account_Model = new (class Account_Model {
         return found_user;
     };
 
-    update_email_for_one = async (account_id: ObjectCuid, new_email: AccountEmail) => {
+    update_email_for_one = async (account_id: iObjectCuid, new_email: iAccountEmail) => {
         return await prisma.account.update({
             where: {
                 id: account_id,
@@ -72,7 +72,7 @@ export const Account_Model = new (class Account_Model {
         });
     };
 
-    update_password_hash_account = async (account_id: ObjectCuid, password_hash: AccountEmail) => {
+    update_password_hash_account = async (account_id: iObjectCuid, password_hash: iAccountEmail) => {
         return await prisma.account.update({
             where: {
                 id: account_id,
@@ -83,7 +83,7 @@ export const Account_Model = new (class Account_Model {
         });
     };
 
-    update_username_for_account = async (account_id: ObjectCuid, username: AccountEmail) => {
+    update_username_for_account = async (account_id: iObjectCuid, username: iAccountEmail) => {
         return await prisma.account.update({
             where: {
                 id: account_id,
@@ -95,14 +95,14 @@ export const Account_Model = new (class Account_Model {
     };
 
     /** SESSION */
-    find_all_sessions_by_account_id = async (account_id: ObjectCuid) => {
+    find_all_sessions_by_account_id = async (account_id: iObjectCuid) => {
         return await prisma.session.findMany({
             where: {
                 by_account_id: account_id,
             },
         });
     };
-    find_one_session_by_its_token = async (session_token: ClientSessionToken): Promise<Session> => {
+    find_one_session_by_its_token = async (session_token: iClientSessionToken): Promise<Session> => {
         const found_session = await prisma.session.findUnique({
             where: {
                 token: session_token,
@@ -115,7 +115,7 @@ export const Account_Model = new (class Account_Model {
         return found_session;
     };
 
-    delete_one_session_by_its_token = async (session_token: ClientSessionToken) => {
+    delete_one_session_by_its_token = async (session_token: iClientSessionToken) => {
         return await prisma.session.delete({
             where: {
                 token: session_token,
@@ -124,7 +124,7 @@ export const Account_Model = new (class Account_Model {
     };
     /** END SESSION */
 
-    find_profile_by_account_id = async (by_account_id: ObjectCuid): Promise<Profile> => {
+    find_profile_by_account_id = async (by_account_id: iObjectCuid): Promise<Profile> => {
         const found_profile = await prisma.profile.findUnique({
             where: { by_account_id },
         });
@@ -134,7 +134,7 @@ export const Account_Model = new (class Account_Model {
         return found_profile;
     };
 
-    delete_account_by_its_id = async (account_id: ObjectCuid) => {
+    delete_account_by_its_id = async (account_id: iObjectCuid) => {
         return await prisma.account.delete({
             where: {
                 id: account_id,

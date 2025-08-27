@@ -1,10 +1,10 @@
 import { prisma } from "#/providers/database-connect.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import type { ObjectCuid } from "#/shared/types/inputs/infotype.js";
+import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import type { Account, Profile } from "#/databases/orm/client.js";
 
 export const Profile_Model = new (class Profile_Model {
-    find_profile_by_its_id = async (profile_id: ObjectCuid) => {
+    find_profile_by_its_id = async (profile_id: iObjectCuid) => {
         const found_profile = await prisma.profile.findUnique({
             where: {
                 id: profile_id,
@@ -15,7 +15,7 @@ export const Profile_Model = new (class Profile_Model {
         }
         return found_profile;
     };
-    find_profile_by_username = async (username: ObjectCuid): Promise<{ account: Account; profile: Profile }> => {
+    find_profile_by_username = async (username: iObjectCuid): Promise<{ account: Account; profile: Profile }> => {
         const account = await prisma.account.findUnique({
             where: { username },
         });
@@ -34,7 +34,7 @@ export const Profile_Model = new (class Profile_Model {
         return { account, profile };
     };
 
-    find_by_account_id_AND_return_account_and_profile = async (accound_id: ObjectCuid): Promise<{ account: Account; profile: Profile }> => {
+    find_by_account_id_AND_return_account_and_profile = async (accound_id: iObjectCuid): Promise<{ account: Account; profile: Profile }> => {
         const account = await prisma.account.findUnique({
             where: { id: accound_id },
         });
@@ -52,7 +52,7 @@ export const Profile_Model = new (class Profile_Model {
         }
         return { account, profile };
     };
-    update_bio_by_id = async (profile_id: ObjectCuid, bio: string | null) => {
+    update_bio_by_id = async (profile_id: iObjectCuid, bio: string | null) => {
         return await prisma.profile.update({
             where: {
                 id: profile_id,
@@ -60,7 +60,7 @@ export const Profile_Model = new (class Profile_Model {
             data: { bio },
         });
     };
-    update_nickname_by_id = async (profile_id: ObjectCuid, nickname: string | null) => {
+    update_nickname_by_id = async (profile_id: iObjectCuid, nickname: string | null) => {
         return await prisma.profile.update({
             where: {
                 id: profile_id,
@@ -69,7 +69,7 @@ export const Profile_Model = new (class Profile_Model {
         });
     };
 
-    update_avatar_by_id = async (profile_id: ObjectCuid, avatar_url_hash: string | null) => {
+    update_avatar_by_id = async (profile_id: iObjectCuid, avatar_url_hash: string | null) => {
         return await prisma.profile.update({
             where: {
                 id: profile_id,
@@ -80,7 +80,7 @@ export const Profile_Model = new (class Profile_Model {
         });
     };
 
-    delete_avatar_from_profile = async (profile_id: ObjectCuid) => {
+    delete_avatar_from_profile = async (profile_id: iObjectCuid) => {
         return await prisma.profile.update({
             where: {
                 id: profile_id,

@@ -1,16 +1,16 @@
 import { prisma } from "#/providers/database-connect.js";
 import type { Comment, CommentVote } from "#/databases/orm/client.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import type { ObjectCuid } from "#/shared/types/inputs/infotype.js";
+import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 
 export const Comment_Model = new (class Comment_Model {
-    get_comment_count_on_1_anime = async (by_profile_id: ObjectCuid, anime_id: number) => {
+    get_comment_count_on_1_anime = async (by_profile_id: iObjectCuid, anime_id: number) => {
         return await prisma.comment.count({
             where: { by_profile_id, anime_id },
         });
     };
 
-    create_1_comment = async (by_profile_id: ObjectCuid, content: string, anime_id: number) => {
+    create_1_comment = async (by_profile_id: iObjectCuid, content: string, anime_id: number) => {
         return prisma.comment.create({
             data: {
                 anime_id,
@@ -44,7 +44,7 @@ export const Comment_Model = new (class Comment_Model {
         return all;
     };
 
-    find_1_comment_by_its_id = async (comment_id: ObjectCuid) => {
+    find_1_comment_by_its_id = async (comment_id: iObjectCuid) => {
         const found_comment = await prisma.comment.findUnique({
             where: {
                 id: comment_id,
@@ -57,7 +57,7 @@ export const Comment_Model = new (class Comment_Model {
         return found_comment;
     };
 
-    find_1_vote_by_comment_id_and_profile_id = async (comment_id: ObjectCuid, by_profile_id: ObjectCuid) => {
+    find_1_vote_by_comment_id_and_profile_id = async (comment_id: iObjectCuid, by_profile_id: iObjectCuid) => {
         return await prisma.commentVote.findUnique({
             where: {
                 by_profile_id_comment_id: {
@@ -68,7 +68,7 @@ export const Comment_Model = new (class Comment_Model {
         });
     };
 
-    create_1_vote_to_comment = async (comment_id: ObjectCuid, by_profile_id: ObjectCuid, vote: boolean) => {
+    create_1_vote_to_comment = async (comment_id: iObjectCuid, by_profile_id: iObjectCuid, vote: boolean) => {
         return await prisma.commentVote.create({
             data: {
                 vote,
@@ -85,7 +85,7 @@ export const Comment_Model = new (class Comment_Model {
             },
         });
     };
-    update_1_vote_to_comment = async (old_reply_id: ObjectCuid, vote: boolean) => {
+    update_1_vote_to_comment = async (old_reply_id: iObjectCuid, vote: boolean) => {
         return await prisma.commentVote.update({
             where: {
                 id: old_reply_id,
@@ -95,7 +95,7 @@ export const Comment_Model = new (class Comment_Model {
             },
         });
     };
-    delete_1_comment = async (comment_id: ObjectCuid) => {
+    delete_1_comment = async (comment_id: iObjectCuid) => {
         return prisma.comment.delete({
             where: {
                 id: comment_id,
@@ -103,7 +103,7 @@ export const Comment_Model = new (class Comment_Model {
         });
     };
 
-    update_1_comment_by_its_id = async (reply_id: ObjectCuid, new_content: string) => {
+    update_1_comment_by_its_id = async (reply_id: iObjectCuid, new_content: string) => {
         return await prisma.comment.update({
             where: {
                 id: reply_id,

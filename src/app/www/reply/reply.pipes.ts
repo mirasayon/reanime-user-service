@@ -1,6 +1,6 @@
 import { vmfactory as m } from "#/utils/validators/factory.js";
-import type { Request_dto_auth as _ } from "[T]/request_with_dto.js";
-import { type dto, reply_schemas as schemas } from "#/modules/validators/reply.js";
+import type { Request_dto_auth as _ } from "#/types/dto-middleware-shape.js";
+import { type dto, reply_schemas as schemas } from "#/shared/validators/reply.validator.routes.js";
 
 namespace rd {
     export type create_reply = _<dto.create_reply>;

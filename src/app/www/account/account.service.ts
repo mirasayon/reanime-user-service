@@ -1,4 +1,4 @@
-import type { AccountEmail, AccountUsername, ClientSessionToken, ObjectCuid, RawUserPassword } from "#/shared/types/inputs/infotype.js";
+import type { iAccountEmail, iAccountUsername, iClientSessionToken, iObjectCuid, iRawUserPassword } from "#/shared/types/inputs/informative.types.js";
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import { serviceUtils } from "#/utils/service.js";
 import { Account_Model as model } from "[www]/account/account.model.js";
@@ -14,7 +14,7 @@ import { NotImplementedException } from "#/modules/errors/server-side/exceptions
 import { email_is_used } from "#/configs/frequent-errors.js";
 /** Account Service */
 export const Account_Service = new (class Account_Service {
-    explore_me = async (account_id: ObjectCuid): Promise<Account> => {
+    explore_me = async (account_id: iObjectCuid): Promise<Account> => {
         const found_user = await model.Get_account_by_its_id_throw_error(account_id);
         return found_user;
     };
@@ -23,9 +23,9 @@ export const Account_Service = new (class Account_Service {
         new_email,
         by_account_id,
     }: {
-        current_email: AccountEmail;
-        new_email: AccountEmail;
-        by_account_id: ObjectCuid;
+        current_email: iAccountEmail;
+        new_email: iAccountEmail;
+        by_account_id: iObjectCuid;
     }): Promise<{
         updated_account: Account;
     }> => {
@@ -44,7 +44,7 @@ export const Account_Service = new (class Account_Service {
         return { updated_account };
     };
 
-    set_email = async ({ email, account_id }: { email: AccountEmail; account_id: ObjectCuid }): Promise<{ updated_account: Account }> => {
+    set_email = async ({ email, account_id }: { email: iAccountEmail; account_id: iObjectCuid }): Promise<{ updated_account: Account }> => {
         const account_by_id = await model.Get_account_by_its_id_throw_error(account_id);
         if (account_by_id.email) {
             throw new BadRequestException(["У этой учетной записи уже есть адрес электронной почты, вам нужно обновить его настройках"]);
@@ -61,9 +61,9 @@ export const Account_Service = new (class Account_Service {
         current_password,
         account_id,
     }: {
-        account_id: ObjectCuid;
-        current_password: RawUserPassword;
-        new_password: RawUserPassword;
+        account_id: iObjectCuid;
+        current_password: iRawUserPassword;
+        new_password: iRawUserPassword;
     }): Promise<{ updated_account: Account }> => {
         const found_user = await model.Get_account_by_its_id_throw_error(account_id);
 
@@ -82,8 +82,8 @@ export const Account_Service = new (class Account_Service {
         new_username,
         account_id,
     }: {
-        new_username: AccountUsername;
-        account_id: ObjectCuid;
+        new_username: iAccountUsername;
+        account_id: iObjectCuid;
     }): Promise<{
         updated_account: Account;
     }> => {
@@ -99,12 +99,12 @@ export const Account_Service = new (class Account_Service {
         const updated_account = await model.update_username_for_account(found_user.id, new_username);
         return { updated_account };
     };
-    get_sessions = async (account_id: ObjectCuid): Promise<{ sessions: Session[] }> => {
+    get_sessions = async (account_id: iObjectCuid): Promise<{ sessions: Session[] }> => {
         const found_account = await model.Get_account_by_its_id_throw_error(account_id);
         const sessions = await model.find_all_sessions_by_account_id(found_account.id);
         return { sessions };
     };
-    terminate_other_sessions = async (session_token: ClientSessionToken, account_id: ObjectCuid) => {
+    terminate_other_sessions = async (session_token: iClientSessionToken, account_id: iObjectCuid) => {
         const found_account = await model.Get_account_by_its_id_throw_error(account_id);
         const this_session_id = (await model.find_one_session_by_its_token(session_token)).id;
 
@@ -114,7 +114,7 @@ export const Account_Service = new (class Account_Service {
     };
 
     delete_account = async (
-        account_id: ObjectCuid,
+        account_id: iObjectCuid,
     ): Promise<{
         deleted_account: Account;
     }> => {

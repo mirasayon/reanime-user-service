@@ -4,7 +4,7 @@ import type { Comment_ReqDtos } from "[www]/comment/comment.pipes.js";
 import { Comment_Service as service } from "[www]/comment/comment.service.js";
 import { Reply } from "#/modules/response/handlers.js";
 import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
-import type { Comment_ResponseTypes } from "#/shared/types/responses/routes/comment.js";
+import type { Comment_ResponseTypes } from "#/shared/response-patterns/comment.routes.js";
 
 export const Comment_Controller = new (class Comment_Controller {
     /** Controller for create one comment by profile */

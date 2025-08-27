@@ -3,7 +3,7 @@ import { ControllerUtils } from "#/utils/controller.js";
 import type { Authentication_ReqDtos } from "[www]/authentication/authentication.pipes.js";
 import { Authentication_Service as services } from "[www]/authentication/authentication.service.js";
 import { Reply } from "#/modules/response/handlers.js";
-import type { Authentication_ResponseTypes } from "#/shared/types/responses/routes/auth.js";
+import type { Authentication_ResponseTypes } from "#/shared/response-patterns/authentication.routes.js";
 
 export const Authentication_Controller = new (class Authentication_Controller {
     login_via_email = async (req: Authentication_ReqDtos.login_via_email, reply: e.Response) => {

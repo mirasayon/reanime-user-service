@@ -1,5 +1,5 @@
 import consola from "consola";
-import { ResponseCode } from "../../response/response.constants.js";
+import { ResponseCode } from "../../../shared/constants/response.constants.js";
 export type ServerSideExceptionClasses =
     | MediaServerErrorException
     | InternalServerErrorException
@@ -41,3 +41,4 @@ export class MediaServerNotAvalableException {
         consola.error(`${MediaServerNotAvalableException.name}: `, error);
     }
 }
+

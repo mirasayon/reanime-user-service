@@ -1,4 +1,4 @@
-import type { ClientSessionToken, ObjectCuid } from "#/shared/types/inputs/infotype.js";
+import type { iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
 import type { Account, Profile, Session } from "#/databases/orm/client.js";
 import { NotFoundException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
@@ -7,7 +7,7 @@ import { prisma } from "#/providers/database-connect.js";
 
 export const Authentication_Model = new (class Authentication_Model {
     constructor() {}
-    find_1_session_by_its_token = async (session_token: ClientSessionToken) => {
+    find_1_session_by_its_token = async (session_token: iClientSessionToken) => {
         return await prisma.session.findUnique({
             where: {
                 token: session_token,
@@ -26,7 +26,7 @@ export const Authentication_Model = new (class Authentication_Model {
         return accound;
     };
     /** Migrated from account module */
-    find_one_session_by_its_token = async (session_token: ClientSessionToken): Promise<Session> => {
+    find_one_session_by_its_token = async (session_token: iClientSessionToken): Promise<Session> => {
         const found_session = await prisma.session.findUnique({
             where: {
                 token: session_token,
@@ -42,7 +42,7 @@ export const Authentication_Model = new (class Authentication_Model {
     };
 
     /** Migrated from account module */
-    delete_one_session_by_its_token = async (session_token: ClientSessionToken) => {
+    delete_one_session_by_its_token = async (session_token: iClientSessionToken) => {
         return await prisma.session.delete({
             where: {
                 token: session_token,
@@ -51,7 +51,7 @@ export const Authentication_Model = new (class Authentication_Model {
     };
 
     find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL = async (
-        session_token: ClientSessionToken,
+        session_token: iClientSessionToken,
     ): Promise<{
         session: Session;
         profile: Profile;
@@ -80,7 +80,7 @@ export const Authentication_Model = new (class Authentication_Model {
         return { session, profile };
     };
     create_user_session = async (
-        new_account_id: ObjectCuid,
+        new_account_id: iObjectCuid,
         meta: {
             // name: string | null;
             // email: string | null;
@@ -101,7 +101,7 @@ export const Authentication_Model = new (class Authentication_Model {
         return new_session;
     };
 
-    delete_1_session_by_its_token = async (session_token: ClientSessionToken) => {
+    delete_1_session_by_its_token = async (session_token: iClientSessionToken) => {
         return await prisma.session.delete({
             where: {
                 token: session_token,
@@ -144,7 +144,7 @@ export const Authentication_Model = new (class Authentication_Model {
         return account;
     };
 
-    get_count_of_sessions_by_account_id = async (by_account_id: ObjectCuid) => {
+    get_count_of_sessions_by_account_id = async (by_account_id: iObjectCuid) => {
         return await prisma.session.count({
             where: {
                 by_account_id,

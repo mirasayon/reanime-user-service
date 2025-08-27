@@ -3,7 +3,7 @@ import { Reply } from "#/modules/response/handlers.js";
 import { MarkedAnimeCollection_Service as service } from "[www]/marked_anime_collection/marked_anime_collection.service.js";
 import type { MarkedAnimeCollection_ReqDtos as RTDO } from "[www]/marked_anime_collection/marked_anime_collection.pipes.js";
 import type e from "express";
-import type { MarkedAnimeCollection_ResponseTypes } from "#/shared/types/responses/routes/marked-anime-list.js";
+import type { MarkedAnimeCollection_ResponseTypes } from "#/shared/response-patterns/marked-anime-list.routes.js";
 
 export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection_Controller {
     get_all_list = async (req: RTDO.get_all_list, res: e.Response) => {

@@ -1,5 +1,5 @@
 import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
-import type { mid_auth_dto } from "[T]/auth.js";
+import type { mid_auth_dto } from "#/types/auth-middleware-shape.js";
 import type e from "express";
 import type { z, ZodType } from "zod";
 const Factory_Validator_Util_Class = new (class Factory_Validator_Util_Class {

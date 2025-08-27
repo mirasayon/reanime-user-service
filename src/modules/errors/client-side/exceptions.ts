@@ -1,4 +1,4 @@
-import { ResponseCode } from "../../response/response.constants.js";
+import { ResponseCode } from "../../../shared/constants/response.constants.js";
 
 export type ClientSydeExceptionClasses =
     | BadRequestException
@@ -43,3 +43,4 @@ export class ForbiddenException {
     public readonly response_code = ResponseCode.FORBIDDEN;
     constructor(public readonly errors: string[]) {}
 }
+

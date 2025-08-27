@@ -2,7 +2,7 @@ import { metadata_dto } from "#/utils/dto/meta.js";
 import { global_Utilities } from "#/utils/functions.js";
 import type { Session } from "#/databases/orm/client.js";
 import { bearer_session_token_from_headers } from "#/utils/dto/session_token.js";
-import type { mid_auth_dto } from "[T]/auth.js";
+import type { mid_auth_dto } from "#/types/auth-middleware-shape.js";
 import type e from "express";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";

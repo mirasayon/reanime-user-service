@@ -1,7 +1,7 @@
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
 import consola from "consola";
-import type { ClientSessionToken, ObjectCuid } from "#/shared/types/inputs/infotype.js";
+import type { iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import { SAMETIME_SESSIONS_LIMIT } from "#/configs/rules.js";
@@ -11,7 +11,7 @@ import type { Account } from "#/databases/orm/client.js";
  * Service class responsible for handling authentication logic.
  */
 export const Authentication_Service = new (class Authentication_Service {
-    logout = async (session_token: ClientSessionToken, account_id: ObjectCuid) => {
+    logout = async (session_token: iClientSessionToken, account_id: iObjectCuid) => {
         const found_session = await model.find_one_session_by_its_token(session_token);
         if (found_session.by_account_id !== account_id) {
             throw new UnauthorizedException(["This session token is not yours!"]);

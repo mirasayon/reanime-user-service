@@ -1,6 +1,10 @@
 import type e from "express";
-import { type I_UserServiceResponseStatusCodes, type ResponseCode, UserServiceResponseStatusCodes } from "./response.constants.js";
-import type { UserServiceResponceBodyPattern } from "../../shared/types/responses/json-body-type.js";
+import {
+    type I_UserServiceResponseStatusCodes,
+    type ResponseCode,
+    UserServiceResponseStatusCodes,
+} from "../../shared/constants/response.constants.js";
+import type { UserServiceResponceBodyPattern } from "../../shared/response-patterns/response-json-body-shape.js";
 
 export function handle_response<T>({
     res,
@@ -27,3 +31,4 @@ export function handle_response<T>({
     res.status(status_code).json(paylaod);
     return;
 }
+

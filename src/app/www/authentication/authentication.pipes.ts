@@ -1,7 +1,7 @@
 import { metadata_dto } from "#/utils/dto/meta.js";
 import { vmfactory as m } from "#/utils/validators/factory.js";
-import type { Request_dto_auth as _ } from "[T]/request_with_dto.js";
-import { authentication_schemas as schemas, type dto } from "#/modules/validators/authentication.js";
+import type { Request_dto_auth as _ } from "#/types/dto-middleware-shape.js";
+import { authentication_schemas as schemas, type dto } from "&/validators/authentication.js";
 
 /** Namespace for all validation types for Comments logic */
 namespace rd {

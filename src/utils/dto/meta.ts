@@ -1,5 +1,5 @@
 import type { Session } from "#/databases/orm/client.js";
-import type { metaData } from "[T]/auth.js";
+import type { metaData } from "#/types/auth-middleware-shape.js";
 import type e from "express";
 
 export const metadata_dto = new (class From_Create_DTO {

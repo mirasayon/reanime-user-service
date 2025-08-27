@@ -1,4 +1,4 @@
-import type { I_UserServiceResponseStatusCodes, ResponseCode } from "#/modules/response/response.constants.js";
+import type { I_UserServiceResponseStatusCodes, ResponseCode } from "#/shared/constants/response.constants.js";
 
 /**
  * Type representing the standard JSON response structure
@@ -15,3 +15,4 @@ export interface UserServiceResponceBodyPattern<DATA> {
 export type optionalMessage = { message?: string };
 export type optionalMessageAndErrors = { errors: string[] } & optionalMessage;
 export type optionalMessageAndData<DATA> = { data: DATA | undefined } & optionalMessage;
+

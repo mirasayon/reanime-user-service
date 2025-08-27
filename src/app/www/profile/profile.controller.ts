@@ -6,7 +6,7 @@ import { serviceUtils } from "#/utils/service.js";
 import { Reply } from "#/modules/response/handlers.js";
 import { MediaServerNotAvalableException } from "#/modules/errors/server-side/exceptions.js";
 import { media_incorrect, noImage_error_response } from "#/configs/frequent-errors.js";
-import type { Profile_ResponseTypes } from "#/shared/types/responses/routes/profile.js";
+import type { Profile_ResponseTypes } from "#/shared/response-patterns/profile.routes.js";
 import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
 
 export const Profile_Controller = new (class Profile_Controller {

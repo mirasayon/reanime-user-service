@@ -1,19 +1,19 @@
 /** Represents a account email address */
-export type AccountEmail = string;
+export type iAccountEmail = string;
 
 /** Represents a unique CUID identifier (e.g. user ID) */
-export type ObjectCuid = string;
+export type iObjectCuid = string;
 
 /** Represents a account raw (non-hashed) password */
-export type RawUserPassword = string;
+export type iRawUserPassword = string;
 
 /** Represents a profile display name or username */
-export type AccountUsername = string;
-export type ProfileName = string;
+export type iAccountUsername = string;
+export type iProfileName = string;
 
 /** Represents an anime ID (Shikimori anime ID) */
-export type AnimeId = number;
+export type iAnimeId = number;
 
 /** Represents a Session's Token. 577 char length */
-export type ClientSessionToken = string;
+export type iClientSessionToken = string;
 

@@ -1,10 +1,10 @@
-import type { TypeServerWorkMode } from "#/shared/types/env.js";
+import type { TypeServerWorkMode } from "#/configs/node-env.types.js";
 import { validateEnvironment, builtInSchemas as v } from "safest-env";
 const _env = validateEnvironment({
     SERVER_PORT_NUMBER: v.integer(),
     NODE_ENVIRONMENT: v.enum(["development", "test", "production"] as const),
     SERVER_HOSTNAME: v.string(),
-    MAIN_DATABASE_CONNECTION_URL: v.string(),
+    DATABASE_SERVER_CONNECTION_URL: v.string().min(5),
     WEB_FRONTEND_URL: v.url(),
     API_KEY_TO_THIS_SERVER: v.string(),
     MEDIA_SERVICE_API_KEY: v.string(),
@@ -43,8 +43,6 @@ export const EnvConfig = new (class EnvironmentClass {
             url: _env.WEB_FRONTEND_URL!,
         },
     };
-    /** Database config */
-    // db = { connection_uri: EnsuredEnv.MAIN_DATABASE_CONNECTION_URL };
     /** Port and Host Config */
     server = {
         port: Number(_env.SERVER_PORT_NUMBER),

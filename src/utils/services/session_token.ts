@@ -1,4 +1,4 @@
-import type { ObjectCuid } from "#/shared/types/inputs/infotype.js";
+import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import consola from "consola";
 import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import { ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
@@ -6,7 +6,7 @@ import { publicEncrypt, randomBytes, constants, privateDecrypt } from "node:cryp
 import { keysPrivateKey, keysPublicKey } from "#/configs/paths.config.js";
 
 export const authentication_Session_Token_Util = new (class Authentication_Session_Token_Util {
-    create_session_token = (account_id: ObjectCuid) => {
+    create_session_token = (account_id: iObjectCuid) => {
         try {
             const rand = randomBytes(32).toString("hex"); // randomBytes(32) => 64 chars of lenght
             const buffer = Buffer.from(account_id, "utf-8");

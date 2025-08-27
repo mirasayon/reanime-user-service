@@ -3,7 +3,7 @@ import { Reply } from "#/modules/response/handlers.js";
 import { Account_Service as service } from "[www]/account/account.service.js";
 import type { Account_ReqDtos } from "[www]/account/account.pipes.js";
 import type e from "express";
-import type { Account_ResponseTypes } from "#/shared/types/responses/routes/account.js";
+import type { Account_ResponseTypes } from "#/shared/response-patterns/account.routes.js";
 
 export const Account_Controller = new (class Account_Controller {
     explore_me = async (req: Account_ReqDtos.explore_me, res: e.Response) => {
