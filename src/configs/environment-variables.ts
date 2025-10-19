@@ -21,6 +21,8 @@ export const EnvConfig = new (class EnvironmentClass {
         prod: this.NODE_ENVIRONMENT === "production",
     };
 
+    /** DB Connection URL */
+    dbConnectionUrl = _env.DATABASE_SERVER_CONNECTION_URL;
     /** Api Keys that stored in env files */
     api_keys = {
         media_service_api_key: _env.MEDIA_SERVICE_API_KEY as string,
@@ -49,4 +51,3 @@ export const EnvConfig = new (class EnvironmentClass {
         host: _env.SERVER_HOSTNAME,
     };
 })();
-

@@ -5,6 +5,7 @@ generator client {
   moduleFormat           = "esm"
   generatedFileExtension = "ts"
   importFileExtension    = "js"
+  engineType             = "client"
 }
 
 datasource db {
