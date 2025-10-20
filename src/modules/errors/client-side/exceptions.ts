@@ -23,6 +23,10 @@ export class ConflictException {
     public readonly response_code = ResponseCode.CONFLICT;
     constructor(public readonly errors: string[]) {}
 }
+export class PayloadTooLargeException {
+    public readonly response_code = ResponseCode.PAYLOAD_TOO_LARGE;
+    constructor(public readonly error: string) {}
+}
 
 export class ImATeapotException {
     public readonly response_code = ResponseCode.I_AM_A_TEAPOT;
@@ -43,4 +47,3 @@ export class ForbiddenException {
     public readonly response_code = ResponseCode.FORBIDDEN;
     constructor(public readonly errors: string[]) {}
 }
-
