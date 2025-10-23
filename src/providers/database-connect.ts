@@ -9,7 +9,7 @@ declare global {
 /** Global prisma client for all of application */
 const prisma = globalThis._prisma_client_global_ || create_client();
 
-if (!EnvConfig.mode.prod) {
+if (!EnvConfig.is_prod) {
     globalThis._prisma_client_global_ = prisma;
 }
 export { prisma };

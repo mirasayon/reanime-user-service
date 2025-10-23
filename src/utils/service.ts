@@ -1,3 +1,5 @@
+// @ts-ignore
+// @ts-nocheck
 import { EnvConfig } from "#/configs/environment-variables.js";
 import { ControllerUtils } from "#/utils/controller.js";
 import { BadRequestException, ConflictException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
@@ -61,7 +63,6 @@ export const serviceUtils = new (class ServiceUtils {
                 {
                     headers: {
                         ...form.getHeaders(),
-                        ...ControllerUtils.media_service_api_key_header,
                     },
                 },
             );

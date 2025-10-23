@@ -2,7 +2,6 @@ import { Account_Controller as c } from "[www]/account/account.controller.js";
 import { Account_ReqPipes as rp } from "[www]/account/account.pipes.js";
 import { Auth_middleware } from "#/middlewares/authentication.js";
 import { cRouter } from "#/utils/tools/express.js";
-import { ControllerUtils } from "#/utils/controller.js";
 
 export const Account_Router = (() => {
     const r = cRouter();
@@ -26,7 +25,6 @@ export const Account_Router = (() => {
     r.delete("/sessions/delete_all_other_sessions", rp.terminate_other_sessions, Auth_middleware, c.terminate_other_sessions);
 
     // Delete account fully
-    r.delete("/delete_account", ControllerUtils.ping_the_media_service_middleware, Auth_middleware, c.delete_account);
+    r.delete("/delete_account", Auth_middleware, c.delete_account);
     return r;
 })();
-

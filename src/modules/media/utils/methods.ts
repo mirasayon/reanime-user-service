@@ -2,13 +2,13 @@ import { existsSync } from "node:fs";
 import { unlink } from "node:fs/promises";
 import { Logger } from "log-it-colored";
 import path from "node:path";
-import { AllowedImageFormats } from "../configs/settings.js";
 import { BadRequestException, ConflictException } from "#/modules/errors/client-side/exceptions.js";
 import { PathsConfig } from "#/configs/paths.config.js";
+import { AllowedImageFormats } from "#/configs/constants/media-module.js";
 /** A file with such a path should not exist. */
 type path_prod = string;
 /** Main utilities */
-export const Utils = new (class UtilsClass {
+export const MediaServiceUtils = new (class UtilsClass {
     /** Internal Service Util */
     get_correct_extname = (mimetype: string) => {
         const ext = mimetype.split("/")[1];

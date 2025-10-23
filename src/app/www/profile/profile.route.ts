@@ -3,7 +3,6 @@ import { Profile_Controller as c } from "[www]/profile/profile.controller.js";
 import { Profile_ReqPipes as vm } from "[www]/profile/profile.pipes.js";
 import { cRouter } from "#/utils/tools/express.js";
 import multer from "multer";
-import { ControllerUtils } from "#/utils/controller.js";
 import { too_many_request_to_media_service } from "./profile.middlewares.js";
 
 export const Profile_Router = (() => {
@@ -23,20 +22,11 @@ export const Profile_Router = (() => {
     r.patch("/update/nickname", vm.update_nickname, Auth_middleware, c.update_nickname);
 
     // Set User Avatar
-    r.post(
-        "/avatar/set",
-        ControllerUtils.ping_the_media_service_middleware,
-        vm.set_avatar,
-        Auth_middleware,
-        too_many_request_to_media_service,
-        upload.single("one_avatar_image_file"),
-        c.set_avatar,
-    );
+    r.post("/avatar/set", vm.set_avatar, Auth_middleware, too_many_request_to_media_service, upload.single("one_avatar_image_file"), c.set_avatar);
 
     // Update User Avatar
     r.patch(
         "/avatar/update",
-        ControllerUtils.ping_the_media_service_middleware,
         vm.update_avatar,
         Auth_middleware,
         too_many_request_to_media_service,
@@ -45,14 +35,6 @@ export const Profile_Router = (() => {
     );
 
     // Upload User Avatar
-    r.delete(
-        "/avatar/delete",
-        ControllerUtils.ping_the_media_service_middleware,
-        vm.delete_avatar,
-        Auth_middleware,
-        too_many_request_to_media_service,
-        c.delete_avatar,
-    );
+    r.delete("/avatar/delete", vm.delete_avatar, Auth_middleware, too_many_request_to_media_service, c.delete_avatar);
     return r;
 })();
-

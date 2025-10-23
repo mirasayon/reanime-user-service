@@ -1,4 +1,4 @@
-import { cryptoConfig } from "#/configs/crypto.config.js";
+import { mediaCryptoConfig } from "#/configs/crypto.config.js";
 import bcryptjs from "bcryptjs";
 /** Bcrypt service */
 export const bcryptjsService = new (class App_Bcrypt_Service {
@@ -19,8 +19,7 @@ export const bcryptjsService = new (class App_Bcrypt_Service {
      * @returns Password's hash
      */
     create_hash = async (raw_password: string) => {
-        const hashPassword = await bcryptjs.hash(raw_password, cryptoConfig.saltRounds);
+        const hashPassword = await bcryptjs.hash(raw_password, mediaCryptoConfig.saltRounds);
         return hashPassword;
     };
 })();
-

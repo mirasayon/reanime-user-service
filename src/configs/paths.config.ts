@@ -7,9 +7,9 @@ const _dirname_ = dirname(_filename_);
 export const PathsConfig = new (class PathsClass {
     /** Root path string of the Project. The directive where `package.json` is located */
     root: string = join(_dirname_, "..", "..");
-    /** Static folder path */
+    /** For user images */
     storage: string = join(this.root, "resources", "storage");
-
+    /** Static folder path */
     static: string = join(this.root, "resources", "static");
     /** The folder where all the scripts are located. `$project/dist` for js files */
     src: string = join(_dirname_, "..");
