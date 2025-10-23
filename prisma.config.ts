@@ -6,7 +6,7 @@ const _dirname = dirname(fileURLToPath(import.meta.url));
 /** . / prisma */
 const db_path = join(_dirname, "prisma");
 export default {
-    schema: join(db_path, "schemas", "index.prisma"),
+    schema: join(db_path, "schemas", "main.prisma"),
     migrations: {
         path: join(db_path, "migrations"),
     },
@@ -17,4 +17,3 @@ export default {
         path: join(db_path, "queries"),
     },
 } satisfies PrismaConfig;
-

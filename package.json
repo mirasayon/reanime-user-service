@@ -21,8 +21,8 @@
         "build:prod": "rimraf dist src/db/orm && npm run gen_db_client:prod && npm run compile"
     },
     "dependencies": {
-        "@prisma/adapter-pg": "^6.17.1",
-        "@prisma/client": "^6.17.1",
+        "@prisma/adapter-pg": "^6.18.0",
+        "@prisma/client": "^6.18.0",
         "bcryptjs": "^3.0.2",
         "better-psl": "^1.0.1",
         "class-validator": "^0.14.2",
@@ -37,7 +37,7 @@
         "morgan": "^1.10.1",
         "multer": "^2.0.2",
         "pg": "^8.16.3",
-        "prisma": "^6.17.1",
+        "prisma": "^6.18.0",
         "safest-env": "^0.0.1",
         "sharp": "^0.34.4",
         "zod": "^4.1.12"
@@ -48,7 +48,7 @@
         "@types/express": "^5.0.3",
         "@types/morgan": "^1.9.10",
         "@types/multer": "^2.0.0",
-        "@types/node": "^24.8.1",
+        "@types/node": "^24.9.1",
         "@types/pg": "^8.15.5",
         "dotenv-cli": "^10.0.0",
         "rimraf": "^6.0.1",
