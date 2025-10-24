@@ -8,7 +8,7 @@ import { prisma } from "#/providers/database-connect.js";
 import { expressMainApplication as app } from "./server.js";
 import { listen } from "#/utils/tools/express.js";
 
-export const start = async (): Promise<void> => {
+export const startThisServer = async (): Promise<void> => {
     try {
         const instance = await listen(app, EnvConfig.server);
         const { port, address, family } = instance.address() as AddressInfo;
@@ -35,4 +35,3 @@ export const start = async (): Promise<void> => {
         throw error;
     }
 };
-

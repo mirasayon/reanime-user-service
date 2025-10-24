@@ -1,8 +1,6 @@
 import type e from "express";
-
 import { serveFile } from "../../../utils/nest.static.js";
 export const avatars_folder = join(PathsConfig.storage, "avatars", "base");
-
 import { ForbiddenException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { join } from "node:path";
 import { create_avatar_hash_from_profile_id } from "../../../utils/crypto/hmac.js";
@@ -18,6 +16,10 @@ const avatar_image_height = 555 as const;
 import { BadGatewayException, InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 type avatar_upload_ServiceParameters = { profile_id: string; file: Express.Multer.File };
 type avatar_update_ServiceParameters = { profile_id: string; file: Express.Multer.File };
+/**
+ * Main Avatar Service
+ *
+ */
 export const avatarService = new (class Avatar_Post_Service {
     /** Deletes Avatar File */
     avatar_delete = async ({ profile_id, avatar_url_hash }: Avatar_Delete_Service_Parameters) => {

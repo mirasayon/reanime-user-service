@@ -1,3 +1,4 @@
+import { ensuredJoinSync } from "#/utils/tools/ensured-path-join.util.js";
 import { readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -6,13 +7,16 @@ const _dirname_ = dirname(_filename_);
 /** Class with configuration of all paths of necessary folders/files */
 export const PathsConfig = new (class PathsClass {
     /** Root path string of the Project. The directive where `package.json` is located */
-    root: string = join(_dirname_, "..", "..");
-    /** For user images */
-    storage: string = join(this.root, "resources", "storage");
+    root: string = ensuredJoinSync(_dirname_, "..", "..");
+    /** For user images
+     *
+     * `./resources/storage`
+     */
+    storage: string = ensuredJoinSync(this.root, "resources", "storage");
     /** Static folder path */
-    static: string = join(this.root, "resources", "static");
+    static: string = ensuredJoinSync(this.root, "resources", "static");
     /** The folder where all the scripts are located. `$project/dist` for js files */
-    src: string = join(_dirname_, "..");
+    src: string = ensuredJoinSync(_dirname_, "..");
 })();
 export const keysPublicKey: string = await readFile(join(PathsConfig.root, "keys", "public.pem"), { encoding: "utf-8" });
 export const keysPrivateKey: string = await readFile(join(PathsConfig.root, "keys", "private.pem"), { encoding: "utf-8" });
