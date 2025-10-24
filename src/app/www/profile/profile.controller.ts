@@ -57,7 +57,7 @@ export const Profile_Controller = new (class Profile_Controller {
         }
         const { new_avatar } = await service.set_avatar({
             profile_id: auth.profile.id,
-            avatar_hash: axios_res.data.avatar_hash,
+            avatar_hash: axios_res.avatar_hash,
         });
         const data: Profile_ResponseTypes.set_avatar = new_avatar.url;
         const message = "Аватарка успешно загружена";
@@ -89,11 +89,10 @@ export const Profile_Controller = new (class Profile_Controller {
         }
         const { updated_avatar } = await service.update_avatar({
             profile_id: auth.profile.id,
-            avatar_hash: axios_res.data.avatar_hash,
+            avatar_hash: axios_res.avatar_hash,
         });
         const data: Profile_ResponseTypes.update_avatar = updated_avatar.url;
         const message = "Аватарка успешно обновлена";
         return Reply.accepted(res, { data, message });
     };
 })();
-
