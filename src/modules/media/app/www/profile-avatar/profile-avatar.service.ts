@@ -1,6 +1,6 @@
 import type e from "express";
 import { serveFile } from "../../../utils/nest.static.js";
-export const avatars_folder = join(PathsConfig.storage, "avatars", "base");
+export const avatars_folder = ensuredJoinSync(PathsConfig.storage, "avatars", "base");
 import { ForbiddenException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { join } from "node:path";
 import { create_avatar_hash_from_profile_id } from "../../../utils/crypto/hmac.js";
@@ -14,6 +14,7 @@ import { PathsConfig } from "#/configs/paths.config.js";
 const avatar_image_width = 555 as const;
 const avatar_image_height = 555 as const;
 import { BadGatewayException, InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { ensuredJoinSync } from "#/utils/tools/ensured-path-join.util.js";
 type avatar_upload_ServiceParameters = { profile_id: string; file: Express.Multer.File };
 type avatar_update_ServiceParameters = { profile_id: string; file: Express.Multer.File };
 /**
@@ -29,7 +30,7 @@ export const avatarService = new (class Avatar_Post_Service {
         }
         const prod_path = join(PathsConfig.storage, "avatars", "base", `${avatar_url_hash}.webp`);
         if (!existsSync(prod_path)) {
-            throw new NotFoundException([]);
+            throw new NotFoundException(["Аватарка не найдена для удаления"]);
         }
         await unlink(prod_path);
     };
@@ -47,7 +48,7 @@ export const avatarService = new (class Avatar_Post_Service {
         const prod_path = await MediaServiceUtils.create_avatar_prod_path_FOR_UPDATE_PATH(avatar_hash);
         const extname = MediaServiceUtils.get_correct_extname(file.mimetype);
         if (!extname) {
-            throw new BadGatewayException(["No extname of file"]);
+            throw new BadGatewayException(["Нету расширения загружаемого файла"]);
         }
         const temp_path = await MediaServiceUtils.create_avatar_temp_path(avatar_hash, extname);
         await writeFile(temp_path, file.buffer);
@@ -86,7 +87,7 @@ const image_sharp_process = async (Temp_path: string, Prod_path: string) => {
         remove_temp_file_with_delay(Temp_path);
     } catch (error) {
         Logger.error(`InternalServerErrorException("Image processing failed");  ` + error);
-        throw new InternalServerErrorException("Image processing failed");
+        throw new InternalServerErrorException("Обработка изображения не удалась (#1)");
     }
 };
 type Avatar_Delete_Service_Parameters = {
