@@ -8,6 +8,7 @@ import { client_error_handler, not_found_route } from "#/modules/errors/client-s
 import { server_exception_handler, unknown_exception_handler } from "#/modules/errors/server-side/handler.js";
 import { dev_logger } from "#/middlewares/dev_logger.js";
 import morgan from "morgan";
+import { Logger } from "log-it-colored";
 /** Main Express Appliaction */
 export const expressMainApplication = (() => {
     const app = express();
@@ -35,4 +36,3 @@ export const expressMainApplication = (() => {
     app.use(unknown_exception_handler);
     return app;
 })();
-

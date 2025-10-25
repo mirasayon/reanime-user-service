@@ -71,8 +71,7 @@ export const Account_Controller = new (class Account_Controller {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
         const { deleted_account } = await service.delete_account(auth.session.by_account_id);
         const data: Account_ResponseTypes.delete_account = deleted_account;
-        const message = "Аккаунт успешно удален";
+        const message = "Аккаунт успешно удален, навсегда!";
         return Reply.accepted(res, { data, message });
     };
 })();
-

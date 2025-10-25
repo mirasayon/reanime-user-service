@@ -31,17 +31,6 @@ export const MediaServiceUtils = new (class UtilsClass {
     /** Internal Service Utils.
      *
      *  Creates Avatar Path for Store in Production. Always in WEBP Format */
-    create_avatar_prod_path_FOR_UPLOAD = (avatar_hash: string): path_prod => {
-        const prod_path = path.join(PathsConfig.storage, "avatars", "base", `${avatar_hash}.webp`) as path_prod;
-        if (existsSync(prod_path)) {
-            throw new ConflictException(["Avatar with this profile ID already exists. Please use another profile ID or update the existing avatar."]);
-        }
-        return prod_path;
-    };
-
-    /** Internal Service Utils.
-     *
-     *  Creates Avatar Path for Store in Production. Always in WEBP Format */
     create_avatar_prod_path_FOR_UPDATE_PATH = async (avatar_hash: string): Promise<path_prod> => {
         const prod_path = path.join(PathsConfig.storage, "avatars", "base", `${avatar_hash}.webp`) as path_prod;
         if (!existsSync(prod_path)) {

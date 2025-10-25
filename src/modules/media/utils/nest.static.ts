@@ -8,7 +8,7 @@ import { extname } from "node:path";
 /** Static File Hander for each request */
 export async function serveFile(req: e.Request, res: e.Response, full_path: string) {
     if (!existsSync(full_path) || !statSync(full_path).isFile()) {
-        throw new NotFoundException(["File not found"]);
+        throw new NotFoundException(["Аватарка не найдена"]);
     }
     // const stat = statSync(fullPath);
     const ext = extname(full_path).slice(1).toLowerCase();

@@ -7,6 +7,7 @@ export const schemas = new (class Profile_ValidatorSchemas {
     /** View other profiles, no auth needed */
     other_profiles = account_username;
     my_profile = UtilitySchemas.void;
+    avatar_view = account_username;
 
     set_avatar = UtilitySchemas.void;
     update_avatar = UtilitySchemas.void;
@@ -22,6 +23,7 @@ export type Schemas = typeof schemas;
 export namespace dto {
     export type other_profiles = z.infer<Schemas["other_profiles"]>;
     export type my_profile = z.infer<Schemas["my_profile"]>;
+    export type avatar_view = z.infer<Schemas["avatar_view"]>;
     export type set_avatar = z.infer<Schemas["set_avatar"]>;
     export type update_avatar = z.infer<Schemas["update_avatar"]>;
     export type delete_avatar = z.infer<Schemas["delete_avatar"]>;

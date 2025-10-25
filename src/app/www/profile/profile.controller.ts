@@ -8,6 +8,7 @@ import { MediaServerNotAvalableException } from "#/modules/errors/server-side/ex
 import { incorrect_media, noImage_error_response } from "#/configs/frequent-errors.js";
 import type { Profile_ResponseTypes } from "#/shared/response-patterns/profile.routes.js";
 import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
+import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
 
 export const Profile_Controller = new (class Profile_Controller {
     /** Controller for create one comment by profile */
@@ -94,5 +95,9 @@ export const Profile_Controller = new (class Profile_Controller {
         const data: Profile_ResponseTypes.update_avatar = updated_avatar.url;
         const message = "Аватарка успешно обновлена";
         return Reply.accepted(res, { data, message });
+    };
+    avatar_view = async (req: Profile_ReqDtos.avatar_view, res: e.Response) => {
+        const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
+        return await service.avatar_view(dto, req, res);
     };
 })();

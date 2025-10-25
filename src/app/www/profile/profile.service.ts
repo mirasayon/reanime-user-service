@@ -2,6 +2,8 @@ import { serviceUtils } from "#/utils/service.js";
 import { BadRequestException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { Profile_Model as model } from "[www]/profile/profile.model.js";
 import type { Account, AvatarPicture, Profile } from "#/databases/orm/client.js";
+import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
+import type e from "express";
 
 /** Service Class with all methods for comments */
 export const Profile_Service = new (class Profile_Service {
@@ -60,7 +62,7 @@ export const Profile_Service = new (class Profile_Service {
         if (found_profile.avatar) {
             throw new BadRequestException(["Вам нужно обновить аватар, но вы загружаете"]);
         }
-        const new_avatar = await model.update_avatar_by_id(found_profile.id, data.avatar_hash);
+        const new_avatar = await model.set_avatar_by_id(found_profile.id, data.avatar_hash);
         return { new_avatar };
     };
     update_avatar = async (data: { profile_id: string; avatar_hash: string }): Promise<{ updated_avatar: AvatarPicture }> => {
@@ -74,5 +76,15 @@ export const Profile_Service = new (class Profile_Service {
         const deleted_avatar = await model.delete_avatar_from_profile(profile_id);
         return { deleted_avatar };
     };
+    avatar_view = async (username: string, req: e.Request, res: e.Response) => {
+        const foundProfile = await model.find_profile_by_username(username);
+        if (!foundProfile) {
+            throw new NotFoundException(["Пользователь с таким юзернеймом не найден"]);
+        }
+        const avatarData = await model.find_profile_by_its_id_with_avatar_data(foundProfile.profile.id);
+        if (!avatarData.avatar) {
+            throw new NotFoundException(["Аватарка этого ползователя не найдена"]);
+        }
+        return await avatarService.serveAvatarImage(avatarData.avatar.by_profile_id, req, res);
+    };
 })();
-

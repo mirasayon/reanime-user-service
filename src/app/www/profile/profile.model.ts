@@ -57,6 +57,9 @@ export const Profile_Model = new (class Profile_Model {
             where: {
                 by_account_id: account.id,
             },
+            include: {
+                avatar: true,
+            },
         });
 
         if (!profile) {
@@ -98,6 +101,14 @@ export const Profile_Model = new (class Profile_Model {
             },
         });
     };
+    set_avatar_by_id = async (profile_id: iObjectCuid, avatar_url_hash: string): Promise<AvatarPicture> => {
+        return await prisma.avatarPicture.create({
+            data: {
+                by_profile_id: profile_id,
+                url: avatar_url_hash,
+            },
+        });
+    };
 
     delete_avatar_from_profile = async (profile_id: iObjectCuid): Promise<AvatarPicture> => {
         return await prisma.avatarPicture.delete({
@@ -107,4 +118,3 @@ export const Profile_Model = new (class Profile_Model {
         });
     };
 })();
-

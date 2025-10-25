@@ -3,7 +3,7 @@ import { ControllerUtils } from "#/utils/controller.js";
 import { BadRequestException, ConflictException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { InternalServerErrorException, MediaServerNotAvalableException } from "#/modules/errors/server-side/exceptions.js";
 import consola from "consola";
-import { avatarService } from "#/modules/media/app/www/profile-avatar/profile-avatar.service.js";
+import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
 
 type Example_of_media_service_response = {
     avatar_hash: string;

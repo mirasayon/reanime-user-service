@@ -6,6 +6,7 @@ namespace rd {
     export type update_name = _<dto.update_name>;
     export type update_bio = _<dto.update_bio>;
     export type my_profile = _<dto.my_profile>;
+    export type avatar_view = _<dto.avatar_view, { username: string }>;
     export type set_avatar = _<dto.set_avatar>;
     export type update_avatar = _<dto.update_avatar>;
     export type delete_avatar = _<dto.delete_avatar>;
@@ -20,9 +21,9 @@ export const Profile_ReqPipes = new (class Profile_ReqPipes {
     set_avatar = vmfactory<rd.set_avatar>(schemas.set_avatar);
     delete_avatar = vmfactory<rd.delete_avatar>(schemas.delete_avatar);
     update_avatar = vmfactory<rd.update_avatar>(schemas.update_avatar);
+    avatar_view = vmfactory<rd.avatar_view>(schemas.avatar_view, async (req) => req.params.username);
 
     update_nickname = vmfactory<rd.update_name>(schemas.update_name, async (req) => req.body.nickname);
 
     update_bio = vmfactory<rd.update_bio>(schemas.update_bio, async (req) => req.body.bio);
 })();
-
