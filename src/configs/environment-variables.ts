@@ -6,15 +6,11 @@ const _env = validateEnvironment({
     SERVER_HOSTNAME: v.string(),
     DATABASE_SERVER_CONNECTION_URL: v.string().min(5),
     API_KEY_TO_THIS_SERVER: v.string(),
-    AVATAR_IMAGE_FILENAME_HASH_SECRET: v.string(),
-    COVER_IMAGE_FILENAME_HASH_SECRET: v.string(),
 });
 /** Environment variables configuration */
 export const EnvConfig = new (class EnvironmentClass {
     /** Standard NODE_ENVIRONMENT. Running mode for application. */
     NODE_ENVIRONMENT = _env.NODE_ENVIRONMENT;
-    /** Custom running mode info object.  */
-
     constructor() {
         let mode: "dev" | "test" | "prod";
         switch (this.NODE_ENVIRONMENT) {
@@ -44,19 +40,8 @@ export const EnvConfig = new (class EnvironmentClass {
 
     /** DB Connection URL */
     dbConnectionUrl = _env.DATABASE_SERVER_CONNECTION_URL;
-    /** Api Keys that stored in env files */
-    api_keys = {
-        /**
-         * API key to access the media server.
-         * This key is used to authenticate requests to the media server.
-         */
-        api_key_to_this_service: _env.API_KEY_TO_THIS_SERVER as string,
-    };
-
-    keys = {
-        hmac_key_for_avatar_image_filename: _env.AVATAR_IMAGE_FILENAME_HASH_SECRET as string,
-        hmac_key_for_cover_image_filename: _env.COVER_IMAGE_FILENAME_HASH_SECRET as string,
-    };
+    /** This key is used to access to this server */
+    api_key_to_this_service = _env.API_KEY_TO_THIS_SERVER as string;
     frontendUrl;
     /** Port and Host Config */
     server = {

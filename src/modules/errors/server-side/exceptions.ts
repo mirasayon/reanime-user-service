@@ -5,7 +5,7 @@ export type ServerSideExceptionClasses =
     | InternalServerErrorException
     | BadGatewayException
     | NotImplementedException
-    | MediaServerNotAvalableException;
+    | MediaServerNotAvailableException;
 
 export class MediaServerErrorException {
     readonly response_code = ResponseCode.MEDIA_SERVICE_ERROR;
@@ -35,10 +35,9 @@ export class NotImplementedException {
         consola.error(`${this.name}: `, error);
     }
 }
-export class MediaServerNotAvalableException {
+export class MediaServerNotAvailableException {
     readonly response_code = ResponseCode.MEDIA_SERVICE_NOT_AVAILABLE;
     constructor(readonly error: unknown, readonly service_name?: string) {
-        consola.error(`${MediaServerNotAvalableException.name}: `, error);
+        consola.error(`${MediaServerNotAvailableException.name}: `, error);
     }
 }
-

@@ -41,14 +41,14 @@ export const Profile_Model = new (class Profile_Model {
             },
         });
         if (!profile) {
-            throw new NotFoundException(["Профиль с таким аккант айди не найден"]);
+            throw new NotFoundException(["Профиль с таким аккаунтом айди не найден"]);
         }
         return { account, profile };
     };
 
-    find_by_account_id_AND_return_account_and_profile = async (accound_id: iObjectCuid): Promise<{ account: Account; profile: Profile }> => {
+    find_by_account_id_AND_return_account_and_profile = async (account_id: iObjectCuid): Promise<{ account: Account; profile: Profile }> => {
         const account = await prisma.account.findUnique({
-            where: { id: accound_id },
+            where: { id: account_id },
         });
         if (!account) {
             throw new NotFoundException(["Аккаунт с таким айди не найден"]);
@@ -63,7 +63,7 @@ export const Profile_Model = new (class Profile_Model {
         });
 
         if (!profile) {
-            throw new NotFoundException(["Профиль с таким аккант айди не найден"]);
+            throw new NotFoundException(["Профиль с таким аккаунтом айди не найден"]);
         }
         return { account, profile };
     };

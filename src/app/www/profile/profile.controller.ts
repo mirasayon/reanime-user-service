@@ -4,7 +4,7 @@ import { type Profile_ReqDtos } from "[www]/profile/profile.pipes.js";
 import { Profile_Service as service } from "[www]/profile/profile.service.js";
 import { serviceUtils } from "#/utils/service.js";
 import { Reply } from "#/modules/response/handlers.js";
-import { MediaServerNotAvalableException } from "#/modules/errors/server-side/exceptions.js";
+import { MediaServerNotAvailableException } from "#/modules/errors/server-side/exceptions.js";
 import { incorrect_media, noImage_error_response } from "#/configs/frequent-errors.js";
 import type { Profile_ResponseTypes } from "#/shared/response-patterns/profile.routes.js";
 import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
@@ -52,13 +52,13 @@ export const Profile_Controller = new (class Profile_Controller {
         if (!file) {
             throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
         }
-        const axios_res = await serviceUtils.post_to_media_server_for_SET_avatar(file, profile_id);
-        if (!axios_res) {
-            throw new MediaServerNotAvalableException(incorrect_media);
+        const media_res = await serviceUtils.post_to_media_server_for_SET_avatar(file, profile_id);
+        if (!media_res) {
+            throw new MediaServerNotAvailableException(incorrect_media);
         }
         const { new_avatar } = await service.set_avatar({
             profile_id: auth.profile.id,
-            avatar_hash: axios_res.avatar_hash,
+            avatar_hash: media_res.profile_cuid,
         });
         const data: Profile_ResponseTypes.set_avatar = new_avatar.url;
         const message = "Аватарка успешно загружена";
@@ -67,11 +67,10 @@ export const Profile_Controller = new (class Profile_Controller {
 
     delete_avatar = async (req: Profile_ReqDtos.delete_avatar, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-
-        const { avatar_url_hash } = await service.__check_if_has_avatar_for_delete(auth.profile.id);
-        const { deleted_avatar } = await service.delete_avatar(auth.profile.id, avatar_url_hash);
+        await service.__check_if_has_avatar_for_delete(auth.profile.id);
+        const { deleted_avatar } = await service.delete_avatar(auth.profile.id);
         const data: Profile_ResponseTypes.delete_avatar = deleted_avatar;
-        const message = "Аватарка успешно удалена";
+        const message = "Аватарка пользователя успешно удалена";
         return Reply.accepted(res, { data, message });
     };
     update_avatar = async (req: Profile_ReqDtos.update_avatar, res: e.Response) => {
@@ -84,13 +83,13 @@ export const Profile_Controller = new (class Profile_Controller {
         if (!file) {
             throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
         }
-        const axios_res = await serviceUtils.post_to_media_server_for_UPDATE_avatar(file, auth.profile.id);
-        if (!axios_res) {
-            throw new MediaServerNotAvalableException(incorrect_media);
+        const media_res = await serviceUtils.post_to_media_server_for_UPDATE_avatar(file, auth.profile.id);
+        if (!media_res) {
+            throw new MediaServerNotAvailableException(incorrect_media);
         }
         const { updated_avatar } = await service.update_avatar({
             profile_id: auth.profile.id,
-            avatar_hash: axios_res.avatar_hash,
+            avatar_hash: media_res.profile_cuid,
         });
         const data: Profile_ResponseTypes.update_avatar = updated_avatar.url;
         const message = "Аватарка успешно обновлена";

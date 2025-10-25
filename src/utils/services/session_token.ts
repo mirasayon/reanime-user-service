@@ -8,7 +8,7 @@ import { keysPrivateKey, keysPublicKey } from "#/configs/paths.config.js";
 export const authentication_Session_Token_Util = new (class Authentication_Session_Token_Util {
     create_session_token = (account_id: iObjectCuid) => {
         try {
-            const rand = randomBytes(32).toString("hex"); // randomBytes(32) => 64 chars of lenght
+            const rand = randomBytes(32).toString("hex"); // randomBytes(32) => 64 chars of length
             const buffer = Buffer.from(account_id, "utf-8");
             const salt = publicEncrypt(
                 {
@@ -40,8 +40,8 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
                 },
                 buffer,
             );
-            const accound_id = decrypted.toString("utf-8");
-            return { session_token, accound_id };
+            const account_id = decrypted.toString("utf-8");
+            return { session_token, account_id };
         } catch (error) {
             if (error instanceof UnauthorizedException) {
                 throw error;
@@ -50,4 +50,3 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
         }
     }
 })();
-

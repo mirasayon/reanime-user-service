@@ -7,7 +7,7 @@ import type e from "express";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
 import { BadRequestException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
-import { auth__metas_dont_matching } from "#/configs/frequent-errors.js";
+import { auth_ip_and_agent_do_not_match } from "#/configs/frequent-errors.js";
 
 /**
  * Verifies whether the request metadata (IP and User-Agent)
@@ -24,7 +24,7 @@ const check_meta = (session: Session, requestMeta: e.Request) => {
     if (is_equal === true) {
         return true;
     }
-    throw new UnauthorizedException([auth__metas_dont_matching]);
+    throw new UnauthorizedException([auth_ip_and_agent_do_not_match]);
 };
 
 /**
@@ -42,7 +42,7 @@ export const Auth_middleware = async (req: e.Request & { auth?: mid_auth_dto }, 
     const decrypted = authentication_Session_Token_Util.decrypt_session_token(req_session_token);
     const { session, profile } = await model.find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL(req_session_token);
 
-    if (session.by_account_id !== decrypted.accound_id) {
+    if (session.by_account_id !== decrypted.account_id) {
         throw new UnauthorizedException(["Токен сеанса украден"]);
     }
     // Check if the session's metadata matches the request's metadata
@@ -81,7 +81,7 @@ export const CheckAuth = async (
 };
 
 /**
- * Middleware for checking if client has alredy logged;
+ * Middleware for checking if client has already logged;
  * @param req
  *
  * If client has, then throws BadRequestException
@@ -100,4 +100,3 @@ export const has_client_already_logged = async (req: e.Request & { auth?: mid_au
     }
     return next();
 };
-

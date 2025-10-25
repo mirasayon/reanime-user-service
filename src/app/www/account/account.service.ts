@@ -12,6 +12,7 @@ import {
 } from "#/modules/errors/client-side/exceptions.js";
 import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
 import { email_is_used } from "#/configs/frequent-errors.js";
+import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
 /** Account Service */
 export const Account_Service = new (class Account_Service {
     explore_me = async (account_id: iObjectCuid): Promise<Account> => {
@@ -36,8 +37,8 @@ export const Account_Service = new (class Account_Service {
         if (found_user.id !== by_account_id) {
             throw new ForbiddenException(["Вам не разрешено редактировать адрес электронной почты этого пользователя."]);
         }
-        const found_user_dublicate = await model.Get_account_by_email_No_Throw_Error(new_email);
-        if (found_user_dublicate) {
+        const found_user_duplicate = await model.Get_account_by_email_No_Throw_Error(new_email);
+        if (found_user_duplicate) {
             throw new ConflictException([email_is_used]);
         }
         const updated_account = await model.update_email_for_one(found_user.id, new_email);
@@ -124,7 +125,7 @@ export const Account_Service = new (class Account_Service {
             throw new NotImplementedException("Мы пока не можем удалять обложки");
         }
         if (found_profile.avatar) {
-            await serviceUtils.request_to_media_service_to_delete_avatar(found_profile.id, found_profile.avatar.url);
+            await avatarService.avatar_delete(found_profile.avatar.url);
         }
         const deleted_account = await model.delete_account_by_its_id(found_account.id);
         return {
@@ -132,4 +133,3 @@ export const Account_Service = new (class Account_Service {
         };
     };
 })();
-

@@ -24,8 +24,8 @@ export const Profile_Service = new (class Profile_Service {
         const updated_profile = await model.update_nickname_by_id(found_profile.id, new_nickname);
         return { updated_profile };
     };
-    view_my_profile = async (accound_id: string): Promise<{ account: Account; profile: Profile }> => {
-        const found_profile = await model.find_by_account_id_AND_return_account_and_profile(accound_id);
+    view_my_profile = async (account_id: string): Promise<{ account: Account; profile: Profile }> => {
+        const found_profile = await model.find_by_account_id_AND_return_account_and_profile(account_id);
 
         return found_profile;
     };
@@ -49,7 +49,6 @@ export const Profile_Service = new (class Profile_Service {
         if (!found_profile.avatar) {
             throw new BadRequestException(["Аватар не найден"]);
         }
-        return { avatar_url_hash: found_profile.avatar.url };
     };
     set_avatar_check = async (profile_id: string) => {
         const found_profile = await model.find_profile_by_its_id_with_avatar_data(profile_id);
@@ -71,8 +70,8 @@ export const Profile_Service = new (class Profile_Service {
         return { updated_avatar };
     };
 
-    delete_avatar = async (profile_id: string, avatar_hash: string): Promise<{ deleted_avatar: AvatarPicture }> => {
-        await serviceUtils.request_to_media_service_to_delete_avatar(profile_id, avatar_hash);
+    delete_avatar = async (profile_id: string): Promise<{ deleted_avatar: AvatarPicture }> => {
+        await avatarService.avatar_delete(profile_id);
         const deleted_avatar = await model.delete_avatar_from_profile(profile_id);
         return { deleted_avatar };
     };
@@ -83,7 +82,7 @@ export const Profile_Service = new (class Profile_Service {
         }
         const avatarData = await model.find_profile_by_its_id_with_avatar_data(foundProfile.profile.id);
         if (!avatarData.avatar) {
-            throw new NotFoundException(["Аватарка этого ползователя не найдена"]);
+            throw new NotFoundException(["Аватарка этого пользователя не найдена"]);
         }
         return await avatarService.serveAvatarImage(avatarData.avatar.by_profile_id, req, res);
     };
