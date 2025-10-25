@@ -19,7 +19,7 @@ export const Comment_Service = new (class Comment_Service {
         return { created_comment };
     };
     /** Gets all the comments from anime id */
-    get_all_comments_by_animeid = async (args: { page: number; limit: number; anime_id: number }) => {
+    get_all_comments_by_animeId = async (args: { page: number; limit: number; anime_id: number }) => {
         const comments = await model.get_all_comments_for_anime(args);
         return comments;
     };
@@ -109,4 +109,3 @@ export const Comment_Service = new (class Comment_Service {
         return { updated_comment };
     };
 })();
-

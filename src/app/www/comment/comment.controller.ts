@@ -39,7 +39,7 @@ export const Comment_Controller = new (class Comment_Controller {
     /** Gives the list of comments from specified anime ID */
     get_all_for_anime = async (req: Comment_ReqDtos.get_all_for_anime, res: e.Response) => {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
-        const sr = await service.get_all_comments_by_animeid(dto);
+        const sr = await service.get_all_comments_by_animeId(dto);
 
         const data: Comment_ResponseTypes.get_all_for_anime = sr;
         const message = "Все комментарии к этому аниме";
@@ -108,8 +108,7 @@ export const Comment_Controller = new (class Comment_Controller {
             profile_id: auth.profile.id,
         });
         const data: Comment_ResponseTypes.delete_comment = deleted_comment;
-        const message = "Кооментарий успешно удалён";
+        const message = "Комментарий успешно удалён";
         return Reply.accepted(reply, { data, message });
     };
 })();
-

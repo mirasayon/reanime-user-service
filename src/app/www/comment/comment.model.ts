@@ -1,5 +1,5 @@
 import { prisma } from "#/providers/database-connect.js";
-import type { Comment, CommentVote } from "#/databases/orm/client.js";
+import type { AvatarPicture, Comment, CommentVote, Profile } from "#/databases/orm/client.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 
@@ -27,6 +27,12 @@ export const Comment_Model = new (class Comment_Model {
     }): Promise<
         (Comment & {
             ratings: CommentVote[];
+            by_profile: Profile & {
+                avatar: AvatarPicture | null;
+                by_account: {
+                    username: string;
+                };
+            };
         })[]
     > => {
         const skip = (args.page - 1) * args.limit;
@@ -35,9 +41,11 @@ export const Comment_Model = new (class Comment_Model {
             where: {
                 anime_id: args.anime_id,
             },
-            skip,
+            skip: skip,
             include: {
                 ratings: true,
+                // replies: true,
+                by_profile: { include: { avatar: true, by_account: { select: { username: true } } } },
             },
             take: args.limit,
         });
@@ -114,4 +122,3 @@ export const Comment_Model = new (class Comment_Model {
         });
     };
 })();
-
