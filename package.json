@@ -1,9 +1,9 @@
 {
-    "name": "@reanime/user-service",
-    "version": "0.3.1",
+    "name": "reanime-user-service",
+    "version": "1.0.0",
     "type": "module",
     "scripts": {
-        "hot:dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/startup.js",
+        "dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/startup.js",
         "compile:hot": "tspc --watch",
         "compile": "tsc && tsc-alias",
         "hot:src": "node --watch --env-file=.env.development ./src/server/startup.ts",
@@ -16,9 +16,9 @@
         "gen_db_client:dev": "dotenv -e .env.development -- prisma generate",
         "gen_db_client:test": "dotenv -e .env.test -- prisma generate",
         "gen_db_client:prod": "dotenv -e .env.production -- prisma generate",
-        "build:dev": "rimraf dist src/db/orm && npm run gen_db_client:dev && npm run compile",
-        "build:test": "rimraf dist src/db/orm && npm run gen_db_client:test && npm run compile",
-        "build:prod": "rimraf dist src/db/orm && npm run gen_db_client:prod && npm run compile"
+        "build:dev": "rimraf dist src/databases/orm && npm run gen_db_client:dev && npm run compile",
+        "build:test": "rimraf dist src/databases/orm && npm run gen_db_client:test && npm run compile",
+        "build:prod": "rimraf dist src/databases/orm && npm run gen_db_client:prod && npm run compile"
     },
     "dependencies": {
         "@prisma/adapter-pg": "^6.18.0",

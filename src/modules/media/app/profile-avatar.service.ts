@@ -54,6 +54,7 @@ export const avatarService = new (class Avatar_Post_Service {
             }
         }
     };
+    /** todo  */
     avatar_update = async ({ profile_cuid, file }: avatar_update_ServiceParameters) => {
         const prod_path = await avatarServiceUtils.create_avatar_prod_path_FOR_UPDATE_PATH(profile_cuid);
         const extname = avatarServiceUtils.get_correct_extname(file.mimetype);
