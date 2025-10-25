@@ -5,6 +5,7 @@ import path from "node:path";
 import { BadRequestException, ConflictException } from "#/modules/errors/client-side/exceptions.js";
 import { PathsConfig } from "#/configs/paths.config.js";
 import { AllowedImageFormats } from "#/configs/constants/media-module.js";
+
 /** A file with such a path should not exist. */
 type path_prod = string;
 /** Main utilities */
@@ -46,13 +47,6 @@ export const avatarServiceUtils = new (class UtilsClass {
         const temp_path = path.join(PathsConfig.storage, "avatars", "temp", `${avatar_hash}.${extname}`);
         await this.check_tempfile(temp_path);
         return temp_path;
-    };
-
-    /** `Sleep` function */
-    public readonly sleep = async (ms: number): Promise<void> => {
-        return await new Promise((resolve: () => void, reject) => {
-            return setTimeout(resolve, ms);
-        });
     };
 
     /** Controller Util */

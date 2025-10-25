@@ -50,10 +50,10 @@ export const Profile_Controller = new (class Profile_Controller {
         if (!file) {
             throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
         }
-        const media_res = await avatarService.avatar_set({ profile_cuid, file });
+        await avatarService.avatar_set({ profile_cuid, file });
         const { new_avatar } = await service.set_avatar({
             profile_id: auth.profile.id,
-            avatar_hash: media_res.profile_cuid,
+            avatar_hash: profile_cuid,
         });
         const data: Profile_ResponseTypes.set_avatar = !!new_avatar.url;
         const message = "Аватарка успешно загружена";
