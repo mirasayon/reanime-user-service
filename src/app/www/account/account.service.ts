@@ -1,6 +1,5 @@
 import type { iAccountEmail, iAccountUsername, iClientSessionToken, iObjectCuid, iRawUserPassword } from "#/shared/types/inputs/informative.types.js";
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
-import { serviceUtils } from "#/utils/service.js";
 import { Account_Model as model } from "[www]/account/account.model.js";
 import type { Account, Session } from "#/databases/orm/client.js";
 import {

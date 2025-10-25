@@ -3,7 +3,7 @@ import { MulterError } from "multer";
 import { Reply } from "../../response/handlers.js";
 import {
     BadRequestException,
-    type ClientSydeExceptionClasses,
+    type ClientSideExceptionClasses,
     ConflictException,
     ForbiddenException,
     ImATeapotException,
@@ -12,7 +12,7 @@ import {
     UnauthorizedException,
 } from "./exceptions.js";
 export const client_error_handler = (
-    error: Error | SyntaxError | MulterError | ClientSydeExceptionClasses,
+    error: Error | SyntaxError | MulterError | ClientSideExceptionClasses,
     _req: e.Request,
     res: e.Response,
     next: e.NextFunction,
@@ -54,7 +54,7 @@ export const client_error_handler = (
         });
     }
     if (error instanceof TooManyRequestsException) {
-        return Reply.too_many_reqeusts(res, {
+        return Reply.too_many_requests(res, {
             message: error.message,
         });
     }
@@ -69,4 +69,3 @@ export const client_error_handler = (
 export const not_found_route = (req: e.Request, res: e.Response, next: e.NextFunction): void => {
     return Reply.not_found(res, { errors: [] });
 };
-

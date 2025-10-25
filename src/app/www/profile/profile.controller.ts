@@ -2,10 +2,8 @@ import type e from "express";
 import { ControllerUtils } from "#/utils/controller.js";
 import { type Profile_ReqDtos } from "[www]/profile/profile.pipes.js";
 import { Profile_Service as service } from "[www]/profile/profile.service.js";
-import { serviceUtils } from "#/utils/service.js";
 import { Reply } from "#/modules/response/handlers.js";
-import { MediaServerNotAvailableException } from "#/modules/errors/server-side/exceptions.js";
-import { incorrect_media, noImage_error_response } from "#/configs/frequent-errors.js";
+import { noImage_error_response } from "#/configs/frequent-errors.js";
 import type { Profile_ResponseTypes } from "#/shared/response-patterns/profile.routes.js";
 import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
 import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
@@ -47,20 +45,17 @@ export const Profile_Controller = new (class Profile_Controller {
             throw noImage_error_response;
         }
         const { file, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const { id: profile_id } = auth.profile;
-        await service.set_avatar_check(profile_id);
+        const { id: profile_cuid } = auth.profile;
+        await service.set_avatar_check(profile_cuid);
         if (!file) {
             throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
         }
-        const media_res = await serviceUtils.post_to_media_server_for_SET_avatar(file, profile_id);
-        if (!media_res) {
-            throw new MediaServerNotAvailableException(incorrect_media);
-        }
+        const media_res = await avatarService.avatar_set({ profile_cuid, file });
         const { new_avatar } = await service.set_avatar({
             profile_id: auth.profile.id,
             avatar_hash: media_res.profile_cuid,
         });
-        const data: Profile_ResponseTypes.set_avatar = new_avatar.url;
+        const data: Profile_ResponseTypes.set_avatar = !!new_avatar.url;
         const message = "Аватарка успешно загружена";
         return Reply.accepted(res, { data, message });
     };
@@ -83,10 +78,7 @@ export const Profile_Controller = new (class Profile_Controller {
         if (!file) {
             throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
         }
-        const media_res = await serviceUtils.post_to_media_server_for_UPDATE_avatar(file, auth.profile.id);
-        if (!media_res) {
-            throw new MediaServerNotAvailableException(incorrect_media);
-        }
+        const media_res = await avatarService.avatar_update({ profile_cuid: auth.profile.id, file });
         const { updated_avatar } = await service.update_avatar({
             profile_id: auth.profile.id,
             avatar_hash: media_res.profile_cuid,

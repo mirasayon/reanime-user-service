@@ -1,4 +1,3 @@
-import { serviceUtils } from "#/utils/service.js";
 import { BadRequestException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { Profile_Model as model } from "[www]/profile/profile.model.js";
 import type { Account, AvatarPicture, Profile } from "#/databases/orm/client.js";

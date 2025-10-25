@@ -1,6 +1,6 @@
 import { ResponseCode } from "../../../shared/constants/response.constants.js";
 
-export type ClientSydeExceptionClasses =
+export type ClientSideExceptionClasses =
     | BadRequestException
     | TooManyRequestsException
     | ConflictException

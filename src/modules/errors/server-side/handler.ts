@@ -1,13 +1,7 @@
 import consola from "consola";
 import type e from "express";
 import { Reply } from "../../response/handlers.js";
-import {
-    BadGatewayException,
-    InternalServerErrorException,
-    MediaServerErrorException,
-    MediaServerNotAvalableException,
-    NotImplementedException,
-} from "./exceptions.js";
+import { BadGatewayException, InternalServerErrorException, NotImplementedException } from "./exceptions.js";
 
 export const unknown_exception_handler = (error: unknown, req: e.Request, res: e.Response, next: e.NextFunction): void => {
     consola.fatal("Unknown error: ", error);
@@ -16,10 +10,6 @@ export const unknown_exception_handler = (error: unknown, req: e.Request, res: e
 
 /** Expected Internal Error Handler */
 export const server_exception_handler = (error: unknown, req: e.Request, res: e.Response, next: e.NextFunction) => {
-    if (error instanceof MediaServerErrorException) {
-        return Reply.media_sevice_error(res, {});
-    }
-
     if (error instanceof InternalServerErrorException) {
         return Reply.internal_server_error(res, {});
     }
@@ -29,9 +19,5 @@ export const server_exception_handler = (error: unknown, req: e.Request, res: e.
     if (error instanceof NotImplementedException) {
         return Reply.not_implemented(res, {});
     }
-    if (error instanceof MediaServerNotAvalableException) {
-        return Reply.media_sevice_unavailable(res, {});
-    }
     return next(error);
 };
-

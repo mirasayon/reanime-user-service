@@ -1,19 +1,7 @@
 import consola from "consola";
-import { ResponseCode } from "../../../shared/constants/response.constants.js";
-export type ServerSideExceptionClasses =
-    | MediaServerErrorException
-    | InternalServerErrorException
-    | BadGatewayException
-    | NotImplementedException
-    | MediaServerNotAvailableException;
+import { ResponseCode } from "#/shared/constants/response.constants.js";
+export type ServerSideExceptionClasses = InternalServerErrorException | BadGatewayException | NotImplementedException;
 
-export class MediaServerErrorException {
-    readonly response_code = ResponseCode.MEDIA_SERVICE_ERROR;
-    readonly name = MediaServerErrorException.name;
-    constructor(readonly error: unknown, readonly service_name?: string) {
-        consola.error(`${this.name}: `, error);
-    }
-}
 export class InternalServerErrorException {
     readonly response_code = ResponseCode.INTERNAL_ERROR;
     readonly name = InternalServerErrorException.name;
@@ -33,11 +21,5 @@ export class NotImplementedException {
     readonly name = NotImplementedException.name;
     constructor(readonly error: unknown, readonly service_name?: string) {
         consola.error(`${this.name}: `, error);
-    }
-}
-export class MediaServerNotAvailableException {
-    readonly response_code = ResponseCode.MEDIA_SERVICE_NOT_AVAILABLE;
-    constructor(readonly error: unknown, readonly service_name?: string) {
-        consola.error(`${MediaServerNotAvailableException.name}: `, error);
     }
 }

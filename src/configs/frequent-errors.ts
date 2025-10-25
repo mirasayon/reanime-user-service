@@ -11,5 +11,4 @@ export const auth_ip_and_agent_do_not_match = "IP-адрес клиента и/�
 
 export const email_is_used = "Эта почта уже используется другим аккаунтом" as const;
 
-export const incorrect_media = "Медиасервер не ответил ожидаемыми данными";
 export const noImage_error_response = new BadRequestException(["Файл не загружен. Пожалуйста, загрузите изображение"]);

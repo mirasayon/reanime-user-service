@@ -8,7 +8,7 @@ import { AllowedImageFormats } from "#/configs/constants/media-module.js";
 /** A file with such a path should not exist. */
 type path_prod = string;
 /** Main utilities */
-export const MediaServiceUtils = new (class UtilsClass {
+export const avatarServiceUtils = new (class UtilsClass {
     /** Internal Service Util */
     get_correct_extname = (mimetype: string) => {
         const ext = mimetype.split("/")[1];

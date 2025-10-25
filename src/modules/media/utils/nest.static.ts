@@ -1,4 +1,4 @@
-import { MediaService_Allowed_MIME_TYPES } from "#/configs/constants/media-module.js";
+import { Avatar_Image_Allowed_MIME_TYPES } from "#/configs/constants/media-module.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type e from "express";
 import { createReadStream, existsSync, statSync } from "node:fs";
@@ -12,7 +12,7 @@ export async function serveFile(req: e.Request, res: e.Response, full_path: stri
     }
     // const stat = statSync(fullPath);
     const ext = extname(full_path).slice(1).toLowerCase();
-    const mime = MediaService_Allowed_MIME_TYPES[ext as keyof typeof MediaService_Allowed_MIME_TYPES] || "application/octet-stream";
+    const mime = Avatar_Image_Allowed_MIME_TYPES[ext as keyof typeof Avatar_Image_Allowed_MIME_TYPES] || "application/octet-stream";
     // const etag = `W/"${stat.size.toString(16)}-${stat.mtimeMs.toString(16)}"` as const;
     res.setHeader("Content-Type", mime);
     // res.setHeader("ETag", etag);

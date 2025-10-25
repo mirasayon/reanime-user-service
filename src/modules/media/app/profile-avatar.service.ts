@@ -1,13 +1,13 @@
 import type e from "express";
 import { serveFile } from "../utils/nest.static.js";
 export const avatars_folder = ensuredJoinSync(PathsConfig.storage, "avatars", "base");
-import { ConflictException, ForbiddenException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
+import { ConflictException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { join } from "node:path";
 import { existsSync } from "node:fs";
 import { Logger } from "log-it-colored";
 import { readFile, unlink, writeFile } from "node:fs/promises";
 import sharp from "sharp";
-import { MediaServiceUtils } from "../utils/methods.js";
+import { avatarServiceUtils } from "../utils/methods.js";
 import { PathsConfig } from "#/configs/paths.config.js";
 const tempProcessPath = ensuredJoinSync(PathsConfig.storage, "avatars", "temp");
 const avatar_image_width = 555 as const;
@@ -35,19 +35,19 @@ export const avatarService = new (class Avatar_Post_Service {
                 "Аватар с таким идентификатором профиля уже существует. Используйте другой идентификатор профиля или обновите существующий аватар.",
             ]);
         }
-        const extname = MediaServiceUtils.get_correct_extname(file.mimetype);
+        const extname = avatarServiceUtils.get_correct_extname(file.mimetype);
         const temp_path = join(tempProcessPath, `${profile_cuid}.${extname}`);
         await writeFile(temp_path, file.buffer);
         await image_sharp_process(temp_path, prod_path);
         return { profile_cuid } as const;
     };
     avatar_update = async ({ profile_cuid, file }: avatar_update_ServiceParameters) => {
-        const prod_path = await MediaServiceUtils.create_avatar_prod_path_FOR_UPDATE_PATH(profile_cuid);
-        const extname = MediaServiceUtils.get_correct_extname(file.mimetype);
+        const prod_path = await avatarServiceUtils.create_avatar_prod_path_FOR_UPDATE_PATH(profile_cuid);
+        const extname = avatarServiceUtils.get_correct_extname(file.mimetype);
         if (!extname) {
             throw new BadGatewayException(["Нету расширения загружаемого файла"]);
         }
-        const temp_path = await MediaServiceUtils.create_avatar_temp_path(profile_cuid, extname);
+        const temp_path = await avatarServiceUtils.create_avatar_temp_path(profile_cuid, extname);
         await writeFile(temp_path, file.buffer);
         await image_sharp_process(temp_path, prod_path);
         return { profile_cuid } as const;
@@ -60,7 +60,7 @@ export const avatarService = new (class Avatar_Post_Service {
 
 const remove_temp_file_with_delay = async (Temp_path: string) => {
     if (existsSync(Temp_path)) {
-        await MediaServiceUtils.sleep(2000);
+        await avatarServiceUtils.sleep(2000);
         await unlink(Temp_path);
     }
 };

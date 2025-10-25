@@ -13,10 +13,9 @@ export namespace Profile_ResponseTypes {
         profile: Profile;
     };
     /** avatar hash */
-    export type set_avatar = string;
+    export type set_avatar = boolean;
 
     export type delete_avatar = AvatarPicture;
     /** avatar hash */
     export type update_avatar = string;
 }
-
