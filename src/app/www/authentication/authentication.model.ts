@@ -15,15 +15,15 @@ export const Authentication_Model = new (class Authentication_Model {
         });
     };
     find_account_by_ids_id = async (account_id: string): Promise<Account> => {
-        const accound = await prisma.account.findUnique({
+        const account = await prisma.account.findUnique({
             where: {
                 id: account_id,
             },
         });
-        if (!accound) {
+        if (!account) {
             throw new NotFoundException(["Аккаунт с таким айди не найден"]);
         }
-        return accound;
+        return account;
     };
     /** Migrated from account module */
     find_one_session_by_its_token = async (session_token: iClientSessionToken): Promise<Session> => {
@@ -170,4 +170,3 @@ export const Authentication_Model = new (class Authentication_Model {
         });
     };
 })();
-

@@ -54,17 +54,29 @@ export const avatarService = new (class Avatar_Post_Service {
             }
         }
     };
-    /** todo  */
+    /**    */
     avatar_update = async ({ profile_cuid, file }: avatar_update_ServiceParameters) => {
+        let errored = false;
         const prod_path = await avatarServiceUtils.create_avatar_prod_path_FOR_UPDATE_PATH(profile_cuid);
         const extname = avatarServiceUtils.get_correct_extname(file.mimetype);
         if (!extname) {
             throw new BadGatewayException(["Нету расширения загружаемого файла"]);
         }
         const temp_path = await avatarServiceUtils.create_avatar_temp_path(profile_cuid, extname);
-        await writeFile(temp_path, file.buffer);
-        await image_sharp_process(temp_path, prod_path);
-        return { profile_cuid } as const;
+
+        try {
+            await writeFile(temp_path, file.buffer);
+            await image_sharp_process(temp_path, prod_path);
+        } catch (error) {
+            errored = true;
+            throw error;
+        } finally {
+            try {
+                await clearAvatarFileSystemAfterError(temp_path, prod_path, errored);
+            } catch (cleanupErr) {
+                consola.warn(`Cleanup failed (${clearAvatarFileSystemAfterError.name}): `, cleanupErr);
+            }
+        }
     };
     serveAvatarImage = async (user_cuid: string, req: e.Request, res: e.Response) => {
         const filePath = join(avatars_folder, `${user_cuid}.webp`);

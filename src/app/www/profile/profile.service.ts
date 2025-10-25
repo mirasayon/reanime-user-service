@@ -23,13 +23,15 @@ export const Profile_Service = new (class Profile_Service {
         const updated_profile = await model.update_nickname_by_id(found_profile.id, new_nickname);
         return { updated_profile };
     };
-    view_my_profile = async (account_id: string): Promise<{ account: Account; profile: Profile }> => {
+    view_my_profile = async (account_id: string): Promise<{ account: Account; profile: Profile & { avatar: AvatarPicture | null } }> => {
         const found_profile = await model.find_by_account_id_AND_return_account_and_profile(account_id);
 
         return found_profile;
     };
-    other_profiles = async (username: string): Promise<{ profile: Profile; account: Account }> => {
-        const found_account = await model.find_profile_by_username(username);
+    other_profiles = async (
+        username: string,
+    ): Promise<{ profile: Profile & { avatar: AvatarPicture | null }; account: Omit<Account, "password_hash"> }> => {
+        const found_account = await model.find_profile_by_username_AND_give_avatar_data(username);
 
         return found_account;
     };
@@ -39,7 +41,7 @@ export const Profile_Service = new (class Profile_Service {
         if (!found_profile.avatar) {
             throw new BadRequestException(["Вам нужно установить аватар, но вы пытаетесь обновить"]);
         }
-        return { avatar_url_hash: found_profile.avatar.url, id: found_profile.id };
+        return { found_profile };
     };
 
     readonly __check_if_has_avatar_for_delete = async (profile_id: string) => {
@@ -55,17 +57,19 @@ export const Profile_Service = new (class Profile_Service {
             throw new BadRequestException(["Вам нужно обновить аватар, но вы загружаете"]);
         }
     };
-    set_avatar = async (data: { profile_id: string; avatar_hash: string }): Promise<{ new_avatar: AvatarPicture }> => {
-        const found_profile = await model.find_profile_by_its_id_with_avatar_data(data.profile_id);
+    set_avatar = async (profile_cuid: string): Promise<{ new_avatar: AvatarPicture }> => {
+        const found_profile = await model.find_profile_by_its_id_with_avatar_data(profile_cuid);
         if (found_profile.avatar) {
             throw new BadRequestException(["Вам нужно обновить аватар, но вы загружаете"]);
         }
-        const new_avatar = await model.set_avatar_by_id(found_profile.id, data.avatar_hash);
+        const username = (await model.find_by_account_id_AND_return_account_and_profile(found_profile.by_account_id)).account.username;
+        const new_avatar = await model.set_avatar_by_id(found_profile.id, username);
         return { new_avatar };
     };
-    update_avatar = async (data: { profile_id: string; avatar_hash: string }): Promise<{ updated_avatar: AvatarPicture }> => {
-        const found_profile = await this.__check_if_has_avatar(data.profile_id);
-        const updated_avatar = await model.update_avatar_by_id(found_profile.id, data.avatar_hash);
+    update_avatar = async (profile_id: string): Promise<{ updated_avatar: AvatarPicture }> => {
+        const { found_profile } = await this.__check_if_has_avatar(profile_id);
+        const username = (await model.find_by_account_id_AND_return_account_and_profile(found_profile.by_account_id)).account.username;
+        const updated_avatar = await model.update_avatar_by_id(found_profile.id, username);
         return { updated_avatar };
     };
 

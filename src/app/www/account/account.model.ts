@@ -19,15 +19,15 @@ export const Account_Model = new (class Account_Model {
     };
 
     Get_account_by_email_throw_error = async (account_email: iAccountEmail) => {
-        const found_accound = await prisma.account.findUnique({
+        const found_account = await prisma.account.findUnique({
             where: {
                 email: account_email,
             },
         });
-        if (!found_accound) {
+        if (!found_account) {
             throw new NotFoundException(["Аккаунт с такой почтой не найден"]);
         }
-        return found_accound;
+        return found_account;
     };
     Get_account_by_email_No_Throw_Error = async (account_email: iAccountEmail) => {
         const found_account = await prisma.account.findUnique({
@@ -161,4 +161,3 @@ export const Account_Model = new (class Account_Model {
         return deleted_sessions;
     };
 })();
-

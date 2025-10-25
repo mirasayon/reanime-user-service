@@ -22,4 +22,3 @@ export const entryPointRouter = (() => {
     router.use("/ping", Ping_Router);
     return router;
 })();
-

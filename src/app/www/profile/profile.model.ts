@@ -46,7 +46,32 @@ export const Profile_Model = new (class Profile_Model {
         return { account, profile };
     };
 
-    find_by_account_id_AND_return_account_and_profile = async (account_id: iObjectCuid): Promise<{ account: Account; profile: Profile }> => {
+    find_profile_by_username_AND_give_avatar_data = async (
+        username: iObjectCuid,
+    ): Promise<{ account: Omit<Account, "password_hash">; profile: Profile & { avatar: AvatarPicture | null } }> => {
+        const account = await prisma.account.findUnique({
+            where: { username },
+            omit: { password_hash: true },
+        });
+
+        if (!account) {
+            throw new NotFoundException(["Аккаунт с таким айди не найден"]);
+        }
+        const profile = await prisma.profile.findUnique({
+            where: {
+                by_account_id: account.id,
+            },
+            include: { avatar: true },
+        });
+        if (!profile) {
+            throw new NotFoundException(["Профиль с таким аккаунтом айди не найден"]);
+        }
+        return { account, profile };
+    };
+
+    find_by_account_id_AND_return_account_and_profile = async (
+        account_id: iObjectCuid,
+    ): Promise<{ account: Account; profile: Profile & { avatar: AvatarPicture | null } }> => {
         const account = await prisma.account.findUnique({
             where: { id: account_id },
         });
@@ -84,28 +109,21 @@ export const Profile_Model = new (class Profile_Model {
         });
     };
 
-    update_avatar_by_id = async (profile_id: iObjectCuid, avatar_url_hash: string | null): Promise<AvatarPicture> => {
-        if (avatar_url_hash === null) {
-            return await prisma.avatarPicture.delete({
-                where: {
-                    by_profile_id: profile_id,
-                },
-            });
-        }
+    update_avatar_by_id = async (profile_id: iObjectCuid, username: string): Promise<AvatarPicture> => {
         return await prisma.avatarPicture.update({
             where: {
                 by_profile_id: profile_id,
             },
             data: {
-                url: avatar_url_hash,
+                url: username,
             },
         });
     };
-    set_avatar_by_id = async (profile_id: iObjectCuid, avatar_url_hash: string): Promise<AvatarPicture> => {
+    set_avatar_by_id = async (profile_id: iObjectCuid, username: string): Promise<AvatarPicture> => {
         return await prisma.avatarPicture.create({
             data: {
                 by_profile_id: profile_id,
-                url: avatar_url_hash,
+                url: username,
             },
         });
     };

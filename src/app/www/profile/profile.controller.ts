@@ -51,10 +51,7 @@ export const Profile_Controller = new (class Profile_Controller {
             throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
         }
         await avatarService.avatar_set({ profile_cuid, file });
-        const { new_avatar } = await service.set_avatar({
-            profile_id: auth.profile.id,
-            avatar_hash: profile_cuid,
-        });
+        const { new_avatar } = await service.set_avatar(profile_cuid);
         const data: Profile_ResponseTypes.set_avatar = !!new_avatar.url;
         const message = "Аватарка успешно загружена";
         return Reply.accepted(res, { data, message });
@@ -74,15 +71,12 @@ export const Profile_Controller = new (class Profile_Controller {
         }
         const { auth, file } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
 
-        const { avatar_url_hash } = await service.__check_if_has_avatar(auth.profile.id);
+        const { found_profile } = await service.__check_if_has_avatar(auth.profile.id);
         if (!file) {
             throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
         }
-        const media_res = await avatarService.avatar_update({ profile_cuid: auth.profile.id, file });
-        const { updated_avatar } = await service.update_avatar({
-            profile_id: auth.profile.id,
-            avatar_hash: media_res.profile_cuid,
-        });
+        await avatarService.avatar_update({ profile_cuid: auth.profile.id, file });
+        const { updated_avatar } = await service.update_avatar(found_profile.id);
         const data: Profile_ResponseTypes.update_avatar = updated_avatar.url;
         const message = "Аватарка успешно обновлена";
         return Reply.accepted(res, { data, message });
