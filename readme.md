@@ -14,3 +14,9 @@ download link for windows 11 (.EXE/.MSI) <https://slproweb.com/products/Win32Ope
 	openssl genrsa -out ./keys/private.pem 2048
 	openssl rsa -in ./keys/private.pem -pubout -out ./keys/public.pem
 ```
+
+## PostgreSQL databases names:
+
+-   For development - `reanime-user-service-for-development`
+-   For production - `reanime-user-service-for-production`
+-   For testing - `reanime-user-service-for-testing`

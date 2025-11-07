@@ -4,7 +4,7 @@
     "type": "module",
     "scripts": {
         "dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/startup.js",
-        "compile:hot": "tspc --watch",
+        "compiler": "tspc --watch",
         "compile": "tsc && tsc-alias",
         "hot:src": "node --watch --env-file=.env.development ./src/server/startup.ts",
         "test-common": "node --enable-source-maps --env-file=.env.test ./dist/tests/common.js",
@@ -21,8 +21,8 @@
         "build:prod": "rimraf dist src/databases/orm && npm run gen_db_client:prod && npm run compile"
     },
     "dependencies": {
-        "@prisma/adapter-pg": "^6.18.0",
-        "@prisma/client": "^6.18.0",
+        "@prisma/adapter-pg": "^6.19.0",
+        "@prisma/client": "^6.19.0",
         "bcryptjs": "^3.0.3",
         "better-psl": "^1.0.1",
         "compression": "^1.8.1",
@@ -36,9 +36,10 @@
         "morgan": "^1.10.1",
         "multer": "^2.0.2",
         "pg": "^8.16.3",
-        "prisma": "^6.18.0",
+        "prisma": "^6.19.0",
         "safest-env": "^0.0.1",
-        "sharp": "^0.34.4",
+        "sharp": "^0.34.5",
+        "terminal-image": "^4.1.0",
         "zod": "^4.1.12"
     },
     "devDependencies": {
