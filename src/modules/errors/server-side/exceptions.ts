@@ -1,12 +1,37 @@
 import consola from "consola";
 import { ResponseCode } from "#/shared/constants/response.constants.js";
-export type ServerSideExceptionClasses = InternalServerErrorException | BadGatewayException | NotImplementedException;
+type UnexpectedInternalServerErrorExceptionOptions = {
+    service_name: string;
+    errorMessageToClient: string;
+    errorItselfOrPrivateMessageToServer: unknown;
+};
+export type ServerSideExceptionClasses =
+    | UnexpectedInternalServerErrorException
+    | ExpectedInternalServerErrorException
+    | BadGatewayException
+    | NotImplementedException
+    | ServiceUnavailableException;
 
-export class InternalServerErrorException {
-    readonly response_code = ResponseCode.INTERNAL_ERROR;
-    readonly name = InternalServerErrorException.name;
-    constructor(readonly error: unknown, readonly service_name?: string) {
-        consola.error(`Error ${this.name} From ${service_name}`, error);
+export class UnexpectedInternalServerErrorException {
+    readonly response_code = ResponseCode.UNEXPECTED_INTERNAL_ERROR;
+    readonly name = UnexpectedInternalServerErrorException.name;
+    readonly service_name: string;
+    readonly errorMessageToClient: string;
+    readonly errorItselfOrPrivateMessageToServer: unknown;
+    constructor({ errorItselfOrPrivateMessageToServer, errorMessageToClient, service_name }: UnexpectedInternalServerErrorExceptionOptions) {
+        this.errorItselfOrPrivateMessageToServer = errorItselfOrPrivateMessageToServer;
+        this.errorMessageToClient = errorMessageToClient;
+        this.service_name = service_name;
+        consola.error(`Error ${this.name}. From ${service_name} function/method: `, errorItselfOrPrivateMessageToServer);
+    }
+}
+
+export class ExpectedInternalServerErrorException {
+    readonly response_code = ResponseCode.EXPECTED_INTERNAL_ERROR;
+    readonly name = UnexpectedInternalServerErrorException.name;
+
+    constructor(readonly errorMessage: string) {
+        consola.error(`Error ${this.name}: `, errorMessage);
     }
 }
 export class BadGatewayException {
@@ -19,6 +44,13 @@ export class BadGatewayException {
 export class NotImplementedException {
     readonly response_code = ResponseCode.NOT_IMPLEMENTED;
     readonly name = NotImplementedException.name;
+    constructor(readonly error: unknown, readonly service_name?: string) {
+        consola.error(`${this.name}: `, error);
+    }
+}
+export class ServiceUnavailableException {
+    readonly response_code = ResponseCode.SERVICE_UNAVAILABLE;
+    readonly name = ServiceUnavailableException.name;
     constructor(readonly error: unknown, readonly service_name?: string) {
         consola.error(`${this.name}: `, error);
     }

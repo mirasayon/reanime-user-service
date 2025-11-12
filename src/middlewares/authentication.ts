@@ -1,5 +1,4 @@
 import { metadata_dto } from "#/utils/dto/meta.js";
-import { global_Utilities } from "#/utils/functions.js";
 import type { Session } from "#/databases/orm/client.js";
 import { bearer_session_token_from_headers } from "#/utils/dto/session_token.js";
 import type { mid_auth_dto } from "#/types/auth-middleware-shape.js";
@@ -8,6 +7,7 @@ import { Authentication_Model as model } from "[www]/authentication/authenticati
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
 import { BadRequestException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { auth_ip_and_agent_do_not_match } from "#/configs/frequent-errors.js";
+import { isDeepStrictEqual } from "node:util";
 
 /**
  * Verifies whether the request metadata (IP and User-Agent)
@@ -20,7 +20,7 @@ import { auth_ip_and_agent_do_not_match } from "#/configs/frequent-errors.js";
 const check_meta = (session: Session, requestMeta: e.Request) => {
     const session_Meta = metadata_dto.server_session_db(session);
     const request_Meta = metadata_dto.client_request(requestMeta);
-    const is_equal = global_Utilities.deep_equal(session_Meta, request_Meta);
+    const is_equal = isDeepStrictEqual(session_Meta, request_Meta);
     if (is_equal === true) {
         return true;
     }

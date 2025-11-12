@@ -4,12 +4,13 @@ import {
     type ResponseCode,
     UserServiceResponseStatusCodes,
 } from "../../shared/constants/response.constants.js";
-import type { UserServiceResponceBodyPattern } from "../../shared/response-patterns/response-json-body-shape.js";
+import type { UserServiceResponseBodyPattern } from "../../shared/response-patterns/response-json-body-shape.js";
 
-export function handle_response<T>({
+export function all_responses_handler<T>({
     res,
     response_code,
     message,
+    ok,
     errors,
     data,
 }: {
@@ -17,13 +18,15 @@ export function handle_response<T>({
     response_code: ResponseCode;
     message: string;
     errors?: string[];
+    ok: boolean;
     data?: T;
 }): void {
     const status_code: I_UserServiceResponseStatusCodes = UserServiceResponseStatusCodes[response_code];
 
-    const paylaod: UserServiceResponceBodyPattern<T> = {
+    const paylaod: UserServiceResponseBodyPattern<T> = {
         data: data ?? null,
         errors: errors ?? [],
+        ok,
         message,
         status_code: status_code,
         response_code: response_code,
@@ -31,4 +34,3 @@ export function handle_response<T>({
     res.status(status_code).json(paylaod);
     return;
 }
-

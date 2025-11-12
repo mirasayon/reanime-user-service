@@ -1,10 +1,9 @@
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import { Authentication_Model as model } from "[www]/authentication/authentication.model.js";
-import consola from "consola";
 import type { iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
-import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
-import { SAMETIME_SESSIONS_LIMIT } from "#/configs/rules.js";
+import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { SAME_TIME_SESSIONS_LIMIT } from "#/configs/rules.js";
 import type { Account } from "#/databases/orm/client.js";
 
 /**
@@ -22,8 +21,8 @@ export const Authentication_Service = new (class Authentication_Service {
         };
     };
 
-    check_session = async (accound_id: string): Promise<{ account: Account }> => {
-        const account = await model.find_account_by_ids_id(accound_id);
+    check_session = async (account_id: string): Promise<{ account: Account }> => {
+        const account = await model.find_account_by_ids_id(account_id);
         return { account };
     };
 
@@ -51,8 +50,8 @@ export const Authentication_Service = new (class Authentication_Service {
 
         const sessions_count = await model.get_count_of_sessions_by_account_id(account.id);
 
-        if (sessions_count >= SAMETIME_SESSIONS_LIMIT) {
-            throw new ForbiddenException([`Пользователь не должен иметь более ${SAMETIME_SESSIONS_LIMIT} активных сессий одновременно`]);
+        if (sessions_count >= SAME_TIME_SESSIONS_LIMIT) {
+            throw new ForbiddenException([`Пользователь не должен иметь более ${SAME_TIME_SESSIONS_LIMIT} активных сессий одновременно`]);
         }
 
         const session = await model.create_user_session(account.id, {
@@ -76,8 +75,8 @@ export const Authentication_Service = new (class Authentication_Service {
 
         const sessions_count = await model.get_count_of_sessions_by_account_id(account.id);
 
-        if (sessions_count >= SAMETIME_SESSIONS_LIMIT) {
-            throw new ForbiddenException([`Пользователь не должен иметь более ${SAMETIME_SESSIONS_LIMIT} активных сессий одновременно`]);
+        if (sessions_count >= SAME_TIME_SESSIONS_LIMIT) {
+            throw new ForbiddenException([`Пользователь не должен иметь более ${SAME_TIME_SESSIONS_LIMIT} активных сессий одновременно`]);
         }
 
         const session = await model.create_user_session(account.id, {
@@ -94,7 +93,7 @@ export const Authentication_Service = new (class Authentication_Service {
      * Registers a new account by creating an account, a profile,
      * hashing the password, and initializing a session.
      *
-     * @param reg_creds - Data provided by the account during registration.
+     * @param registration_credentials - Data provided by the account during registration.
      * @returns An object containing the newly created account and their session.
      */
     registration = async ({
@@ -117,7 +116,7 @@ export const Authentication_Service = new (class Authentication_Service {
         if (password_repeat !== password) {
             throw new BadRequestException(["Пароли не совпадают"]);
         }
-        const creds = {
+        const _credentials = {
             nickname,
             email,
             username,
@@ -134,15 +133,18 @@ export const Authentication_Service = new (class Authentication_Service {
         const password_hash = await bcryptjsService.create_hash(password);
 
         const account = await model.create_account_and_profile({
-            ...creds,
+            ..._credentials,
             password_hash,
         });
 
         if (!account.profile) {
-            consola.fatal("This accound does not have a profile: ", account);
-            throw new InternalServerErrorException("Неожиданная внутренняя ошибка сервиса");
+            throw new UnexpectedInternalServerErrorException({
+                errorMessageToClient: "Неожиданная внутренняя ошибка сервера. Попробуйте позже",
+                errorItselfOrPrivateMessageToServer: "This account does not have a profile: account_id = " + account.id,
+                service_name: this.registration.name,
+            });
         }
-        const session = await model.create_user_session(account.id, creds);
+        const session = await model.create_user_session(account.id, _credentials);
         return { account, session };
     };
 
@@ -155,4 +157,3 @@ export const Authentication_Service = new (class Authentication_Service {
         return !!!candidate;
     };
 })();
-

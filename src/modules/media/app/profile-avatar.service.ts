@@ -12,7 +12,7 @@ import { PathsConfig } from "#/configs/paths.config.js";
 const tempProcessPath = ensuredJoinSync(PathsConfig.storage, "avatars", "temp");
 const avatar_image_width = 555 as const;
 const avatar_image_height = 555 as const;
-import { BadGatewayException, InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { BadGatewayException } from "#/modules/errors/server-side/exceptions.js";
 import { ensuredJoinSync } from "#/utils/tools/ensured-path-join.util.js";
 import consola from "consola";
 type avatar_upload_ServiceParameters = { profile_cuid: string; file: Express.Multer.File };
@@ -54,7 +54,9 @@ export const avatarService = new (class Avatar_Post_Service {
             }
         }
     };
-    /**    */
+    /**
+     * Перезаписывает аватарку
+     */
     avatar_update = async ({ profile_cuid, file }: avatar_update_ServiceParameters) => {
         let errored = false;
         const prod_path = await avatarServiceUtils.create_avatar_prod_path_FOR_UPDATE_PATH(profile_cuid);

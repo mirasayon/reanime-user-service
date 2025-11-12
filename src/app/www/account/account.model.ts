@@ -2,7 +2,7 @@ import { prisma } from "#/providers/database-connect.js";
 import type { Account, AvatarPicture, CoverPicture, Profile, Session } from "#/databases/orm/client.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { iAccountEmail, iAccountUsername, iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { ExpectedInternalServerErrorException, UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 export type ProfileWithCoverAndAvatarData = Profile & { cover: CoverPicture | null } & { avatar: AvatarPicture | null };
 export const Account_Model = new (class Account_Model {
     Get_account_by_its_id_throw_error = async (account_id: iObjectCuid): Promise<Account> => {
@@ -129,7 +129,11 @@ export const Account_Model = new (class Account_Model {
             where: { by_account_id: account_id },
         });
         if (!found_profile) {
-            throw new InternalServerErrorException("Ошибка сервера. Попробуйте позже");
+            throw new UnexpectedInternalServerErrorException({
+                service_name: this.find_profile_by_account_id.name,
+                errorMessageToClient: "Ошибка сервера при получении данных о пользователе. Попробуйте позже",
+                errorItselfOrPrivateMessageToServer: "Profile not found with this account id: " + account_id,
+            });
         }
         return found_profile;
     };
@@ -140,7 +144,11 @@ export const Account_Model = new (class Account_Model {
             include: { cover: true, avatar: true },
         });
         if (!found_profile) {
-            throw new InternalServerErrorException("Ошибка сервера. Попробуйте позже");
+            throw new UnexpectedInternalServerErrorException({
+                service_name: this.find_profile_by_account_id.name,
+                errorMessageToClient: "Ошибка сервера при получении данных о пользователе. Попробуйте позже",
+                errorItselfOrPrivateMessageToServer: "Profile not found with this account id: " + account_id,
+            });
         }
         return found_profile;
     };

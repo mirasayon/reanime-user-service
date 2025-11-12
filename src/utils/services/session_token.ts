@@ -1,6 +1,6 @@
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import consola from "consola";
-import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import { ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { publicEncrypt, randomBytes, constants, privateDecrypt } from "node:crypto";
 import { keysPrivateKey, keysPublicKey } from "#/configs/paths.config.js";
@@ -21,8 +21,11 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
             const token = `${rand}_${salt}` as const;
             return token;
         } catch (_error) {
-            consola.error("Error while generating session token: ", _error);
-            throw new InternalServerErrorException("Ошибка генерации токена сеанса");
+            throw new UnexpectedInternalServerErrorException({
+                errorMessageToClient: "Ошибка генерации токена сеанса",
+                errorItselfOrPrivateMessageToServer: "Error while generating session token: " + _error,
+                service_name: this.create_session_token.name,
+            });
         }
     };
     decrypt_session_token(raw: string) {

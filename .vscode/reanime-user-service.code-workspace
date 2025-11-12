@@ -7,6 +7,21 @@
     "settings": {
         "editor.tabCompletion": "on",
         "diffEditor.codeLens": true,
-        "cSpell.words": ["animes", "Miralisher", "reanime", "tspc", "vmfactory", "дизлайкнули", "лайкнули", "Мирасаён"]
+        "cSpell.words": [
+            "animes",
+            "cadastro",
+            "cliente",
+            "codereview",
+            "Miralisher",
+            "reanime",
+            "reanimeapp",
+            "reanimeart",
+            "reanimeweb",
+            "tspc",
+            "vmfactory",
+            "дизлайкнули",
+            "лайкнули",
+            "Мирасаён"
+        ]
     }
 }

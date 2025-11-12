@@ -1,4 +1,4 @@
-import { global_Utilities } from "#/utils/functions.js";
+import { get_universal_search_query_values_array } from "#/utils/util-functions.js";
 import { vmfactory as m } from "#/utils/validators/factory.js";
 import type { Request_dto_auth as _ } from "#/types/dto-middleware-shape.js";
 import { type dto, comment_schemas } from "#/shared/validators/comment.validator.routes.js";
@@ -24,9 +24,9 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
         };
     });
 
-    /** GET Reqeust  */
+    /** GET Request  */
     get_all_for_anime = m<rd.get_all_for_anime>(comment_schemas.get_all_for_anime, async (req) => {
-        const { limit, page } = global_Utilities.get_universal_search_query_values_array(req.query, ["page", "limit"]);
+        const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
         const { anime_id } = req.params;
         return { page, limit, anime_id };
     });
@@ -43,4 +43,3 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
     delete_like = m<rd.delete_like>(comment_schemas.delete_like, async (req) => req.body);
     delete_dislike = m<rd.delete_dislike>(comment_schemas.delete_dislike, async (req) => req.body);
 })();
-

@@ -2,7 +2,7 @@ import type { iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/inf
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
 import type { Account, Profile, Session } from "#/databases/orm/client.js";
 import { NotFoundException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
-import { InternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { ExpectedInternalServerErrorException, UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import { prisma } from "#/providers/database-connect.js";
 
 export const Authentication_Model = new (class Authentication_Model {
@@ -67,15 +67,15 @@ export const Authentication_Model = new (class Authentication_Model {
                 by_account_id: session.by_account_id,
             },
         });
-
         if (!profile) {
-            throw new InternalServerErrorException(
-                `We cound not find profile that linked to this session and account: ${JSON.stringify({
-                    ssession_id: session.id,
+            throw new UnexpectedInternalServerErrorException({
+                service_name: this.find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL.name,
+                errorMessageToClient: "Ошибка сервера. Не удалось найти сессию.",
+                errorItselfOrPrivateMessageToServer: `We couldn't find profile that linked to this session and account: ${JSON.stringify({
+                    session_id: session.id,
                     account_id: session.by_account_id,
                 })}`,
-                this.find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL.name,
-            );
+            });
         }
         return { session, profile };
     };
