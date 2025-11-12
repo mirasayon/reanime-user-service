@@ -124,7 +124,7 @@ export const Account_Service = new (class Account_Service {
             throw new NotImplementedException("Мы пока не можем удалять обложки");
         }
         if (found_profile.avatar) {
-            await avatarService.avatar_delete(found_profile.avatar.url);
+            await avatarService.avatar_delete(found_profile.id);
         }
         const deleted_account = await model.delete_account_by_its_id(found_account.id);
         return {
