@@ -26,3 +26,6 @@ if (!keysPrivateKey) {
 if (!keysPublicKey) {
     throw new Error("`./keys/public.pem doesn't exist");
 }
+
+export const avatars_folder = ensuredJoinSync(PathsConfig.storage, "avatars", "base");
+export const tempProcessPath = ensuredJoinSync(PathsConfig.storage, "avatars", "temp");

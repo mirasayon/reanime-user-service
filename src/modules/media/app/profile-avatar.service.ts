@@ -1,20 +1,18 @@
 import type e from "express";
 import { setTimeout as delay } from "node:timers/promises";
 import { serveFile } from "../utils/nest.static.js";
-export const avatars_folder = ensuredJoinSync(PathsConfig.storage, "avatars", "base");
 import { ConflictException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { join } from "node:path";
 import { existsSync } from "node:fs";
 import { readFile, unlink, writeFile } from "node:fs/promises";
 import sharp from "sharp";
 import { avatarServiceUtils } from "../utils/methods.js";
-import { PathsConfig } from "#/configs/paths.config.js";
-const tempProcessPath = ensuredJoinSync(PathsConfig.storage, "avatars", "temp");
-const avatar_image_width = 555 as const;
-const avatar_image_height = 555 as const;
+import { avatars_folder, tempProcessPath } from "#/configs/paths.config.js";
 import { BadGatewayException } from "#/modules/errors/server-side/exceptions.js";
-import { ensuredJoinSync } from "#/utils/tools/ensured-path-join.util.js";
 import consola from "consola";
+import { avatar_image_height, avatar_image_width } from "#/configs/constants/media-module.js";
+
+//
 type avatar_upload_ServiceParameters = { profile_cuid: string; file: Express.Multer.File };
 type avatar_update_ServiceParameters = { profile_cuid: string; file: Express.Multer.File };
 /**
@@ -25,7 +23,7 @@ export const avatarService = new (class Avatar_Post_Service {
     avatar_delete = async (profile_cuid: string) => {
         const prod_path = join(avatars_folder, `${profile_cuid}.webp`);
         if (!existsSync(prod_path)) {
-            throw new NotFoundException(["Аватарка не найдена для удаления"]);
+            throw new NotFoundException(["Аватарка не найдена для удаления [2]"]);
         }
         await unlink(prod_path);
     };
