@@ -1,5 +1,6 @@
 import { UtilitySchemas } from "./utils/common.js";
 import { z } from "zod";
+import { account_username } from "./utils/username.validator.js";
 
 const schemas = new (class Comment_ValidatorSchemas {
     create = z.strictObject({
@@ -10,6 +11,17 @@ const schemas = new (class Comment_ValidatorSchemas {
         page: UtilitySchemas.page_number,
         limit: UtilitySchemas.page_size,
         anime_id: UtilitySchemas.anime_id,
+    });
+    /** new 2025.11.15 */
+    all_my_comments = z.strictObject({
+        page: UtilitySchemas.page_number,
+        limit: UtilitySchemas.page_size,
+    });
+    /** new 2025.11.15 */
+    all_for_public_profile = z.strictObject({
+        page: UtilitySchemas.page_number,
+        username: account_username,
+        limit: UtilitySchemas.page_size,
     });
 
     update = z.strictObject({
@@ -39,6 +51,9 @@ export namespace dto {
     export type update = z.infer<Schemas["update"]>;
     export type delete_comment = z.infer<Schemas["delete_comment"]>;
     export type report = z.infer<Schemas["report"]>;
+    export type all_my_comments = z.infer<Schemas["all_my_comments"]>;
+    export type all_for_public_profile = z.infer<Schemas["all_for_public_profile"]>;
+
     export type add_like = z.infer<Schemas["add_like"]>;
     export type add_dislike = z.infer<Schemas["add_dislike"]>;
     export type delete_like = z.infer<Schemas["delete_like"]>;

@@ -1,6 +1,6 @@
 import { vote_not_found } from "#/configs/frequent-errors.js";
 import { MAX_COMMENT_ON_ANIME_LIMIT } from "#/configs/rules.js";
-import type { CommentVote } from "#/databases/orm/client.js";
+import type { Comment, CommentVote } from "#/databases/orm/client.js";
 import { ConflictException, ForbiddenException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
 import { Comment_Model as model } from "[www]/comment/comment.model.js";
@@ -8,17 +8,40 @@ import { Comment_Model as model } from "[www]/comment/comment.model.js";
 /** Service Class with all methods for comments */
 export const Comment_Service = new (class Comment_Service {
     /** Creates new Comment record and chains to new created comment record in the DB*/
-    create_comment = async (args: { anime_id: number; content: string; profile_id: string }) => {
-        const max = await model.get_comment_count_on_1_anime(args.profile_id, args.anime_id);
+    create_comment = async ({ anime_id, content, by_profile_id }: { anime_id: number; content: string; by_profile_id: string }) => {
+        const max = await model.get_comment_count_on_1_anime(by_profile_id, anime_id);
         if (max >= MAX_COMMENT_ON_ANIME_LIMIT) {
             throw new ForbiddenException([
                 `Максимальное количество комментариев к аниме от одного пользователя не должно превышать ${MAX_COMMENT_ON_ANIME_LIMIT}`,
             ]);
         }
-        const created_comment = await model.create_1_comment(args.profile_id, args.content, args.anime_id);
+
+        const duplicate = await model.find_1_comment_by_its_content_and_owner_profile_id_and_anime_id({
+            anime_id,
+            content,
+            by_profile_id,
+        });
+        if (duplicate) {
+            throw new ConflictException(["Вы уже оставляли такой комментарии."]);
+        }
+        const created_comment = await model.create_1_comment(by_profile_id, content, anime_id);
         return { created_comment };
     };
-    /** Gets all the comments from anime id */
+    /** Gets all the comments from a public profile */
+    all_for_public_profile = async ({ by_username, limit, page }: { page: number; limit: number; by_username: string }): Promise<Comment[]> => {
+        const {
+            profile: { id: by_profile_id },
+        } = await model.inheritedModels.find_profile_by_username(by_username);
+        const comments = await model.get_all_comments_for_public_profile({ by_profile_id, limit, page });
+        return comments;
+    };
+
+    /** Gets all the comments from a private profile  */
+    all_my_comments = async ({ by_profile_id, limit, page }: { page: number; limit: number; by_profile_id: string }): Promise<Comment[]> => {
+        const comments = await model.get_all_comments_for_public_profile({ by_profile_id, limit, page });
+        return comments;
+    };
+
     get_all_comments_by_animeId = async (args: { page: number; limit: number; anime_id: number }) => {
         const comments = await model.get_all_comments_for_anime(args);
         return comments;
@@ -99,7 +122,7 @@ export const Comment_Service = new (class Comment_Service {
         const deleted_comment = await model.delete_1_comment(found_comment.id);
         return { deleted_comment };
     };
-    /** Edites the comment by its ID and profile ID */
+    /** Edits the comment by its ID and profile ID */
     update_comment = async (args: { new_content: string; comment_id: string; profile_id: string }) => {
         const found_one = await model.find_1_comment_by_its_id(args.comment_id);
         if (found_one.by_profile_id !== args.profile_id) {

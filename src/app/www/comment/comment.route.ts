@@ -5,8 +5,12 @@ import { cRouter } from "#/utils/tools/express.js";
 
 export const Comment_Router = (() => {
     const r = cRouter();
+
     // Get comments by anime ID with pagination
-    r.get("/get/all/:anime_id", rp.get_all_for_anime, c.get_all_for_anime);
+    r.get("/get/all_comments_for_anime/:anime_id", rp.get_all_for_anime, c.get_all_for_anime);
+
+    r.get("/get/all_my_comments", rp.all_my_comments, Auth_middleware, c.all_my_comments);
+    r.get("/get/all_for_public_profile/:username", rp.all_for_public_profile, c.all_for_public_profile);
     // Create a new comment for anime
     r.post("/create/:anime_id", rp.create, Auth_middleware, c.create_comment);
     r.patch("/update", rp.update, Auth_middleware, c.update_comment);
@@ -22,4 +26,3 @@ export const Comment_Router = (() => {
     r.delete("/delete/dislike", rp.delete_dislike, Auth_middleware, c.delete_dislike);
     return r;
 })();
-

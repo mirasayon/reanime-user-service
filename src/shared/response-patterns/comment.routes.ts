@@ -13,6 +13,8 @@ export namespace Comment_ResponseTypes {
             };
         };
     })[];
+    export type all_for_public_profile = Comment[];
+    export type all_my_comments = Comment[];
     export type add_like = {
         vote: CommentVote;
         is_updated: boolean;

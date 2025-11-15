@@ -6,6 +6,8 @@ import { type dto, comment_schemas } from "#/shared/validators/comment.validator
 namespace rd {
     export type create = _<dto.create, { anime_id: string }>;
     export type report = _<dto.report>;
+    export type all_my_comments = _<dto.all_my_comments>;
+    export type all_for_public_profile = _<dto.all_for_public_profile, { username: string }>;
     export type update = _<dto.update>;
     export type delete_comment = _<dto.delete_comment, { comment_id: string }>;
     export type vote_dislike = _<dto.add_dislike>;
@@ -36,6 +38,23 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
     delete_comment = m<rd.delete_comment>(comment_schemas.delete_comment, async (req) => req.params.comment_id);
 
     report = m<rd.report>(comment_schemas.report, async (req) => req.body);
+    /** new 2025.11.15 */
+    all_my_comments = m<rd.all_my_comments>(comment_schemas.all_my_comments, async (req) => {
+        const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
+        return {
+            limit: limit,
+            page: page,
+        };
+    });
+    /** new 2025.11.15 */
+    all_for_public_profile = m<rd.all_for_public_profile>(comment_schemas.all_for_public_profile, async (req) => {
+        const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
+        return {
+            limit: limit,
+            page: page,
+            username: req.params.username,
+        };
+    });
 
     add_like = m<rd.vote_like>(comment_schemas.add_like, async (req) => req.body);
     add_dislike = m<rd.vote_dislike>(comment_schemas.add_dislike, async (req) => req.body);

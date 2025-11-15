@@ -2,12 +2,38 @@ import { prisma } from "#/providers/database-connect.js";
 import type { AvatarPicture, Comment, CommentVote, Profile } from "#/databases/orm/client.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
+import { Profile_Model } from "[www]/profile/profile.model.js";
 
 export const Comment_Model = new (class Comment_Model {
+    /** ! Наследование моделей */
+    inheritedModels = Profile_Model;
     get_comment_count_on_1_anime = async (by_profile_id: iObjectCuid, anime_id: number) => {
         return await prisma.comment.count({
             where: { by_profile_id, anime_id },
         });
+    };
+
+    find_1_comment_by_its_content_and_owner_profile_id_and_anime_id = async ({
+        anime_id,
+        content,
+        by_profile_id,
+    }: {
+        anime_id: number;
+        content: string;
+        by_profile_id: string;
+    }) => {
+        const found_comment = await prisma.comment.findFirst({
+            where: {
+                content: content,
+                anime_id: anime_id,
+                by_profile_id: by_profile_id,
+            },
+        });
+
+        if (!found_comment) {
+            return null;
+        }
+        return found_comment;
     };
 
     create_1_comment = async (by_profile_id: iObjectCuid, content: string, anime_id: number) => {
@@ -48,6 +74,25 @@ export const Comment_Model = new (class Comment_Model {
                 by_profile: { include: { avatar: true, by_account: { select: { username: true } } } },
             },
             take: args.limit,
+        });
+        return all;
+    };
+
+    get_all_comments_for_public_profile = async ({
+        by_profile_id,
+        limit,
+        page,
+    }: {
+        page: number;
+        limit: number;
+        by_profile_id: string;
+    }): Promise<Comment[]> => {
+        const skip = (page - 1) * limit;
+
+        const all = await prisma.comment.findMany({
+            where: { by_profile_id },
+            skip: skip,
+            take: limit,
         });
         return all;
     };

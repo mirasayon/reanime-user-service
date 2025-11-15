@@ -1,7 +1,7 @@
+import { searchQueriesAreOutOfRange } from "#/configs/frequent-errors.js";
 import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
 import type e from "express";
 import { isDeepStrictEqual } from "node:util";
-
 /** Capitalizes First Letter of the string and lowercases the rest */
 export function capitalizeFirstLetter(str: string): string {
     const low = str.toLowerCase();
@@ -35,15 +35,15 @@ export function get_universal_search_query_value(query: e.Request["query"], spNa
     let spNameV: null | string = null;
     for (const sqKey in query) {
         if (Object.hasOwn(query, sqKey)) {
-            const sqname = query[sqKey];
+            const SQName = query[sqKey];
             if (spName !== sqKey) {
-                throw new BadRequestException(["Search queries are out of range"]);
+                throw new BadRequestException([searchQueriesAreOutOfRange]);
             }
-            spNameV = String(sqname);
+            spNameV = String(SQName);
         }
     }
     if (spNameV === null) {
-        throw new BadRequestException(["page search param is required"]);
+        throw new BadRequestException(["требуется параметр поиска страницы"]);
     }
     return spNameV;
 }
@@ -57,21 +57,19 @@ export function get_universal_search_query_values_array<search_query_names exten
     const spAccumulator: { [keys: string]: string } = {};
     for (const sqKey in query) {
         if (Object.hasOwn(query, sqKey)) {
-            const sqname = query[sqKey];
-            spAccumulator[sqKey] = String(sqname);
+            const SQName = query[sqKey];
+            spAccumulator[sqKey] = String(SQName);
         }
     }
     const avKeys = Object.keys(spAccumulator);
-
     for (const neededSP of spNames) {
         if (!Object.hasOwn(spAccumulator, neededSP)) {
-            throw new BadRequestException([`Search param for \'${neededSP}\' is required`]);
+            throw new BadRequestException([`Требуется параметр поиска для \'${neededSP}\'`]);
         }
     }
     if (!allDeepEqual([avKeys, spNames])) {
-        throw new BadRequestException(["Search queries are out of range"]);
+        throw new BadRequestException([searchQueriesAreOutOfRange]);
     }
-
     return spAccumulator as {
         [keys in search_query_names[number]]: string;
     };
