@@ -1,4 +1,4 @@
-import type { I_UserServiceResponseStatusCodes, ResponseCode } from "#/shared/constants/response.constants.js";
+import type { I_UserServiceResponseStatusCodes, ResponseCode } from "../../shared/constants/response.constants.js";
 
 /**
  * Type representing the standard JSON response structure

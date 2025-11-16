@@ -1,4 +1,4 @@
-import type { Account, AvatarPicture, Profile } from "#/databases/orm/client.js";
+import type { Account, AvatarPicture, Profile } from "../../databases/orm/client.js";
 
 /** RESPONSES For Profile Route */
 export namespace Profile_ResponseTypes {

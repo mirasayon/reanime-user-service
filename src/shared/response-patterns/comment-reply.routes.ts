@@ -1,4 +1,4 @@
-import type { Reply, ReplyVote } from "#/databases/orm/client.js";
+import type { Reply, ReplyVote } from "../../databases/orm/client.js";
 
 /** RESPONSES For Reply Route */
 export namespace Reply_ResponseTypes {
