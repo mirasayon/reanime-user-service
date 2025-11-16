@@ -12,6 +12,7 @@
         "start:production": "node --env-file=.env.production ./dist/server/startup.js",
         "start:test": "node --env-file=.env.test ./dist/server/startup.js",
         "start:dev": "node --enable-source-maps --env-file=.env.development ./dist/server/startup.js",
+        "db-studio:dev": "dotenv -e .env.development -- prisma studio",
         "inspector": "tsc --watch --noEmit",
         "gen_db_client:dev": "dotenv -e .env.development -- prisma generate",
         "gen_db_client:test": "dotenv -e .env.test -- prisma generate",
