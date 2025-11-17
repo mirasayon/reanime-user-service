@@ -6,10 +6,11 @@ import { cookie_parser, json_parser, static_serve } from "#/utils/tools/express.
 import { entryPointRouter } from "#/app/entry_point.route.js";
 import { client_error_handler, not_found_route } from "#/modules/errors/client-side/handler.js";
 import { server_exception_handler, unknown_exception_handler } from "#/modules/errors/server-side/handler.js";
-import { dev_logger } from "#/middlewares/dev_logger.js";
+import { mainDevServerLogger } from "#/middlewares/dev_logger.js";
 import morgan from "morgan";
 import { Logger } from "log-it-colored";
-/** Main Express Appliaction */
+import { EnvConfig } from "#/configs/environment-variables.js";
+/** Main Express Application */
 export const expressMainApplication = (() => {
     const app = express();
     app.disable("x-powered-by");
@@ -24,7 +25,9 @@ export const expressMainApplication = (() => {
 
     /** Logger Middlewares */
     app.use(morgan("combined"));
-    app.use(dev_logger);
+    if (EnvConfig.is_dev) {
+        app.use(mainDevServerLogger);
+    }
 
     // Entry Point Router (Main API)
     app.use("/v1", entryPointRouter);

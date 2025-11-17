@@ -24,7 +24,6 @@ export const client_error_handler = (
     }
 
     if (error instanceof MulterError) {
-        // console.error(`Multer error: ${error.message}`);
         return Reply.bad_request(res, {
             errors: [`Убедитесь, что файл имеет правильный формат и не поврежден`],
         });

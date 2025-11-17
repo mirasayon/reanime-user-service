@@ -8,7 +8,7 @@ import { prisma } from "#/providers/database-connect.js";
 import { expressMainApplication as app } from "./server.js";
 import { listen } from "#/utils/tools/express.js";
 
-export const startThisServer = async (): Promise<void> => {
+export const startMainServer = async (): Promise<void> => {
     try {
         const instance = await listen(app, EnvConfig.server);
         const { port, address, family } = instance.address() as AddressInfo;
@@ -21,9 +21,7 @@ export const startThisServer = async (): Promise<void> => {
         Logger.success(`${family}: ${chalk.magenta(url)} / ${altUrl} ${chalk.magenta(EnvConfig.NODE_ENVIRONMENT)}`);
 
         const shutdown = async () => {
-            instance.close(() => {
-                // process.exit(0);
-            });
+            instance.close(() => {});
             Logger.sky("Shutting down...");
             await prisma.$disconnect().then(() => Logger.sky("db disconnected"));
         };

@@ -3,8 +3,8 @@ clear();
 time("in");
 import { test_db } from "#/providers/adapter.js";
 import { prisma } from "#/providers/database-connect.js";
-import { startThisServer } from "#/server/class.js";
+import { startMainServer } from "#/server/class.js";
 
-await startThisServer();
+await startMainServer();
 await test_db(prisma);
 timeEnd("in");
