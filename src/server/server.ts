@@ -3,7 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
 import { cookie_parser, json_parser, static_serve } from "#/utils/tools/express.js";
-import { entryPointRouter } from "#/app/entry_point.route.js";
+import { mainServicesRouter } from "#/app/entry_point.route.js";
 import { client_error_handler, not_found_route } from "#/modules/errors/client-side/handler.js";
 import { server_exception_handler, unknown_exception_handler } from "#/modules/errors/server-side/handler.js";
 import { mainDevServerLogger } from "#/middlewares/dev_logger.js";
@@ -30,7 +30,7 @@ export const expressMainApplication = (() => {
     }
 
     // Entry Point Router (Main API)
-    app.use("/v1", entryPointRouter);
+    app.use("/v1", mainServicesRouter);
 
     // Error handlers
     app.use(not_found_route);

@@ -29,7 +29,7 @@ export const startMainServer = async (): Promise<void> => {
         process.on("SIGINT", shutdown);
         process.on("SIGTERM", shutdown);
     } catch (error) {
-        consola.error("Error while starting the server: ");
+        consola.fatal("Error while starting the server: ");
         throw error;
     }
 };

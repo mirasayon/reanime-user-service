@@ -9,9 +9,9 @@ import { MarkedAnimeCollection_Router } from "[www]/marked_anime_collection/mark
 import { FavoriteAnimes_Router } from "[www]/favorite_animes/favorite_animes.route.js";
 import { Reply_Router } from "[www]/reply/reply.route.js";
 /** Entry Point Router */
-export const entryPointRouter = (() => {
+export const mainServicesRouter = (() => {
     const router = cRouter();
-    router.use(ApiKeyGuard);
+    router.use(ApiKeyGuard("/profile/avatar/view/"));
     router.use("/authentication", Authentication_Router);
     router.use("/comment", Comment_Router);
     router.use("/reply", Reply_Router);
