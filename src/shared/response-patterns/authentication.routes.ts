@@ -1,4 +1,4 @@
-import type { Account, Profile, Session } from "../../databases/orm/client.js";
+import type { Account, Profile, Session, AvatarPicture } from "../../databases/orm/client.js";
 
 /** RESPONSES For Auth Route */
 export namespace Authentication_ResponseTypes {
@@ -10,6 +10,7 @@ export namespace Authentication_ResponseTypes {
     export type check_session = {
         session: Session;
         profile: Profile;
+        avatar: AvatarPicture | null;
         account: Account;
     };
     /** deleted session's token */

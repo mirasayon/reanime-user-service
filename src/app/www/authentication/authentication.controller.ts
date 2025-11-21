@@ -56,10 +56,11 @@ export const Authentication_Controller = new (class Authentication_Controller {
     };
     check_session = async (req: Authentication_ReqDtos.check_session, reply: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { account } = await services.check_session(auth.session.by_account_id);
+        const { account, avatar } = await services.check_session(auth.session.by_account_id);
         const data: Authentication_ResponseTypes.check_session = {
             profile: auth.profile,
             account: account,
+            avatar: avatar,
             session: auth.session,
         };
         const message = "Ваша текущая сессия";
@@ -73,4 +74,3 @@ export const Authentication_Controller = new (class Authentication_Controller {
         return Reply.accepted(res, { message, data });
     };
 })();
-

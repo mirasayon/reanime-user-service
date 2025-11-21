@@ -2,11 +2,10 @@ import type { iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/inf
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
 import type { Account, Profile, Session } from "#/databases/orm/client.js";
 import { NotFoundException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
-import { ExpectedInternalServerErrorException, UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import { prisma } from "#/providers/database-connect.js";
 
-export const Authentication_Model = new (class Authentication_Model {
-    constructor() {}
+export const authModels = new (class Authentication_Model {
     find_1_session_by_its_token = async (session_token: iClientSessionToken) => {
         return await prisma.session.findUnique({
             where: {
