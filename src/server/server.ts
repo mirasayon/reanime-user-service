@@ -24,7 +24,7 @@ export const expressMainApplication = (() => {
     app.use(json_parser);
 
     /** Logger Middlewares */
-    app.use(morgan("combined"));
+    app.use(morgan("tiny"));
     if (EnvConfig.is_dev) {
         app.use(mainDevServerLogger);
     }
