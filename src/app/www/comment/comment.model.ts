@@ -73,6 +73,7 @@ export const Comment_Model = new (class Comment_Model {
                 // replies: true,
                 by_profile: { include: { avatar: true, by_account: { select: { username: true } } } },
             },
+            orderBy: { created_at: "desc" },
             take: args.limit,
         });
         return all;

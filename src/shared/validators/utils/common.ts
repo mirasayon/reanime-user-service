@@ -161,8 +161,8 @@ export const UtilitySchemas = new (class Utility_ValidatorSchemas {
         return z.cuid({ error: (issue) => (issue.input === undefined ? required_txt : invalid_txt) });
     };
 
-    reply_id = this.cuid("Айди ответа");
-    comment_id = this.cuid("Айди комента");
+    reply_id = this.cuid("Айди ответа на комментарий");
+    comment_id = this.cuid("Айди комментария");
 
     /** Email Validator */
     email = (() => {

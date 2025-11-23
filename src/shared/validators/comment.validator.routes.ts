@@ -36,6 +36,7 @@ const schemas = new (class Comment_ValidatorSchemas {
         details: UtilitySchemas.details,
         type: UtilitySchemas.report_type,
     });
+    /** modified 2025.11.24  */
     add_like = UtilitySchemas.comment_id;
     add_dislike = UtilitySchemas.comment_id;
 

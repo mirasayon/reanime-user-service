@@ -10,10 +10,10 @@ namespace rd {
     export type all_for_public_profile = _<dto.all_for_public_profile, { username: string }>;
     export type update = _<dto.update, { comment_id: string }>;
     export type delete_comment = _<dto.delete_comment, { comment_id: string }>;
-    export type vote_dislike = _<dto.add_dislike>;
-    export type vote_like = _<dto.add_like>;
-    export type delete_dislike = _<dto.delete_dislike>;
-    export type delete_like = _<dto.delete_like>;
+    export type vote_dislike = _<dto.add_dislike, { comment_id: string }>;
+    export type vote_like = _<dto.add_like, { comment_id: string }>;
+    export type delete_dislike = _<dto.delete_dislike, { comment_id: string }>;
+    export type delete_like = _<dto.delete_like, { comment_id: string }>;
     export type get_all_for_anime = _<dto.get_all_for_anime, { anime_id: string }>;
 }
 export type { rd as Comment_ReqDtos };
@@ -58,9 +58,9 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
         };
     });
 
-    add_like = m<rd.vote_like>(comment_schemas.add_like, async (req) => req.body);
-    add_dislike = m<rd.vote_dislike>(comment_schemas.add_dislike, async (req) => req.body);
+    add_like = m<rd.vote_like>(comment_schemas.add_like, async (req) => req.params.comment_id);
+    add_dislike = m<rd.vote_dislike>(comment_schemas.add_dislike, async (req) => req.params.comment_id);
 
-    delete_like = m<rd.delete_like>(comment_schemas.delete_like, async (req) => req.body);
-    delete_dislike = m<rd.delete_dislike>(comment_schemas.delete_dislike, async (req) => req.body);
+    delete_like = m<rd.delete_like>(comment_schemas.delete_like, async (req) => req.params.comment_id);
+    delete_dislike = m<rd.delete_dislike>(comment_schemas.delete_dislike, async (req) => req.params.comment_id);
 })();

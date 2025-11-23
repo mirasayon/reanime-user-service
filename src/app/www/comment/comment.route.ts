@@ -19,10 +19,11 @@ export const Comment_Router = (() => {
     // Report a comment
     r.post("/report", rp.report, Auth_middleware, c.report);
 
-    r.post("/add/like", rp.add_like, Auth_middleware, c.add_like);
-    r.delete("/delete/like", rp.delete_like, Auth_middleware, c.delete_like);
+    // modified 2025.11.24 +/:comment_id
+    r.post("/add/like/:comment_id", rp.add_like, Auth_middleware, c.add_like);
+    r.delete("/delete/like/:comment_id", rp.delete_like, Auth_middleware, c.delete_like);
 
-    r.post("/add/dislike", rp.add_dislike, Auth_middleware, c.add_dislike);
-    r.delete("/delete/dislike", rp.delete_dislike, Auth_middleware, c.delete_dislike);
+    r.post("/add/dislike/:comment_id", rp.add_dislike, Auth_middleware, c.add_dislike);
+    r.delete("/delete/dislike/:comment_id", rp.delete_dislike, Auth_middleware, c.delete_dislike);
     return r;
 })();
