@@ -13,7 +13,7 @@ export const Comment_Router = (() => {
     r.get("/get/all_for_public_profile/:username", rp.all_for_public_profile, c.all_for_public_profile);
     // Create a new comment for anime
     r.post("/create/:anime_id", rp.create, Auth_middleware, c.create_comment);
-    r.patch("/update", rp.update, Auth_middleware, c.update_comment);
+    r.patch("/update/:comment_id", rp.update, Auth_middleware, c.update_comment);
     // Delete a comment
     r.delete("/delete/:comment_id", rp.delete_comment, Auth_middleware, c.delete_comment);
     // Report a comment

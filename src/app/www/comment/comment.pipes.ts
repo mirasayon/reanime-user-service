@@ -8,7 +8,7 @@ namespace rd {
     export type report = _<dto.report>;
     export type all_my_comments = _<dto.all_my_comments>;
     export type all_for_public_profile = _<dto.all_for_public_profile, { username: string }>;
-    export type update = _<dto.update>;
+    export type update = _<dto.update, { comment_id: string }>;
     export type delete_comment = _<dto.delete_comment, { comment_id: string }>;
     export type vote_dislike = _<dto.add_dislike>;
     export type vote_like = _<dto.add_like>;
@@ -33,7 +33,9 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
         return { page, limit, anime_id };
     });
 
-    update = m<rd.update>(comment_schemas.update, async (req) => req.body);
+    update = m<rd.update>(comment_schemas.update, async (req) => {
+        return { comment_id: req.params.comment_id, ...req.body };
+    });
 
     delete_comment = m<rd.delete_comment>(comment_schemas.delete_comment, async (req) => req.params.comment_id);
 

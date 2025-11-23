@@ -1,5 +1,5 @@
 import { EnvConfig } from "#/configs/environment-variables.js";
-import { ImATeapotException } from "#/modules/errors/client-side/exceptions.js";
+import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { ExpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import type e from "express";
 import { createHash, timingSafeEqual } from "node:crypto";
@@ -19,7 +19,7 @@ export function ApiKeyGuard(pathsStartsWithExceptions: string) {
         }
         const headerVal = req.headers["x-reanime-user-service-key"];
         if (!headerVal || typeof headerVal !== "string" || headerVal.length === 0) {
-            throw new ImATeapotException();
+            throw new NotFoundException([]);
         }
         if (!expectedApiKeyValue) {
             throw new ExpectedInternalServerErrorException("Сервер неправильно сконфигурирован. Попробуйте позже");
@@ -30,6 +30,6 @@ export function ApiKeyGuard(pathsStartsWithExceptions: string) {
         if (key_passes_safe) {
             return next();
         }
-        throw new ImATeapotException();
+        throw new NotFoundException([]);
     };
 }
