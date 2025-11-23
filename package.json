@@ -6,7 +6,7 @@
         "dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/startup.js",
         "compiler": "tspc --watch",
         "compile": "tsc && tsc-alias",
-        "hot:src": "node --watch --env-file=.env.development ./src/server/startup.ts",
+        "dev:src": "node --watch --env-file=.env.development ./src/server/startup.ts",
         "test-common": "node --enable-source-maps --env-file=.env.test ./dist/tests/common.js",
         "dev-test": "node --enable-source-maps --env-file=.env.test --watch ./dist/tests/play.js",
         "start:production": "node --env-file=.env.production ./dist/server/startup.js",
@@ -17,10 +17,10 @@
         "gen_db_client:dev": "dotenv -e .env.development -- prisma generate",
         "gen_db_client:test": "dotenv -e .env.test -- prisma generate",
         "gen_db_client:prod": "dotenv -e .env.production -- prisma generate",
-        "gen-shared-package": "rimraf ./generated-shared-export && npx tsc -p ./tsconfig.shared-package.json",
-        "build:dev": "rimraf dist src/databases/orm && npm run gen_db_client:dev && npm run compile",
-        "build:test": "rimraf dist src/databases/orm && npm run gen_db_client:test && npm run compile",
-        "build:prod": "rimraf dist src/databases/orm && npm run gen_db_client:prod && npm run compile"
+        "gen-shared-package": "rimraf ./generated-shared-export && npx tsc -p ./tsconfig.shared-package.jsonc",
+        "build:dev": "rimraf ./dist ./src/databases/orm && npm run gen_db_client:dev && npm run compile",
+        "build:test": "rimraf ./dist ./src/databases/orm && npm run gen_db_client:test && npm run compile",
+        "build:prod": "rimraf ./dist ./src/databases/orm && npm run gen_db_client:prod && npm run compile"
     },
     "dependencies": {
         "@prisma/adapter-pg": "^7.0.0",
