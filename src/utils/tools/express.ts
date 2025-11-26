@@ -1,9 +1,9 @@
 import type e from "express";
-import cookie from "cookie";
+import { parseCookie } from "cookie";
 import express, { Router } from "express";
 import { PathsConfig } from "#/configs/paths.config.js";
 
-/** Creates New Router with alredy configured settings */
+/** Creates New Router with already configured settings */
 export const cRouter = () => Router({ caseSensitive: true, strict: true });
 /** Cookie Parser middleware  */
 export const cookie_parser = (req: e.Request, _res: e.Response, next: e.NextFunction) => {
@@ -11,7 +11,7 @@ export const cookie_parser = (req: e.Request, _res: e.Response, next: e.NextFunc
         req.cookies = {};
         return next();
     }
-    req.cookies = cookie.parse(req.headers.cookie, {});
+    req.cookies = parseCookie(req.headers.cookie, {});
     return next();
 };
 
@@ -50,4 +50,3 @@ export const listen = (app: e.Application, { port, host }: { port: number; host:
         });
     });
 };
-

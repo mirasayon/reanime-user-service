@@ -8,11 +8,13 @@ import { Ping_Router } from "[www]/ping/ping.route.js";
 import { MarkedAnimeCollection_Router } from "[www]/marked_anime_collection/marked_anime_collection.route.js";
 import { FavoriteAnimes_Router } from "[www]/favorite_animes/favorite_animes.route.js";
 import { Reply_Router } from "[www]/reply/reply.route.js";
+import { Admin_Router } from "[www]/admin/admin.routes.js";
 /** Entry Point Router */
 export const mainServicesRouter = (() => {
     const router = cRouter();
     router.use(ApiKeyGuard("/profile/avatar/view/"));
     router.use("/authentication", Authentication_Router);
+    router.use("/admin-monitor", Admin_Router);
     router.use("/comment", Comment_Router);
     router.use("/reply", Reply_Router);
     router.use("/profile", Profile_Router);
