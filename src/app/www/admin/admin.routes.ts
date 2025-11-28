@@ -1,7 +1,8 @@
+import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
 import { cRouter } from "#/utils/tools/express.js";
-import { Ping_Controller } from "../ping/ping.controller.js";
-export const Admin_Router = (() => {
+import { Administrator_Controller } from "./admin.controller.js";
+export const Administrator_Router = (() => {
     const r = cRouter();
-    r.get("/get-all-usernames", Ping_Controller.get);
+    r.get("/get_all_users", mainAuthenticationMiddleware, Administrator_Controller.get_all_users);
     return r;
 })();

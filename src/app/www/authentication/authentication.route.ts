@@ -1,5 +1,5 @@
 import { Authentication_Controller as c } from "[www]/authentication/authentication.controller.js";
-import { Auth_middleware, has_client_already_logged } from "#/middlewares/authentication.js";
+import { mainAuthenticationMiddleware, has_client_already_logged } from "#/middlewares/authentication.js";
 import { Authentication_ReqPipes as vm } from "[www]/authentication/authentication.pipes.js";
 import { cRouter } from "#/utils/tools/express.js";
 
@@ -12,9 +12,8 @@ export const Authentication_Router = (() => {
 
     r.get("/check_username_availability/:username", vm.check_username_availability, c.check_username_availability);
 
-    r.delete("/logout", vm.logout, Auth_middleware, c.logout);
-    r.post("/check_session", vm.check_session, Auth_middleware, c.check_session);
+    r.delete("/logout", vm.logout, mainAuthenticationMiddleware, c.logout);
+    r.post("/check_session", vm.check_session, mainAuthenticationMiddleware, c.check_session);
 
     return r;
 })();
-

@@ -3,7 +3,7 @@ import type { Session } from "#/databases/orm/client.js";
 import { bearer_session_token_from_headers } from "#/utils/dto/session_token.js";
 import type { mid_auth_dto } from "#/types/auth-middleware-shape.js";
 import type e from "express";
-import { authModels as model } from "[www]/authentication/authentication.model.js";
+import { authModels } from "[www]/authentication/authentication.model.js";
 import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
 import { BadRequestException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { auth_ip_and_agent_do_not_match } from "#/configs/frequent-errors.js";
@@ -17,7 +17,7 @@ import { isDeepStrictEqual } from "node:util";
  * @param requestMeta - Incoming HTTP request to validate
  * @returns true if metadata matches; otherwise throws `ClientError`
  */
-const check_meta = (session: Session, requestMeta: e.Request) => {
+const checkTwoMetadatas = (session: Session, requestMeta: e.Request) => {
     const session_Meta = metadata_dto.server_session_db(session);
     const request_Meta = metadata_dto.client_request(requestMeta);
     const is_equal = isDeepStrictEqual(session_Meta, request_Meta);
@@ -34,24 +34,22 @@ const check_meta = (session: Session, requestMeta: e.Request) => {
  * @param res - Express Response object
  * @param next - Express NextFunction for middleware chaining
  */
-export const Auth_middleware = async (req: e.Request & { auth?: mid_auth_dto }, res: e.Response, next: e.NextFunction) => {
+export const mainAuthenticationMiddleware = async (req: e.Request & { auth?: mid_auth_dto }, res: e.Response, next: e.NextFunction) => {
     const req_session_token = bearer_session_token_from_headers(req);
     if (!req_session_token) {
         throw new UnauthorizedException(["Вы не вошли в систему. Пожалуйста, войдите в систему, чтобы продолжить"]);
     }
     const decrypted = authentication_Session_Token_Util.decrypt_session_token(req_session_token);
-    const { session, profile } = await model.find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL(req_session_token);
+    const { session, profile } = await authModels.find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL(req_session_token);
 
     if (session.by_account_id !== decrypted.account_id) {
         throw new UnauthorizedException(["Токен сеанса украден"]);
     }
     // Check if the session's metadata matches the request's metadata
-    check_meta(session, req);
+    checkTwoMetadatas(session, req);
     req.auth = { session, profile };
     return next();
 };
-
-// Reusable constant for unauthenticated state
 const HasNotBeenLogged = { pass: false } as const;
 
 /**
@@ -61,7 +59,7 @@ const HasNotBeenLogged = { pass: false } as const;
  * @param req - Express Request object
  * @returns Object with `pass: boolean` and optionally the session
  */
-export const CheckAuth = async (
+export const checkAuthenticationFunction = async (
     req: e.Request,
 ): Promise<{
     pass: boolean;
@@ -71,12 +69,11 @@ export const CheckAuth = async (
     if (!req_session_token) {
         return HasNotBeenLogged;
     }
-    const session = await model.find_1_session_by_its_token(req_session_token);
+    const session = await authModels.find_1_session_by_its_token(req_session_token);
     if (!session) {
         return HasNotBeenLogged;
     }
-
-    const pass = check_meta(session, req);
+    const pass = checkTwoMetadatas(session, req);
     return { pass, session };
 };
 
@@ -92,7 +89,7 @@ export const CheckAuth = async (
  * @returns
  */
 export const has_client_already_logged = async (req: e.Request & { auth?: mid_auth_dto }, res: e.Response, next: e.NextFunction) => {
-    const hasUserLogged = await CheckAuth(req);
+    const hasUserLogged = await checkAuthenticationFunction(req);
     if (hasUserLogged.pass && hasUserLogged.session) {
         throw new BadRequestException([
             "Этот пользователь уже вошел в систему. Чтобы войти под другим пользователем, сначала выйдите из систему текущего пользователя",

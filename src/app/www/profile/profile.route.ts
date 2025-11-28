@@ -1,4 +1,4 @@
-import { Auth_middleware } from "#/middlewares/authentication.js";
+import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
 import { Profile_Controller as c } from "[www]/profile/profile.controller.js";
 import { Profile_ReqPipes as vm } from "[www]/profile/profile.pipes.js";
 import { cRouter } from "#/utils/tools/express.js";
@@ -14,20 +14,20 @@ export const Profile_Router = (() => {
     const r = cRouter();
     r.get("/explore_others_profile/:username", vm.other_profiles, c.other_profiles); // Open basic data of someone else's profile by username.
 
-    r.get("/view_my_profile", vm.my_profile, Auth_middleware, c.view_my_profile); // Открыть свой профиль.
+    r.get("/view_my_profile", vm.my_profile, mainAuthenticationMiddleware, c.view_my_profile); // Открыть свой профиль.
 
-    r.patch("/update/bio", vm.update_bio, Auth_middleware, c.update_bio);
+    r.patch("/update/bio", vm.update_bio, mainAuthenticationMiddleware, c.update_bio);
 
-    r.patch("/update/nickname", vm.update_nickname, Auth_middleware, c.update_nickname);
+    r.patch("/update/nickname/to/:nickname", vm.update_nickname, mainAuthenticationMiddleware, c.update_nickname);
 
     // Set User Avatar
-    r.post("/avatar/set", vm.set_avatar, Auth_middleware, upload.single("one_avatar_image_file"), c.set_avatar);
+    r.post("/avatar/set", vm.set_avatar, mainAuthenticationMiddleware, upload.single("one_avatar_image_file"), c.set_avatar);
 
     // Update User Avatar
-    r.patch("/avatar/update", vm.update_avatar, Auth_middleware, upload.single("one_avatar_image_file"), c.update_avatar);
+    r.patch("/avatar/update", vm.update_avatar, mainAuthenticationMiddleware, upload.single("one_avatar_image_file"), c.update_avatar);
 
     r.get("/avatar/view/:username", vm.avatar_view, c.avatar_view);
     // Upload User Avatar
-    r.delete("/avatar/delete", vm.delete_avatar, Auth_middleware, c.delete_avatar);
+    r.delete("/avatar/delete", vm.delete_avatar, mainAuthenticationMiddleware, c.delete_avatar);
     return r;
 })();

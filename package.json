@@ -29,7 +29,7 @@
         "better-psl": "^1.0.1",
         "compression": "^1.8.1",
         "consola": "^3.4.2",
-        "cookie": "^1.1.0",
+        "cookie": "^1.1.1",
         "cors": "^2.8.5",
         "date-fns": "^4.1.0",
         "express": "^5.1.0",
