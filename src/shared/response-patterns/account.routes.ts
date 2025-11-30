@@ -9,5 +9,6 @@ export namespace Account_ResponseTypes {
     export type update_username = Account;
     export type get_sessions = Session[];
     export type delete_all_other_sessions = number;
+    export type terminate_specific_session = Session;
     export type delete_account = Account;
 }

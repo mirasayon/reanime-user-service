@@ -10,6 +10,7 @@ export namespace rd {
     export type update_username = _<dto.update_username>;
     export type get_sessions = _<dto.get_sessions>;
     export type terminate_other_sessions = _<dto.terminate_other_sessions>;
+    export type terminate_specific_session = _<dto.terminate_specific_session, { session_id: string }>;
     export type delete_account = _<dto.delete_account>;
 }
 export type { rd as Account_ReqDtos };
@@ -22,5 +23,5 @@ export const Account_ReqPipes = new (class Account_ReqPipes {
     update_password = vmfactory<rd.update_password>(schemas.update_password, async (req) => req.body);
     update_username = vmfactory<rd.update_username>(schemas.update_username, async (req) => req.body.username);
     terminate_other_sessions = vmfactory<rd.terminate_other_sessions>(schemas.terminate_other_sessions);
+    terminate_specific_session = vmfactory<rd.terminate_specific_session>(schemas.terminate_specific_session, async (req) => req.params.session_id);
 })();
-

@@ -12,12 +12,14 @@ const schemas = new (class Account_ValidatorSchemas {
 
     update_password = z.strictObject({
         new_password: UtilitySchemas.account_password,
+        repeat_new_password: UtilitySchemas.account_password,
         current_password: UtilitySchemas.account_password,
     });
     update_username = account_username;
 
     get_sessions = UtilitySchemas.void;
     terminate_other_sessions = UtilitySchemas.void;
+    terminate_specific_session = UtilitySchemas.cuid("Айди сессии");
 
     delete_account = UtilitySchemas.void;
 })();
@@ -32,6 +34,6 @@ export namespace dto {
     export type update_username = z.infer<Schemas["update_username"]>;
     export type get_sessions = z.infer<Schemas["get_sessions"]>;
     export type terminate_other_sessions = z.infer<Schemas["terminate_other_sessions"]>;
+    export type terminate_specific_session = z.infer<Schemas["terminate_specific_session"]>;
     export type delete_account = z.infer<Schemas["delete_account"]>;
 }
-

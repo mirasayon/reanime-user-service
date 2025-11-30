@@ -85,7 +85,7 @@ export const Profile_Service = new (class Profile_Service {
         }
         const avatarData = await model.find_profile_by_its_id_with_avatar_data(foundProfile.profile.id);
         if (!avatarData.avatar) {
-            throw new NotFoundException(["Аватарка этого пользователя не найдена"]);
+            return res.redirect("/default-avatar/m.jpg");
         }
         return await avatarService.serveAvatarImage(avatarData.avatar.by_profile_id, req, res);
     };

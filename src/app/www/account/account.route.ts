@@ -23,6 +23,12 @@ export const Account_Router = (() => {
 
     // Terminate a specific account session (Logout)
     r.delete("/sessions/delete_all_other_sessions", rp.terminate_other_sessions, mainAuthenticationMiddleware, c.terminate_other_sessions);
+    r.delete(
+        "/sessions/terminate_specific_session/:session_id",
+        rp.terminate_specific_session,
+        mainAuthenticationMiddleware,
+        c.terminate_specific_session,
+    );
 
     // Delete account fully
     r.delete("/delete_account", mainAuthenticationMiddleware, c.delete_account);

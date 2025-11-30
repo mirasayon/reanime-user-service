@@ -58,17 +58,22 @@ export const Account_Service = new (class Account_Service {
     };
     update_password = async ({
         new_password,
+        repeat_new_password,
         current_password,
         account_id,
     }: {
         account_id: iObjectCuid;
         current_password: iRawUserPassword;
         new_password: iRawUserPassword;
+        repeat_new_password: iRawUserPassword;
     }): Promise<{ updated_account: Account }> => {
         const found_user = await model.Get_account_by_its_id_throw_error(account_id);
 
         if (new_password === current_password) {
             throw new BadRequestException(["Новый введенный пароль и текущий пароль совпадают"]);
+        }
+        if (new_password !== repeat_new_password) {
+            throw new BadRequestException(["Новый введенный пароль и его повторный ввод различаются!"]);
         }
         const matches = await bcryptjsService.compare_raw_to_hash(current_password, found_user.password_hash);
         if (!matches) {
@@ -111,6 +116,18 @@ export const Account_Service = new (class Account_Service {
         const all_sessions_ids = (await model.find_all_sessions_by_account_id(found_account.id)).map((s) => s.id);
         const deleted_sessions = await model.delete_many_sessions_except_for_one(all_sessions_ids, this_session_id);
         return deleted_sessions.count;
+    };
+
+    terminate_specific_session = async (targetSessionIdToDelete: iObjectCuid, account_id: iObjectCuid) => {
+        const found_account = await model.Get_account_by_its_id_throw_error(account_id);
+
+        const all_sessions_ids = (await model.find_all_sessions_by_account_id(found_account.id)).map((s) => s.id);
+        const isThisSessionOwner = all_sessions_ids.includes(targetSessionIdToDelete);
+        if (!isThisSessionOwner) {
+            throw new UnauthorizedException(["Айди сессии неправилен или вы не являетесь собственником этой сессии"]);
+        }
+        const deleted_session = await model.delete_one_session_by_id(targetSessionIdToDelete);
+        return deleted_session;
     };
 
     delete_account = async (
