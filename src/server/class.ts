@@ -1,16 +1,16 @@
-import type { AddressInfo } from "node:net";
-import { chalk, Logger } from "log-it-colored";
 import { EnvConfig } from "#/configs/environment-variables.js";
-import { format } from "date-fns";
 import { Service_Setting } from "#/configs/settings.js";
-import consola from "consola";
 import { prisma } from "#/providers/database-connect.js";
-import { expressMainApplication as app } from "./server.js";
 import { listen } from "#/utils/tools/express.js";
-
+import consola from "consola";
+import { format } from "date-fns";
+import { chalk, Logger } from "log-it-colored";
+import type { AddressInfo } from "node:net";
+import { arch, platform } from "os";
+import { expressMainApplication } from "./server.js";
 export const startMainServer = async (): Promise<void> => {
     try {
-        const instance = await listen(app, EnvConfig.server);
+        const instance = await listen(expressMainApplication, EnvConfig.server);
         const { port, address, family } = instance.address() as AddressInfo;
 
         const time = format(new Date(), "HH:mm:ss dd.MM.yyyy");
@@ -20,6 +20,9 @@ export const startMainServer = async (): Promise<void> => {
         Logger.blue(`${Service_Setting.name}. Launched at ${time}`);
         Logger.success(`${family}: ${chalk.magenta(url)} / ${altUrl} ${chalk.magenta(EnvConfig.NODE_ENVIRONMENT)}`);
 
+        Logger.slate(
+            "Node.js: " + chalk.bold("v" + process.versions.node) + ". CpuArch: " + chalk.bold(arch()) + ". Platform: " + chalk.bold(platform()),
+        );
         const shutdown = async () => {
             instance.close(() => {});
             Logger.sky("Shutting down...");

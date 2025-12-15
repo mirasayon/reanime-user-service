@@ -1,9 +1,9 @@
-import type e from "express";
+import { Reply } from "#/modules/response/handlers.js";
+import type { Authentication_ResponseTypes } from "#/shared/response-patterns/authentication.routes.js";
 import { ControllerUtils } from "#/utils/controller.js";
 import type { Authentication_ReqDtos } from "[www]/authentication/authentication.pipes.js";
 import { Authentication_Service as services } from "[www]/authentication/authentication.service.js";
-import { Reply } from "#/modules/response/handlers.js";
-import type { Authentication_ResponseTypes } from "#/shared/response-patterns/authentication.routes.js";
+import type e from "express";
 
 export const Authentication_Controller = new (class Authentication_Controller {
     login_via_email = async (req: Authentication_ReqDtos.login_via_email, reply: e.Response) => {
@@ -69,7 +69,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
     logout = async (req: Authentication_ReqDtos.logout, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
         const { deleted_session_token } = await services.logout(auth.session.token, auth.session.by_account_id);
-        const data: Authentication_ResponseTypes.logout = deleted_session_token;
+        const data: Authentication_ResponseTypes.logout = !!deleted_session_token;
         const message = "Этот сеанс успешно удален (выход из системы)";
         return Reply.accepted(res, { message, data });
     };

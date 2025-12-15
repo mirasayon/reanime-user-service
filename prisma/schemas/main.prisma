@@ -12,106 +12,127 @@ datasource db {
   provider = "postgresql"
 }
 
-enum AnimeStatus {
-  WATCHING
-  ABANDONED
-  PLANNED
-  COMPLETED
-}
-
-enum AccountType {
-  USER
-  ADMIN
-  DEVELOPER
-  TESTER
-}
 model Account {
-  id                        String                            @id @default(cuid())
-  created_at                 DateTime                          @default(now())         @db.Timestamptz
-  updated_at                 DateTime                          @updatedAt              @db.Timestamptz
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
 
-  type                      AccountType                       @default(USER)
-  email                     String?                           @unique
-  username                  String                            @unique
-  password_hash             String
-  is_activated               Boolean                           @default(false)
-  activation_link            String?
+  // Role/type of account (common, banned, admin, etc.)
+  type                 AccountTypeEnum @default(COMMON)
+  email                String?         @unique
+  username             String          @unique
+  password_hash        String
+  password_version     Int             @default(1) /// 1 = bcrypt
+  last_password_change DateTime?
+  is_activated         Boolean         @default(false)
+  activation_link      String?
 
-  profile                   Profile?
-  sessions                  Session[]
-  // Indexes for quick lookups
-  @@index([email])
-  @@index([username])
+  profile  Profile?
+  sessions Session[]
+
   @@index([type])
   @@index([is_activated])
   @@index([activation_link])
 }
 
 model Session {
-  id                       String           @id @default(cuid())
-  token                    String           @unique() @db.VarChar(577)
-  created_at                DateTime         @default(now()) @db.Timestamptz
-  updated_at                DateTime         @updatedAt @db.Timestamptz
-  expires_at                DateTime?        @db.Timestamptz
+  id           String    @id @default(cuid())
+  token_hash   String    @unique @db.VarChar(128)
+  created_at   DateTime  @default(now()) @db.Timestamptz
+  updated_at   DateTime  @updatedAt @db.Timestamptz
+  expires_at   DateTime  @db.Timestamptz
+  last_used_at DateTime? @db.Timestamptz
 
+  /// Network / location
+  ip_address          String? // raw IP (consider masking / hashing for privacy)
+  ip_country          String? // ISO country code or full name
+  ip_region           String? // region / state
+  ip_city             String?
+  location_updated_at DateTime? @db.Timestamptz
 
-  ip_address               String?
-  user_agent               String?
-  by_account               Account          @relation(fields: [by_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  by_account_id            String
+  /// `User-Agent` header string
+  user_agent     String?
+  /// "console" | "desktop" | "embedded" | "mobile" | "smarttv" | "tablet" | "wearable" | "xr";
+  device_type    String?
+  /// device model
+  deviceModel    String?
+  /// OS Name
+  os             String?
+  /// OS Version
+  osVersion      String?
+  /// Browser name
+  browser        String?
+  /// Browser version
+  browserVersion String?
+  /// hashed fingerprint for deduping devices
+  device_hash    String?
 
+  // Relation
+  by_account    Account @relation(fields: [by_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_account_id String
+
+  // Indexes
   @@index([by_account_id])
   @@index([ip_address])
-  @@index([user_agent])
+  @@index([device_hash])
+  @@index([ip_country, ip_region])
   @@index([expires_at])
 }
+
 model AvatarPicture {
-  id                       String             @id @default(cuid())
-  created_at               DateTime           @default(now()) @db.Timestamptz
-  updated_at               DateTime           @updatedAt @db.Timestamptz
-  url                      String
-  by_profile               Profile            @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  by_profile_id            String             @unique
+  id            String   @id @default(cuid())
+  created_at    DateTime @default(now()) @db.Timestamptz
+  updated_at    DateTime @updatedAt @db.Timestamptz
+  url           String
+  by_profile    Profile  @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile_id String   @unique
 }
 
-model CoverPicture {
-  id                       String             @id @default(cuid())
-  created_at               DateTime           @default(now()) @db.Timestamptz
-  updated_at               DateTime           @updatedAt @db.Timestamptz
-  url                      String
-  by_profile               Profile            @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  by_profile_id            String             @unique
+model ProfileCoverPicture {
+  id            String   @id @default(cuid())
+  created_at    DateTime @default(now()) @db.Timestamptz
+  updated_at    DateTime @updatedAt @db.Timestamptz
+  url           String
+  by_profile    Profile  @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile_id String   @unique
 }
+
 model Profile {
-  id                       String             @id @default(cuid())
-  created_at               DateTime           @default(now()) @db.Timestamptz
-  updated_at               DateTime           @updatedAt @db.Timestamptz
-  avatar                   AvatarPicture?
-  cover                    CoverPicture?
-  bio                      String?
-  by_account               Account            @relation(fields: [by_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  by_account_id            String             @unique
-  nickname                 String?
+  id            String               @id @default(cuid())
+  created_at    DateTime             @default(now()) @db.Timestamptz
+  updated_at    DateTime             @updatedAt @db.Timestamptz
+  avatar        AvatarPicture?
+  cover         ProfileCoverPicture?
+  bio           String?
+  by_account    Account              @relation(fields: [by_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_account_id String               @unique
+  nickname      String?
 
-  comments                 Comment[]
-  replies_to_comment       Reply[]
-  reply_votes              ReplyVote[]
-  comment_votes            CommentVote[]
+  // date of birth
+  date_of_birth        DateTime?               @db.Date
+  birthdate_visibility BirthdateVisibilityEnum @default(NONE)
+  comments             Comment[]
+  replies_to_comment   ReplyToComment[]
+  reply_votes          ReplyVote[]
+  comment_votes        CommentVote[]
 
-  anime_votes              AnimeFavorite[]
+  gender            GenderEnum?          @default(UNSPECIFIED) // ← добавлено 👇
+  gender_visibility GenderVisibilityEnum @default(NONE) // хочешь — аналогично visibility
+  anime_votes       AnimeFavorite[]
   // Anime list entries
-  anime_bookmarks          AnimeBookmark[]
+  anime_bookmarks   AnimeBookmark[]
 }
 
+/// Bookmarks for user's anime list. Unique per profile+anime.
 model AnimeBookmark {
-  id                          String   @id @default(cuid())
-  created_at                  DateTime @default(now()) @db.Timestamptz
-  updated_at                  DateTime @updatedAt @db.Timestamptz
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
 
-  profile                     Profile     @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  profile_id                  String
-  anime_id                    Int         @db.Integer
-  status                      AnimeStatus
+  profile    Profile         @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  profile_id String
+  anime_id   Int             @db.Integer
+  status     AnimeStatusEnum
 
   @@unique([profile_id, anime_id])
   @@index([profile_id])
@@ -119,15 +140,16 @@ model AnimeBookmark {
   @@index([status])
 }
 
+/// Favorite (like) for an anime. vote = true means liked.
 model AnimeFavorite {
-  id                           String                    @id @default(cuid())
-  created_at                    DateTime                 @default(now()) @db.Timestamptz
-  updated_at                    DateTime                 @updatedAt @db.Timestamptz
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
 
-  profile                      Profile                   @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  profile_id                   String
-  anime_id                     Int                       @db.Integer
-  vote                         Boolean
+  profile    Profile @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  profile_id String
+  anime_id   Int     @db.Integer
+  vote       Boolean
 
   @@unique([profile_id, anime_id])
   @@index([profile_id])
@@ -135,66 +157,114 @@ model AnimeFavorite {
   @@index([vote])
 }
 
-model Reply {
-  id                              String                  @id @default(cuid())
-  created_at                       DateTime               @default(now()) @db.Timestamptz
-  updated_at                       DateTime               @updatedAt @db.Timestamptz
+/// Reply to a comment.
+model ReplyToComment {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
 
-  content                         String				          @db.Text
-  by_profile                      Profile                 @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  by_profile_id                   String
+  content       String  @db.Text
+  by_profile    Profile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile_id String
 
-  is_visible                      Boolean                 @default(true)
-  to_comment                      Comment                 @relation(fields: [to_comment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  to_comment_id                   String
+  is_visible    Boolean @default(true)
+  to_comment    Comment @relation(fields: [to_comment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  to_comment_id String
 
-  ratings                         ReplyVote[]
+  ratings ReplyVote[]
+
+  @@index([by_profile_id])
+  @@index([to_comment_id])
 }
 
+/// Comment model for anime comments.
 model Comment {
-  id                              String                  @id @default(cuid())
-  created_at                       DateTime               @default(now()) @db.Timestamptz
-  updated_at                       DateTime               @updatedAt @db.Timestamptz
-  content                         String	                @db.Text
-  is_visible                      Boolean                 @default(true)
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
+  content    String   @db.Text
+  is_visible Boolean  @default(true)
 
-  by_profile                      Profile                 @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  by_profile_id                   String
-  anime_id                        Int                     @db.Integer
-  ratings                         CommentVote[]
-  replies                         Reply[]
+  by_profile    Profile          @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile_id String
+  anime_id      Int              @db.Integer
+  ratings       CommentVote[]
+  replies       ReplyToComment[]
+
   @@index([anime_id])
 }
 
+/// Vote on comment (unique per profile + comment).
 model CommentVote {
-  id                                   String   @id @default(cuid())
-  created_at                            DateTime @default(now()) @db.Timestamptz
-  updated_at                            DateTime @updatedAt @db.Timestamptz
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
 
-  by_profile                           Profile   @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  by_profile_id                        String
+  by_profile    Profile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile_id String
 
-  comment                              Comment @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  comment_id                           String
-  vote                                 Boolean
+  comment    Comment @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  comment_id String
+  vote       Boolean
 
   @@unique([by_profile_id, comment_id])
   @@index([comment_id])
-  @@index([by_profile_id]) 
+  @@index([by_profile_id])
 }
 
+/// Vote on reply (unique per profile + reply).
 model ReplyVote {
-  id                                    String   @id @default(cuid())
-  created_at                            DateTime @default(now()) @db.Timestamptz
-  updated_at                            DateTime @updatedAt @db.Timestamptz
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
 
-  by_profile                            Profile  @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  by_profile_id                         String
-  reply                                 Reply    @relation(fields: [reply_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  reply_id                              String
-  vote                                  Boolean
+  by_profile    Profile        @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile_id String
+  reply         ReplyToComment @relation(fields: [reply_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  reply_id      String
+  vote          Boolean
 
   @@unique([by_profile_id, reply_id])
   @@index([reply_id])
   @@index([by_profile_id])
+}
+
+/// Visibility options for birthdate
+enum BirthdateVisibilityEnum {
+  NONE // скрыто полностью
+  YEAR_ONLY /// показываем только год
+  FULL // показываем полную дату
+}
+
+/// Visibility options for gender
+enum GenderVisibilityEnum {
+  NONE
+  PUBLIC
+}
+
+/// Gender enum
+enum GenderEnum {
+  MALE
+  FEMALE
+  // уважительно для тех, кто не вписывается в бинарную систему
+  OTHER
+  // значение по умолчанию (юзер не выбрал)
+  UNSPECIFIED
+}
+
+/// Anime status in bookmark
+enum AnimeStatusEnum {
+  WATCHING
+  ABANDONED
+  PLANNED
+  COMPLETED
+}
+
+/// Account types / roles
+enum AccountTypeEnum {
+  COMMON
+  BANNED
+  ADMIN
+  DEVELOPER
+  TESTER
 }

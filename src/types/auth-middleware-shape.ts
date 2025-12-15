@@ -1,4 +1,4 @@
-import type { AvatarPicture, Profile, Session } from "#/databases/orm/client.js";
+import type { Profile, Session } from "#/databases/orm/client.js";
 
 /** DTO for auth */
 export type mid_auth_dto = {

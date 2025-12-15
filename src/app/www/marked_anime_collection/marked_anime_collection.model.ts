@@ -1,6 +1,6 @@
-import { prisma } from "#/providers/database-connect.js";
-import { AnimeStatus } from "#/databases/orm/enums.js";
+import { AnimeStatusEnum } from "#/databases/orm/enums.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
+import { prisma } from "#/providers/database-connect.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 
 export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Model {
@@ -10,7 +10,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
                 profile_id: profile_id,
                 id: id,
                 anime_id: anime_id,
-                status: AnimeStatus.WATCHING,
+                status: AnimeStatusEnum.WATCHING,
             },
         });
     };
@@ -34,7 +34,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
         return await prisma.animeBookmark.delete({
             where: {
                 profile_id: profile_id,
-                status: AnimeStatus.ABANDONED,
+                status: AnimeStatusEnum.ABANDONED,
                 id: id,
                 anime_id: anime_id,
             },
@@ -46,7 +46,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
                 profile_id: profile_id,
                 anime_id: anime_id,
                 id: id,
-                status: AnimeStatus.PLANNED,
+                status: AnimeStatusEnum.PLANNED,
             },
         });
     };
@@ -56,7 +56,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
                 profile_id: profile_id,
                 anime_id: anime_id,
                 id: id,
-                status: AnimeStatus.COMPLETED,
+                status: AnimeStatusEnum.COMPLETED,
             },
         });
     };
@@ -66,7 +66,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
             data: {
                 profile_id: profile_id,
                 anime_id: anime_id,
-                status: AnimeStatus.WATCHING,
+                status: AnimeStatusEnum.WATCHING,
             },
         });
     };
@@ -74,7 +74,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
         return await prisma.animeBookmark.create({
             data: {
                 profile_id: profile_id,
-                status: AnimeStatus.ABANDONED,
+                status: AnimeStatusEnum.ABANDONED,
                 anime_id: anime_id,
             },
         });
@@ -84,7 +84,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
             data: {
                 profile_id: profile_id,
                 anime_id: anime_id,
-                status: AnimeStatus.PLANNED,
+                status: AnimeStatusEnum.PLANNED,
             },
         });
     };
@@ -93,7 +93,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
             data: {
                 profile_id: profile_id,
                 anime_id: anime_id,
-                status: AnimeStatus.COMPLETED,
+                status: AnimeStatusEnum.COMPLETED,
             },
         });
     };
@@ -102,7 +102,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
         return await prisma.animeBookmark.findMany({
             where: {
                 profile_id: profile_id,
-                status: AnimeStatus.WATCHING,
+                status: AnimeStatusEnum.WATCHING,
             },
         });
     };
@@ -110,7 +110,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
         return await prisma.animeBookmark.findMany({
             where: {
                 profile_id: profile_id,
-                status: AnimeStatus.ABANDONED,
+                status: AnimeStatusEnum.ABANDONED,
             },
         });
     };
@@ -118,7 +118,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
         return await prisma.animeBookmark.findMany({
             where: {
                 profile_id: profile_id,
-                status: AnimeStatus.PLANNED,
+                status: AnimeStatusEnum.PLANNED,
             },
         });
     };
@@ -126,7 +126,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
         return await prisma.animeBookmark.findMany({
             where: {
                 profile_id: profile_id,
-                status: AnimeStatus.COMPLETED,
+                status: AnimeStatusEnum.COMPLETED,
             },
         });
     };
@@ -154,4 +154,3 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
         return found_vote;
     };
 })();
-

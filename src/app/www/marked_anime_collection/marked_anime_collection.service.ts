@@ -1,6 +1,6 @@
-import { AnimeStatus } from "#/databases/orm/enums.js";
-import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
+import { AnimeStatusEnum } from "#/databases/orm/enums.js";
 import { ConflictException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
+import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { MarkedAnimeCollection_Model as model } from "[www]/marked_anime_collection/marked_anime_collection.model.js";
 import consola from "consola";
 
@@ -60,16 +60,16 @@ class _MarkedAnimeCollection_Service {
     };
 
     delete_completed = async (profile_id: iObjectCuid, anime_id: number) => {
-        const existed = await this.__check_exact_for_deleting(profile_id, anime_id, AnimeStatus.COMPLETED);
+        const existed = await this.__check_exact_for_deleting(profile_id, anime_id, AnimeStatusEnum.COMPLETED);
         const deleted_completed_anime = await model.delete_completed_by_profile_id(profile_id, anime_id, existed.id);
         return { deleted_completed_anime };
     };
     delete_planned = async (profile_id: iObjectCuid, anime_id: number) => {
-        const existed = await this.__check_exact_for_deleting(profile_id, anime_id, AnimeStatus.PLANNED);
+        const existed = await this.__check_exact_for_deleting(profile_id, anime_id, AnimeStatusEnum.PLANNED);
         const deleted_plan_to_watch_anime = await model.delete_plan_to_watch_by_profile_id(profile_id, anime_id, existed.id);
         return { deleted_plan_to_watch_anime };
     };
-    private readonly __check_exact_for_deleting = async (profile_id: string, anime_id: number, status: AnimeStatus) => {
+    private readonly __check_exact_for_deleting = async (profile_id: string, anime_id: number, status: AnimeStatusEnum) => {
         const found_anime = await model.is_anime_in_collection(profile_id, anime_id);
         if (!found_anime) {
             throw new NotFoundException(["Аниме нет в коллекции"]);
@@ -80,16 +80,15 @@ class _MarkedAnimeCollection_Service {
         return found_anime;
     };
     delete_abandoned = async (profile_id: iObjectCuid, anime_id: number) => {
-        const existed = await this.__check_exact_for_deleting(profile_id, anime_id, AnimeStatus.ABANDONED);
+        const existed = await this.__check_exact_for_deleting(profile_id, anime_id, AnimeStatusEnum.ABANDONED);
         consola.info({ existed });
         const deleted_abandoned_anime = await model.delete_abandoned_by_profile_id(profile_id, anime_id, existed.id);
         return { deleted_abandoned_anime };
     };
     delete_watching = async (profile_id: iObjectCuid, anime_id: number) => {
-        const existed = await this.__check_exact_for_deleting(profile_id, anime_id, AnimeStatus.WATCHING);
+        const existed = await this.__check_exact_for_deleting(profile_id, anime_id, AnimeStatusEnum.WATCHING);
         const deleted_watching_anime = await model.delete_watching_by_profile_id(profile_id, anime_id, existed.id);
         return { deleted_watching_anime };
     };
 }
 export const MarkedAnimeCollection_Service = new _MarkedAnimeCollection_Service();
-

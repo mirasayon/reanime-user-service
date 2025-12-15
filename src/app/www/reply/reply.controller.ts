@@ -1,10 +1,10 @@
-import type e from "express";
+import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
+import { Reply } from "#/modules/response/handlers.js";
+import type { Reply_ResponseTypes } from "#/shared/response-patterns/comment-reply.routes.js";
 import { ControllerUtils } from "#/utils/controller.js";
 import type { Reply_ReqDtos as REQDTO } from "[www]/reply/reply.pipes.js";
 import { Reply_Service as service } from "[www]/reply/reply.service.js";
-import { Reply } from "#/modules/response/handlers.js";
-import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
-import type { Reply_ResponseTypes } from "#/shared/response-patterns/comment-reply.routes.js";
+import type e from "express";
 export const Reply_Controller = new (class Reply_Controller {
     /** Edit the comment by profile */
     edit_reply = async (req: REQDTO.edit_reply, res: e.Response) => {
@@ -91,7 +91,7 @@ export const Reply_Controller = new (class Reply_Controller {
             profile_id: Req.auth.profile.id,
         });
 
-        const data: Reply_ResponseTypes.create_reply = created_reply;
+        const data: Reply_ResponseTypes.create_reply = !!created_reply;
         const message = "Успешно создан ответ на этот комментарий";
         return Reply.accepted(reply, {
             data,
@@ -105,9 +105,8 @@ export const Reply_Controller = new (class Reply_Controller {
             reply_id,
             profile_id: auth.profile.id,
         });
-        const data: Reply_ResponseTypes.delete_reply = deleted_reply;
+        const data: Reply_ResponseTypes.delete_reply = !!deleted_reply;
         const message = "Ответ успешно удалён";
         return Reply.accepted(reply, { data, message });
     };
 })();
-
