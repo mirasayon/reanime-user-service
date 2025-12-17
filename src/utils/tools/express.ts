@@ -1,12 +1,12 @@
-import type e from "express";
-import { parseCookie } from "cookie";
-import express, { Router } from "express";
 import { PathsConfig } from "#/configs/paths.config.js";
+import { parseCookie } from "cookie";
+import type { Application, NextFunction, Request, Response } from "express";
+import express, { Router } from "express";
 
 /** Creates New Router with already configured settings */
 export const cRouter = () => Router({ caseSensitive: true, strict: true });
 /** Cookie Parser middleware  */
-export const cookie_parser = (req: e.Request, _res: e.Response, next: e.NextFunction) => {
+export const cookie_parser = (req: Request, _res: Response, next: NextFunction) => {
     if (!req.headers.cookie) {
         req.cookies = {};
         return next();
@@ -40,7 +40,7 @@ export const x_www_urlencoded_parser = express.urlencoded({
  * @param port Port number
  * @param host Hostname
  */
-export const listen = (app: e.Application, { port, host }: { port: number; host: string }): Promise<ReturnType<e.Application["listen"]>> => {
+export const listenExpressApp = (app: Application, { port, host }: { port: number; host: string }): Promise<ReturnType<Application["listen"]>> => {
     return new Promise((resolve, reject) => {
         const server = app.listen({ port, host }, (err) => {
             if (err) {

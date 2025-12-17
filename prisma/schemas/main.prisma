@@ -79,35 +79,53 @@ model Session {
   @@index([expires_at])
 }
 
-model AvatarPicture {
+model ProfileAvatarPicture {
   id            String   @id @default(cuid())
   created_at    DateTime @default(now()) @db.Timestamptz
   updated_at    DateTime @updatedAt @db.Timestamptz
-  url           String
+  /// e.g.: image/webp
+  mimeType      String  
+  /// относительный путь: /avatars/ab/cd/uuid.webp
+  path          String   
+  originalName  String?
   by_profile    Profile  @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   by_profile_id String   @unique
+
+  width        Int?
+  height       Int?
+  sizeBytes    Int
 }
 
 model ProfileCoverPicture {
   id            String   @id @default(cuid())
   created_at    DateTime @default(now()) @db.Timestamptz
   updated_at    DateTime @updatedAt @db.Timestamptz
-  url           String
+  /// e.g.: image/webp
+  mimeType      String  
+  /// относительный путь: /avatars/ab/cd/uuid.webp
+  path          String   
+  originalName  String?
   by_profile    Profile  @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   by_profile_id String   @unique
+
+  width        Int?
+  height       Int?
+  sizeBytes    Int
 }
 
 model Profile {
   id            String               @id @default(cuid())
   created_at    DateTime             @default(now()) @db.Timestamptz
   updated_at    DateTime             @updatedAt @db.Timestamptz
-  avatar        AvatarPicture?
+  avatar        ProfileAvatarPicture?
   cover         ProfileCoverPicture?
   bio           String?
   by_account    Account              @relation(fields: [by_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   by_account_id String               @unique
   nickname      String?
 
+  reports_to_comment       CommentReport[]
+  reports_to_replies        ReplyReport[]
   // date of birth
   date_of_birth        DateTime?               @db.Date
   birthdate_visibility BirthdateVisibilityEnum @default(NONE)
@@ -167,6 +185,8 @@ model ReplyToComment {
   by_profile    Profile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   by_profile_id String
 
+  /// все жалобы на этот ответ на комментарий
+  reports      ReplyReport[] 
   is_visible    Boolean @default(true)
   to_comment    Comment @relation(fields: [to_comment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   to_comment_id String
@@ -184,7 +204,8 @@ model Comment {
   updated_at DateTime @updatedAt @db.Timestamptz
   content    String   @db.Text
   is_visible Boolean  @default(true)
-
+  /// все жалобы на этот комментарий
+  reports       CommentReport[]
   by_profile    Profile          @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   by_profile_id String
   anime_id      Int              @db.Integer
@@ -267,4 +288,57 @@ enum AccountTypeEnum {
   ADMIN
   DEVELOPER
   TESTER
+}
+
+enum ReportReasonEnum {
+  SPAM
+  ADVERTISEMENT
+  ABUSE
+  HARASSMENT
+  HATE_SPEECH
+  NUDITY
+  PERSONAL_DATA_LEAK
+  OTHER
+} 
+
+
+
+model CommentReport {
+  id                  String           @id @default(cuid())
+  created_at          DateTime         @default(now()) @db.Timestamptz
+  updated_at          DateTime         @updatedAt @db.Timestamptz
+  // кто пожаловался
+  reporter            Profile          @relation(fields: [reporter_profile_id], references: [id], onDelete: Cascade)
+  reporter_profile_id String
+
+  // на какой комментарий
+  comment             Comment          @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+  comment_id          String
+  reason              ReportReasonEnum
+  description         String?          @db.Text
+  /// оставить видимой жалобу (для внутренней истории)
+  is_visible          Boolean          @default(true) 
+  // индексы / ограничения
+  @@unique([reporter_profile_id, comment_id]) // предотвращает дубль-репорт от одного профиля
+  @@index([comment_id])
+  @@index([reporter_profile_id])
+}
+/// ----- модель жалобы на реплай (ответ на комментарий) -----
+model ReplyReport {
+  id                  String           @id @default(cuid())
+  created_at          DateTime         @default(now()) @db.Timestamptz
+  updated_at          DateTime         @updatedAt @db.Timestamptz
+
+  reporter            Profile          @relation(fields: [reporter_profile_id], references: [id], onDelete: Cascade)
+  reporter_profile_id String
+
+  reply               ReplyToComment   @relation(fields: [reply_id], references: [id], onDelete: Cascade)
+  reply_id            String
+
+  reason              ReportReasonEnum
+  description         String?          @db.Text
+  is_visible          Boolean          @default(true)
+  @@unique([reporter_profile_id, reply_id])
+  @@index([reply_id])
+  @@index([reporter_profile_id])
 }
