@@ -19,4 +19,3 @@ export const bearer_session_token_from_headers = (req: e.Request): string | null
     }
     return null;
 };
-

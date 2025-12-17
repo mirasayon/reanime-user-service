@@ -27,4 +27,3 @@ export const metadata_dto = new (class From_Create_DTO {
         };
     };
 })();
-

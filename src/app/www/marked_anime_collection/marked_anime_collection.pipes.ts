@@ -41,4 +41,3 @@ export const MarkedAnimeCollection_ReqPipes = new (class MarkedAnimeCollection_R
     delete_abandoned = m<rd.delete_abandoned>(schema.delete_abandoned, async (req) => req.params.anime_id);
     delete_watching = m<rd.delete_watching>(schema.delete_watching, async (req) => req.params.anime_id);
 })();
-

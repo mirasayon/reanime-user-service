@@ -5,4 +5,3 @@ export type Request_dto_auth<DTO_Type, Params extends { [key: string]: string } 
     dto?: DTO_Type;
     auth?: mid_auth_dto;
 };
-

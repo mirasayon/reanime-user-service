@@ -5,4 +5,3 @@ export const Ping_Router = (() => {
     r.get("/", Ping_Controller.get);
     return r;
 })();
-

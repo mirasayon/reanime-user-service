@@ -16,4 +16,3 @@ export type iAnimeId = number;
 
 /** Represents a Session's Token. 577 char length */
 export type iClientSessionToken = string;
-

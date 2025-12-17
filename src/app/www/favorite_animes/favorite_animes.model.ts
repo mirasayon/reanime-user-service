@@ -81,4 +81,3 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
         });
     };
 })();
-

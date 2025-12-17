@@ -58,4 +58,3 @@ export const FavoriteAnimes_Controller = new (class FavoriteAnimes_Controller {
         return Reply.ok(res, { data, message });
     };
 })();
-

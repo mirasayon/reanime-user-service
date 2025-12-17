@@ -21,4 +21,3 @@ export const Favorite_Animes_ReqPipes = new (class Favorite_Animes_ReqPipes {
     add_dislike_to_anime = m<rd.add_dislike_to_anime>(schemas.add_dislike_to_anime, async (req) => req.params.anime_id);
     delete_dislike_from_anime = m<rd.delete_dislike_from_anime>(schemas.delete_dislike_from_anime, async (req) => req.params.anime_id);
 })();
-

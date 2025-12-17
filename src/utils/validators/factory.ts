@@ -40,4 +40,3 @@ const Factory_Validator_Util_Class = new (class Factory_Validator_Util_Class {
  *  @see {@link Factory_Validator_Util_Class.create}
  */
 export const vmfactory = Factory_Validator_Util_Class.create;
-

@@ -37,21 +37,30 @@ export class ExpectedInternalServerErrorException {
 export class BadGatewayException {
     readonly response_code = ResponseCode.BAD_GATEWAY;
     readonly name = BadGatewayException.name;
-    constructor(readonly error: unknown, readonly service_name?: string) {
+    constructor(
+        readonly error: unknown,
+        readonly service_name?: string,
+    ) {
         consola.error(`${this.name}: `, error);
     }
 }
 export class NotImplementedException {
     readonly response_code = ResponseCode.NOT_IMPLEMENTED;
     readonly name = NotImplementedException.name;
-    constructor(readonly error: unknown, readonly service_name?: string) {
+    constructor(
+        readonly error: unknown,
+        readonly service_name?: string,
+    ) {
         consola.error(`${this.name}: `, error);
     }
 }
 export class ServiceUnavailableException {
     readonly response_code = ResponseCode.SERVICE_UNAVAILABLE;
     readonly name = ServiceUnavailableException.name;
-    constructor(readonly error: unknown, readonly service_name?: string) {
+    constructor(
+        readonly error: unknown,
+        readonly service_name?: string,
+    ) {
         consola.error(`${this.name}: `, error);
     }
 }

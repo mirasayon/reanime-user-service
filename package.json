@@ -1,12 +1,11 @@
 {
     "name": "reanime-user-service",
-    "version": "1.0.0",
+    "version": "1.12.0",
     "type": "module",
     "scripts": {
         "dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/startup.js",
         "compiler": "tspc --watch",
         "compile": "tsc && tsc-alias",
-        "dev:src": "node --watch --env-file=.env.development ./src/server/startup.ts",
         "test-common": "node --enable-source-maps --env-file=.env.test ./dist/tests/common.js",
         "dev-test": "node --enable-source-maps --env-file=.env.test --watch ./dist/tests/play.js",
         "start:production": "node --env-file=.env.production ./dist/server/startup.js",

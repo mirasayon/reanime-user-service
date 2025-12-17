@@ -113,4 +113,3 @@ export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection
         return Reply.accepted(res, { data, message });
     };
 })();
-

@@ -86,4 +86,3 @@ export const FavoriteAnimes_Services = new (class FavoriteAnimes_Services {
         return { deleted };
     };
 })();
-
