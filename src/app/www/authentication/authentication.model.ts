@@ -1,9 +1,9 @@
-import type { iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import { authentication_Session_Token_Util } from "#/utils/services/session_token.js";
 import type { Account, Profile, Session } from "#/databases/orm/client.js";
 import { NotFoundException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import { prisma } from "#/providers/database-connect.js";
+import type { iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
+import { sessionTokenHashService } from "#/utils/services/session_token.js";
 
 export const authModels = new (class Authentication_Model {
     find_1_session_by_its_token = async (session_token: iClientSessionToken) => {
@@ -92,7 +92,7 @@ export const authModels = new (class Authentication_Model {
         const new_session = await prisma.session.create({
             data: {
                 by_account_id: new_account_id,
-                token: authentication_Session_Token_Util.create_session_token(new_account_id),
+                token: sessionTokenHashService.create_session_token(new_account_id),
                 ip_address: meta.ip,
                 user_agent: meta.agent,
             },

@@ -20,8 +20,9 @@
         "build:dev": "rimraf ./dist ./src/databases/orm && npm run gen_db_client:dev && npm run compile",
         "build:test": "rimraf ./dist ./src/databases/orm && npm run gen_db_client:test && npm run compile",
         "build:prod": "rimraf ./dist ./src/databases/orm && npm run gen_db_client:prod && npm run compile",
-        "format": "prettier --config prettier.config.ts --write \"src/**/*.{js,ts,jsx,tsx,json,css,scss,md,html}\"",
-        "format:check": "prettier --check \"src/**/*.{js,ts,jsx,tsx,json,css,scss,md,html}\""
+        "code_format": "prettier --config prettier.config.ts --write \"src/**/*.{js,ts,jsx,tsx,json,css,scss,md,html}\"",
+        "prisma_format": "dotenv -e .env.development -- prisma format",
+        "code_format:check": "prettier --check \"src/**/*.{js,ts,jsx,tsx,json,css,scss,md,html}\""
     },
     "dependencies": {
         "@prisma/adapter-pg": "^7.2.0",

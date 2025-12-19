@@ -1,12 +1,11 @@
-import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import consola from "consola";
-import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
-import { ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
-import { publicEncrypt, randomBytes, constants, privateDecrypt } from "node:crypto";
 import { keysPrivateKey, keysPublicKey } from "#/configs/paths.config.js";
+import { ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
+import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
+import { constants, privateDecrypt, publicEncrypt, randomBytes } from "node:crypto";
 
-export const authentication_Session_Token_Util = new (class Authentication_Session_Token_Util {
-    create_session_token = (account_id: iObjectCuid) => {
+export const sessionTokenHashService = new (class Authentication_Session_Token_Util {
+    create_session_token = (account_id: iObjectCuid): `${string}_${string}` => {
         try {
             const rand = randomBytes(32).toString("hex"); // randomBytes(32) => 64 chars of length
             const buffer = Buffer.from(account_id, "utf-8");
@@ -28,8 +27,17 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
             });
         }
     };
-    decrypt_session_token(raw: string) {
+    decrypt_session_token = (
+        raw: string,
+    ): {
+        session_token: string;
+        account_id: string;
+    } => {
         try {
+            if (!raw) {
+                throw new UnauthorizedException(["Токен сеанса отсутствует"]);
+            }
+
             const [session_token, encryptedBase64] = raw.split("_");
             if (!session_token || !encryptedBase64) {
                 throw new UnauthorizedException(["Неверный формат токена сеанса или токен сеанса отсутствует"]);
@@ -51,5 +59,5 @@ export const authentication_Session_Token_Util = new (class Authentication_Sessi
             }
             throw new ForbiddenException(["Токен сеанса поддельный"]);
         }
-    }
+    };
 })();
