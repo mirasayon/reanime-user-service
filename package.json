@@ -11,12 +11,12 @@
         "start:production": "node --env-file=.env.production ./dist/server/startup.js",
         "start:test": "node --env-file=.env.test ./dist/server/startup.js",
         "start:dev": "node --enable-source-maps --env-file=.env.development ./dist/server/startup.js",
-        "db-studio:dev": "dotenv -e .env.development -- prisma studio",
+        "db-studio:dev": "dotenv -e .env.development -- prisma studio --port 2777",
         "inspector": "tsc --watch --noEmit",
         "gen_db_client:dev": "dotenv -e .env.development -- prisma generate",
         "gen_db_client:test": "dotenv -e .env.test -- prisma generate",
         "gen_db_client:prod": "dotenv -e .env.production -- prisma generate",
-        "gen-shared-package": "rimraf ./generated-shared-export && npx tsc -p ./tsconfig.shared-package.jsonc",
+        "gen-shared-package": "rimraf ./generated-shared-export && tsc -p ./tsconfig.shared-package.jsonc",
         "build:dev": "rimraf ./dist ./src/databases/orm && npm run gen_db_client:dev && npm run compile",
         "build:test": "rimraf ./dist ./src/databases/orm && npm run gen_db_client:test && npm run compile",
         "build:prod": "rimraf ./dist ./src/databases/orm && npm run gen_db_client:prod && npm run compile",
@@ -27,11 +27,9 @@
     "dependencies": {
         "@prisma/adapter-pg": "^7.2.0",
         "@prisma/client": "^7.2.0",
-        "bcryptjs": "^3.0.3",
         "better-psl": "^1.0.1",
         "compression": "^1.8.1",
         "consola": "^3.4.2",
-        "cookie": "^1.1.1",
         "cors": "^2.8.5",
         "date-fns": "^4.1.0",
         "express": "^5.2.1",
@@ -69,8 +67,8 @@
         "url": "https://MiraSayon.com"
     },
     "private": true,
-    "description": "Reanime.art User Service",
+    "description": "Reanime.art Backend User Service",
     "engines": {
-        "node": ">=22.18.0"
+        "node": ">=24.12.0"
     }
 }

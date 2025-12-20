@@ -1,12 +1,8 @@
 import type e from "express";
-import {
-    type I_UserServiceResponseStatusCodes,
-    type ResponseCode,
-    UserServiceResponseStatusCodes,
-} from "../../shared/constants/response.constants.js";
-import type { UserServiceResponseBodyPattern } from "../../shared/response-patterns/response-json-body-shape.js";
+import { type I_UserServiceResponseStatusCodes, type ResponseHTTPCodes, ResponseHTTPStatusCodes } from "../../shared/constants/response.constants.js";
+import type { HTTPResponseBodyPattern } from "../../shared/response-patterns/response-json-body-shape.js";
 
-export function all_responses_handler<T>({
+export function allHttpResponseHandler<T>({
     res,
     response_code,
     message,
@@ -15,15 +11,15 @@ export function all_responses_handler<T>({
     data,
 }: {
     res: e.Response;
-    response_code: ResponseCode;
+    response_code: ResponseHTTPCodes;
     message: string;
     errors?: string[];
     ok: boolean;
     data?: T;
 }): void {
-    const status_code: I_UserServiceResponseStatusCodes = UserServiceResponseStatusCodes[response_code];
+    const status_code: I_UserServiceResponseStatusCodes = ResponseHTTPStatusCodes[response_code];
 
-    const paylaod: UserServiceResponseBodyPattern<T> = {
+    const payload: HTTPResponseBodyPattern<T> = {
         data: data ?? null,
         errors: errors ?? [],
         ok,
@@ -31,6 +27,6 @@ export function all_responses_handler<T>({
         status_code: status_code,
         response_code: response_code,
     };
-    res.status(status_code).json(paylaod);
+    res.status(status_code).json(payload);
     return;
 }

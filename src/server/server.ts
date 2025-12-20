@@ -1,15 +1,14 @@
-import express from "express";
-import cors from "cors";
-import helmet from "helmet";
-import compression from "compression";
-import { cookie_parser, json_parser, static_serve } from "#/utils/tools/express.js";
-import { mainServicesRouter } from "#/app/entry_point.route.js";
+import { mainServicesRouter } from "#/app/main.route.js";
+import { EnvConfig } from "#/configs/environment-variables.js";
+import { mainDevServerLogger } from "#/middlewares/dev_logger.js";
 import { client_error_handler, not_found_route } from "#/modules/errors/client-side/handler.js";
 import { server_exception_handler, unknown_exception_handler } from "#/modules/errors/server-side/handler.js";
-import { mainDevServerLogger } from "#/middlewares/dev_logger.js";
+import { json_parser, static_serve } from "#/utils/tools/express.js";
+import compression from "compression";
+import cors from "cors";
+import express from "express";
+import helmet from "helmet";
 import morgan from "morgan";
-import { Logger } from "log-it-colored";
-import { EnvConfig } from "#/configs/environment-variables.js";
 /** Main Express Application */
 export const expressMainApplication = (() => {
     const app = express();
@@ -20,7 +19,6 @@ export const expressMainApplication = (() => {
     app.use(cors({}));
 
     app.use(static_serve);
-    app.use(cookie_parser);
     app.use(json_parser);
 
     /** Logger Middlewares */

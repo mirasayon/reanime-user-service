@@ -1,5 +1,5 @@
+import { ResponseHTTPCodes } from "#/shared/constants/response.constants.js";
 import consola from "consola";
-import { ResponseCode } from "#/shared/constants/response.constants.js";
 type UnexpectedInternalServerErrorExceptionOptions = {
     service_name: string;
     errorMessageToClient: string;
@@ -13,7 +13,7 @@ export type ServerSideExceptionClasses =
     | ServiceUnavailableException;
 
 export class UnexpectedInternalServerErrorException {
-    readonly response_code = ResponseCode.UNEXPECTED_INTERNAL_ERROR;
+    readonly response_code = ResponseHTTPCodes.UNEXPECTED_INTERNAL_ERROR;
     readonly name = UnexpectedInternalServerErrorException.name;
     readonly service_name: string;
     readonly errorMessageToClient: string;
@@ -27,7 +27,7 @@ export class UnexpectedInternalServerErrorException {
 }
 
 export class ExpectedInternalServerErrorException {
-    readonly response_code = ResponseCode.EXPECTED_INTERNAL_ERROR;
+    readonly response_code = ResponseHTTPCodes.EXPECTED_INTERNAL_ERROR;
     readonly name = UnexpectedInternalServerErrorException.name;
 
     constructor(readonly errorMessage: string) {
@@ -35,7 +35,7 @@ export class ExpectedInternalServerErrorException {
     }
 }
 export class BadGatewayException {
-    readonly response_code = ResponseCode.BAD_GATEWAY;
+    readonly response_code = ResponseHTTPCodes.BAD_GATEWAY;
     readonly name = BadGatewayException.name;
     constructor(
         readonly error: unknown,
@@ -45,7 +45,7 @@ export class BadGatewayException {
     }
 }
 export class NotImplementedException {
-    readonly response_code = ResponseCode.NOT_IMPLEMENTED;
+    readonly response_code = ResponseHTTPCodes.NOT_IMPLEMENTED;
     readonly name = NotImplementedException.name;
     constructor(
         readonly error: unknown,
@@ -55,7 +55,7 @@ export class NotImplementedException {
     }
 }
 export class ServiceUnavailableException {
-    readonly response_code = ResponseCode.SERVICE_UNAVAILABLE;
+    readonly response_code = ResponseHTTPCodes.SERVICE_UNAVAILABLE;
     readonly name = ServiceUnavailableException.name;
     constructor(
         readonly error: unknown,

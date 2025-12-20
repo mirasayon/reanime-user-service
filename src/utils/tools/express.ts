@@ -1,20 +1,9 @@
 import { PathsConfig } from "#/configs/paths.config.js";
-import { parseCookie } from "cookie";
-import type { Application, NextFunction, Request, Response } from "express";
+import type { Application } from "express";
 import express, { Router } from "express";
 
 /** Creates New Router with already configured settings */
 export const cRouter = () => Router({ caseSensitive: true, strict: true });
-/** Cookie Parser middleware  */
-export const cookie_parser = (req: Request, _res: Response, next: NextFunction) => {
-    if (!req.headers.cookie) {
-        req.cookies = {};
-        return next();
-    }
-    req.cookies = parseCookie(req.headers.cookie, {});
-    return next();
-};
-
 /** Static Folder middleware */
 export const static_serve = express.static(PathsConfig.static, {
     etag: false,

@@ -1,4 +1,5 @@
 // utils/session.ts
+// @ts-nocheck
 import crypto from "crypto";
 import type { Response } from "express";
 import { prisma } from "../src/providers/database-connect";

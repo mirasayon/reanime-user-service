@@ -1,7 +1,7 @@
 import type { Account, Profile, Session } from "#/databases/orm/client.js";
+import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
-import { prisma } from "#/providers/database-connect.js";
 import type { iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { sessionTokenHashService } from "#/utils/services/session_token.js";
 

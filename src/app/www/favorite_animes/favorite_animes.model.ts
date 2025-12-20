@@ -1,4 +1,4 @@
-import { prisma } from "#/providers/database-connect.js";
+import { prisma } from "#/databases/providers/database-connect.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 
 export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {

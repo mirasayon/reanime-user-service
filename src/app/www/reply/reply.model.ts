@@ -1,6 +1,6 @@
 import type { ReplyVote } from "#/databases/orm/client.js";
+import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import { prisma } from "#/providers/database-connect.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 
 export const Reply_Model = new (class Reply_Model {

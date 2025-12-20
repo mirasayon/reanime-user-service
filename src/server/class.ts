@@ -1,6 +1,6 @@
 import { EnvConfig } from "#/configs/environment-variables.js";
 import { Service_Setting } from "#/configs/settings.js";
-import { prisma } from "#/providers/database-connect.js";
+import { prisma } from "#/databases/providers/database-connect.js";
 import { listenExpressApp } from "#/utils/tools/express.js";
 import consola from "consola";
 import { format } from "date-fns";

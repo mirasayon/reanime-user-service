@@ -1,0 +1,16 @@
+env_files:
+    development: .env.development
+    test: .env.test
+    production: .env.production
+
+scripts:
+    migrate:
+        dev:
+            description: "Create & apply migrations on the development database"
+            command: "dotenv -e .env.development -- prisma migrate dev --name default-migration-name"
+        reset:
+            description: "Reset the development database & reapply all migrations"
+            command: "dotenv -e .env.development -- prisma migrate reset --force"
+        deploy:
+            description: "Deploy all pending migrations to the production database"
+            command: "dotenv -e .env.production -- prisma migrate deploy"

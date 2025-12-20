@@ -1,10 +1,11 @@
-export const ResponseCode = {
+export const ResponseHTTPCodes = {
     OK: "OK",
     CREATED: "CREATED",
     ACCEPTED: "ACCEPTED",
     BAD_REQUEST: "BAD_REQUEST",
     UNAUTHORIZED: "UNAUTHORIZED",
     FORBIDDEN: "FORBIDDEN",
+    USE_SECURE_HTTP: "USE_SECURE_HTTP",
     NOT_FOUND: "NOT_FOUND",
     CONFLICT: "CONFLICT",
     BAD_GATEWAY: "BAD_GATEWAY",
@@ -16,9 +17,9 @@ export const ResponseCode = {
     SERVICE_UNAVAILABLE: "SERVICE_UNAVAILABLE",
     I_AM_A_TEAPOT: "I_AM_A_TEAPOT",
 } as const;
-export type ResponseCode = (typeof ResponseCode)[keyof typeof ResponseCode];
+export type ResponseHTTPCodes = (typeof ResponseHTTPCodes)[keyof typeof ResponseHTTPCodes];
 
-export const UserServiceResponseStatusCodes = {
+export const ResponseHTTPStatusCodes = {
     OK: 200,
     CREATED: 201,
     ACCEPTED: 202,
@@ -31,6 +32,7 @@ export const UserServiceResponseStatusCodes = {
     TOO_MANY_REQUESTS: 429,
     NOT_IMPLEMENTED: 501,
     UNEXPECTED_INTERNAL_ERROR: 500,
+    USE_SECURE_HTTP: 426,
     EXPECTED_INTERNAL_ERROR: 500,
     SERVICE_UNAVAILABLE: 503,
     MEDIA_SERVICE_NOT_AVAILABLE: 503,
@@ -39,4 +41,4 @@ export const UserServiceResponseStatusCodes = {
     I_AM_A_TEAPOT: 418,
 } as const;
 
-export type I_UserServiceResponseStatusCodes = (typeof UserServiceResponseStatusCodes)[keyof typeof UserServiceResponseStatusCodes];
+export type I_UserServiceResponseStatusCodes = (typeof ResponseHTTPStatusCodes)[keyof typeof ResponseHTTPStatusCodes];

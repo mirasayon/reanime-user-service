@@ -1,10 +1,10 @@
-import type Express from "express";
+import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
+import { goReplyHttp } from "#/modules/response/handlers.js";
+import type { Comment_ResponseTypes } from "#/shared/response-patterns/comment.routes.js";
 import { ControllerUtils } from "#/utils/controller.js";
 import type { Comment_ReqDtos } from "[www]/comment/comment.pipes.js";
 import { Comment_Service as service } from "[www]/comment/comment.service.js";
-import { Reply } from "#/modules/response/handlers.js";
-import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
-import type { Comment_ResponseTypes } from "#/shared/response-patterns/comment.routes.js";
+import type Express from "express";
 
 export const Comment_Controller = new (class Comment_Controller {
     /** Controller for create one comment by profile */
@@ -19,7 +19,7 @@ export const Comment_Controller = new (class Comment_Controller {
 
         const data: Comment_ResponseTypes.create_comment = created_comment;
         const message = "Успешно создан новый комментарий";
-        return Reply.accepted(res, { data, message });
+        return goReplyHttp.accepted(res, { data, message });
     };
 
     /** Edit the comment by profile */
@@ -34,7 +34,7 @@ export const Comment_Controller = new (class Comment_Controller {
 
         const data: Comment_ResponseTypes.update_comment = updated_comment;
         const message = "Комментарий успешно обновлен";
-        return Reply.ok(res, { data, message });
+        return goReplyHttp.ok(res, { data, message });
     };
     /** Gives the list of comments from specified anime ID */
     get_all_for_anime = async (req: Comment_ReqDtos.get_all_for_anime, res: Express.Response) => {
@@ -43,7 +43,7 @@ export const Comment_Controller = new (class Comment_Controller {
 
         const data: Comment_ResponseTypes.get_all_for_anime = sr;
         const message = "Все комментарии к этому аниме";
-        return Reply.ok(res, { data, message });
+        return goReplyHttp.ok(res, { data, message });
     };
 
     /** new 2025.11.15
@@ -55,7 +55,7 @@ export const Comment_Controller = new (class Comment_Controller {
 
         const data: Comment_ResponseTypes.all_for_public_profile = sr;
         const message = "Все комментарии этого публичного профиля";
-        return Reply.ok(res, { data, message });
+        return goReplyHttp.ok(res, { data, message });
     };
 
     /** new 2025.11.15
@@ -67,7 +67,7 @@ export const Comment_Controller = new (class Comment_Controller {
 
         const data: Comment_ResponseTypes.all_my_comments = sr;
         const message = "Все ваши комментарии";
-        return Reply.ok(res, { data, message });
+        return goReplyHttp.ok(res, { data, message });
     };
 
     /** Vote for the comment. Accepts "like" or "dislike" */
@@ -79,7 +79,7 @@ export const Comment_Controller = new (class Comment_Controller {
         });
         const data: Comment_ResponseTypes.add_like = sr;
         const message = "Успешно поставлен лайк к комментарию";
-        return Reply.ok(res, { data, message });
+        return goReplyHttp.ok(res, { data, message });
     };
 
     /** Deletes Like */
@@ -92,7 +92,7 @@ export const Comment_Controller = new (class Comment_Controller {
 
         const data: Comment_ResponseTypes.delete_like = deleted_vote;
         const message = "Успешно удален лайк из комментария";
-        return Reply.ok(res, { data, message });
+        return goReplyHttp.ok(res, { data, message });
     };
 
     add_dislike = async (req: Comment_ReqDtos.vote_dislike, res: Express.Response) => {
@@ -104,7 +104,7 @@ export const Comment_Controller = new (class Comment_Controller {
 
         const data: Comment_ResponseTypes.add_dislike = sr;
         const message = "Успешно поставлен дизлайк к комментарию";
-        return Reply.ok(res, { data, message });
+        return goReplyHttp.ok(res, { data, message });
     };
 
     /** Deletes Dislike */
@@ -117,7 +117,7 @@ export const Comment_Controller = new (class Comment_Controller {
 
         const data: Comment_ResponseTypes.delete_dislike = deleted_vote;
         const message = "Успешно удален дизлайк из комментария";
-        return Reply.ok(res, { data, message });
+        return goReplyHttp.ok(res, { data, message });
     };
 
     /** Reports the comment  by profile */
@@ -133,6 +133,6 @@ export const Comment_Controller = new (class Comment_Controller {
         });
         const data: Comment_ResponseTypes.delete_comment = deleted_comment;
         const message = "Комментарий успешно удалён";
-        return Reply.accepted(reply, { data, message });
+        return goReplyHttp.accepted(reply, { data, message });
     };
 })();

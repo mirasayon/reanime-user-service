@@ -171,7 +171,7 @@ export const UtilitySchemas = new (class Utility_ValidatorSchemas {
             .trim()
             .max(100, { error: "Адрес электронной почты должен быть короче 100 символов" });
     })();
-    /** Zod validator for Session Token in the cookie from the request
+    /** Zod validator for Session Token in the header from the request
      * @lenght 577
      */
     session_token = (() => {

@@ -1,8 +1,8 @@
-import { prisma } from "#/providers/database-connect.js";
 import type { Account, AvatarPicture, CoverPicture, Profile, Session } from "#/databases/orm/client.js";
+import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import type { iAccountEmail, iAccountUsername, iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import type { iAccountEmail, iAccountUsername, iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 export type ProfileWithCoverAndAvatarData = Profile & { cover: CoverPicture | null } & { avatar: AvatarPicture | null };
 export const Account_Model = new (class Account_Model {
     Get_account_by_its_id_throw_error = async (account_id: iObjectCuid): Promise<Account> => {
