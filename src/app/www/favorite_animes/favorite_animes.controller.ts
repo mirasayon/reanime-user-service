@@ -8,7 +8,7 @@ import type e from "express";
 export const FavoriteAnimes_Controller = new (class FavoriteAnimes_Controller {
     explore_likes = async (req: Favorite_Animes_ReqDto.explore_likes, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { likes } = await service.explore_likes(auth.profile.id);
+        const { likes } = await service.explore_likes(auth.userProfile.id);
         const data: FavoriteAnimes_ResponseTypes.explore_likes = likes;
         const message = "Ваши любимые аниме";
         return goReplyHttp.ok(res, { data, message });
@@ -16,28 +16,28 @@ export const FavoriteAnimes_Controller = new (class FavoriteAnimes_Controller {
 
     explore_dislikes = async (req: Favorite_Animes_ReqDto.explore_dislikes, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { dislikes } = await service.explore_dislikes(auth.profile.id);
+        const { dislikes } = await service.explore_dislikes(auth.userProfile.id);
         const data: FavoriteAnimes_ResponseTypes.explore_dislikes = dislikes;
         const message = "Ваши нелюбимые аниме";
         return goReplyHttp.ok(res, { data, message });
     };
     view_vote_on_anime = async (req: Favorite_Animes_ReqDto.view_vote_on_anime, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const { vote } = await service.view_vote_on_anime(auth.profile.id, dto);
+        const { vote } = await service.view_vote_on_anime(auth.userProfile.id, dto);
         const data: FavoriteAnimes_ResponseTypes.view_vote_on_anime = vote;
         const message = "Ваш лайк/дизлайк на это аниме";
         return goReplyHttp.ok(res, { data, message });
     };
     add_like_to_anime = async (req: Favorite_Animes_ReqDto.add_like_to_anime, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const sr = await service.add_like_to_anime(auth.profile.id, dto);
+        const sr = await service.add_like_to_anime(auth.userProfile.id, dto);
         const data: FavoriteAnimes_ResponseTypes.add_like_to_anime = sr;
         const message = "Успешно добавлен лайк к аниме";
         return goReplyHttp.ok(res, { data, message });
     };
     delete_like_from_anime = async (req: Favorite_Animes_ReqDto.delete_like_from_anime, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const { deleted } = await service.delete_like_from_anime(auth.profile.id, dto);
+        const { deleted } = await service.delete_like_from_anime(auth.userProfile.id, dto);
         const data: FavoriteAnimes_ResponseTypes.delete_like_from_anime = deleted;
         const message = "Успешно удалён лайк с аниме";
         return goReplyHttp.ok(res, { data, message });
@@ -45,14 +45,14 @@ export const FavoriteAnimes_Controller = new (class FavoriteAnimes_Controller {
 
     add_dislike_to_anime = async (req: Favorite_Animes_ReqDto.add_dislike_to_anime, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const sr = await service.add_dislike_to_anime(auth.profile.id, dto);
+        const sr = await service.add_dislike_to_anime(auth.userProfile.id, dto);
         const data: FavoriteAnimes_ResponseTypes.add_dislike_to_anime = sr;
         const message = "Успешно добавлен дизлайк к аниме";
         return goReplyHttp.ok(res, { data, message });
     };
     delete_dislike_from_anime = async (req: Favorite_Animes_ReqDto.delete_dislike_from_anime, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const { deleted } = await service.delete_dislike_from_anime(auth.profile.id, dto);
+        const { deleted } = await service.delete_dislike_from_anime(auth.userProfile.id, dto);
         const data: FavoriteAnimes_ResponseTypes.delete_dislike_from_anime = deleted;
         const message = "Успешно удалён дизлайк с аниме";
         return goReplyHttp.ok(res, { data, message });

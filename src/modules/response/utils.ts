@@ -1,4 +1,4 @@
-import type e from "express";
+import type Express from "express";
 import { type I_UserServiceResponseStatusCodes, type ResponseHTTPCodes, ResponseHTTPStatusCodes } from "../../shared/constants/response.constants.js";
 import type { HTTPResponseBodyPattern } from "../../shared/response-patterns/response-json-body-shape.js";
 
@@ -10,7 +10,7 @@ export function allHttpResponseHandler<T>({
     errors,
     data,
 }: {
-    res: e.Response;
+    res: Express.Response;
     response_code: ResponseHTTPCodes;
     message: string;
     errors?: string[];

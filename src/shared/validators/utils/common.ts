@@ -6,7 +6,7 @@ export const UtilitySchemas = new (class Utility_ValidatorSchemas {
     /** `undefined` data type validator */
     void = z.undefined();
     /**
-     * Account inputted password
+     * UserAccount inputted password
      * @default min 8
      * @default max 80
      */
@@ -171,7 +171,7 @@ export const UtilitySchemas = new (class Utility_ValidatorSchemas {
             .trim()
             .max(100, { error: "Адрес электронной почты должен быть короче 100 символов" });
     })();
-    /** Zod validator for Session Token in the header from the request
+    /** Zod validator for LoginSession Token in the header from the request
      * @lenght 577
      */
     session_token = (() => {

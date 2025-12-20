@@ -9,7 +9,7 @@ export const Reply_Controller = new (class Reply_Controller {
     /** Edit the comment by profile */
     edit_reply = async (req: REQDTO.edit_reply, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const { updated_reply } = await service.edit_reply({ ...dto, profile_id: auth.profile.id });
+        const { updated_reply } = await service.edit_reply({ ...dto, profile_id: auth.userProfile.id });
         const data: ResponseTypesForReplyToComment.edit_reply = updated_reply;
         const message = "Ответ успешно обновлен";
         return goReplyHttp.accepted(res, { data, message });
@@ -35,7 +35,7 @@ export const Reply_Controller = new (class Reply_Controller {
         const { dto: reply_id, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const sr = await service.add_like({
             reply_id,
-            profile_id: auth.profile.id,
+            profile_id: auth.userProfile.id,
         });
         const data: ResponseTypesForReplyToComment.add_like = sr;
         const message = "Успешно добавлен лайк к ответу";
@@ -47,7 +47,7 @@ export const Reply_Controller = new (class Reply_Controller {
 
         const sr = await service.add_dislike({
             reply_id,
-            profile_id: auth.profile.id,
+            profile_id: auth.userProfile.id,
         });
         const data: ResponseTypesForReplyToComment.add_dislike = sr;
         const message = "Успешно добавлено дизлайк на ответ";
@@ -59,7 +59,7 @@ export const Reply_Controller = new (class Reply_Controller {
         const { dto: reply_id, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const { deleted_vote } = await service.delete_like({
             reply_id,
-            profile_id: auth.profile.id,
+            profile_id: auth.userProfile.id,
         });
         const data: ResponseTypesForReplyToComment.delete_like = deleted_vote;
         const message = "Лайк с ответа успешно удалён";
@@ -70,7 +70,7 @@ export const Reply_Controller = new (class Reply_Controller {
         const { dto: reply_id, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const { deleted_vote } = await service.delete_dislike({
             reply_id,
-            profile_id: auth.profile.id,
+            profile_id: auth.userProfile.id,
         });
         const data: ResponseTypesForReplyToComment.delete_dislike = deleted_vote;
         const message = "Дизлайк с ответа успешно удалён";
@@ -88,7 +88,7 @@ export const Reply_Controller = new (class Reply_Controller {
         const { created_reply } = await service.create_reply({
             content: Req.dto.content,
             reply_to_id: Req.dto.comment_id,
-            profile_id: Req.auth.profile.id,
+            profile_id: Req.auth.userProfile.id,
         });
 
         const data: ResponseTypesForReplyToComment.create_reply = !!created_reply;
@@ -103,7 +103,7 @@ export const Reply_Controller = new (class Reply_Controller {
         const { dto: reply_id, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const { deleted_reply } = await service.delete_reply({
             reply_id,
-            profile_id: auth.profile.id,
+            profile_id: auth.userProfile.id,
         });
         const data: ResponseTypesForReplyToComment.delete_reply = !!deleted_reply;
         const message = "Ответ успешно удалён";

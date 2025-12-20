@@ -1,10 +1,10 @@
+import { AllowedImageFormats } from "#/configs/constants/media-module.js";
+import { PathsConfig } from "#/configs/paths.config.js";
+import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
+import { Logger } from "log-it-colored";
 import { existsSync } from "node:fs";
 import { unlink } from "node:fs/promises";
-import { Logger } from "log-it-colored";
 import path from "node:path";
-import { BadRequestException, ConflictException } from "#/modules/errors/client-side/exceptions.js";
-import { PathsConfig } from "#/configs/paths.config.js";
-import { AllowedImageFormats } from "#/configs/constants/media-module.js";
 
 /** A file with such a path should not exist. */
 type path_prod = string;
@@ -29,10 +29,8 @@ export const avatarServiceUtils = new (class UtilsClass {
         }
     };
 
-    /** Internal Service Utils.
-     *
-     *  Creates Avatar Path for Store in Production. Always in WEBP Format */
-    create_avatar_prod_path_FOR_UPDATE_PATH = async (avatar_hash: string): Promise<path_prod> => {
+    /** Internal Service Utils.*/
+    deleteOldAvatarForUpdatingIt = async (avatar_hash: string): Promise<path_prod> => {
         const prod_path = path.join(PathsConfig.storage, "avatars", "base", `${avatar_hash}.webp`) as path_prod;
         if (!existsSync(prod_path)) {
             throw new BadRequestException(["Avatar with this profile ID does not exist. Please upload a new avatar."]);

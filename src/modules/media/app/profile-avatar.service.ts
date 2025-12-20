@@ -9,7 +9,7 @@ import { readFile, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import sharp from "sharp";
-import { avatarServiceUtils } from "../utils/methods.js";
+import { avatarServiceUtils } from "../utils/avatar-file-system-service.js";
 import { serveFile } from "../utils/serve-static-for-avatars.js";
 
 //
@@ -57,7 +57,7 @@ export const avatarService = new (class Avatar_Post_Service {
      */
     avatar_update = async ({ profile_cuid, file }: avatar_update_ServiceParameters) => {
         let errored = false;
-        const prod_path = await avatarServiceUtils.create_avatar_prod_path_FOR_UPDATE_PATH(profile_cuid);
+        const prod_path = await avatarServiceUtils.deleteOldAvatarForUpdatingIt(profile_cuid);
         const extname = avatarServiceUtils.get_correct_extname(file.mimetype);
         if (!extname) {
             throw new BadGatewayException(["Нету расширения загружаемого файла"]);

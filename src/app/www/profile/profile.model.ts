@@ -1,12 +1,12 @@
 import { usernameNotFound } from "#/configs/frequent-errors.js";
-import type { Account, AvatarPicture, Profile } from "#/databases/orm/client.js";
+import type { AvatarPicture, UserAccount, UserProfile } from "#/databases/orm/client.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 
 export const Profile_Model = new (class Profile_Model {
     find_profile_by_its_id = async (profile_id: iObjectCuid) => {
-        const found_profile = await prisma.profile.findUnique({
+        const found_profile = await prisma.userProfile.findUnique({
             where: {
                 id: profile_id,
             },
@@ -17,7 +17,7 @@ export const Profile_Model = new (class Profile_Model {
         return found_profile;
     };
     find_profile_by_its_id_with_avatar_data = async (profile_id: iObjectCuid) => {
-        const found_profile = await prisma.profile.findUnique({
+        const found_profile = await prisma.userProfile.findUnique({
             where: {
                 id: profile_id,
             },
@@ -28,15 +28,15 @@ export const Profile_Model = new (class Profile_Model {
         }
         return found_profile;
     };
-    find_profile_by_username = async (username: iObjectCuid): Promise<{ account: Account; profile: Profile }> => {
-        const account = await prisma.account.findUnique({
+    find_profile_by_username = async (username: iObjectCuid): Promise<{ account: UserAccount; profile: UserProfile }> => {
+        const account = await prisma.userAccount.findUnique({
             where: { username },
         });
 
         if (!account) {
             throw new NotFoundException([usernameNotFound]);
         }
-        const profile = await prisma.profile.findUnique({
+        const profile = await prisma.userProfile.findUnique({
             where: {
                 by_account_id: account.id,
             },
@@ -49,8 +49,8 @@ export const Profile_Model = new (class Profile_Model {
 
     find_profile_by_username_AND_give_avatar_data = async (
         username: iObjectCuid,
-    ): Promise<{ account: Omit<Account, "password_hash">; profile: Profile & { avatar: AvatarPicture | null } }> => {
-        const account = await prisma.account.findUnique({
+    ): Promise<{ account: Omit<UserAccount, "password_hash">; profile: UserProfile & { avatar: AvatarPicture | null } }> => {
+        const account = await prisma.userAccount.findUnique({
             where: { username },
             omit: { password_hash: true },
         });
@@ -58,7 +58,7 @@ export const Profile_Model = new (class Profile_Model {
         if (!account) {
             throw new NotFoundException(["Аккаунт с таким айди не найден"]);
         }
-        const profile = await prisma.profile.findUnique({
+        const profile = await prisma.userProfile.findUnique({
             where: {
                 by_account_id: account.id,
             },
@@ -72,14 +72,14 @@ export const Profile_Model = new (class Profile_Model {
 
     find_by_account_id_AND_return_account_and_profile = async (
         account_id: iObjectCuid,
-    ): Promise<{ account: Account; profile: Profile & { avatar: AvatarPicture | null } }> => {
-        const account = await prisma.account.findUnique({
+    ): Promise<{ account: UserAccount; profile: UserProfile & { avatar: AvatarPicture | null } }> => {
+        const account = await prisma.userAccount.findUnique({
             where: { id: account_id },
         });
         if (!account) {
             throw new NotFoundException(["Аккаунт с таким айди не найден"]);
         }
-        const profile = await prisma.profile.findUnique({
+        const profile = await prisma.userProfile.findUnique({
             where: {
                 by_account_id: account.id,
             },
@@ -94,7 +94,7 @@ export const Profile_Model = new (class Profile_Model {
         return { account, profile };
     };
     update_bio_by_id = async (profile_id: iObjectCuid, bio: string | null) => {
-        return await prisma.profile.update({
+        return await prisma.userProfile.update({
             where: {
                 id: profile_id,
             },
@@ -102,7 +102,7 @@ export const Profile_Model = new (class Profile_Model {
         });
     };
     update_nickname_by_id = async (profile_id: iObjectCuid, nickname: string | null) => {
-        return await prisma.profile.update({
+        return await prisma.userProfile.update({
             where: {
                 id: profile_id,
             },

@@ -4,7 +4,6 @@
 /.env.production
 /dist
 /src/databases/orm
-/keys
 /notebook/draft.md
 /src/tests/play.ts
 /resources/storage

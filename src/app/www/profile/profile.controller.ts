@@ -19,7 +19,7 @@ export const Profile_Controller = new (class Profile_Controller {
     };
     update_nickname = async (req: Profile_ReqDtos.update_name, res: e.Response) => {
         const { auth, dto: new_nickname } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const { updated_profile } = await service.update_nickname({ new_nickname, profile_id: auth.profile.id });
+        const { updated_profile } = await service.update_nickname({ new_nickname, profile_id: auth.userProfile.id });
         const data: ResponseTypesForUserProfile.update_nickname = updated_profile;
         const message = "Ник успешно обновлен";
         return goReplyHttp.accepted(res, { data, message });
@@ -27,14 +27,14 @@ export const Profile_Controller = new (class Profile_Controller {
 
     update_bio = async (req: Profile_ReqDtos.update_bio, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const sr = await service.edit_bio(dto, auth.profile.id);
+        const sr = await service.edit_bio(dto, auth.userProfile.id);
         const data: ResponseTypesForUserProfile.update_bio = sr;
         const message = "Био успешно обновлена";
         return goReplyHttp.accepted(res, { data, message });
     };
     view_my_profile = async (req: Profile_ReqDtos.my_profile, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const sr = await service.view_my_profile(auth.session.by_account_id);
+        const sr = await service.view_my_profile(auth.loginSession.by_account_id);
         const data: ResponseTypesForUserProfile.view_my_profile = sr;
         const message = "Информация о текущем профиле пользователя успешно получена";
         return goReplyHttp.ok(res, { data, message });
@@ -59,8 +59,8 @@ export const Profile_Controller = new (class Profile_Controller {
 
     delete_avatar = async (req: Profile_ReqDtos.delete_avatar, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        await service.__check_if_has_avatar_for_delete(auth.profile.id);
-        const { deleted_avatar } = await service.delete_avatar(auth.profile.id);
+        await service.__check_if_has_avatar_for_delete(auth.userProfile.id);
+        const { deleted_avatar } = await service.delete_avatar(auth.userProfile.id);
         const data: ResponseTypesForUserProfile.delete_avatar = deleted_avatar;
         const message = "Аватарка пользователя успешно удалена";
         return goReplyHttp.accepted(res, { data, message });
@@ -71,11 +71,11 @@ export const Profile_Controller = new (class Profile_Controller {
         }
         const { auth, file } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
 
-        const { found_profile } = await service.__check_if_has_avatar(auth.profile.id);
+        const { found_profile } = await service.__check_if_has_avatar(auth.userProfile.id);
         if (!file) {
             throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
         }
-        await avatarService.avatar_update({ profile_cuid: auth.profile.id, file });
+        await avatarService.avatar_update({ profile_cuid: auth.userProfile.id, file });
         const { updated_avatar } = await service.update_avatar(found_profile.id);
         const data: ResponseTypesForUserProfile.update_avatar = updated_avatar.url;
         const message = "Аватарка успешно обновлена";

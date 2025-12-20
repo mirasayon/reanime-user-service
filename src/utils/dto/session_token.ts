@@ -1,8 +1,8 @@
 import type e from "express";
 /**
- * Returns Session Token from web request;s headers
+ * Returns LoginSession Token from web request;s headers
  * @param req Express Request object
- * @returns Session Token
+ * @returns LoginSession Token
  */
 export const bearer_session_token_from_headers = (req: e.Request): string | null => {
     const authHeader = req.headers["authorization"];

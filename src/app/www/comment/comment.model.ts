@@ -1,4 +1,4 @@
-import type { AvatarPicture, Comment, CommentVote, Profile } from "#/databases/orm/client.js";
+import type { AvatarPicture, Comment, CommentVote, UserProfile } from "#/databases/orm/client.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
@@ -53,7 +53,7 @@ export const Comment_Model = new (class Comment_Model {
     }): Promise<
         (Comment & {
             ratings: CommentVote[];
-            by_profile: Profile & {
+            by_profile: UserProfile & {
                 avatar: AvatarPicture | null;
                 by_account: {
                     username: string;

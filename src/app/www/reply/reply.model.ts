@@ -1,4 +1,4 @@
-import type { ReplyVote } from "#/databases/orm/client.js";
+import type { VoteToReply } from "#/databases/orm/client.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
@@ -13,7 +13,7 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
 
-    get_all_replies_for_1_comment_by_commment_id = async (to_comment_id: iObjectCuid, page: number, limit: number) => {
+    get_all_replies_for_1_comment_by_comment_id = async (to_comment_id: iObjectCuid, page: number, limit: number) => {
         const skip = (page - 1) * limit;
         return await prisma.replyToComment.findMany({
             where: {
@@ -58,8 +58,8 @@ export const Reply_Model = new (class Reply_Model {
 
         return found_comment;
     };
-    find_1_vote_by_reply_id_and_profile_id = async (reply_id: iObjectCuid, by_profile_id: iObjectCuid): Promise<ReplyVote | null> => {
-        return await prisma.replyVote.findUnique({
+    find_1_vote_by_reply_id_and_profile_id = async (reply_id: iObjectCuid, by_profile_id: iObjectCuid): Promise<VoteToReply | null> => {
+        return await prisma.voteToReply.findUnique({
             where: {
                 by_profile_id_reply_id: {
                     reply_id,
@@ -70,7 +70,7 @@ export const Reply_Model = new (class Reply_Model {
     };
 
     create_1_vote_to_reply = async (reply_id: iObjectCuid, vote: boolean, by_profile_id: iObjectCuid) => {
-        return await prisma.replyVote.create({
+        return await prisma.voteToReply.create({
             data: {
                 reply_id,
                 vote,
@@ -79,19 +79,19 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
 
-    update_1_vote_to_reply = async (vote_id: iObjectCuid, vote: boolean) => {
-        return await prisma.replyVote.update({
+    update_1_vote_to_reply = async (vote_id: iObjectCuid, value: number) => {
+        return await prisma.voteToReply.update({
             where: {
                 id: vote_id,
             },
             data: {
-                vote,
+                value,
             },
         });
     };
 
     Delete_vote_from_reply_by_its_id = async (reply_vote_id: iObjectCuid) => {
-        return await prisma.replyVote.delete({
+        return await prisma.voteToReply.delete({
             where: {
                 id: reply_vote_id,
             },

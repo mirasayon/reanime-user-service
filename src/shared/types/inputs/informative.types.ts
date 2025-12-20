@@ -14,5 +14,5 @@ export type iProfileName = string;
 /** Represents an anime ID (Shikimori anime ID) */
 export type iAnimeId = number;
 
-/** Represents a Session's Token. 577 char length */
-export type iClientSessionToken = string;
+/** Represents a LoginSession's Token. 577 char length */
+export type TokenSelector = string;

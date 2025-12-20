@@ -1,6 +1,6 @@
 import { vote_not_found } from "#/configs/frequent-errors.js";
 import { REPLIES_LIMIT_TO_ONE_COMMENT } from "#/configs/rules.js";
-import type { ReplyToComment, ReplyVote } from "#/databases/orm/client.js";
+import type { ReplyForComment, VoteToReply } from "#/databases/orm/client.js";
 import { ConflictException, ForbiddenException, NotFoundException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
 import { Reply_Model as model } from "[www]/reply/reply.model.js";
@@ -19,9 +19,9 @@ export const Reply_Service = new (class Reply_Service {
         comment_id: string;
         page: number;
         limit: number;
-    }): Promise<{ replies: ReplyToComment[] }> => {
+    }): Promise<{ replies: ReplyForComment[] }> => {
         const found_comment = await model.find_1_comment_by_its_id(comment_id);
-        const replies = await model.get_all_replies_for_1_comment_by_commment_id(found_comment.id, page, limit);
+        const replies = await model.get_all_replies_for_1_comment_by_comment_id(found_comment.id, page, limit);
         return { replies };
     };
 
@@ -33,15 +33,15 @@ export const Reply_Service = new (class Reply_Service {
         profile_id: string;
     }): Promise<{
         is_updated: boolean;
-        vote: ReplyVote;
+        vote: VoteToReply;
     }> => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
         const existedVote = await model.find_1_vote_by_reply_id_and_profile_id(found_reply.id, profile_id);
         if (existedVote) {
-            if (existedVote.vote === false) {
-                throw new ConflictException(["Профил уже оставил дизлайк на этот ответ"]);
+            if (existedVote.value === -1) {
+                throw new ConflictException(["Профиль уже оставил дизлайк на этот ответ"]);
             }
-            const updated_vote = await model.update_1_vote_to_reply(existedVote.id, !existedVote.vote);
+            const updated_vote = await model.update_1_vote_to_reply(existedVote.id, -1);
             return { vote: updated_vote, is_updated: true };
         }
         const new_vote = await model.create_1_vote_to_reply(found_reply.id, false, profile_id);
@@ -56,7 +56,7 @@ export const Reply_Service = new (class Reply_Service {
         profile_id: string;
     }): Promise<{
         is_updated: boolean;
-        vote: ReplyVote;
+        vote: VoteToReply;
     }> => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
         const existedVote = await model.find_1_vote_by_reply_id_and_profile_id(found_reply.id, profile_id);
@@ -72,7 +72,7 @@ export const Reply_Service = new (class Reply_Service {
         return { vote: new_vote, is_updated: false };
     };
 
-    delete_dislike = async ({ reply_id, profile_id }: { reply_id: string; profile_id: string }): Promise<{ deleted_vote: ReplyVote }> => {
+    delete_dislike = async ({ reply_id, profile_id }: { reply_id: string; profile_id: string }): Promise<{ deleted_vote: VoteToReply }> => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
 
         const existedVote = await model.find_1_vote_by_reply_id_and_profile_id(found_reply.id, profile_id);
@@ -85,7 +85,7 @@ export const Reply_Service = new (class Reply_Service {
         const deleted_vote = await model.Delete_vote_from_reply_by_its_id(existedVote.id);
         return { deleted_vote };
     };
-    delete_like = async ({ reply_id, profile_id }: { reply_id: string; profile_id: string }): Promise<{ deleted_vote: ReplyVote }> => {
+    delete_like = async ({ reply_id, profile_id }: { reply_id: string; profile_id: string }): Promise<{ deleted_vote: VoteToReply }> => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
 
         const existedVote = await model.find_1_vote_by_reply_id_and_profile_id(found_reply.id, profile_id);

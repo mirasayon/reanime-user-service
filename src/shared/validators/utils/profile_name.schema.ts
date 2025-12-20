@@ -2,7 +2,7 @@ import { z } from "zod";
 /** Regex for Unicode letters (L) and combining marks (M), plus spaces, hyphens, apostrophes, underscores, and digits: */
 export const nicknameRegex = /^[\p{L}\p{M}0-9 _'-]+$/u;
 /**
- * Profile nickname validator
+ * UserProfile nickname validator
  *
  * min 1 chars
  *

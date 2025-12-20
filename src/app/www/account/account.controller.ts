@@ -8,14 +8,14 @@ import type e from "express";
 export const Account_Controller = new (class Account_Controller {
     explore_me = async (req: Account_ReqDtos.explore_me, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const sr = await Account_Service.explore_me(auth.session.by_account_id);
+        const sr = await Account_Service.explore_me(auth.loginSession.by_account_id);
         const message = "Информация об аккаунте успешно получена";
         const data: ResponseTypesForAccount.explore_me = sr;
         return goReplyHttp.ok(res, { data, message });
     };
     update_email = async (req: Account_ReqDtos.update_email, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["auth", "dto"]);
-        const { updated_account } = await Account_Service.update_email({ ...dto, by_account_id: auth.session.by_account_id });
+        const { updated_account } = await Account_Service.update_email({ ...dto, by_account_id: auth.loginSession.by_account_id });
         const message = "Электронная почта успешно обновлена";
         const data: ResponseTypesForAccount.update_email = updated_account;
         return goReplyHttp.ok(res, { data, message });
@@ -25,7 +25,7 @@ export const Account_Controller = new (class Account_Controller {
         const { auth, dto: email } = ControllerUtils.check_dto_for_validity(req, ["auth", "dto"]);
         const { updated_account } = await Account_Service.set_email({
             email,
-            account_id: auth.session.by_account_id,
+            account_id: auth.loginSession.by_account_id,
         });
         const data: ResponseTypesForAccount.set_email = updated_account;
         const message = "Электронная почта успешно установлена";
@@ -37,7 +37,7 @@ export const Account_Controller = new (class Account_Controller {
             new_password: dto.new_password,
             repeat_new_password: dto.repeat_new_password,
             current_password: dto.current_password,
-            account_id: auth.session.by_account_id,
+            account_id: auth.loginSession.by_account_id,
         });
         const data: ResponseTypesForAccount.update_password = updated_account;
         const message = "Пароль успешно обновлен";
@@ -47,7 +47,7 @@ export const Account_Controller = new (class Account_Controller {
         const { auth, dto: new_username } = ControllerUtils.check_dto_for_validity(req, ["auth", "dto"]);
         const { updated_account } = await Account_Service.update_username({
             new_username,
-            account_id: auth.session.by_account_id,
+            account_id: auth.loginSession.by_account_id,
         });
         const data: ResponseTypesForAccount.update_username = updated_account;
         const message = "Юзернейм успешно обновлен";
@@ -55,7 +55,7 @@ export const Account_Controller = new (class Account_Controller {
     };
     get_sessions = async (req: Account_ReqDtos.get_sessions, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { sessions } = await Account_Service.get_sessions(auth.session.by_account_id);
+        const { sessions } = await Account_Service.get_sessions(auth.loginSession.by_account_id);
         const data: ResponseTypesForAccount.get_sessions = sessions;
         const message = "Сеансы успешно получены";
         return goReplyHttp.ok(res, { data, message });
@@ -63,7 +63,7 @@ export const Account_Controller = new (class Account_Controller {
 
     terminate_other_sessions = async (req: Account_ReqDtos.terminate_other_sessions, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const sr = await Account_Service.terminate_other_sessions(auth.session.token, auth.session.by_account_id);
+        const sr = await Account_Service.terminate_other_sessions(auth.loginSession.token, auth.loginSession.by_account_id);
         const data: ResponseTypesForAccount.delete_all_other_sessions = sr;
         const message = "Все остальные сеансы (кроме этой) успешно удалены";
         return goReplyHttp.accepted(res, { data, message });
@@ -71,14 +71,14 @@ export const Account_Controller = new (class Account_Controller {
 
     terminate_specific_session = async (req: Account_ReqDtos.terminate_specific_session, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const sr = await Account_Service.terminate_specific_session(dto, auth.session.by_account_id);
+        const sr = await Account_Service.terminate_specific_session(dto, auth.loginSession.by_account_id);
         const data: ResponseTypesForAccount.terminate_specific_session = sr;
         const message = "Указанный сеанс успешно удалён";
         return goReplyHttp.accepted(res, { data, message });
     };
     delete_account = async (req: Account_ReqDtos.delete_account, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { deleted_account } = await Account_Service.delete_account(auth.session.by_account_id);
+        const { deleted_account } = await Account_Service.delete_account(auth.loginSession.by_account_id);
         const data: ResponseTypesForAccount.delete_account = deleted_account;
         const message = "Аккаунт успешно удален, навсегда!";
         return goReplyHttp.accepted(res, { data, message });

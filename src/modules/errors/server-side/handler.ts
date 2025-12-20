@@ -1,5 +1,5 @@
 import consola from "consola";
-import type e from "express";
+import type Express from "express";
 import { goReplyHttp } from "../../response/handlers.js";
 import {
     BadGatewayException,
@@ -8,13 +8,13 @@ import {
     UnexpectedInternalServerErrorException,
 } from "./exceptions.js";
 
-export const unknown_exception_handler = (error: unknown, req: e.Request, res: e.Response, next: e.NextFunction): void => {
+export const unknown_exception_handler = (error: unknown, req: Express.Request, res: Express.Response, next: Express.NextFunction): void => {
     consola.fatal("[last error handler]: Unknown error: ", error);
     return goReplyHttp.internal_server_error(res, {});
 };
 
 /** Expected Internal Error Handler */
-export const server_exception_handler = (error: unknown, req: e.Request, res: e.Response, next: e.NextFunction) => {
+export const server_exception_handler = (error: unknown, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
     if (error instanceof ExpectedInternalServerErrorException) {
         return goReplyHttp.internal_server_error(res, { message: error.errorMessage });
     }

@@ -1,17 +1,17 @@
-import { bcryptjsService } from "#/utils/services/bcrypt.js";
-import { authModels } from "[www]/authentication/authentication.model.js";
-import type { iClientSessionToken, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
+import { SAME_TIME_SESSIONS_LIMIT } from "#/configs/rules.js";
+import type { AvatarPicture, UserAccount } from "#/databases/orm/client.js";
 import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
-import { SAME_TIME_SESSIONS_LIMIT } from "#/configs/rules.js";
-import type { Account, AvatarPicture } from "#/databases/orm/client.js";
+import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
+import { bcryptjsService } from "#/utils/services/bcrypt.js";
+import { authModels } from "[www]/authentication/authentication.model.js";
 import { Profile_Model } from "[www]/profile/profile.model.js";
 
 /**
  * Service class responsible for handling authentication logic.
  */
 export const Authentication_Service = new (class Authentication_Service {
-    logout = async (session_token: iClientSessionToken, account_id: iObjectCuid) => {
+    logout = async (session_token: TokenSelector, account_id: iObjectCuid) => {
         const found_session = await authModels.find_one_session_by_its_token(session_token);
         if (found_session.by_account_id !== account_id) {
             throw new UnauthorizedException(["This session token is not yours!"]);
@@ -22,10 +22,10 @@ export const Authentication_Service = new (class Authentication_Service {
         };
     };
 
-    check_session = async (account_id: string): Promise<{ account: Account; avatar: AvatarPicture | null }> => {
+    check_session = async (account_id: string): Promise<{ account: UserAccount; avatar: AvatarPicture | null }> => {
         const account = await authModels.find_account_by_ids_id(account_id);
         const avatar = await Profile_Model.find_profile_by_username_AND_give_avatar_data(account.username);
-        return { account, avatar: avatar.profile.avatar };
+        return { account, avatar: avatar.userProfile.avatar };
     };
 
     login_via_username = async ({

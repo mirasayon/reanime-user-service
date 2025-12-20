@@ -1,4 +1,4 @@
-import type e from "express";
+import type Express from "express";
 import { MulterError } from "multer";
 import { goReplyHttp } from "../../response/handlers.js";
 import {
@@ -14,9 +14,9 @@ import {
 } from "./exceptions.js";
 export const client_error_handler = (
     error: Error | SyntaxError | MulterError | ClientSideExceptionClasses,
-    _req: e.Request,
-    res: e.Response,
-    next: e.NextFunction,
+    _req: Express.Request,
+    res: Express.Response,
+    next: Express.NextFunction,
 ) => {
     if (error instanceof SyntaxError) {
         return goReplyHttp.bad_request(res, {
@@ -70,6 +70,6 @@ export const client_error_handler = (
     return next(error);
 };
 
-export const not_found_route = (req: e.Request, res: e.Response, next: e.NextFunction): void => {
+export const not_found_route = (req: Express.Request, res: Express.Response, next: Express.NextFunction): void => {
     return goReplyHttp.not_found(res, { errors: ["Not Found Default Error"] });
 };

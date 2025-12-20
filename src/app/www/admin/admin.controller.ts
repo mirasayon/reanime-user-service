@@ -9,7 +9,7 @@ export const Administrator_Controller = new (class Administrator_Controller {
     get_all_users = async (req: Administrator_ReqDtos.get_all_users, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
 
-        const sr = await Admin_Service.get_all_users(auth.session.by_account_id);
+        const sr = await Admin_Service.get_all_users(auth.loginSession.by_account_id);
         const message = "Информация обо всех пользователях успешно получена.";
         const data: Administrator_ResponseTypes.get_all_users = sr;
         return goReplyHttp.ok(res, { data, message });

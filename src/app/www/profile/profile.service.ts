@@ -1,7 +1,7 @@
+import type { AvatarPicture, UserAccount, UserProfile } from "#/databases/orm/client.js";
 import { BadRequestException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import { Profile_Model as model } from "[www]/profile/profile.model.js";
-import type { Account, AvatarPicture, Profile } from "#/databases/orm/client.js";
 import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
+import { Profile_Model as model } from "[www]/profile/profile.model.js";
 import type e from "express";
 
 /** Service Class with all methods for comments */
@@ -23,14 +23,14 @@ export const Profile_Service = new (class Profile_Service {
         const updated_profile = await model.update_nickname_by_id(found_profile.id, new_nickname);
         return { updated_profile };
     };
-    view_my_profile = async (account_id: string): Promise<{ account: Account; profile: Profile & { avatar: AvatarPicture | null } }> => {
+    view_my_profile = async (account_id: string): Promise<{ account: UserAccount; profile: UserProfile & { avatar: AvatarPicture | null } }> => {
         const found_profile = await model.find_by_account_id_AND_return_account_and_profile(account_id);
 
         return found_profile;
     };
     other_profiles = async (
         username: string,
-    ): Promise<{ profile: Profile & { avatar: AvatarPicture | null }; account: Omit<Account, "password_hash"> }> => {
+    ): Promise<{ profile: UserProfile & { avatar: AvatarPicture | null }; account: Omit<UserAccount, "password_hash"> }> => {
         const found_account = await model.find_profile_by_username_AND_give_avatar_data(username);
 
         return found_account;
@@ -62,13 +62,13 @@ export const Profile_Service = new (class Profile_Service {
         if (found_profile.avatar) {
             throw new BadRequestException(["Вам нужно обновить аватар, но вы загружаете"]);
         }
-        const username = (await model.find_by_account_id_AND_return_account_and_profile(found_profile.by_account_id)).account.username;
+        const username = (await model.find_by_account_id_AND_return_account_and_profile(found_profile.by_account_id)).userAccount.username;
         const new_avatar = await model.set_avatar_by_id(found_profile.id, username);
         return { new_avatar };
     };
     update_avatar = async (profile_id: string): Promise<{ updated_avatar: AvatarPicture }> => {
         const { found_profile } = await this.__check_if_has_avatar(profile_id);
-        const username = (await model.find_by_account_id_AND_return_account_and_profile(found_profile.by_account_id)).account.username;
+        const username = (await model.find_by_account_id_AND_return_account_and_profile(found_profile.by_account_id)).userAccount.username;
         const updated_avatar = await model.update_avatar_by_id(found_profile.id, username);
         return { updated_avatar };
     };
@@ -83,7 +83,7 @@ export const Profile_Service = new (class Profile_Service {
         if (!foundProfile) {
             throw new NotFoundException(["Пользователь с таким юзернеймом не найден"]);
         }
-        const avatarData = await model.find_profile_by_its_id_with_avatar_data(foundProfile.profile.id);
+        const avatarData = await model.find_profile_by_its_id_with_avatar_data(foundProfile.userProfile.id);
         if (!avatarData.avatar) {
             return res.redirect("/default-avatar/m.jpg");
         }

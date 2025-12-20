@@ -56,7 +56,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
     };
     check_session = async (req: Authentication_ReqDtos.check_session, reply: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { account, avatar } = await services.check_session(auth.session.by_account_id);
+        const { account, avatar } = await services.check_session(auth.loginSession.by_account_id);
         const data: ResponseTypesForAuthentication.check_session = {
             profile: auth.profile,
             account: account,
@@ -68,7 +68,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
     };
     logout = async (req: Authentication_ReqDtos.logout, res: e.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { deleted_session_token } = await services.logout(auth.session.token, auth.session.by_account_id);
+        const { deleted_session_token } = await services.logout(auth.loginSession.token, auth.loginSession.by_account_id);
         const data: ResponseTypesForAuthentication.logout = !!deleted_session_token;
         const message = "Этот сеанс успешно удален (выход из системы)";
         return goReplyHttp.accepted(res, { message, data });

@@ -1,6 +1,6 @@
 import type { ProfileAvatarPicture, UserAccount, UserProfile } from "../../databases/orm/client.js";
 
-/** RESPONSES For Profile Route */
+/** RESPONSES For UserProfile Route */
 export namespace ResponseTypesForUserProfile {
     export type view_other_profiles = {
         account: UserAccount;

@@ -1,23 +1,23 @@
 import { auth_ip_and_agent_do_not_match } from "#/configs/frequent-errors.js";
-import type { Session } from "#/databases/orm/client.js";
+import type { LoginSession } from "#/databases/orm/client.js";
 import { BadRequestException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import type { mid_auth_dto } from "#/types/auth-middleware-shape.js";
 import { metadata_dto } from "#/utils/dto/meta.js";
 import { bearer_session_token_from_headers } from "#/utils/dto/session_token.js";
 import { sessionTokenHashService } from "#/utils/services/session_token.js";
 import { authModels } from "[www]/authentication/authentication.model.js";
-import type e from "express";
+import type Express from "express";
 import { isDeepStrictEqual } from "node:util";
 
 /**
  * Verifies whether the request metadata (IP and User-Agent)
  * matches the stored metadata from the session in the database.
  *
- * @param session - Session retrieved from the database
+ * @param session - LoginSession retrieved from the database
  * @param requestMeta - Incoming HTTP request to validate
  * @returns true if metadata matches; otherwise throws `ClientError`
  */
-const checkTwoMetadatas = (session: Session, requestMeta: e.Request) => {
+const checkTwoMetadatas = (session: LoginSession, requestMeta: Express.Request) => {
     const session_Meta = metadata_dto.server_session_db(session);
     const request_Meta = metadata_dto.client_request(requestMeta);
     const is_equal = isDeepStrictEqual(session_Meta, request_Meta);
@@ -34,7 +34,11 @@ const checkTwoMetadatas = (session: Session, requestMeta: e.Request) => {
  * @param res - Express Response object
  * @param next - Express NextFunction for middleware chaining
  */
-export const mainAuthenticationMiddleware = async (req: e.Request & { auth?: mid_auth_dto }, res: e.Response, next: e.NextFunction) => {
+export const mainAuthenticationMiddleware = async (
+    req: Express.Request & { auth?: mid_auth_dto },
+    res: Express.Response,
+    next: Express.NextFunction,
+) => {
     const req_session_token = bearer_session_token_from_headers(req);
     if (!req_session_token) {
         throw new UnauthorizedException(["Вы не вошли в систему. Пожалуйста, войдите в систему, чтобы продолжить"]);
@@ -60,10 +64,10 @@ const HasNotBeenLogged = { pass: false } as const;
  * @returns Object with `pass: boolean` and optionally the session
  */
 export const checkAuthenticationFunction = async (
-    req: e.Request,
+    req: Express.Request,
 ): Promise<{
     pass: boolean;
-    session?: Session;
+    session?: LoginSession;
 }> => {
     const req_session_token = bearer_session_token_from_headers(req);
     if (!req_session_token) {
@@ -88,7 +92,11 @@ export const checkAuthenticationFunction = async (
  * @param next
  * @returns
  */
-export const has_client_already_logged = async (req: e.Request & { auth?: mid_auth_dto }, res: e.Response, next: e.NextFunction) => {
+export const has_client_already_logged = async (
+    req: Express.Request & { auth?: mid_auth_dto },
+    res: Express.Response,
+    next: Express.NextFunction,
+) => {
     const hasUserLogged = await checkAuthenticationFunction(req);
     if (hasUserLogged.pass && hasUserLogged.session) {
         throw new BadRequestException([

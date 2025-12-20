@@ -4,9 +4,9 @@ import type e from "express";
 
 export const metadata_dto = new (class From_Create_DTO {
     /**
-     * Returns meta from DB Session
-     * @param session DB Session record from DB
-     * @returns meta from DB Session
+     * Returns meta from DB LoginSession
+     * @param session DB LoginSession record from DB
+     * @returns meta from DB LoginSession
      */
     server_session_db = (session: LoginSession): metaData => {
         return {
