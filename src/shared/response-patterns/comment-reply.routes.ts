@@ -1,21 +1,15 @@
-import type { ReplyToComment, ReplyVote } from "../../databases/orm/client.js";
+import type { ReplyForComment } from "#db/orm/client.js";
 
 /** RESPONSES For Reply Route */
-export namespace Reply_ResponseTypes {
-    export type edit_reply = ReplyToComment;
-    export type get_1_reply_by_its_id = ReplyToComment;
-    export type get_replies_by_comment_id = ReplyToComment[];
-    export type add_like = {
-        is_updated: boolean;
-        vote: ReplyVote;
-    };
-    export type add_dislike = {
-        is_updated: boolean;
-        vote: ReplyVote;
-    };
-    export type delete_like = ReplyVote;
-    export type delete_dislike = ReplyVote;
-    export type report = 0;
+export namespace ResponseTypesForReplyToComment {
+    export type edit_reply = boolean;
+    export type get_1_reply_by_its_id = ReplyForComment;
+    export type get_replies_by_comment_id = ReplyForComment[];
+    export type add_like = boolean;
+    export type add_dislike = boolean;
+    export type delete_like = boolean;
+    export type delete_dislike = boolean;
+    export type report = boolean;
     /** Create reply
      *
      * true = Created

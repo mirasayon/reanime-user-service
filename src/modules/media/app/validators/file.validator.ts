@@ -1,9 +1,9 @@
 import { BadRequestException, PayloadTooLargeException } from "#/modules/errors/client-side/exceptions.js";
-import type e from "express";
+import type Express from "express";
 /** 25 MB */
 export const PAYLOAD_MAX_SIZE = 25 * 1_024 * 1_024; // 25 MB
-/** For UPDATE/SET Middleware for validating upcaming image file body */
-export function Set_Image_File_Validator(req: e.Request, res: e.Response, next: e.NextFunction) {
+/** For UPDATE/SET Middleware for validating upcoming image file body */
+export function Set_Image_File_Validator(req: Express.Request, res: Express.Response, next: Express.NextFunction) {
     const size = Number(req.headers["content-length"]) ?? 0;
     if (!req.headers["content-type"]) {
         throw new BadRequestException(["There are not any content type header value"]);

@@ -1,9 +1,9 @@
-import type { Profile, Session } from "#/databases/orm/client.js";
+import type { LoginSession, UserProfile } from "#/databases/orm/client.js";
 
 /** DTO for auth */
 export type mid_auth_dto = {
-    session: Session;
-    profile: Profile;
+    session: LoginSession;
+    profile: UserProfile;
 };
 
 /** IP and User-Agent */

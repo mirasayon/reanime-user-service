@@ -1,29 +1,23 @@
-import type { AvatarPicture, Comment, CommentVote, Profile } from "../../databases/orm/client.js";
+import type { CommentForAnime, ProfileAvatarPicture, UserProfile, VoteToComment } from "../../databases/orm/client.js";
 
 /** RESPONSES For Comment Route */
-export namespace Comment_ResponseTypes {
-    export type create_comment = Comment;
-    export type update_comment = Comment;
-    export type get_all_for_anime = (Comment & {
-        ratings: CommentVote[];
-        by_profile: Profile & {
-            avatar: AvatarPicture | null;
+export namespace ResponseTypesForComment {
+    export type create_comment = boolean;
+    export type update_comment = boolean;
+    export type get_all_for_anime = (CommentForAnime & {
+        ratings: VoteToComment[];
+        by_profile: UserProfile & {
+            avatar: ProfileAvatarPicture | null;
             by_account: {
                 username: string;
             };
         };
     })[];
-    export type all_for_public_profile = Comment[];
-    export type all_my_comments = Comment[];
-    export type add_like = {
-        vote: CommentVote;
-        is_updated: boolean;
-    };
-    export type delete_like = CommentVote;
-    export type add_dislike = {
-        vote: CommentVote;
-        is_updated: boolean;
-    };
-    export type delete_dislike = CommentVote;
-    export type delete_comment = Comment;
+    export type all_for_public_profile = CommentForAnime[];
+    export type all_my_comments = CommentForAnime[];
+    export type add_like = boolean;
+    export type delete_like = boolean;
+    export type add_dislike = boolean;
+    export type delete_dislike = boolean;
+    export type delete_comment = boolean;
 }

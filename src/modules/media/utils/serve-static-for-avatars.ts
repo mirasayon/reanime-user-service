@@ -5,7 +5,7 @@ import { createReadStream, existsSync, statSync } from "node:fs";
 import { extname } from "node:path";
 // Supported mime types
 
-/** Static File Hander for each request */
+/** Static File Handler for each request */
 export async function serveFile(req: e.Request, res: e.Response, full_path: string) {
     if (!existsSync(full_path) || !statSync(full_path).isFile()) {
         throw new NotFoundException(["Аватарка не найдена"]);

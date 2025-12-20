@@ -1,6 +1,6 @@
 import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
 import { goReplyHttp } from "#/modules/response/handlers.js";
-import type { Reply_ResponseTypes } from "#/shared/response-patterns/comment-reply.routes.js";
+import type { ResponseTypesForReplyToComment } from "#/shared/response-patterns/comment-reply.routes.js";
 import { ControllerUtils } from "#/utils/controller.js";
 import type { Reply_ReqDtos as REQDTO } from "[www]/reply/reply.pipes.js";
 import { Reply_Service as service } from "[www]/reply/reply.service.js";
@@ -10,7 +10,7 @@ export const Reply_Controller = new (class Reply_Controller {
     edit_reply = async (req: REQDTO.edit_reply, res: e.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const { updated_reply } = await service.edit_reply({ ...dto, profile_id: auth.profile.id });
-        const data: Reply_ResponseTypes.edit_reply = updated_reply;
+        const data: ResponseTypesForReplyToComment.edit_reply = updated_reply;
         const message = "Ответ успешно обновлен";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -18,7 +18,7 @@ export const Reply_Controller = new (class Reply_Controller {
     get_1_reply_by_its_id = async (req: REQDTO.get_1_reply_by_its_id, res: e.Response) => {
         const Req = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const sr = await service.get_1_reply_by_its_id(Req.dto);
-        const data: Reply_ResponseTypes.get_1_reply_by_its_id = sr;
+        const data: ResponseTypesForReplyToComment.get_1_reply_by_its_id = sr;
         const message = "Ответ успешно получен по его айди";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -27,7 +27,7 @@ export const Reply_Controller = new (class Reply_Controller {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const { replies } = await service.get_all_replies_by_comment_id(dto);
         const message = "Все ответы на комментарий";
-        const data: Reply_ResponseTypes.get_replies_by_comment_id = replies;
+        const data: ResponseTypesForReplyToComment.get_replies_by_comment_id = replies;
         return goReplyHttp.ok(res, { data, message });
     };
     /** Vote for the comment. Accepts "like" or "dislike" */
@@ -37,7 +37,7 @@ export const Reply_Controller = new (class Reply_Controller {
             reply_id,
             profile_id: auth.profile.id,
         });
-        const data: Reply_ResponseTypes.add_like = sr;
+        const data: ResponseTypesForReplyToComment.add_like = sr;
         const message = "Успешно добавлен лайк к ответу";
         return goReplyHttp.created(res, { data, message });
     };
@@ -49,7 +49,7 @@ export const Reply_Controller = new (class Reply_Controller {
             reply_id,
             profile_id: auth.profile.id,
         });
-        const data: Reply_ResponseTypes.add_dislike = sr;
+        const data: ResponseTypesForReplyToComment.add_dislike = sr;
         const message = "Успешно добавлено дизлайк на ответ";
         return goReplyHttp.created(res, { data, message });
     };
@@ -61,7 +61,7 @@ export const Reply_Controller = new (class Reply_Controller {
             reply_id,
             profile_id: auth.profile.id,
         });
-        const data: Reply_ResponseTypes.delete_like = deleted_vote;
+        const data: ResponseTypesForReplyToComment.delete_like = deleted_vote;
         const message = "Лайк с ответа успешно удалён";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -72,7 +72,7 @@ export const Reply_Controller = new (class Reply_Controller {
             reply_id,
             profile_id: auth.profile.id,
         });
-        const data: Reply_ResponseTypes.delete_dislike = deleted_vote;
+        const data: ResponseTypesForReplyToComment.delete_dislike = deleted_vote;
         const message = "Дизлайк с ответа успешно удалён";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -91,7 +91,7 @@ export const Reply_Controller = new (class Reply_Controller {
             profile_id: Req.auth.profile.id,
         });
 
-        const data: Reply_ResponseTypes.create_reply = !!created_reply;
+        const data: ResponseTypesForReplyToComment.create_reply = !!created_reply;
         const message = "Успешно создан ответ на этот комментарий";
         return goReplyHttp.accepted(reply, {
             data,
@@ -105,7 +105,7 @@ export const Reply_Controller = new (class Reply_Controller {
             reply_id,
             profile_id: auth.profile.id,
         });
-        const data: Reply_ResponseTypes.delete_reply = !!deleted_reply;
+        const data: ResponseTypesForReplyToComment.delete_reply = !!deleted_reply;
         const message = "Ответ успешно удалён";
         return goReplyHttp.accepted(reply, { data, message });
     };

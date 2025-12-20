@@ -1,17 +1,17 @@
-import type { Account, AvatarPicture, Profile, Session } from "../../databases/orm/client.js";
+import type { LoginSession, ProfileAvatarPicture, UserAccount, UserProfile } from "../../databases/orm/client.js";
 
 /** RESPONSES For Auth Route */
-export namespace Authentication_ResponseTypes {
-    export type login_via_email = { session: Session; account: Account };
-    export type login_via_username = { session: Session; account: Account };
-    export type registration = { session: Session; account: Account };
+export namespace ResponseTypesForAuthentication {
+    export type login_via_email = { session: LoginSession; account: UserAccount };
+    export type login_via_username = { session: LoginSession; account: UserAccount };
+    export type registration = { session: LoginSession; account: UserAccount };
     /** `false` if username is used, `true` if available */
     export type check_username_availability = boolean;
     export type check_session = {
-        session: Session;
-        profile: Profile;
-        avatar: AvatarPicture | null;
-        account: Account;
+        session: LoginSession;
+        profile: UserProfile;
+        avatar: ProfileAvatarPicture | null;
+        account: UserAccount;
     };
     /**
      * true = success

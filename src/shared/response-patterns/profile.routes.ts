@@ -1,21 +1,23 @@
-import type { Account, AvatarPicture, Profile } from "../../databases/orm/client.js";
+import type { ProfileAvatarPicture, UserAccount, UserProfile } from "../../databases/orm/client.js";
 
 /** RESPONSES For Profile Route */
-export namespace Profile_ResponseTypes {
+export namespace ResponseTypesForUserProfile {
     export type view_other_profiles = {
-        account: Omit<Account, "password_hash">;
-        profile: Profile & { avatar: AvatarPicture | null };
+        account: UserAccount;
+        profile: UserProfile & { avatar: ProfileAvatarPicture | null };
     };
-    export type update_nickname = Profile;
-    export type update_bio = Profile;
+    /** true if nickname was updated, false if not */
+    export type update_nickname = boolean;
+    /** true if bio was updated, false if not */
+    export type update_bio = boolean;
     export type view_my_profile = {
-        account: Account;
-        profile: Profile & { avatar: AvatarPicture | null };
+        account: UserAccount;
+        profile: UserProfile & { avatar: ProfileAvatarPicture | null };
     };
-    /** avatar hash */
+    /** true if avatar was set, false if not */
     export type set_avatar = boolean;
-
-    export type delete_avatar = AvatarPicture;
-    /** avatar hash */
+    /** true if avatar was deleted, false if not */
+    export type delete_avatar = boolean;
+    /** true if avatar was updated, false if not */
     export type update_avatar = string;
 }

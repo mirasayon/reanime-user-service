@@ -14,35 +14,59 @@ datasource db {
 
 /// Аккаунт пользователя. Центральный объект для работы с пользователями.
 model UserAccount {
-  id                         String            @id @default(cuid())
-  created_at                 DateTime          @default(now()) @db.Timestamptz
-  updated_at                 DateTime          @updatedAt @db.Timestamptz
-  /// Дата последнего изменения пароля, если пусто, то пользователь не менял пароль
-  last_password_change_at    DateTime?
+  id                      String            @id @default(cuid())
+  created_at              DateTime          @default(now()) @db.Timestamptz
+  updated_at              DateTime          @updatedAt @db.Timestamptz
   /// Роль учетной записи (обычная, запрещенная, администраторская и т. д.)
-  user_type                  AccountTypeEnum   @default(COMMON)
+  user_type               AccountTypeEnum   @default(COMMON)
   /// Почтовый адрес пользователя, если пусто, то пользователь не указал почту. Эта логика пока не реализована
-  email                      String?           @unique
+  email                   String?           @unique
   /// Уникальный логин, Сохраняет только @`username` (без собачки)
-  username                   String            @unique
-  /// Хеш пароля
-  password_hash              String
-  /// 1 = Argon2id
-  password_hash_algo_version Int               @default(1)
+  username                String            @unique
+  /// Данные пароля этого аккаунта
+  password_data           UserPassword?
   /// Указывает, что пользователь активирован по электронной почте. Если `false` то пользователь может войти только по логину и паролю
-  is_activated_with_email    Boolean           @default(false)
+  is_activated_with_email Boolean           @default(false)
   /// Ссылка для активации по почте. Создается при создании аккаунта. Если пусто, то аккаунт не может быть активирован по электронной почте
-  email_activation_link      String?
+  email_activation_link   String?
   /// Жалобы на этот аккаунт
-  reports_to_this_account    ReportToAccount[]
+  reports_to_this_account ReportToAccount[]
   /// Профиль, который связан с этим аккаунтом
-  profile                    UserProfile?
+  profile                 UserProfile?
   /// Сессии этого аккаунта
-  login_sessions             LoginSession[]
+  login_sessions          LoginSession[]
 
   @@index([user_type])
   @@index([is_activated_with_email])
   @@index([email_activation_link])
+}
+
+model UserPassword {
+  id                     String      @id @default(cuid())
+  created_at             DateTime    @default(now()) @db.Timestamptz
+  /// Дата последнего изменения пароля
+  updated_at             DateTime    @updatedAt @db.Timestamptz
+  /// Аккаунт, который имеет этот пароль
+  for_account            UserAccount @relation(fields: [for_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  /// Айди аккаунта, который имеет этот пароль
+  for_account_id         String      @unique
+  /// Хэшированный пароль в base64
+  hash_base64            String
+  /// Соль в base64
+  salt_base64            String
+  // -- Параметры для алгоритма Argon2 --
+  /// Параметр Argon2. Параметр памяти в байтах
+  memory                 Int
+  /// Параметр Argon2. Количество итераций
+  passes                 Int
+  /// Параметр Argon2. Количество параллельных процессов выполнения алгоритма
+  parallelism            Int
+  /// Параметр Argon2. Длина хэша в байтах
+  tag_length             Int
+  /// Параметр Argon2. Надо ли перехешировать пароль при изменении параметров
+  needs_rehash           Boolean     @default(false)
+  /// 1 = Argon2id
+  hash_algorithm_version Int         @default(1)
 }
 
 model LoginSession {
@@ -60,7 +84,7 @@ model LoginSession {
   /// Дата последнего использования сессии
   last_used_at      DateTime? @db.Timestamptz
 
-  // Network / location
+  // Network / location 
   /// Строка IP-адреса сессии
   ip_address          String?
   /// ISO код страны или полное название страны по IP-адресу

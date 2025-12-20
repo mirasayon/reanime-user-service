@@ -1,6 +1,6 @@
 import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
 import { goReplyHttp } from "#/modules/response/handlers.js";
-import type { Comment_ResponseTypes } from "#/shared/response-patterns/comment.routes.js";
+import type { ResponseTypesForComment } from "#/shared/response-patterns/comment.routes.js";
 import { ControllerUtils } from "#/utils/controller.js";
 import type { Comment_ReqDtos } from "[www]/comment/comment.pipes.js";
 import { Comment_Service as service } from "[www]/comment/comment.service.js";
@@ -17,7 +17,7 @@ export const Comment_Controller = new (class Comment_Controller {
             by_profile_id: auth.profile.id,
         });
 
-        const data: Comment_ResponseTypes.create_comment = created_comment;
+        const data: ResponseTypesForComment.create_comment = created_comment;
         const message = "Успешно создан новый комментарий";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -32,7 +32,7 @@ export const Comment_Controller = new (class Comment_Controller {
             profile_id: auth.profile.id,
         });
 
-        const data: Comment_ResponseTypes.update_comment = updated_comment;
+        const data: ResponseTypesForComment.update_comment = updated_comment;
         const message = "Комментарий успешно обновлен";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -41,7 +41,7 @@ export const Comment_Controller = new (class Comment_Controller {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const sr = await service.get_all_comments_by_animeId(dto);
 
-        const data: Comment_ResponseTypes.get_all_for_anime = sr;
+        const data: ResponseTypesForComment.get_all_for_anime = sr;
         const message = "Все комментарии к этому аниме";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -53,7 +53,7 @@ export const Comment_Controller = new (class Comment_Controller {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const sr = await service.all_for_public_profile({ by_username: dto.username, limit: dto.limit, page: dto.page });
 
-        const data: Comment_ResponseTypes.all_for_public_profile = sr;
+        const data: ResponseTypesForComment.all_for_public_profile = sr;
         const message = "Все комментарии этого публичного профиля";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -65,7 +65,7 @@ export const Comment_Controller = new (class Comment_Controller {
         const { dto, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         const sr = await service.all_my_comments({ by_profile_id: auth.profile.id, limit: dto.limit, page: dto.page });
 
-        const data: Comment_ResponseTypes.all_my_comments = sr;
+        const data: ResponseTypesForComment.all_my_comments = sr;
         const message = "Все ваши комментарии";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -77,7 +77,7 @@ export const Comment_Controller = new (class Comment_Controller {
             comment_id,
             profile_id: auth.profile.id,
         });
-        const data: Comment_ResponseTypes.add_like = sr;
+        const data: ResponseTypesForComment.add_like = sr;
         const message = "Успешно поставлен лайк к комментарию";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -90,7 +90,7 @@ export const Comment_Controller = new (class Comment_Controller {
             profile_id: auth.profile.id,
         });
 
-        const data: Comment_ResponseTypes.delete_like = deleted_vote;
+        const data: ResponseTypesForComment.delete_like = deleted_vote;
         const message = "Успешно удален лайк из комментария";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -102,7 +102,7 @@ export const Comment_Controller = new (class Comment_Controller {
             profile_id: auth.profile.id,
         });
 
-        const data: Comment_ResponseTypes.add_dislike = sr;
+        const data: ResponseTypesForComment.add_dislike = sr;
         const message = "Успешно поставлен дизлайк к комментарию";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -115,7 +115,7 @@ export const Comment_Controller = new (class Comment_Controller {
             profile_id: auth.profile.id,
         });
 
-        const data: Comment_ResponseTypes.delete_dislike = deleted_vote;
+        const data: ResponseTypesForComment.delete_dislike = deleted_vote;
         const message = "Успешно удален дизлайк из комментария";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -131,7 +131,7 @@ export const Comment_Controller = new (class Comment_Controller {
             comment_id,
             profile_id: auth.profile.id,
         });
-        const data: Comment_ResponseTypes.delete_comment = deleted_comment;
+        const data: ResponseTypesForComment.delete_comment = deleted_comment;
         const message = "Комментарий успешно удалён";
         return goReplyHttp.accepted(reply, { data, message });
     };

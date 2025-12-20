@@ -1,14 +1,14 @@
-import { z_cuid_schema } from "#/modules/media/utils/zod/utils.js";
+import { UtilitySchemas } from "#/shared/validators/utils/common.js";
 import z from "zod";
 
 /** Set Avatar */
 export const avatar_set_ReqDTO = z.strictObject({
-    profile_id: z_cuid_schema,
+    profile_id: UtilitySchemas.cuid("Айди профиля"),
 });
 
 /** Update Avatar */
 export const avatar_update_ReqDTO = z.strictObject({
-    profile_id: z_cuid_schema,
+    profile_id: UtilitySchemas.cuid("Айди профиля"),
 });
 export type avatar_update_ReqDTOType = {
     profile_id: string;
@@ -18,6 +18,6 @@ export type avatar_set_ReqDTOType = {
 };
 
 export const avatar_delete_ReqDTO = z.strictObject({
-    profile_id: z_cuid_schema,
+    profile_id: UtilitySchemas.cuid("Айди профиля"),
     avatar_url_hash: z.string().length(64),
 });
