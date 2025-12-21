@@ -1,13 +1,13 @@
 import type { LoginSession, UserProfile } from "[orm]";
 
 /** DTO for auth */
-export type mid_auth_dto = {
+export type AuthMiddlewareDTO = {
     session: LoginSession;
     profile: UserProfile;
 };
 
 /** IP and User-Agent */
-export type metaData = {
+export type SessionMetadataType = {
     ip: string | undefined;
     agent: string | undefined;
 };

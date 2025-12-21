@@ -11,11 +11,11 @@ import { avatarService } from "#/media/profile-avatar.service.js";
 import type { iAccountEmail, iAccountUsername, iObjectCuid, iRawUserPassword, TokenSelector } from "#/shared/types/inputs/informative.types.js";
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import type { LoginSession, UserAccount } from "[orm]";
-import { Account_Model as model } from "[www]/account/account.model.js";
+import { Account_Model } from "[www]/account/account.model.js";
 /** UserAccount Service */
 export const Account_Service = new (class Account_Service {
     explore_me = async (account_id: iObjectCuid): Promise<UserAccount> => {
-        const found_user = await model.Get_account_by_its_id_throw_error(account_id);
+        const found_user = await Account_Model.Get_account_by_its_id_throw_error(account_id);
         return found_user;
     };
     update_email = async ({
@@ -29,31 +29,31 @@ export const Account_Service = new (class Account_Service {
     }): Promise<{
         updated_account: UserAccount;
     }> => {
-        const found_user = await model.Get_account_by_email_throw_error(current_email);
+        const found_user = await Account_Model.Get_account_by_email_throw_error(current_email);
         if (found_user.email === new_email) {
             throw new BadRequestException(["Новый адрес электронной почты совпадает со старым. Пожалуйста, введите другую почту"]);
         }
         if (found_user.id !== by_account_id) {
             throw new ForbiddenException(["Вам не разрешено редактировать адрес электронной почты этого пользователя."]);
         }
-        const found_user_duplicate = await model.Get_account_by_email_No_Throw_Error(new_email);
+        const found_user_duplicate = await Account_Model.Get_account_by_email_No_Throw_Error(new_email);
         if (found_user_duplicate) {
             throw new ConflictException([email_is_used]);
         }
-        const updated_account = await model.update_email_for_one(found_user.id, new_email);
+        const updated_account = await Account_Model.update_email_for_one(found_user.id, new_email);
         return { updated_account };
     };
 
     set_email = async ({ email, account_id }: { email: iAccountEmail; account_id: iObjectCuid }): Promise<{ updated_account: UserAccount }> => {
-        const account_by_id = await model.Get_account_by_its_id_throw_error(account_id);
+        const account_by_id = await Account_Model.Get_account_by_its_id_throw_error(account_id);
         if (account_by_id.email) {
             throw new BadRequestException(["У этой учетной записи уже есть адрес электронной почты, вам нужно обновить его настройках"]);
         }
-        const account_by_email = await model.Get_account_by_email_throw_error(email);
+        const account_by_email = await Account_Model.Get_account_by_email_throw_error(email);
         if (account_by_email) {
             throw new NotFoundException([email_is_used]);
         }
-        const updated_account = await model.update_email_for_one(account_by_id.id, email);
+        const updated_account = await Account_Model.update_email_for_one(account_by_id.id, email);
         return { updated_account };
     };
     update_password = async ({
@@ -67,7 +67,7 @@ export const Account_Service = new (class Account_Service {
         new_password: iRawUserPassword;
         repeat_new_password: iRawUserPassword;
     }): Promise<boolean> => {
-        const found_user = await model.Get_account_by_its_id_throw_error(account_id);
+        const found_user = await Account_Model.Get_account_by_its_id_throw_error(account_id);
 
         if (new_password === current_password) {
             throw new BadRequestException(["Новый введенный пароль и текущий пароль совпадают"]);
@@ -80,45 +80,45 @@ export const Account_Service = new (class Account_Service {
             throw new UnauthorizedException(["Текущий пароль неверный"]);
         }
         const new_password_hash = await bcryptjsService.create_hash(new_password);
-        const is_password_updated = await model.update_password_hash_account(found_user.id, new_password_hash);
+        const is_password_updated = await Account_Model.update_password_hash_account(found_user.id, new_password_hash);
         return !!is_password_updated;
     };
     update_username = async ({ new_username, account_id }: { new_username: iAccountUsername; account_id: iObjectCuid }): Promise<boolean> => {
-        const found_user = await model.Get_account_by_its_id_throw_error(account_id);
+        const found_user = await Account_Model.Get_account_by_its_id_throw_error(account_id);
         if (found_user.username === new_username) {
             throw new ConflictException(["Новый юзернейм совпадает со старым. Введите другое имя пользователя"]);
         }
-        const found_account_with_new_username = await model.get_account_by_its_username_no_throw_error(new_username);
+        const found_account_with_new_username = await Account_Model.get_account_by_its_username_no_throw_error(new_username);
         if (found_account_with_new_username) {
             throw new ConflictException(["Конфликт с введенным вами новым юзернеймом. Это имя пользователя уже используется другим аккаунтом"]);
         }
 
-        const updated_username = await model.update_username_for_account(found_user.id, new_username);
+        const updated_username = await Account_Model.update_username_for_account(found_user.id, new_username);
         return !!updated_username;
     };
     get_sessions = async (account_id: iObjectCuid): Promise<{ sessions: LoginSession[] }> => {
-        const found_account = await model.Get_account_by_its_id_throw_error(account_id);
-        const sessions = await model.find_all_sessions_by_account_id(found_account.id);
+        const found_account = await Account_Model.Get_account_by_its_id_throw_error(account_id);
+        const sessions = await Account_Model.find_all_sessions_by_account_id(found_account.id);
         return { sessions };
     };
-    terminate_other_sessions = async (session_token: TokenSelector, account_id: iObjectCuid) => {
-        const found_account = await model.Get_account_by_its_id_throw_error(account_id);
-        const this_session_id = (await model.find_one_session_by_its_token(session_token)).id;
+    terminate_other_sessions = async (selector: TokenSelector, account_id: iObjectCuid) => {
+        const found_account = await Account_Model.Get_account_by_its_id_throw_error(account_id);
+        const this_session_id = (await Account_Model.find_one_session_by_its_selector(selector)).id;
 
-        const all_sessions_ids = (await model.find_all_sessions_by_account_id(found_account.id)).map((s) => s.id);
-        const deleted_sessions = await model.delete_many_sessions_except_for_one(all_sessions_ids, this_session_id);
+        const all_sessions_ids = (await Account_Model.find_all_sessions_by_account_id(found_account.id)).map((s) => s.id);
+        const deleted_sessions = await Account_Model.delete_many_sessions_except_for_one(all_sessions_ids, this_session_id);
         return deleted_sessions.count;
     };
 
     terminate_specific_session = async (targetSessionIdToDelete: iObjectCuid, account_id: iObjectCuid) => {
-        const found_account = await model.Get_account_by_its_id_throw_error(account_id);
+        const found_account = await Account_Model.Get_account_by_its_id_throw_error(account_id);
 
-        const all_sessions_ids = (await model.find_all_sessions_by_account_id(found_account.id)).map((s) => s.id);
+        const all_sessions_ids = (await Account_Model.find_all_sessions_by_account_id(found_account.id)).map((s) => s.id);
         const isThisSessionOwner = all_sessions_ids.includes(targetSessionIdToDelete);
         if (!isThisSessionOwner) {
             throw new UnauthorizedException(["Айди сессии неправилен или вы не являетесь собственником этой сессии"]);
         }
-        const deleted_session = await model.delete_one_session_by_id(targetSessionIdToDelete);
+        const deleted_session = await Account_Model.delete_one_session_by_id(targetSessionIdToDelete);
         return deleted_session;
     };
 
@@ -127,15 +127,15 @@ export const Account_Service = new (class Account_Service {
     ): Promise<{
         deleted_account: UserAccount;
     }> => {
-        const found_account = await model.Get_account_by_its_id_throw_error(account_id);
-        const found_profile = await model.find_profile_by_account_id_with_data_about_cover_and_avatar(found_account.id);
+        const found_account = await Account_Model.Get_account_by_its_id_throw_error(account_id);
+        const found_profile = await Account_Model.find_profile_by_account_id_with_data_about_cover_and_avatar(found_account.id);
         if (found_profile.cover) {
             throw new NotImplementedException("Мы пока не можем удалять обложки");
         }
         if (found_profile.avatar) {
             await avatarService.avatar_delete(found_profile.id);
         }
-        const deleted_account = await model.delete_account_by_its_id(found_account.id);
+        const deleted_account = await Account_Model.delete_account_by_its_id(found_account.id);
         return {
             deleted_account: deleted_account,
         };

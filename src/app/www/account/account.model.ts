@@ -4,7 +4,7 @@ import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exc
 import type { iAccountEmail, iAccountUsername, iObjectCuid, TokenSelector } from "#/shared/types/inputs/informative.types.js";
 import type { LoginSession, ProfileAvatarPicture, ProfileCoverPicture, UserAccount, UserProfile } from "[orm]";
 export type ProfileWithCoverAndAvatarData = UserProfile & { cover: ProfileCoverPicture | null } & { avatar: ProfileAvatarPicture | null };
-export const Account_Model = new (class Account_Model {
+class AccountModelClass {
     Get_account_by_its_id_throw_error = async (account_id: iObjectCuid): Promise<UserAccount> => {
         const found_account = await prisma.userAccount.findUnique({
             where: {
@@ -102,14 +102,14 @@ export const Account_Model = new (class Account_Model {
             },
         });
     };
-    find_one_session_by_its_token = async (selector: TokenSelector): Promise<LoginSession> => {
+    find_one_session_by_its_selector = async (selector: TokenSelector): Promise<LoginSession> => {
         const found_session = await prisma.loginSession.findUnique({
             where: {
                 selector,
             },
         });
         if (!found_session) {
-            throw new NotFoundException(["Сеанс с таким айди не найден. Проверьте токен сеанса"]);
+            throw new NotFoundException(["Сессия с таким токеном не найден. Проверьте токен сеанса"]);
         }
 
         return found_session;
@@ -122,7 +122,6 @@ export const Account_Model = new (class Account_Model {
             },
         });
     };
-    /** END SESSION */
 
     find_profile_by_account_id = async (account_id: iObjectCuid): Promise<UserProfile> => {
         const found_profile = await prisma.userProfile.findUnique({
@@ -177,4 +176,5 @@ export const Account_Model = new (class Account_Model {
         });
         return deleted_session;
     };
-})();
+}
+export const Account_Model = new AccountModelClass();

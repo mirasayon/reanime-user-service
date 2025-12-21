@@ -1,14 +1,16 @@
 import { validateEnvironment, builtInSchemas as v } from "safest-env";
 import { frontendUrl } from "./constants/frontend-url.js";
 const _env = validateEnvironment({
+    PASSWORD_HASH_PEPPER: v.string().min(5),
+    SESSION_TOKEN_HMAC_SECRET: v.string().min(5),
     SERVER_PORT_NUMBER: v.integer(),
     NODE_ENVIRONMENT: v.enum(["development", "test", "production"] as const),
     SERVER_HOSTNAME: v.string(),
     DATABASE_SERVER_CONNECTION_URL: v.string().min(5),
     API_KEY_TO_THIS_SERVER: v.string(),
 });
-/** Environment variables configuration */
-export const EnvConfig = new (class EnvironmentClass {
+/** Environment variables configuration class */
+class EnvironmentConfigClass {
     /** Standard NODE_ENVIRONMENT. Running mode for application. */
     NODE_ENVIRONMENT = _env.NODE_ENVIRONMENT;
     constructor() {
@@ -27,7 +29,7 @@ export const EnvConfig = new (class EnvironmentClass {
                 break;
             }
             default: {
-                throw new Error("Unknown Environment Mode: " + this.NODE_ENVIRONMENT);
+                throw new Error("Unknown Environment Mode: 'NODE_ENVIRONMENT': " + this.NODE_ENVIRONMENT);
             }
         }
         this.frontendUrl = frontendUrl[mode];
@@ -36,10 +38,14 @@ export const EnvConfig = new (class EnvironmentClass {
     is_dev = this.NODE_ENVIRONMENT === "development";
     is_test = this.NODE_ENVIRONMENT === "test";
     is_prod = this.NODE_ENVIRONMENT === "production";
+    /**
+     * Current running mode.
+     */
     currentMode: "dev" | "test" | "prod";
-
+    passwordHashPepper = _env.PASSWORD_HASH_PEPPER;
     /** DB Connection URL */
     dbConnectionUrl = _env.DATABASE_SERVER_CONNECTION_URL;
+    sessionTokenHmacSecret = _env.SESSION_TOKEN_HMAC_SECRET;
     /** This key is used to access to this server */
     api_key_to_this_service = _env.API_KEY_TO_THIS_SERVER as string;
     frontendUrl;
@@ -48,4 +54,8 @@ export const EnvConfig = new (class EnvironmentClass {
         port: Number(_env.SERVER_PORT_NUMBER),
         host: _env.SERVER_HOSTNAME,
     };
-})();
+}
+/**
+ * Environment variables configuration
+ */
+export const envMainConfig = new EnvironmentConfigClass();

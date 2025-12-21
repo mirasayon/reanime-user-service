@@ -1,6 +1,6 @@
 import { auth_ip_and_agent_do_not_match } from "#/configs/frequent-errors.js";
 import { BadRequestException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import type { mid_auth_dto } from "#/types/auth-middleware-shape.js";
+import type { AuthMiddlewareDTO } from "#/types/auth-middleware-shape.js";
 import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto/get-session-meta.js";
 import type { default as ExpressJS } from "express";
 import { getSessionTokenFromHeadersDto } from "#/utilities/dto/get-session-token.js";
@@ -34,7 +34,7 @@ const checkTwoMetadatas = (session: LoginSession, requestMeta: ExpressJS.Request
  * @param next - Express NextFunction for middleware chaining
  */
 export const mainAuthenticationMiddleware = async (
-    req: ExpressJS.Request & { auth?: mid_auth_dto },
+    req: ExpressJS.Request & { auth?: AuthMiddlewareDTO },
     res: ExpressJS.Response,
     next: ExpressJS.NextFunction,
 ) => {
@@ -92,7 +92,7 @@ export const checkAuthenticationFunction = async (
  * @returns
  */
 export const has_client_already_logged = async (
-    req: ExpressJS.Request & { auth?: mid_auth_dto },
+    req: ExpressJS.Request & { auth?: AuthMiddlewareDTO },
     res: ExpressJS.Response,
     next: ExpressJS.NextFunction,
 ) => {

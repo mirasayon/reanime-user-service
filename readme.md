@@ -4,19 +4,14 @@ First code: october 19, 2024
 
 ## Tech Stack
 
--   Express.js v5, Node.js, TypeScript ESM, Prisma ORM, PostgreSQL
+- Express.js v5, Node.js, TypeScript ESM, Prisma ORM, PostgreSQL
 
-### How to create pem keys:
+### How to create base64 random string
 
-download link for windows 11 (.EXE/.MSI) <https://slproweb.com/products/Win32OpenSSL.html>
-
-```bash
-	openssl genrsa -out ./keys/private.pem 2048
-	openssl rsa -in ./keys/private.pem -pubout -out ./keys/public.pem
-```
+<https://www.convertsimple.com/random-base64-generator/>
 
 ## PostgreSQL databases names:
 
--   For development - `reanime-user-service-for-development`
--   For production - `reanime-user-service-for-production`
--   For testing - `reanime-user-service-for-testing`
+- For development - `reanime-user-service-for-development`
+- For production - `reanime-user-service-for-production`
+- For testing - `reanime-user-service-for-testing`

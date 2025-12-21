@@ -1,6 +1,6 @@
 import { default as ExpressJS } from "express";
 /**
- * Returns LoginSession Token from web request;s headers
+ * Returns LoginSession Token from web request headers
  * @param req Express Request object
  * @returns LoginSession Token
  */

@@ -1,12 +1,12 @@
 import { BadRequestException } from "#/errors/client-side-exceptions.js";
-import type { mid_auth_dto } from "#/types/auth-middleware-shape.js";
+import type { AuthMiddlewareDTO } from "#/types/auth-middleware-shape.js";
 import type { z, ZodType } from "zod";
 import { default as ExpressJS } from "express";
 const Factory_Validator_Util_Class = new (class Factory_Validator_Util_Class {
     create = <
         RequestType extends ExpressJS.Request & {
             dto?: z.infer<Zod_x_Schema_type>;
-            auth?: mid_auth_dto;
+            auth?: AuthMiddlewareDTO;
         },
         Zod_x_Schema_type extends ZodType = ZodType,
         A extends any = any,

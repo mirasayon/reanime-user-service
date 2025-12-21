@@ -1,4 +1,5 @@
 // hashing-service.ts
+import { envMainConfig } from "#/configs/environment-variables.js";
 import { argon2, randomBytes, timingSafeEqual, type Argon2Parameters } from "node:crypto";
 type Argon2idDefaultsParameters = Omit<Argon2idHashResult, "derivedB64" | "saltB64">;
 type Argon2idHashResult = {
@@ -49,14 +50,13 @@ class Argon2idHashingService {
         passes: 3,
     };
     /** Base64-строка с перцем
-     *  «перец» (pepper) — это секретный, уникальный для системы фрагмент данных (как пароль), который добавляется к паролю до хеширования вместе с солью, но хранится отдельно и более защищённо (например, в аппаратном модуле)
-     *
+     * «перец» (pepper) — это секретный, уникальный для системы фрагмент данных (как пароль), который добавляется к паролю до хеширования вместе с солью, но хранится отдельно и более защищённо (например, в аппаратном модуле)
      */
     private _pepper: string;
     constructor() {
-        const pepper = process.env["PASSWORD_HASH_PEPPER"];
+        const pepper = envMainConfig.passwordHashPepper;
         if (!pepper) {
-            throw new Error("PASSWORD_HASH_PEPPER required");
+            throw new Error("Hashing passwords pepper required");
         }
         this._pepper = pepper;
     }

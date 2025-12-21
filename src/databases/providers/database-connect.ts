@@ -1,4 +1,4 @@
-import { EnvConfig } from "#/configs/environment-variables.js";
+import { envMainConfig } from "#/configs/environment-variables.js";
 import { create_client } from "./adapter.js";
 /** Prisma Client Instance Type */
 export type PrismaClientType = ReturnType<typeof create_client>;
@@ -9,7 +9,7 @@ declare global {
 /** Global prisma client for all of application */
 const prisma = globalThis._prisma_client_global_ || create_client();
 
-if (!EnvConfig.is_prod) {
+if (!envMainConfig.is_prod) {
     globalThis._prisma_client_global_ = prisma;
 }
 export { prisma };

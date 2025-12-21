@@ -1,5 +1,5 @@
 import { mainServicesRouter } from "#/app/main.route.js";
-import { EnvConfig } from "#/configs/environment-variables.js";
+import { envMainConfig } from "#/configs/environment-variables.js";
 import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#/handlers/errors/client-side-errors-handler.js";
 import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerMiddleware } from "#/handlers/errors/server-side-errors-handler.js";
 import { mainDevServerLogger } from "#/middlewares/development-env-logger-middleware.js";
@@ -23,7 +23,7 @@ export const expressMainApplication = (() => {
 
     /** Logger Middlewares */
     app.use(morgan("tiny"));
-    if (EnvConfig.is_dev) {
+    if (envMainConfig.is_dev) {
         app.use(mainDevServerLogger);
     }
 

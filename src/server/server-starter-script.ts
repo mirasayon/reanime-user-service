@@ -1,4 +1,4 @@
-import { EnvConfig } from "#/configs/environment-variables.js";
+import { envMainConfig } from "#/configs/environment-variables.js";
 import { Service_Setting } from "#/configs/settings.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { startListeningTheServer } from "#/utilities/tools/express.js";
@@ -10,15 +10,15 @@ import { arch, platform } from "os";
 import { expressMainApplication } from "./first-level-app-skeleton.js";
 export async function startMainServerScript(): Promise<void> {
     try {
-        const instance = await startListeningTheServer(expressMainApplication, EnvConfig.server);
+        const instance = await startListeningTheServer(expressMainApplication, envMainConfig.server);
         const { port, address, family } = instance.address() as AddressInfo;
 
         const time = format(new Date(), "HH:mm:ss dd.MM.yyyy");
-        const url = `http://${EnvConfig.server.host}:${port}`;
+        const url = `http://${envMainConfig.server.host}:${port}`;
         const altUrl = `http://${address}:${port}`;
 
         Logger.blue(`${Service_Setting.name}. Launched at ${time}`);
-        Logger.success(`${family}: ${chalk.magenta(url)} / ${altUrl} ${chalk.magenta(EnvConfig.NODE_ENVIRONMENT)}`);
+        Logger.success(`${family}: ${chalk.magenta(url)} / ${altUrl} ${chalk.magenta(envMainConfig.NODE_ENVIRONMENT)}`);
 
         Logger.slate(
             "Node.js: " + chalk.bold("v" + process.versions.node) + ". CpuArch: " + chalk.bold(arch()) + ". Platform: " + chalk.bold(platform()),
