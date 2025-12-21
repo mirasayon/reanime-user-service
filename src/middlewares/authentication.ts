@@ -1,12 +1,12 @@
 import { auth_ip_and_agent_do_not_match } from "#/configs/frequent-errors.js";
-import type { LoginSession } from "#/databases/orm/client.js";
 import { BadRequestException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import type { mid_auth_dto } from "#/types/auth-middleware-shape.js";
 import { metadata_dto } from "#/utils/dto/meta.js";
+import type { default as ExpressJS } from "express";
 import { bearer_session_token_from_headers } from "#/utils/dto/session_token.js";
 import { sessionTokenHashService } from "#/utils/services/session_token.js";
+import type { LoginSession } from "[orm]";
 import { authModels } from "[www]/authentication/authentication.model.js";
-import type Express from "express";
 import { isDeepStrictEqual } from "node:util";
 
 /**
@@ -17,7 +17,7 @@ import { isDeepStrictEqual } from "node:util";
  * @param requestMeta - Incoming HTTP request to validate
  * @returns true if metadata matches; otherwise throws `ClientError`
  */
-const checkTwoMetadatas = (session: LoginSession, requestMeta: Express.Request) => {
+const checkTwoMetadatas = (session: LoginSession, requestMeta: ExpressJS.Request) => {
     const session_Meta = metadata_dto.server_session_db(session);
     const request_Meta = metadata_dto.client_request(requestMeta);
     const is_equal = isDeepStrictEqual(session_Meta, request_Meta);
@@ -35,9 +35,9 @@ const checkTwoMetadatas = (session: LoginSession, requestMeta: Express.Request) 
  * @param next - Express NextFunction for middleware chaining
  */
 export const mainAuthenticationMiddleware = async (
-    req: Express.Request & { auth?: mid_auth_dto },
-    res: Express.Response,
-    next: Express.NextFunction,
+    req: ExpressJS.Request & { auth?: mid_auth_dto },
+    res: ExpressJS.Response,
+    next: ExpressJS.NextFunction,
 ) => {
     const req_session_token = bearer_session_token_from_headers(req);
     if (!req_session_token) {
@@ -64,7 +64,7 @@ const HasNotBeenLogged = { pass: false } as const;
  * @returns Object with `pass: boolean` and optionally the session
  */
 export const checkAuthenticationFunction = async (
-    req: Express.Request,
+    req: ExpressJS.Request,
 ): Promise<{
     pass: boolean;
     session?: LoginSession;
@@ -93,9 +93,9 @@ export const checkAuthenticationFunction = async (
  * @returns
  */
 export const has_client_already_logged = async (
-    req: Express.Request & { auth?: mid_auth_dto },
-    res: Express.Response,
-    next: Express.NextFunction,
+    req: ExpressJS.Request & { auth?: mid_auth_dto },
+    res: ExpressJS.Response,
+    next: ExpressJS.NextFunction,
 ) => {
     const hasUserLogged = await checkAuthenticationFunction(req);
     if (hasUserLogged.pass && hasUserLogged.session) {

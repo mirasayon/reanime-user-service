@@ -1,36 +1,37 @@
 import { PathsConfig } from "#/configs/paths.config.js";
 import type { Application } from "express";
-import express, { Router } from "express";
-
-/** Creates New Router with already configured settings */
-export const cRouter = () => Router({ caseSensitive: true, strict: true });
+import { default as expressJs } from "express";
+/**
+ * Created new ExpressJS.js Router with configured settings
+ * @returns ExpressJS.js Router
+ */
+export function createConfiguredRouter(): ReturnType<typeof expressJs.Router> {
+    return expressJs.Router({ caseSensitive: true, strict: true });
+}
 /** Static Folder middleware */
-export const static_serve = express.static(PathsConfig.static, {
+export const mainStaticServerMiddleware = expressJs.static(PathsConfig.static, {
     etag: false,
     index: false,
     lastModified: false,
 });
 
 /** Json Body-parser middleware */
-export const json_parser = express.json({
+export const jsonBodyParserMiddleware = expressJs.json({
     strict: true,
     limit: "100kb",
     inflate: true,
     type: "application/json",
 });
-/** x-www-urlencoded parser middleware */
-export const x_www_urlencoded_parser = express.urlencoded({
-    extended: false,
-    type: "application/x-www-form-urlencoded",
-});
-
 /**
  * Starts the server and returns the instance
  * @param port Port number
  * @param host Hostname
  */
-export const listenExpressApp = (app: Application, { port, host }: { port: number; host: string }): Promise<ReturnType<Application["listen"]>> => {
-    return new Promise((resolve, reject) => {
+export async function startListeningTheServer(
+    app: Application,
+    { port, host }: { port: number; host: string },
+): Promise<ReturnType<Application["listen"]>> {
+    return await new Promise((resolve, reject) => {
         const server = app.listen({ port, host }, (err) => {
             if (err) {
                 return reject(err);
@@ -38,4 +39,4 @@ export const listenExpressApp = (app: Application, { port, host }: { port: numbe
             return resolve(server);
         });
     });
-};
+}

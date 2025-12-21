@@ -1,12 +1,12 @@
 import { goReplyHttp } from "#/modules/response/handlers.js";
 import type { ResponseTypesForAuthentication } from "#/shared/response-patterns/authentication.routes.js";
 import { ControllerUtils } from "#/utils/controller.js";
+import type { default as ExpressJS } from "express";
 import type { Authentication_ReqDtos } from "[www]/authentication/authentication.pipes.js";
 import { Authentication_Service as services } from "[www]/authentication/authentication.service.js";
-import type e from "express";
 
 export const Authentication_Controller = new (class Authentication_Controller {
-    login_via_email = async (req: Authentication_ReqDtos.login_via_email, reply: e.Response) => {
+    login_via_email = async (req: Authentication_ReqDtos.login_via_email, reply: ExpressJS.Response) => {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const sr = await services.login_via_email({
             agent: dto.agent ?? null,
@@ -19,7 +19,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
         return goReplyHttp.accepted(reply, { data, message });
     };
 
-    login_via_username = async (req: Authentication_ReqDtos.login_via_username, reply: e.Response) => {
+    login_via_username = async (req: Authentication_ReqDtos.login_via_username, reply: ExpressJS.Response) => {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const sr = await services.login_via_username({
             agent: dto.agent ?? null,
@@ -31,7 +31,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
         const message = "Пользователь успешно вошел в систему через юзернейм";
         return goReplyHttp.accepted(reply, { data, message });
     };
-    registration = async (req: Authentication_ReqDtos.registration, reply: e.Response) => {
+    registration = async (req: Authentication_ReqDtos.registration, reply: ExpressJS.Response) => {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const { account, session } = await services.registration({
             nickname: dto.nickname,
@@ -47,16 +47,16 @@ export const Authentication_Controller = new (class Authentication_Controller {
         return goReplyHttp.accepted(reply, { data, message });
     };
 
-    check_username_availability = async (req: Authentication_ReqDtos.check_username_availability, reply: e.Response) => {
+    check_username_availability = async (req: Authentication_ReqDtos.check_username_availability, reply: ExpressJS.Response) => {
         const { dto: username } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const sr = await services.check_username_availability({ username });
         const data: ResponseTypesForAuthentication.check_username_availability = sr;
         const message = "Проверка доступности имени пользователя";
         return goReplyHttp.ok(reply, { data, message });
     };
-    check_session = async (req: Authentication_ReqDtos.check_session, reply: e.Response) => {
+    check_session = async (req: Authentication_ReqDtos.check_session, reply: ExpressJS.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { account, avatar } = await services.check_session(auth.loginSession.by_account_id);
+        const { account, avatar } = await services.check_session(auth.session.by_account_id);
         const data: ResponseTypesForAuthentication.check_session = {
             profile: auth.profile,
             account: account,
@@ -66,9 +66,9 @@ export const Authentication_Controller = new (class Authentication_Controller {
         const message = "Ваша текущая сессия";
         return goReplyHttp.ok(reply, { data, message });
     };
-    logout = async (req: Authentication_ReqDtos.logout, res: e.Response) => {
+    logout = async (req: Authentication_ReqDtos.logout, res: ExpressJS.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { deleted_session_token } = await services.logout(auth.loginSession.token, auth.loginSession.by_account_id);
+        const { deleted_session_token } = await services.logout(auth.session.token, auth.session.by_account_id);
         const data: ResponseTypesForAuthentication.logout = !!deleted_session_token;
         const message = "Этот сеанс успешно удален (выход из системы)";
         return goReplyHttp.accepted(res, { message, data });

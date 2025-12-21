@@ -1,4 +1,4 @@
-import type { ReplyForComment } from "#db/orm/client.js";
+import type { ReplyForComment } from "[orm]";
 
 /** RESPONSES For Reply Route */
 export namespace ResponseTypesForReplyToComment {

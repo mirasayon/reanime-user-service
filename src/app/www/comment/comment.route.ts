@@ -1,10 +1,10 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
+import { createConfiguredRouter } from "#/utils/tools/express.js";
 import { Comment_Controller as c } from "[www]/comment/comment.controller.js";
 import { Comment_ReqPipes as rp } from "[www]/comment/comment.pipes.js";
-import { cRouter } from "#/utils/tools/express.js";
 
 export const Comment_Router = (() => {
-    const r = cRouter();
+    const r = createConfiguredRouter();
 
     // Get comments by anime ID with pagination
     r.get("/get/all_comments_for_anime/:anime_id", rp.get_all_for_anime, c.get_all_for_anime);

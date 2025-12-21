@@ -1,7 +1,7 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
+import { createConfiguredRouter } from "#/utils/tools/express.js";
 import { Profile_Controller as c } from "[www]/profile/profile.controller.js";
 import { Profile_ReqPipes as vm } from "[www]/profile/profile.pipes.js";
-import { cRouter } from "#/utils/tools/express.js";
 import multer from "multer";
 
 export const Profile_Router = (() => {
@@ -11,7 +11,7 @@ export const Profile_Router = (() => {
             files: 1,
         },
     });
-    const r = cRouter();
+    const r = createConfiguredRouter();
     r.get("/explore_others_profile/:username", vm.other_profiles, c.other_profiles); // Open basic data of someone else's profile by username.
 
     r.get("/view_my_profile", vm.my_profile, mainAuthenticationMiddleware, c.view_my_profile); // Открыть свой профиль.

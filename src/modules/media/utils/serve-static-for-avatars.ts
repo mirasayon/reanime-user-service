@@ -1,12 +1,12 @@
+import { default as ExpressJS } from "express";
 import { Avatar_Image_Allowed_MIME_TYPES } from "#/configs/constants/media-module.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import type e from "express";
 import { createReadStream, existsSync, statSync } from "node:fs";
 import { extname } from "node:path";
 // Supported mime types
 
 /** Static File Handler for each request */
-export async function serveFile(req: e.Request, res: e.Response, full_path: string) {
+export async function serveFile(req: ExpressJS.Request, res: ExpressJS.Response, full_path: string) {
     if (!existsSync(full_path) || !statSync(full_path).isFile()) {
         throw new NotFoundException(["Аватарка не найдена"]);
     }

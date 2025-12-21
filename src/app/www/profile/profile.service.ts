@@ -1,9 +1,8 @@
-import type { AvatarPicture, UserAccount, UserProfile } from "#/databases/orm/client.js";
 import { BadRequestException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
+import type { AvatarPicture, UserAccount, UserProfile } from "[orm]";
 import { Profile_Model as model } from "[www]/profile/profile.model.js";
-import type e from "express";
-
+import type { default as ExpressJS } from "express";
 /** Service Class with all methods for comments */
 export const Profile_Service = new (class Profile_Service {
     edit_bio = async (new_bio: string, profile_id: string) => {
@@ -78,7 +77,7 @@ export const Profile_Service = new (class Profile_Service {
         const deleted_avatar = await model.delete_avatar_from_profile(profile_id);
         return { deleted_avatar };
     };
-    avatar_view = async (username: string, req: e.Request, res: e.Response) => {
+    avatar_view = async (username: string, req: ExpressJS.Request, res: ExpressJS.Response) => {
         const foundProfile = await model.find_profile_by_username(username);
         if (!foundProfile) {
             throw new NotFoundException(["Пользователь с таким юзернеймом не найден"]);

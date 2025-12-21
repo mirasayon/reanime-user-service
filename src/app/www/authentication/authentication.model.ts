@@ -1,9 +1,9 @@
-import type { LoginSession, UserAccount, UserProfile } from "#/databases/orm/client.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { sessionTokenHashService } from "#/utils/services/session_token.js";
+import type { LoginSession, UserAccount, UserProfile } from "[orm]";
 
 export const authModels = new (class Authentication_Model {
     find_1_session_by_its_token = async (session_token: TokenSelector) => {

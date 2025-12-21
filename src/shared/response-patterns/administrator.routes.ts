@@ -1,4 +1,4 @@
-import type { UserAccount, UserProfile } from "#db/orm/client.js";
+import type { UserAccount, UserProfile } from "[orm]";
 
 /** RESPONSES For Administrator Route */
 export namespace Administrator_ResponseTypes {

@@ -1,5 +1,5 @@
-import type Express from "express";
 import { MulterError } from "multer";
+import type { default as ExpressJS } from "express";
 import { goReplyHttp } from "../../response/handlers.js";
 import {
     BadRequestException,
@@ -14,9 +14,9 @@ import {
 } from "./exceptions.js";
 export const client_error_handler = (
     error: Error | SyntaxError | MulterError | ClientSideExceptionClasses,
-    _req: Express.Request,
-    res: Express.Response,
-    next: Express.NextFunction,
+    _req: ExpressJS.Request,
+    res: ExpressJS.Response,
+    next: ExpressJS.NextFunction,
 ) => {
     if (error instanceof SyntaxError) {
         return goReplyHttp.bad_request(res, {
@@ -70,6 +70,6 @@ export const client_error_handler = (
     return next(error);
 };
 
-export const not_found_route = (req: Express.Request, res: Express.Response, next: Express.NextFunction): void => {
+export const not_found_route = (req: ExpressJS.Request, res: ExpressJS.Response, next: ExpressJS.NextFunction): void => {
     return goReplyHttp.not_found(res, { errors: ["Not Found Default Error"] });
 };

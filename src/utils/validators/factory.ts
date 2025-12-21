@@ -1,10 +1,10 @@
 import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
 import type { mid_auth_dto } from "#/types/auth-middleware-shape.js";
-import type e from "express";
 import type { z, ZodType } from "zod";
+import { default as ExpressJS } from "express";
 const Factory_Validator_Util_Class = new (class Factory_Validator_Util_Class {
     create = <
-        RequestType extends e.Request & {
+        RequestType extends ExpressJS.Request & {
             dto?: z.infer<Zod_x_Schema_type>;
             auth?: mid_auth_dto;
         },
@@ -14,7 +14,7 @@ const Factory_Validator_Util_Class = new (class Factory_Validator_Util_Class {
         schema: Zod_x_Schema_type,
         get_req_body?: (req: RequestType) => Promise<A>,
     ) => {
-        return async (req: RequestType, res: e.Response, next: e.NextFunction) => {
+        return async (req: RequestType, res: ExpressJS.Response, next: ExpressJS.NextFunction) => {
             /**
              * If schema itself is for undefined. Then body also must be undefined
              */

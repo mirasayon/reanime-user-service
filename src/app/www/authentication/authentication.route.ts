@@ -1,10 +1,10 @@
+import { has_client_already_logged, mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
+import { createConfiguredRouter } from "#/utils/tools/express.js";
 import { Authentication_Controller as c } from "[www]/authentication/authentication.controller.js";
-import { mainAuthenticationMiddleware, has_client_already_logged } from "#/middlewares/authentication.js";
 import { Authentication_ReqPipes as vm } from "[www]/authentication/authentication.pipes.js";
-import { cRouter } from "#/utils/tools/express.js";
 
 export const Authentication_Router = (() => {
-    const r = cRouter();
+    const r = createConfiguredRouter();
     r.post("/registration", vm.registration, has_client_already_logged, c.registration);
 
     r.post("/login/via/email", vm.login_via_email, has_client_already_logged, c.login_via_email);

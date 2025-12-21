@@ -1,7 +1,7 @@
 import { EnvConfig } from "#/configs/environment-variables.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { ExpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
-import type Express from "express";
+import type { default as ExpressJS } from "express";
 import { timingSafeEqual } from "node:crypto";
 const expectedApiKeyValue = EnvConfig.api_key_to_this_service;
 /**
@@ -11,7 +11,7 @@ const expectedApiKeyValue = EnvConfig.api_key_to_this_service;
  *
  * При отсутствии ключа API в заголовке запроса, он вернет статус 418
  */
-export function apiKeyToServiceGuard(request: Express.Request, _res: Express.Response, next: Express.NextFunction) {
+export function apiKeyToServiceGuard(request: ExpressJS.Request, _res: ExpressJS.Response, next: ExpressJS.NextFunction) {
     const headerVal = request.headers["x-reanime-user-service-key"];
     if (!headerVal || typeof headerVal !== "string" || headerVal.length === 0) {
         throw new NotFoundException([]);

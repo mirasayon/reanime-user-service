@@ -1,4 +1,4 @@
-import type { LoginSession, UserProfile } from "#/databases/orm/client.js";
+import type { LoginSession, UserProfile } from "[orm]";
 
 /** DTO for auth */
 export type mid_auth_dto = {

@@ -1,10 +1,10 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
+import { createConfiguredRouter } from "#/utils/tools/express.js";
 import { Reply_Controller as c } from "[www]/reply/reply.controller.js";
 import { Reply_ReqPipes as vm } from "[www]/reply/reply.pipes.js";
-import { cRouter } from "#/utils/tools/express.js";
 
 export const Reply_Router = (() => {
-    const r = cRouter();
+    const r = createConfiguredRouter();
     r.get("/get/one/:reply_id", vm.get_1_reply_by_its_id, c.get_1_reply_by_its_id);
     r.get("/get/all/:comment_id", vm.get_replies_by_comment_id, c.get_replies_by_comment_id);
 

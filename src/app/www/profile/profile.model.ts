@@ -1,8 +1,8 @@
 import { usernameNotFound } from "#/configs/frequent-errors.js";
-import type { AvatarPicture, UserAccount, UserProfile } from "#/databases/orm/client.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
+import type { AvatarPicture, UserAccount, UserProfile } from "[orm]";
 
 export const Profile_Model = new (class Profile_Model {
     find_profile_by_its_id = async (profile_id: iObjectCuid) => {

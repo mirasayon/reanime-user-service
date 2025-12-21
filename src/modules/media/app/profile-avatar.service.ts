@@ -1,9 +1,9 @@
+import type { default as ExpressJS } from "express";
 import { avatar_image_height, avatar_image_width } from "#/configs/constants/media-module.js";
 import { avatars_folder, tempProcessPath } from "#/configs/paths.config.js";
 import { ConflictException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { BadGatewayException } from "#/modules/errors/server-side/exceptions.js";
 import consola from "consola";
-import type e from "express";
 import { existsSync } from "node:fs";
 import { readFile, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -11,10 +11,10 @@ import { setTimeout as delay } from "node:timers/promises";
 import sharp from "sharp";
 import { avatarServiceUtils } from "../utils/avatar-file-system-service.js";
 import { serveFile } from "../utils/serve-static-for-avatars.js";
-
+import type { ExpressJS_Multer_File } from "#/types/express-types.js";
 //
-type avatar_upload_ServiceParameters = { profile_cuid: string; file: Express.Multer.File };
-type avatar_update_ServiceParameters = { profile_cuid: string; file: Express.Multer.File };
+type avatar_upload_ServiceParameters = { profile_cuid: string; file: ExpressJS_Multer_File };
+type avatar_update_ServiceParameters = { profile_cuid: string; file: ExpressJS_Multer_File };
 /**
  * Main Avatar Service
  */
@@ -78,7 +78,7 @@ export const avatarService = new (class Avatar_Post_Service {
             }
         }
     };
-    serveAvatarImage = async (user_cuid: string, req: e.Request, res: e.Response) => {
+    serveAvatarImage = async (user_cuid: string, req: ExpressJS.Request, res: ExpressJS.Response) => {
         const filePath = join(avatars_folder, `${user_cuid}.webp`);
         return await serveFile(req, res, filePath);
     };

@@ -1,10 +1,10 @@
+import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
+import { createConfiguredRouter } from "#/utils/tools/express.js";
 import { Account_Controller as c } from "[www]/account/account.controller.js";
 import { Account_ReqPipes as rp } from "[www]/account/account.pipes.js";
-import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
-import { cRouter } from "#/utils/tools/express.js";
 
 export const Account_Router = (() => {
-    const r = cRouter();
+    const r = createConfiguredRouter();
     // Get general information about the currently authenticated accounts
     r.get("/explore/me", mainAuthenticationMiddleware, c.explore_me);
 

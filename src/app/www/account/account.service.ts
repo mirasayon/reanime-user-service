@@ -1,5 +1,4 @@
 import { email_is_used } from "#/configs/frequent-errors.js";
-import type { LoginSession, UserAccount } from "#/databases/orm/client.js";
 import {
     BadRequestException,
     ConflictException,
@@ -11,6 +10,7 @@ import { NotImplementedException } from "#/modules/errors/server-side/exceptions
 import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
 import type { iAccountEmail, iAccountUsername, iObjectCuid, iRawUserPassword, TokenSelector } from "#/shared/types/inputs/informative.types.js";
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
+import type { LoginSession, UserAccount } from "[orm]";
 import { Account_Model as model } from "[www]/account/account.model.js";
 /** UserAccount Service */
 export const Account_Service = new (class Account_Service {
@@ -66,7 +66,7 @@ export const Account_Service = new (class Account_Service {
         current_password: iRawUserPassword;
         new_password: iRawUserPassword;
         repeat_new_password: iRawUserPassword;
-    }): Promise<{ updated_account: UserAccount }> => {
+    }): Promise<boolean> => {
         const found_user = await model.Get_account_by_its_id_throw_error(account_id);
 
         if (new_password === current_password) {
@@ -80,18 +80,10 @@ export const Account_Service = new (class Account_Service {
             throw new UnauthorizedException(["Текущий пароль неверный"]);
         }
         const new_password_hash = await bcryptjsService.create_hash(new_password);
-        const updated_account = await model.update_password_hash_account(found_user.id, new_password_hash);
-        return { updated_account };
+        const is_password_updated = await model.update_password_hash_account(found_user.id, new_password_hash);
+        return !!is_password_updated;
     };
-    update_username = async ({
-        new_username,
-        account_id,
-    }: {
-        new_username: iAccountUsername;
-        account_id: iObjectCuid;
-    }): Promise<{
-        updated_account: UserAccount;
-    }> => {
+    update_username = async ({ new_username, account_id }: { new_username: iAccountUsername; account_id: iObjectCuid }): Promise<boolean> => {
         const found_user = await model.Get_account_by_its_id_throw_error(account_id);
         if (found_user.username === new_username) {
             throw new ConflictException(["Новый юзернейм совпадает со старым. Введите другое имя пользователя"]);
@@ -101,8 +93,8 @@ export const Account_Service = new (class Account_Service {
             throw new ConflictException(["Конфликт с введенным вами новым юзернеймом. Это имя пользователя уже используется другим аккаунтом"]);
         }
 
-        const updated_account = await model.update_username_for_account(found_user.id, new_username);
-        return { updated_account };
+        const updated_username = await model.update_username_for_account(found_user.id, new_username);
+        return !!updated_username;
     };
     get_sessions = async (account_id: iObjectCuid): Promise<{ sessions: LoginSession[] }> => {
         const found_account = await model.Get_account_by_its_id_throw_error(account_id);

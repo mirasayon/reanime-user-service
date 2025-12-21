@@ -1,5 +1,5 @@
 import { apiKeyToServiceGuard } from "#/app/api-key.guard.js";
-import { cRouter } from "#/utils/tools/express.js";
+import { createConfiguredRouter } from "#/utils/tools/express.js";
 import { Account_Router } from "[www]/account/account.route.js";
 import { Administrator_Router } from "[www]/admin/admin.routes.js";
 import { Authentication_Router } from "[www]/authentication/authentication.route.js";
@@ -12,7 +12,7 @@ import { Reply_Router } from "[www]/reply/reply.route.js";
 import { secureHttpGuard } from "./secure-http.guard.js";
 /** Entry Point Router */
 export const mainServicesRouter = (() => {
-    const router = cRouter();
+    const router = createConfiguredRouter();
     router.use(apiKeyToServiceGuard);
     router.use(secureHttpGuard);
     router.use("/authentication", Authentication_Router);

@@ -1,4 +1,7 @@
-import { keysPrivateKey, keysPublicKey } from "#/configs/paths.config.js";
+const { keysPrivateKey, keysPublicKey } = {
+    keysPrivateKey: "SESSION_PRIVATE_KEY",
+    keysPublicKey: "SESSION_PUBLIC_KEY",
+};
 import { ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";

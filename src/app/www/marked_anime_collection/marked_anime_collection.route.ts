@@ -1,9 +1,9 @@
-import { cRouter } from "#/utils/tools/express.js";
+import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
+import { createConfiguredRouter } from "#/utils/tools/express.js";
 import { MarkedAnimeCollection_Controller as cont } from "[www]/marked_anime_collection/marked_anime_collection.controller.js";
 import { MarkedAnimeCollection_ReqPipes } from "[www]/marked_anime_collection/marked_anime_collection.pipes.js";
-import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
 export const MarkedAnimeCollection_Router = (() => {
-    const r = cRouter();
+    const r = createConfiguredRouter();
 
     r.get("/list/all", MarkedAnimeCollection_ReqPipes.get_all_list, mainAuthenticationMiddleware, cont.get_all_list);
 

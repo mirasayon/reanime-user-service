@@ -4,7 +4,9 @@ import { BadRequestException } from "#/modules/errors/client-side/exceptions.js"
 import { Logger } from "log-it-colored";
 import { existsSync } from "node:fs";
 import { unlink } from "node:fs/promises";
+import type { default as ExpressJS } from "express";
 import path from "node:path";
+import type { ExpressJS_Multer_File } from "#/types/express-types.js";
 
 /** A file with such a path should not exist. */
 type path_prod = string;
@@ -48,7 +50,7 @@ export const avatarServiceUtils = new (class UtilsClass {
     };
 
     /** Controller Util */
-    get_first_media_field_from_request = (files: Express.Multer.File[]): Express.Multer.File => {
+    get_first_media_field_from_request = (files: ExpressJS_Multer_File[]): ExpressJS_Multer_File => {
         const file = files.at(0);
         if (!file) {
             throw new BadRequestException(["Client did not give image file"]);

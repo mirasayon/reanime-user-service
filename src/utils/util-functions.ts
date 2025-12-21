@@ -1,6 +1,6 @@
+import { default as ExpressJS } from "express";
 import { searchQueriesAreOutOfRange } from "#/configs/frequent-errors.js";
 import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
-import type e from "express";
 import { isDeepStrictEqual } from "node:util";
 /** Capitalizes First Letter of the string and lowercases the rest */
 export function capitalizeFirstLetter(str: string): string {
@@ -31,7 +31,7 @@ export function allDeepEqual<T>(objs: T[]): boolean {
  * @param spName
  * @returns
  */
-export function get_universal_search_query_value(query: e.Request["query"], spName: string) {
+export function get_universal_search_query_value(query: ExpressJS.Request["query"], spName: string) {
     let spNameV: null | string = null;
     for (const sqKey in query) {
         if (Object.hasOwn(query, sqKey)) {
@@ -53,7 +53,10 @@ export function get_universal_search_query_value(query: e.Request["query"], spNa
  * @param spNames
  * @returns
  */
-export function get_universal_search_query_values_array<search_query_names extends string[]>(query: e.Request["query"], spNames: search_query_names) {
+export function get_universal_search_query_values_array<search_query_names extends string[]>(
+    query: ExpressJS.Request["query"],
+    spNames: search_query_names,
+) {
     const spAccumulator: { [keys: string]: string } = {};
     for (const sqKey in query) {
         if (Object.hasOwn(query, sqKey)) {

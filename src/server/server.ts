@@ -3,7 +3,7 @@ import { EnvConfig } from "#/configs/environment-variables.js";
 import { mainDevServerLogger } from "#/middlewares/dev_logger.js";
 import { client_error_handler, not_found_route } from "#/modules/errors/client-side/handler.js";
 import { server_exception_handler, unknown_exception_handler } from "#/modules/errors/server-side/handler.js";
-import { json_parser, static_serve } from "#/utils/tools/express.js";
+import { jsonBodyParserMiddleware, mainStaticServerMiddleware } from "#/utils/tools/express.js";
 import compression from "compression";
 import cors from "cors";
 import express from "express";
@@ -18,8 +18,8 @@ export const expressMainApplication = (() => {
     app.use(compression());
     app.use(cors({}));
 
-    app.use(static_serve);
-    app.use(json_parser);
+    app.use(mainStaticServerMiddleware);
+    app.use(jsonBodyParserMiddleware);
 
     /** Logger Middlewares */
     app.use(morgan("tiny"));

@@ -2,7 +2,7 @@ import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
 import type { iAccountEmail, iAccountUsername, iObjectCuid, TokenSelector } from "#/shared/types/inputs/informative.types.js";
-import type { LoginSession, ProfileAvatarPicture, ProfileCoverPicture, UserAccount, UserProfile } from "#db/orm/client.js";
+import type { LoginSession, ProfileAvatarPicture, ProfileCoverPicture, UserAccount, UserProfile } from "[orm]";
 export type ProfileWithCoverAndAvatarData = UserProfile & { cover: ProfileCoverPicture | null } & { avatar: ProfileAvatarPicture | null };
 export const Account_Model = new (class Account_Model {
     Get_account_by_its_id_throw_error = async (account_id: iObjectCuid): Promise<UserAccount> => {
