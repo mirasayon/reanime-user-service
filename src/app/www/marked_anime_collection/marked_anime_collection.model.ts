@@ -1,6 +1,6 @@
 import { AnimeStatusEnum } from "#/databases/orm/enums.js";
 import { prisma } from "#/databases/providers/database-connect.js";
-import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
+import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 
 export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Model {

@@ -1,6 +1,6 @@
 import { usernameNotFound } from "#/configs/frequent-errors.js";
 import { prisma } from "#/databases/providers/database-connect.js";
-import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
+import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import type { AvatarPicture, UserAccount, UserProfile } from "[orm]";
 

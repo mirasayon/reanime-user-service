@@ -1,4 +1,4 @@
-import { goReplyHttp } from "#/modules/response/handlers.js";
+import { goReplyHttp } from "#/handlers/final-responder/all-http-responder.js";
 import type { default as ExpressJS } from "express";
 export namespace Ping_ResponseTypes {
     export type get = "pong";

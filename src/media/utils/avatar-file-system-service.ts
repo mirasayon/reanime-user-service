@@ -1,6 +1,6 @@
 import { AllowedImageFormats } from "#/configs/constants/media-module.js";
 import { PathsConfig } from "#/configs/paths.config.js";
-import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
+import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import { Logger } from "log-it-colored";
 import { existsSync } from "node:fs";
 import { unlink } from "node:fs/promises";

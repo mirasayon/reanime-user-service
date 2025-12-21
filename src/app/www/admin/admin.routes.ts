@@ -1,5 +1,5 @@
-import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
-import { createConfiguredRouter } from "#/utils/tools/express.js";
+import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
+import { createConfiguredRouter } from "#/utilities/tools/express.js";
 import { Administrator_Controller } from "./admin.controller.js";
 export const Administrator_Router = (() => {
     const r = createConfiguredRouter();

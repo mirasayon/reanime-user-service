@@ -1,5 +1,5 @@
 import { AnimeStatusEnum } from "#/databases/orm/enums.js";
-import { ConflictException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
+import { ConflictException, NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { MarkedAnimeCollection_Model as model } from "[www]/marked_anime_collection/marked_anime_collection.model.js";
 import consola from "consola";

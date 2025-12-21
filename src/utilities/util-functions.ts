@@ -1,6 +1,6 @@
 import { default as ExpressJS } from "express";
 import { searchQueriesAreOutOfRange } from "#/configs/frequent-errors.js";
-import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
+import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import { isDeepStrictEqual } from "node:util";
 /** Capitalizes First Letter of the string and lowercases the rest */
 export function capitalizeFirstLetter(str: string): string {

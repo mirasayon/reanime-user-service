@@ -1,5 +1,5 @@
-import { metadata_dto } from "#/utils/dto/meta.js";
-import { vmfactory as m } from "#/utils/validators/factory.js";
+import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto/get-session-meta.js";
+import { vmfactory as m } from "#/utilities/validators/factory.js";
 import type { Request_dto_auth as _ } from "#/types/dto-middleware-shape.js";
 import { authentication_schemas as schemas, type dto } from "#/shared/validators/authentication.validator.routes.js";
 
@@ -17,7 +17,7 @@ export type { rd as Authentication_ReqDtos };
 export const Authentication_ReqPipes = new (class Authentication_ReqPipes {
     registration = m<rd.registration>(schemas.registration, async (req) => {
         return {
-            ...metadata_dto.client_request(req),
+            ...getSessionMetaFromClientDto(req),
             ...req.body,
         };
     });
@@ -30,14 +30,14 @@ export const Authentication_ReqPipes = new (class Authentication_ReqPipes {
 
     login_via_email = m<rd.login_via_email>(schemas.login_via_email, async (req) => {
         return {
-            ...metadata_dto.client_request(req),
+            ...getSessionMetaFromClientDto(req),
             ...req.body,
         };
     });
 
     login_via_username = m<rd.login_via_username>(schemas.login_via_username, async (req) => {
         return {
-            ...metadata_dto.client_request(req),
+            ...getSessionMetaFromClientDto(req),
             ...req.body,
         };
     });

@@ -1,10 +1,10 @@
 import type { default as ExpressJS } from "express";
 import { noImage_error_response } from "#/configs/frequent-errors.js";
-import { BadRequestException } from "#/modules/errors/client-side/exceptions.js";
-import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
-import { goReplyHttp } from "#/modules/response/handlers.js";
+import { BadRequestException } from "#/errors/client-side-exceptions.js";
+import { avatarService } from "#/media/profile-avatar.service.js";
+import { goReplyHttp } from "#/handlers/final-responder/all-http-responder.js";
 import type { ResponseTypesForUserProfile } from "#/shared/response-patterns/profile.routes.js";
-import { ControllerUtils } from "#/utils/controller.js";
+import { ControllerUtils } from "#/utilities/controller.js";
 import { type Profile_ReqDtos } from "[www]/profile/profile.pipes.js";
 import { Profile_Service as service } from "[www]/profile/profile.service.js";
 

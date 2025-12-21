@@ -1,5 +1,5 @@
-import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
-import { createConfiguredRouter } from "#/utils/tools/express.js";
+import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
+import { createConfiguredRouter } from "#/utilities/tools/express.js";
 import { Profile_Controller as c } from "[www]/profile/profile.controller.js";
 import { Profile_ReqPipes as vm } from "[www]/profile/profile.pipes.js";
 import multer from "multer";

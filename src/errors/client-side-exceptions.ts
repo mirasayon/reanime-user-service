@@ -1,4 +1,4 @@
-import { ResponseHTTPCodes } from "../../../shared/constants/response.constants.js";
+import { ResponseHTTPCodes } from "../shared/constants/response.constants.js";
 
 export type ClientSideExceptionClasses =
     | BadRequestException

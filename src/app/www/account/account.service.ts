@@ -5,9 +5,9 @@ import {
     ForbiddenException,
     NotFoundException,
     UnauthorizedException,
-} from "#/modules/errors/client-side/exceptions.js";
-import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
-import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
+} from "#/errors/client-side-exceptions.js";
+import { NotImplementedException } from "#/errors/server-side-exceptions.js";
+import { avatarService } from "#/media/profile-avatar.service.js";
 import type { iAccountEmail, iAccountUsername, iObjectCuid, iRawUserPassword, TokenSelector } from "#/shared/types/inputs/informative.types.js";
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import type { LoginSession, UserAccount } from "[orm]";

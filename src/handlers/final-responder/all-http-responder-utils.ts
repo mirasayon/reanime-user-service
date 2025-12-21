@@ -2,21 +2,18 @@ import type { default as ExpressJS } from "express";
 import { type I_UserServiceResponseStatusCodes, type ResponseHTTPCodes, ResponseHTTPStatusCodes } from "../../shared/constants/response.constants.js";
 import type { HTTPResponseBodyPattern } from "../../shared/response-patterns/response-json-body-shape.js";
 
-export function allHttpResponseHandler<T>({
-    res,
-    response_code,
-    message,
-    ok,
-    errors,
-    data,
-}: {
+type AllHTTPResponseBody<T> = {
     res: ExpressJS.Response;
+    /**
+     * HTTP status
+     */
     response_code: ResponseHTTPCodes;
     message: string;
     errors?: string[];
     ok: boolean;
     data?: T;
-}): void {
+};
+export function allHttpResponseHandler<T>({ res, response_code, message, ok, errors, data }: AllHTTPResponseBody<T>): void {
     const status_code: I_UserServiceResponseStatusCodes = ResponseHTTPStatusCodes[response_code];
 
     const payload: HTTPResponseBodyPattern<T> = {

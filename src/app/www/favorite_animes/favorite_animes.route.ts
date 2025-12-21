@@ -1,5 +1,5 @@
-import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
-import { createConfiguredRouter } from "#/utils/tools/express.js";
+import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
+import { createConfiguredRouter } from "#/utilities/tools/express.js";
 import { FavoriteAnimes_Controller as c } from "[www]/favorite_animes/favorite_animes.controller.js";
 import { Favorite_Animes_ReqPipes as v } from "[www]/favorite_animes/favorite_animes.pipes.js";
 export const FavoriteAnimes_Router = (() => {

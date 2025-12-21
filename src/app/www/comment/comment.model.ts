@@ -1,5 +1,5 @@
 import { prisma } from "#/databases/providers/database-connect.js";
-import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
+import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import type { AvatarPicture, Comment, CommentVote, UserProfile } from "[orm]";
 import { Profile_Model } from "[www]/profile/profile.model.js";

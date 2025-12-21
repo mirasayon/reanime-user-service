@@ -1,5 +1,5 @@
-import { mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
-import { createConfiguredRouter } from "#/utils/tools/express.js";
+import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
+import { createConfiguredRouter } from "#/utilities/tools/express.js";
 import { Account_Controller as c } from "[www]/account/account.controller.js";
 import { Account_ReqPipes as rp } from "[www]/account/account.pipes.js";
 

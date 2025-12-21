@@ -1,6 +1,6 @@
 import { default as ExpressJS } from "express";
 import { Avatar_Image_Allowed_MIME_TYPES } from "#/configs/constants/media-module.js";
-import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
+import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import { createReadStream, existsSync, statSync } from "node:fs";
 import { extname } from "node:path";
 // Supported mime types

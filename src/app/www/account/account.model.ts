@@ -1,6 +1,6 @@
 import { prisma } from "#/databases/providers/database-connect.js";
-import { NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { NotFoundException } from "#/errors/client-side-exceptions.js";
+import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { iAccountEmail, iAccountUsername, iObjectCuid, TokenSelector } from "#/shared/types/inputs/informative.types.js";
 import type { LoginSession, ProfileAvatarPicture, ProfileCoverPicture, UserAccount, UserProfile } from "[orm]";
 export type ProfileWithCoverAndAvatarData = UserProfile & { cover: ProfileCoverPicture | null } & { avatar: ProfileAvatarPicture | null };

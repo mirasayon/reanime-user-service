@@ -1,9 +1,9 @@
 import { mainServicesRouter } from "#/app/main.route.js";
 import { EnvConfig } from "#/configs/environment-variables.js";
-import { mainDevServerLogger } from "#/middlewares/dev_logger.js";
-import { client_error_handler, not_found_route } from "#/modules/errors/client-side/handler.js";
-import { server_exception_handler, unknown_exception_handler } from "#/modules/errors/server-side/handler.js";
-import { jsonBodyParserMiddleware, mainStaticServerMiddleware } from "#/utils/tools/express.js";
+import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#/handlers/errors/client-side-errors-handler.js";
+import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerMiddleware } from "#/handlers/errors/server-side-errors-handler.js";
+import { mainDevServerLogger } from "#/middlewares/development-env-logger-middleware.js";
+import { jsonBodyParserMiddleware, mainStaticServerMiddleware } from "#/utilities/tools/express.js";
 import compression from "compression";
 import cors from "cors";
 import express from "express";
@@ -31,9 +31,9 @@ export const expressMainApplication = (() => {
     app.use("/v1", mainServicesRouter);
 
     // Error handlers
-    app.use(not_found_route);
-    app.use(client_error_handler);
-    app.use(server_exception_handler);
-    app.use(unknown_exception_handler);
+    app.use(notFoundRouteErrorMiddleware);
+    app.use(clientSideErrorMiddleware);
+    app.use(serverSideExceptionHandlerMiddleware);
+    app.use(unknownServerSideExceptionHandlerMiddleware);
     return app;
 })();

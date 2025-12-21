@@ -1,6 +1,6 @@
 import { MulterError } from "multer";
 import type { default as ExpressJS } from "express";
-import { goReplyHttp } from "../../response/handlers.js";
+import { goReplyHttp } from "#/handlers/final-responder/all-http-responder.js";
 import {
     BadRequestException,
     type ClientSideExceptionClasses,
@@ -11,13 +11,13 @@ import {
     TooManyRequestsException,
     UnauthorizedException,
     UseSecureHTTPException,
-} from "./exceptions.js";
-export const client_error_handler = (
+} from "#/errors/client-side-exceptions.js";
+export function clientSideErrorMiddleware(
     error: Error | SyntaxError | MulterError | ClientSideExceptionClasses,
     _req: ExpressJS.Request,
     res: ExpressJS.Response,
     next: ExpressJS.NextFunction,
-) => {
+): void {
     if (error instanceof SyntaxError) {
         return goReplyHttp.bad_request(res, {
             errors: ["Недопустимое тело JSON. Убедитесь, что тело запроса отформатировано правильно"],
@@ -66,10 +66,9 @@ export const client_error_handler = (
     if (error instanceof UseSecureHTTPException) {
         return goReplyHttp.use_secure_http(res);
     }
-
     return next(error);
-};
+}
 
-export const not_found_route = (req: ExpressJS.Request, res: ExpressJS.Response, next: ExpressJS.NextFunction): void => {
-    return goReplyHttp.not_found(res, { errors: ["Not Found Default Error"] });
-};
+export function notFoundRouteErrorMiddleware(req: ExpressJS.Request, res: ExpressJS.Response, next: ExpressJS.NextFunction): void {
+    return goReplyHttp.not_found(res, { errors: ["Default Not Found Error"] });
+}

@@ -1,8 +1,8 @@
 import { prisma } from "#/databases/providers/database-connect.js";
-import { NotFoundException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
-import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { NotFoundException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
+import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import { sessionTokenHashService } from "#/utils/services/session_token.js";
+import { sessionTokenHashService } from "#/utilities/services/session_token.js";
 import type { LoginSession, UserAccount, UserProfile } from "[orm]";
 
 export const authModels = new (class Authentication_Model {

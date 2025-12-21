@@ -5,7 +5,7 @@ import {
     profile_has_already_liked_anime,
     vote_not_found,
 } from "#/configs/frequent-errors.js";
-import { BadRequestException, ConflictException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
+import { BadRequestException, ConflictException, NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import type { AnimeFavorite } from "[orm]";
 import { FavoriteAnimes_Model as model } from "[www]/favorite_animes/favorite_animes.model.js";

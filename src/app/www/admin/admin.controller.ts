@@ -1,6 +1,6 @@
-import { goReplyHttp } from "#/modules/response/handlers.js";
+import { goReplyHttp } from "#/handlers/final-responder/all-http-responder.js";
 import type { Administrator_ResponseTypes } from "#/shared/response-patterns/administrator.routes.js";
-import { ControllerUtils } from "#/utils/controller.js";
+import { ControllerUtils } from "#/utilities/controller.js";
 import type { Administrator_ReqDtos } from "./admin.pipes.js";
 import { Admin_Service } from "./admin.service.js";
 import type { default as ExpressJS } from "express";

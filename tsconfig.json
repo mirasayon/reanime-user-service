@@ -10,8 +10,6 @@
             "[www]/*": ["./src/app/www/*"],
             "#/*": ["./src/*"],
             "[orm]": ["./src/databases/orm/client.ts"],
-            "%/*": ["./src/modules/*"],
-            "&/*": ["./src/shared/*"],
             "[T]/*": ["./src/types/*"]
         },
         "allowJs": false,

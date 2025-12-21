@@ -1,20 +1,32 @@
 import consola from "consola";
 import type { default as ExpressJS } from "express";
-import { goReplyHttp } from "../../response/handlers.js";
 import {
     BadGatewayException,
     ExpectedInternalServerErrorException,
     NotImplementedException,
     UnexpectedInternalServerErrorException,
-} from "./exceptions.js";
-
-export const unknown_exception_handler = (error: unknown, req: ExpressJS.Request, res: ExpressJS.Response, next: ExpressJS.NextFunction): void => {
+} from "../../errors/server-side-exceptions.js";
+import { goReplyHttp } from "../final-responder/all-http-responder.js";
+/**
+ * Unknown Server Side Exception Handler
+ */
+export const unknownServerSideExceptionHandlerMiddleware = (
+    error: unknown,
+    _req: ExpressJS.Request,
+    res: ExpressJS.Response,
+    next: ExpressJS.NextFunction,
+): void => {
     consola.fatal("[last error handler]: Unknown error: ", error);
-    return goReplyHttp.internal_server_error(res, {});
+    return goReplyHttp.internal_server_error(res, { message: "Default Internal Server Error" });
 };
 
-/** Expected Internal Error Handler */
-export const server_exception_handler = (error: unknown, req: ExpressJS.Request, res: ExpressJS.Response, next: ExpressJS.NextFunction) => {
+/** Expected Server Side Error Handler */
+export const serverSideExceptionHandlerMiddleware = (
+    error: unknown,
+    req: ExpressJS.Request,
+    res: ExpressJS.Response,
+    next: ExpressJS.NextFunction,
+) => {
     if (error instanceof ExpectedInternalServerErrorException) {
         return goReplyHttp.internal_server_error(res, { message: error.errorMessage });
     }

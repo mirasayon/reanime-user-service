@@ -1,4 +1,4 @@
-import { createConfiguredRouter } from "#/utils/tools/express.js";
+import { createConfiguredRouter } from "#/utilities/tools/express.js";
 import { Ping_Controller } from "./ping.controller.js";
 export const Ping_Router = (() => {
     const r = createConfiguredRouter();

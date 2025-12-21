@@ -1,5 +1,5 @@
-import { BadRequestException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import { avatarService } from "#/modules/media/app/profile-avatar.service.js";
+import { BadRequestException, NotFoundException } from "#/errors/client-side-exceptions.js";
+import { avatarService } from "#/media/profile-avatar.service.js";
 import type { AvatarPicture, UserAccount, UserProfile } from "[orm]";
 import { Profile_Model as model } from "[www]/profile/profile.model.js";
 import type { default as ExpressJS } from "express";

@@ -2,8 +2,8 @@ const { keysPrivateKey, keysPublicKey } = {
     keysPrivateKey: "SESSION_PRIVATE_KEY",
     keysPublicKey: "SESSION_PUBLIC_KEY",
 };
-import { ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
-import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { ForbiddenException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
+import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { constants, privateDecrypt, publicEncrypt, randomBytes } from "node:crypto";
 

@@ -1,10 +1,10 @@
 import { auth_ip_and_agent_do_not_match } from "#/configs/frequent-errors.js";
-import { BadRequestException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
+import { BadRequestException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import type { mid_auth_dto } from "#/types/auth-middleware-shape.js";
-import { metadata_dto } from "#/utils/dto/meta.js";
+import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto/get-session-meta.js";
 import type { default as ExpressJS } from "express";
-import { bearer_session_token_from_headers } from "#/utils/dto/session_token.js";
-import { sessionTokenHashService } from "#/utils/services/session_token.js";
+import { getSessionTokenFromHeadersDto } from "#/utilities/dto/get-session-token.js";
+import { sessionTokenHashService } from "#/utilities/services/session_token.js";
 import type { LoginSession } from "[orm]";
 import { authModels } from "[www]/authentication/authentication.model.js";
 import { isDeepStrictEqual } from "node:util";
@@ -18,10 +18,9 @@ import { isDeepStrictEqual } from "node:util";
  * @returns true if metadata matches; otherwise throws `ClientError`
  */
 const checkTwoMetadatas = (session: LoginSession, requestMeta: ExpressJS.Request) => {
-    const session_Meta = metadata_dto.server_session_db(session);
-    const request_Meta = metadata_dto.client_request(requestMeta);
-    const is_equal = isDeepStrictEqual(session_Meta, request_Meta);
-    if (is_equal === true) {
+    const session_Meta = getSessionMetaFromDbDto(session);
+    const request_Meta = getSessionMetaFromClientDto(requestMeta);
+    if (isDeepStrictEqual(session_Meta, request_Meta)) {
         return true;
     }
     throw new UnauthorizedException([auth_ip_and_agent_do_not_match]);
@@ -39,7 +38,7 @@ export const mainAuthenticationMiddleware = async (
     res: ExpressJS.Response,
     next: ExpressJS.NextFunction,
 ) => {
-    const req_session_token = bearer_session_token_from_headers(req);
+    const req_session_token = getSessionTokenFromHeadersDto(req);
     if (!req_session_token) {
         throw new UnauthorizedException(["Вы не вошли в систему. Пожалуйста, войдите в систему, чтобы продолжить"]);
     }
@@ -69,7 +68,7 @@ export const checkAuthenticationFunction = async (
     pass: boolean;
     session?: LoginSession;
 }> => {
-    const req_session_token = bearer_session_token_from_headers(req);
+    const req_session_token = getSessionTokenFromHeadersDto(req);
     if (!req_session_token) {
         return HasNotBeenLogged;
     }

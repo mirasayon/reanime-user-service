@@ -1,5 +1,5 @@
-import { get_universal_search_query_values_array } from "#/utils/util-functions.js";
-import { vmfactory as m } from "#/utils/validators/factory.js";
+import { get_universal_search_query_values_array } from "#/utilities/util-functions.js";
+import { vmfactory as m } from "#/utilities/validators/factory.js";
 import type { Request_dto_auth as _ } from "#/types/dto-middleware-shape.js";
 import { type dto, comment_schemas } from "#/shared/validators/comment.validator.routes.js";
 

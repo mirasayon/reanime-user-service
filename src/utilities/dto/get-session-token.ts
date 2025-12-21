@@ -4,7 +4,7 @@ import { default as ExpressJS } from "express";
  * @param req Express Request object
  * @returns LoginSession Token
  */
-export const bearer_session_token_from_headers = (req: ExpressJS.Request): string | null => {
+export const getSessionTokenFromHeadersDto = (req: ExpressJS.Request): string | null => {
     const authHeader = req.headers["authorization"];
     if (!authHeader || typeof authHeader !== "string") {
         return null;

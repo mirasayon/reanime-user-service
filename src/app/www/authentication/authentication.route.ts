@@ -1,5 +1,5 @@
-import { has_client_already_logged, mainAuthenticationMiddleware } from "#/middlewares/authentication.js";
-import { createConfiguredRouter } from "#/utils/tools/express.js";
+import { has_client_already_logged, mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
+import { createConfiguredRouter } from "#/utilities/tools/express.js";
 import { Authentication_Controller as c } from "[www]/authentication/authentication.controller.js";
 import { Authentication_ReqPipes as vm } from "[www]/authentication/authentication.pipes.js";
 

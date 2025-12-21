@@ -1,6 +1,6 @@
-import { goReplyHttp } from "#/modules/response/handlers.js";
+import { goReplyHttp } from "#/handlers/final-responder/all-http-responder.js";
 import type { ResponseTypesForVoteToAnime } from "#/shared/response-patterns/favorite-animes.routes.js";
-import { ControllerUtils } from "#/utils/controller.js";
+import { ControllerUtils } from "#/utilities/controller.js";
 import type { Favorite_Animes_ReqDto } from "[www]/favorite_animes/favorite_animes.pipes.js";
 import { FavoriteAnimes_Services as service } from "[www]/favorite_animes/favorite_animes.service.js";
 import type { default as ExpressJS } from "express";

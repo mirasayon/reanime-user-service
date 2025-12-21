@@ -1,5 +1,5 @@
 import type { Request_dto_auth as _ } from "#/types/dto-middleware-shape.js";
-import { vmfactory as m } from "#/utils/validators/factory.js";
+import { vmfactory as m } from "#/utilities/validators/factory.js";
 import { favoriteAnimes_schemas as schemas, type dto } from "#/shared/validators/favorite-animes.validator.routes.js";
 namespace rd {
     export type explore_likes = _<dto.explore_likes>;

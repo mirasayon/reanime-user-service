@@ -1,14 +1,14 @@
 import { EnvConfig } from "#/configs/environment-variables.js";
 import { Service_Setting } from "#/configs/settings.js";
 import { prisma } from "#/databases/providers/database-connect.js";
-import { startListeningTheServer } from "#/utils/tools/express.js";
+import { startListeningTheServer } from "#/utilities/tools/express.js";
 import consola from "consola";
 import { format } from "date-fns";
 import { chalk, Logger } from "log-it-colored";
 import type { AddressInfo } from "node:net";
 import { arch, platform } from "os";
-import { expressMainApplication } from "./server.js";
-export const startMainServer = async (): Promise<void> => {
+import { expressMainApplication } from "./first-level-app-skeleton.js";
+export async function startMainServerScript(): Promise<void> {
     try {
         const instance = await startListeningTheServer(expressMainApplication, EnvConfig.server);
         const { port, address, family } = instance.address() as AddressInfo;
@@ -35,4 +35,4 @@ export const startMainServer = async (): Promise<void> => {
         consola.fatal("Error while starting the server: ");
         throw error;
     }
-};
+}

@@ -28,7 +28,7 @@ export class UnexpectedInternalServerErrorException {
 
 export class ExpectedInternalServerErrorException {
     readonly response_code = ResponseHTTPCodes.EXPECTED_INTERNAL_ERROR;
-    readonly name = UnexpectedInternalServerErrorException.name;
+    readonly name = ExpectedInternalServerErrorException.name;
 
     constructor(readonly errorMessage: string) {
         consola.error(`Error ${this.name}: `, errorMessage);

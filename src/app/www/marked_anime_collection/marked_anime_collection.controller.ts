@@ -1,6 +1,6 @@
-import { goReplyHttp } from "#/modules/response/handlers.js";
+import { goReplyHttp } from "#/handlers/final-responder/all-http-responder.js";
 import type { ResponseTypesForAnimeBookmark } from "#/shared/response-patterns/marked-anime-list.routes.js";
-import { ControllerUtils } from "#/utils/controller.js";
+import { ControllerUtils } from "#/utilities/controller.js";
 import type { MarkedAnimeCollection_ReqDtos as RTDO } from "[www]/marked_anime_collection/marked_anime_collection.pipes.js";
 import { MarkedAnimeCollection_Service as service } from "[www]/marked_anime_collection/marked_anime_collection.service.js";
 import type { default as ExpressJS } from "express";

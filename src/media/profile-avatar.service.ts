@@ -1,16 +1,16 @@
 import type { default as ExpressJS } from "express";
 import { avatar_image_height, avatar_image_width } from "#/configs/constants/media-module.js";
 import { avatars_folder, tempProcessPath } from "#/configs/paths.config.js";
-import { ConflictException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import { BadGatewayException } from "#/modules/errors/server-side/exceptions.js";
+import { ConflictException, NotFoundException } from "#/errors/client-side-exceptions.js";
+import { BadGatewayException } from "#/errors/server-side-exceptions.js";
 import consola from "consola";
 import { existsSync } from "node:fs";
 import { readFile, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import sharp from "sharp";
-import { avatarServiceUtils } from "../utils/avatar-file-system-service.js";
-import { serveFile } from "../utils/serve-static-for-avatars.js";
+import { avatarServiceUtils } from "./utils/avatar-file-system-service.js";
+import { serveFile } from "./utils/serve-static-for-avatars.js";
 import type { ExpressJS_Multer_File } from "#/types/express-types.js";
 //
 type avatar_upload_ServiceParameters = { profile_cuid: string; file: ExpressJS_Multer_File };

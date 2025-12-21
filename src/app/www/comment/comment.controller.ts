@@ -1,7 +1,7 @@
-import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
-import { goReplyHttp } from "#/modules/response/handlers.js";
+import { NotImplementedException } from "#/errors/server-side-exceptions.js";
+import { goReplyHttp } from "#/handlers/final-responder/all-http-responder.js";
 import type { ResponseTypesForComment } from "#/shared/response-patterns/comment.routes.js";
-import { ControllerUtils } from "#/utils/controller.js";
+import { ControllerUtils } from "#/utilities/controller.js";
 import type { default as ExpressJS } from "express";
 import type { Comment_ReqDtos } from "[www]/comment/comment.pipes.js";
 import { Comment_Service as service } from "[www]/comment/comment.service.js";

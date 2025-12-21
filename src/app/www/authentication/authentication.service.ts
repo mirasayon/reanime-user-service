@@ -1,6 +1,6 @@
 import { SAME_TIME_SESSIONS_LIMIT } from "#/configs/rules.js";
-import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/modules/errors/client-side/exceptions.js";
-import { UnexpectedInternalServerErrorException } from "#/modules/errors/server-side/exceptions.js";
+import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
+import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { bcryptjsService } from "#/utils/services/bcrypt.js";
 import type { AvatarPicture, UserAccount } from "[orm]";

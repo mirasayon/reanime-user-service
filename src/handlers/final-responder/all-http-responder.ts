@@ -1,7 +1,7 @@
 import { default as ExpressJS } from "express";
 import type { optionalMessage, optionalMessageAndData, optionalMessageAndErrors } from "#/shared/response-patterns/response-json-body-shape.js";
 import { ResponseHTTPCodes } from "../../shared/constants/response.constants.js";
-import { allHttpResponseHandler } from "./utils.js";
+import { allHttpResponseHandler } from "./all-http-responder-utils.js";
 
 export const goReplyHttp = new (class goReplyHttpServiceClass {
     ok = <T>(res: ExpressJS.Response, { message = "OK", data }: optionalMessageAndData<T>) => {

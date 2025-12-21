@@ -1,7 +1,7 @@
 import { vote_not_found } from "#/configs/frequent-errors.js";
 import { MAX_COMMENT_ON_ANIME_LIMIT } from "#/configs/rules.js";
-import { ConflictException, ForbiddenException, NotFoundException } from "#/modules/errors/client-side/exceptions.js";
-import { NotImplementedException } from "#/modules/errors/server-side/exceptions.js";
+import { ConflictException, ForbiddenException, NotFoundException } from "#/errors/client-side-exceptions.js";
+import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import type { Comment, CommentVote } from "[orm]";
 import { Comment_Model as model } from "[www]/comment/comment.model.js";
 
