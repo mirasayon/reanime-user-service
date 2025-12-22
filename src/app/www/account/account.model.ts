@@ -2,7 +2,8 @@ import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { iAccountEmail, iAccountUsername, iObjectCuid, TokenSelector } from "#/shared/types/inputs/informative.types.js";
-import type { LoginSession, ProfileAvatarPicture, ProfileCoverPicture, UserAccount, UserProfile } from "[orm]";
+import type { Argon2idHashResult } from "#/utilities/services/hash-passwords.service.js";
+import type { AccountPassword, LoginSession, ProfileAvatarPicture, ProfileCoverPicture, UserAccount, UserProfile } from "[orm]";
 export type ProfileWithCoverAndAvatarData = UserProfile & { cover: ProfileCoverPicture | null } & { avatar: ProfileAvatarPicture | null };
 class AccountModelClass {
     Get_account_by_its_id_throw_error = async (account_id: iObjectCuid): Promise<UserAccount> => {
@@ -18,6 +19,18 @@ class AccountModelClass {
         return found_account;
     };
 
+    getPasswordDataFromAccountId = async (account_id: iObjectCuid): Promise<AccountPassword> => {
+        const found_account = await prisma.accountPassword.findUnique({
+            where: {
+                for_account_id: account_id,
+            },
+        });
+        if (!found_account) {
+            throw new NotFoundException(["Аккаунт с таким айди не найден"]);
+        }
+
+        return found_account;
+    };
     Get_account_by_email_throw_error = async (account_email: iAccountEmail) => {
         const found_account = await prisma.userAccount.findUnique({
             where: {
@@ -72,13 +85,22 @@ class AccountModelClass {
         });
     };
 
-    update_password_hash_account = async (account_id: iObjectCuid, password_hash: iAccountEmail) => {
-        return await prisma.userAccount.update({
+    update_password_hash_account = async ({
+        account_id,
+        hashResult,
+        password_id,
+    }: {
+        hashResult: Argon2idHashResult;
+        account_id: iObjectCuid;
+        password_id: string;
+    }) => {
+        return await prisma.accountPassword.update({
             where: {
-                id: account_id,
+                for_account_id: account_id,
+                id: password_id,
             },
             data: {
-                password_hash,
+                ...hashResult,
             },
         });
     };

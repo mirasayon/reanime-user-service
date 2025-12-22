@@ -2,6 +2,7 @@ import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
+import type { Argon2idHashResult } from "#/utilities/services/hash-passwords.service.js";
 import { sessionTokenHashService } from "#/utilities/services/session_token.js";
 import type { LoginSession, UserAccount, UserProfile } from "[orm]";
 
@@ -151,15 +152,22 @@ export const authModels = new (class Authentication_Model {
         });
     };
 
-    create_account_and_profile = async (data: { username: string; password_hash: string; nickname: string | null; email: string | null }) => {
+    create_account_and_profile = async (
+        data: { username: string; nickname: string | null; email: string | null },
+        passwordHashResult: Argon2idHashResult,
+    ) => {
         return await prisma.userAccount.create({
             data: {
                 username: data.username,
                 email: data.email,
-                password_hash: data.password_hash,
                 profile: {
                     create: {
                         nickname: data.nickname,
+                    },
+                },
+                password_data: {
+                    create: {
+                        ...passwordHashResult,
                     },
                 },
             },

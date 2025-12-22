@@ -1,9 +1,10 @@
 import { SAME_TIME_SESSIONS_LIMIT } from "#/configs/rules.js";
+import { prisma } from "#/databases/providers/database-connect.js";
 import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import { bcryptjsService } from "#/utils/services/bcrypt.js";
-import type { AvatarPicture, UserAccount } from "[orm]";
+import { passwordHashingService } from "#/utilities/services/hash-passwords.service.js";
+import type { AccountPassword, ProfileAvatarPicture, UserAccount } from "[orm]";
 import { authModels } from "[www]/authentication/authentication.model.js";
 import { Profile_Model } from "[www]/profile/profile.model.js";
 
@@ -22,7 +23,7 @@ export const Authentication_Service = new (class Authentication_Service {
         };
     };
 
-    check_session = async (account_id: string): Promise<{ account: UserAccount; avatar: AvatarPicture | null }> => {
+    check_session = async (account_id: string): Promise<{ account: UserAccount; avatar: ProfileAvatarPicture | null }> => {
         const account = await authModels.find_account_by_ids_id(account_id);
         const avatar = await Profile_Model.find_profile_by_username_AND_give_avatar_data(account.username);
         return { account, avatar: avatar.userProfile.avatar };
@@ -132,12 +133,14 @@ export const Authentication_Service = new (class Authentication_Service {
             throw new ConflictException([`Пользователь с таким именем (${candidate.username}) уже существует. Выберите другое имя пользователя.`]);
         }
 
-        const password_hash = await bcryptjsService.create_hash(password);
+        const passwordHashResult = await passwordHashingService.hashPasswordArgon2id(password);
 
-        const account = await authModels.create_account_and_profile({
-            ..._credentials,
-            password_hash,
-        });
+        const account = await authModels.create_account_and_profile(
+            {
+                ..._credentials,
+            },
+            passwordHashResult,
+        );
 
         if (!account.profile) {
             throw new UnexpectedInternalServerErrorException({
@@ -159,3 +162,29 @@ export const Authentication_Service = new (class Authentication_Service {
         return !!!candidate;
     };
 })();
+
+async function rehash_password_if_needed(storedObj: AccountPassword, current_password: string) {
+    // rehash-on-login
+    const needRehash =
+        storedObj.memory !== passwordHashingService._defaultParams.memory ||
+        storedObj.tag_length !== passwordHashingService._defaultParams.tag_length ||
+        storedObj.passes !== passwordHashingService._defaultParams.passes ||
+        storedObj.parallelism !== passwordHashingService._defaultParams.parallelism;
+
+    if (needRehash) {
+        const newHashed = await passwordHashingService.hashPasswordArgon2id(current_password);
+        await prisma.accountPassword.update({
+            where: { id: storedObj.id },
+            data: {
+                hash_base64: newHashed.hash_base64,
+                salt_base64: newHashed.salt_base64,
+                memory: newHashed.memory,
+                passes: newHashed.passes,
+                parallelism: newHashed.parallelism,
+                tag_length: newHashed.tag_length,
+            },
+        });
+    }
+
+    return;
+}

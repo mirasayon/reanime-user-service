@@ -1,16 +1,16 @@
 // hashing-service.ts
 import { envMainConfig } from "#/configs/environment-variables.js";
 import { argon2, randomBytes, timingSafeEqual, type Argon2Parameters } from "node:crypto";
-type Argon2idDefaultsParameters = Omit<Argon2idHashResult, "derivedB64" | "saltB64">;
-type Argon2idHashResult = {
+type Argon2idDefaultsParameters = Omit<Argon2idHashResult, "hash_base64" | "salt_base64">;
+export type Argon2idHashResult = {
     /**
      * Полученный хэш пароля в формате base64.
      */
-    derivedB64: string;
+    hash_base64: string;
     /**
      * Соль в формате base64.
      */
-    saltB64: string;
+    salt_base64: string;
     /**
      * Параметры Argon2id. Memory — в KiB.
      */
@@ -26,7 +26,7 @@ type Argon2idHashResult = {
     /**
      * Параметры Argon2id. TagLength — длина тега в байтах.
      */
-    tagLength: number;
+    tag_length: number;
 };
 class Argon2idHashingService {
     /** Промисифицированный wrapper для callback API */
@@ -43,9 +43,9 @@ class Argon2idHashingService {
     /**
      * Параметры по-умолчанию для Argon2id.
      */
-    private readonly _defaultParams: Argon2idDefaultsParameters = {
+    public readonly _defaultParams: Argon2idDefaultsParameters = {
         parallelism: 2,
-        tagLength: 32,
+        tag_length: 32,
         memory: 65_536, //64 * 1024, KiB = 64 MiB
         passes: 3,
     };
@@ -71,7 +71,7 @@ class Argon2idHashingService {
             secret: Buffer.from(this._pepper, "base64"),
             nonce: salt,
             parallelism: this._defaultParams.parallelism,
-            tagLength: this._defaultParams.tagLength,
+            tagLength: this._defaultParams.tag_length,
             memory: this._defaultParams.memory,
             passes: this._defaultParams.passes,
         };
@@ -79,12 +79,12 @@ class Argon2idHashingService {
         const derived = await this._argon2idPromise(params); // Buffer
 
         return {
-            derivedB64: derived.toString("base64"), // сохраняем в DB
-            saltB64: salt.toString("base64"),
+            hash_base64: derived.toString("base64"), // сохраняем в DB
+            salt_base64: salt.toString("base64"),
             memory: params.memory,
             passes: params.passes,
             parallelism: params.parallelism,
-            tagLength: params.tagLength,
+            tag_length: params.tagLength,
         } satisfies Argon2idHashResult;
     };
 
@@ -94,13 +94,13 @@ class Argon2idHashingService {
      */
     verifyPasswordWithStored = async ({ password, stored }: { password: string; stored: Argon2idHashResult }): Promise<boolean> => {
         /** Пароль из БД в формате base64. */
-        const storedDerived = Buffer.from(stored.derivedB64, "base64");
+        const storedDerived = Buffer.from(stored.hash_base64, "base64");
 
         const params: Argon2Parameters = {
             message: Buffer.from(password, "utf8"),
-            nonce: Buffer.from(stored.saltB64, "base64"),
+            nonce: Buffer.from(stored.salt_base64, "base64"),
             parallelism: stored.parallelism,
-            tagLength: stored.tagLength,
+            tagLength: stored.tag_length,
             memory: stored.memory,
             passes: stored.passes,
             secret: Buffer.from(this._pepper, "base64"),

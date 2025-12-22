@@ -4,7 +4,7 @@
     "type": "module",
     "scripts": {
         "dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/entry-point.js",
-        "compiler": "tspc --watch",
+        "compiler": "rimraf ./dist && tspc -p ./tsconfig.json --watch",
         "compile": "tsc && tsc-alias",
         "test-common": "node --enable-source-maps --env-file=.env.test ./dist/tests/common.js",
         "dev-test": "node --enable-source-maps --env-file=.env.test --watch ./dist/tests/play.js",

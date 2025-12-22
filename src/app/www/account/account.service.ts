@@ -9,7 +9,7 @@ import {
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import { avatarService } from "#/media/profile-avatar.service.js";
 import type { iAccountEmail, iAccountUsername, iObjectCuid, iRawUserPassword, TokenSelector } from "#/shared/types/inputs/informative.types.js";
-import { bcryptjsService } from "#/utils/services/bcrypt.js";
+import { passwordHashingService } from "#/utilities/services/hash-passwords.service.js";
 import type { LoginSession, UserAccount } from "[orm]";
 import { Account_Model } from "[www]/account/account.model.js";
 /** UserAccount Service */
@@ -67,7 +67,7 @@ export const Account_Service = new (class Account_Service {
         new_password: iRawUserPassword;
         repeat_new_password: iRawUserPassword;
     }): Promise<boolean> => {
-        const found_user = await Account_Model.Get_account_by_its_id_throw_error(account_id);
+        const accountPassword = await Account_Model.getPasswordDataFromAccountId(account_id);
 
         if (new_password === current_password) {
             throw new BadRequestException(["Новый введенный пароль и текущий пароль совпадают"]);
@@ -75,12 +75,26 @@ export const Account_Service = new (class Account_Service {
         if (new_password !== repeat_new_password) {
             throw new BadRequestException(["Новый введенный пароль и его повторный ввод различаются!"]);
         }
-        const matches = await bcryptjsService.compare_raw_to_hash(current_password, found_user.password_hash);
+        const matches = await passwordHashingService.verifyPasswordWithStored({
+            stored: {
+                hash_base64: accountPassword.hash_base64,
+                salt_base64: accountPassword.salt_base64,
+                memory: accountPassword.memory,
+                passes: accountPassword.passes,
+                parallelism: accountPassword.parallelism,
+                tag_length: accountPassword.tag_length,
+            },
+            password: current_password,
+        });
         if (!matches) {
             throw new UnauthorizedException(["Текущий пароль неверный"]);
         }
-        const new_password_hash = await bcryptjsService.create_hash(new_password);
-        const is_password_updated = await Account_Model.update_password_hash_account(found_user.id, new_password_hash);
+        const new_password_hash = await passwordHashingService.hashPasswordArgon2id(new_password);
+        const is_password_updated = await Account_Model.update_password_hash_account({
+            account_id,
+            hashResult: new_password_hash,
+            password_id: accountPassword.id,
+        });
         return !!is_password_updated;
     };
     update_username = async ({ new_username, account_id }: { new_username: iAccountUsername; account_id: iObjectCuid }): Promise<boolean> => {
