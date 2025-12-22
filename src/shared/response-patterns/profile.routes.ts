@@ -4,7 +4,8 @@ import type { ProfileAvatarPicture, UserAccount, UserProfile } from "../../datab
 export namespace ResponseTypesForUserProfile {
     export type view_other_profiles = {
         account: UserAccount;
-        profile: UserProfile & { avatar: ProfileAvatarPicture | null };
+        profile: UserProfile;
+        avatar: ProfileAvatarPicture | null;
     };
     /** true if nickname was updated, false if not */
     export type update_nickname = boolean;
@@ -19,5 +20,5 @@ export namespace ResponseTypesForUserProfile {
     /** true if avatar was deleted, false if not */
     export type delete_avatar = boolean;
     /** true if avatar was updated, false if not */
-    export type update_avatar = string;
+    export type update_avatar = boolean;
 }

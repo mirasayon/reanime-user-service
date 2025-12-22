@@ -5,7 +5,7 @@ import type { VoteToReply } from "[orm]";
 
 export const Reply_Model = new (class Reply_Model {
     get_replies_count_on_1_comment = async (by_profile_id: iObjectCuid, to_comment_id: iObjectCuid) => {
-        return await prisma.replyToComment.count({
+        return await prisma.replyForComment.count({
             where: {
                 by_profile_id,
                 to_comment_id,
@@ -15,7 +15,7 @@ export const Reply_Model = new (class Reply_Model {
 
     get_all_replies_for_1_comment_by_comment_id = async (to_comment_id: iObjectCuid, page: number, limit: number) => {
         const skip = (page - 1) * limit;
-        return await prisma.replyToComment.findMany({
+        return await prisma.replyForComment.findMany({
             where: {
                 to_comment_id,
             },
@@ -25,7 +25,7 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
     create_1_reply_to_1_comment = async (by_profile_id: iObjectCuid, content: string, to_comment_id: iObjectCuid) => {
-        return await prisma.replyToComment.create({
+        return await prisma.replyForComment.create({
             data: {
                 by_profile_id,
                 content,
@@ -34,7 +34,7 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
     find_1_reply_by_its_id = async (reply_id: iObjectCuid) => {
-        const found_reply = await prisma.replyToComment.findUnique({
+        const found_reply = await prisma.replyForComment.findUnique({
             where: {
                 id: reply_id,
             },
@@ -47,7 +47,7 @@ export const Reply_Model = new (class Reply_Model {
     };
 
     find_1_comment_by_its_id = async (comment_id: iObjectCuid) => {
-        const found_comment = await prisma.comment.findUnique({
+        const found_comment = await prisma.commentForAnime.findUnique({
             where: {
                 id: comment_id,
             },
@@ -58,22 +58,22 @@ export const Reply_Model = new (class Reply_Model {
 
         return found_comment;
     };
-    find_1_vote_by_reply_id_and_profile_id = async (reply_id: iObjectCuid, by_profile_id: iObjectCuid): Promise<VoteToReply | null> => {
+    find_1_vote_by_reply_id_and_profile_id = async (to_reply_id: iObjectCuid, by_profile_id: iObjectCuid): Promise<VoteToReply | null> => {
         return await prisma.voteToReply.findUnique({
             where: {
-                by_profile_id_reply_id: {
-                    reply_id,
+                by_profile_id_to_reply_id: {
+                    to_reply_id,
                     by_profile_id,
                 },
             },
         });
     };
 
-    create_1_vote_to_reply = async (reply_id: iObjectCuid, vote: boolean, by_profile_id: iObjectCuid) => {
+    create_1_vote_to_reply = async (to_reply_id: iObjectCuid, value: 1 | -1, by_profile_id: iObjectCuid) => {
         return await prisma.voteToReply.create({
             data: {
-                reply_id,
-                vote,
+                to_reply_id,
+                value,
                 by_profile_id,
             },
         });
@@ -99,7 +99,7 @@ export const Reply_Model = new (class Reply_Model {
     };
 
     delete_1_reply = async (reply_id: iObjectCuid) => {
-        return prisma.replyToComment.delete({
+        return prisma.replyForComment.delete({
             where: {
                 id: reply_id,
             },
@@ -107,7 +107,7 @@ export const Reply_Model = new (class Reply_Model {
     };
 
     update_1_reply_by_its_id = async (reply_id: iObjectCuid, new_reply_content: string) => {
-        return await prisma.replyToComment.update({
+        return await prisma.replyForComment.update({
             where: {
                 id: reply_id,
             },

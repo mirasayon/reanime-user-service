@@ -4,12 +4,12 @@ import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 
 export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Model {
-    delete_watching_by_profile_id = async (profile_id: iObjectCuid, anime_id: number, id: string) => {
+    delete_watching_by_profile_id = async (by_profile_id: iObjectCuid, external_anime_id: number, id: string) => {
         return await prisma.animeBookmark.delete({
             where: {
-                profile_id: profile_id,
+                by_profile_id: by_profile_id,
                 id: id,
-                anime_id: anime_id,
+                external_anime_id: external_anime_id,
                 status: AnimeStatusEnum.WATCHING,
             },
         });
@@ -20,104 +20,104 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
      * @param anime_id
      * @returns
      */
-    is_anime_in_collection = async (profile_id: iObjectCuid, anime_id: number) => {
+    is_anime_in_collection = async (by_profile_id: iObjectCuid, external_anime_id: number) => {
         return await prisma.animeBookmark.findUnique({
             where: {
-                profile_id_anime_id: {
-                    profile_id: profile_id,
-                    anime_id: anime_id,
+                by_profile_id_external_anime_id: {
+                    by_profile_id: by_profile_id,
+                    external_anime_id: external_anime_id,
                 },
             },
         });
     };
-    delete_abandoned_by_profile_id = async (profile_id: iObjectCuid, anime_id: number, id: string) => {
+    delete_abandoned_by_profile_id = async (by_profile_id: iObjectCuid, external_anime_id: number, id: string) => {
         return await prisma.animeBookmark.delete({
             where: {
-                profile_id: profile_id,
+                by_profile_id: by_profile_id,
                 status: AnimeStatusEnum.ABANDONED,
                 id: id,
-                anime_id: anime_id,
+                external_anime_id: external_anime_id,
             },
         });
     };
-    delete_plan_to_watch_by_profile_id = async (profile_id: iObjectCuid, anime_id: number, id: string) => {
+    delete_plan_to_watch_by_profile_id = async (by_profile_id: iObjectCuid, external_anime_id: number, id: string) => {
         return await prisma.animeBookmark.delete({
             where: {
-                profile_id: profile_id,
-                anime_id: anime_id,
+                by_profile_id: by_profile_id,
+                external_anime_id: external_anime_id,
                 id: id,
                 status: AnimeStatusEnum.PLANNED,
             },
         });
     };
-    delete_completed_by_profile_id = async (profile_id: iObjectCuid, anime_id: number, id: string) => {
+    delete_completed_by_profile_id = async (by_profile_id: iObjectCuid, external_anime_id: number, id: string) => {
         return await prisma.animeBookmark.delete({
             where: {
-                profile_id: profile_id,
-                anime_id: anime_id,
+                by_profile_id: by_profile_id,
+                external_anime_id: external_anime_id,
                 id: id,
                 status: AnimeStatusEnum.COMPLETED,
             },
         });
     };
 
-    create_1_watching_by_profile_id = async (profile_id: iObjectCuid, anime_id: number) => {
+    create_1_watching_by_profile_id = async (by_profile_id: iObjectCuid, external_anime_id: number) => {
         return await prisma.animeBookmark.create({
             data: {
-                profile_id: profile_id,
-                anime_id: anime_id,
+                by_profile_id: by_profile_id,
+                external_anime_id: external_anime_id,
                 status: AnimeStatusEnum.WATCHING,
             },
         });
     };
-    create_1_abandoned_by_profile_id = async (profile_id: iObjectCuid, anime_id: number) => {
+    create_1_abandoned_by_profile_id = async (by_profile_id: iObjectCuid, external_anime_id: number) => {
         return await prisma.animeBookmark.create({
             data: {
-                profile_id: profile_id,
+                by_profile_id: by_profile_id,
                 status: AnimeStatusEnum.ABANDONED,
-                anime_id: anime_id,
+                external_anime_id: external_anime_id,
             },
         });
     };
-    create_1_plan_to_watch_by_profile_id = async (profile_id: iObjectCuid, anime_id: number) => {
+    create_1_plan_to_watch_by_profile_id = async (by_profile_id: iObjectCuid, external_anime_id: number) => {
         return await prisma.animeBookmark.create({
             data: {
-                profile_id: profile_id,
-                anime_id: anime_id,
+                by_profile_id: by_profile_id,
+                external_anime_id: external_anime_id,
                 status: AnimeStatusEnum.PLANNED,
             },
         });
     };
-    create_1_completed_by_profile_id = async (profile_id: iObjectCuid, anime_id: number) => {
+    create_1_completed_by_profile_id = async (by_profile_id: iObjectCuid, external_anime_id: number) => {
         return await prisma.animeBookmark.create({
             data: {
-                profile_id: profile_id,
-                anime_id: anime_id,
+                by_profile_id: by_profile_id,
+                external_anime_id: external_anime_id,
                 status: AnimeStatusEnum.COMPLETED,
             },
         });
     };
 
-    get_list_of_watching = async (profile_id: iObjectCuid) => {
+    get_list_of_watching = async (by_profile_id: iObjectCuid) => {
         return await prisma.animeBookmark.findMany({
             where: {
-                profile_id: profile_id,
+                by_profile_id: by_profile_id,
                 status: AnimeStatusEnum.WATCHING,
             },
         });
     };
-    get_list_of_abandoned = async (profile_id: iObjectCuid) => {
+    get_list_of_abandoned = async (by_profile_id: iObjectCuid) => {
         return await prisma.animeBookmark.findMany({
             where: {
-                profile_id: profile_id,
+                by_profile_id: by_profile_id,
                 status: AnimeStatusEnum.ABANDONED,
             },
         });
     };
-    get_list_of_planned = async (profile_id: iObjectCuid) => {
+    get_list_of_planned = async (by_profile_id: iObjectCuid) => {
         return await prisma.animeBookmark.findMany({
             where: {
-                profile_id: profile_id,
+                by_profile_id: by_profile_id,
                 status: AnimeStatusEnum.PLANNED,
             },
         });
@@ -125,7 +125,7 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     get_list_of_completed = async (profile_id: iObjectCuid) => {
         return await prisma.animeBookmark.findMany({
             where: {
-                profile_id: profile_id,
+                by_profile_id: profile_id,
                 status: AnimeStatusEnum.COMPLETED,
             },
         });
@@ -135,16 +135,16 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
     get_all_list_by_profile_id = async (profile_id: iObjectCuid) => {
         return await prisma.animeBookmark.findMany({
             where: {
-                profile_id: profile_id,
+                by_profile_id: profile_id,
             },
         });
     };
     get_for_anime = async (profile_id: iObjectCuid, anime_id: number) => {
         const found_vote = await prisma.animeBookmark.findUnique({
             where: {
-                profile_id_anime_id: {
-                    anime_id: anime_id,
-                    profile_id: profile_id,
+                by_profile_id_external_anime_id: {
+                    external_anime_id: anime_id,
+                    by_profile_id: profile_id,
                 },
             },
         });

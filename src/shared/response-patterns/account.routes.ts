@@ -4,7 +4,7 @@ import type { LoginSession, UserAccount } from "../../databases/orm/client.js";
 export namespace ResponseTypesForAccount {
     export type explore_me = UserAccount;
     export type update_email = UserAccount;
-    export type set_email = UserAccount;
+    export type set_email = boolean;
     export type update_password = boolean;
     export type update_username = boolean;
     export type get_sessions = LoginSession[];

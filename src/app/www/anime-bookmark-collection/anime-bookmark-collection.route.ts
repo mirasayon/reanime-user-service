@@ -1,7 +1,7 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
 import { createConfiguredRouter } from "#/utilities/tools/express.js";
-import { MarkedAnimeCollection_Controller as cont } from "[www]/marked_anime_collection/marked_anime_collection.controller.js";
-import { MarkedAnimeCollection_ReqPipes } from "[www]/marked_anime_collection/marked_anime_collection.pipes.js";
+import { MarkedAnimeCollection_Controller as cont } from "[www]/anime-bookmark-collection/anime-bookmark-collection.controller.js";
+import { MarkedAnimeCollection_ReqPipes } from "[www]/anime-bookmark-collection/anime-bookmark-collection.pipes.js";
 export const MarkedAnimeCollection_Router = (() => {
     const r = createConfiguredRouter();
 

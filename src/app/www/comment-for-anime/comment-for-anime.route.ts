@@ -1,7 +1,7 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
 import { createConfiguredRouter } from "#/utilities/tools/express.js";
-import { Comment_Controller as c } from "[www]/comment/comment.controller.js";
-import { Comment_ReqPipes as rp } from "[www]/comment/comment.pipes.js";
+import { Comment_Controller as c } from "[www]/comment-for-anime/comment-for-anime.controller.js";
+import { Comment_ReqPipes as rp } from "[www]/comment-for-anime/comment-for-anime.pipes.js";
 
 export const Comment_Router = (() => {
     const r = createConfiguredRouter();

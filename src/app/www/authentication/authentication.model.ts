@@ -3,16 +3,26 @@ import { NotFoundException, UnauthorizedException } from "#/errors/client-side-e
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import type { Argon2idHashResult } from "#/utilities/services/hash-passwords.service.js";
-import { sessionTokenHashService } from "#/utilities/services/session_token.js";
-import type { LoginSession, UserAccount, UserProfile } from "[orm]";
+import { sessionTokenHashService } from "#/utilities/services/hash-token-sessions.service.js";
+import type { AccountPassword, LoginSession, UserAccount, UserProfile } from "[orm]";
 
 export const authModels = new (class Authentication_Model {
-    find_1_session_by_its_token = async (session_token: TokenSelector) => {
+    find_1_session_by_its_selector = async (selector: TokenSelector) => {
         return await prisma.loginSession.findUnique({
+            where: { selector },
+        });
+    };
+    getPasswordDataFromAccountId = async (account_id: iObjectCuid): Promise<AccountPassword> => {
+        const found_password = await prisma.accountPassword.findUnique({
             where: {
-                token: session_token,
+                for_account_id: account_id,
             },
         });
+        if (!found_password) {
+            throw new NotFoundException(["Аккаунт с таким айди не найден"]);
+        }
+
+        return found_password;
     };
     find_account_by_ids_id = async (account_id: string): Promise<UserAccount> => {
         const account = await prisma.userAccount.findUnique({
@@ -26,10 +36,10 @@ export const authModels = new (class Authentication_Model {
         return account;
     };
     /** Migrated from account module */
-    find_one_session_by_its_token = async (session_token: TokenSelector): Promise<LoginSession> => {
+    find_one_session_by_its_selector = async (selector: TokenSelector): Promise<LoginSession> => {
         const found_session = await prisma.loginSession.findUnique({
             where: {
-                token: session_token,
+                selector,
             },
         });
         if (!found_session) {
@@ -42,22 +52,20 @@ export const authModels = new (class Authentication_Model {
     };
 
     /** Migrated from account module */
-    delete_one_session_by_its_token = async (session_token: TokenSelector) => {
+    delete_one_session_by_its_selector = async (selector: TokenSelector) => {
         return await prisma.loginSession.delete({
-            where: {
-                token: session_token,
-            },
+            where: { selector },
         });
     };
 
-    find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL = async (
-        session_token: TokenSelector,
+    find_session_by_its_selector_and_return_also_profile_data = async (
+        selector: TokenSelector,
     ): Promise<{
         session: LoginSession;
         profile: UserProfile;
     }> => {
         const session = await prisma.loginSession.findUnique({
-            where: { token: session_token },
+            where: { selector: selector },
         });
         if (!session) {
             throw new UnauthorizedException(["Сеанс не найден. Пожалуйста, войдите снова"]);
@@ -69,7 +77,7 @@ export const authModels = new (class Authentication_Model {
         });
         if (!profile) {
             throw new UnexpectedInternalServerErrorException({
-                service_name: this.find_session_by_its_token_and_return_also_profile_data__SERVICE_MODEL.name,
+                service_name: this.find_session_by_its_selector_and_return_also_profile_data.name,
                 errorMessageToClient: "Ошибка сервера. Не удалось найти сессию.",
                 errorItselfOrPrivateMessageToServer: `We couldn't find profile that linked to this session and account: ${JSON.stringify({
                     session_id: session.id,
@@ -90,10 +98,15 @@ export const authModels = new (class Authentication_Model {
             // password: string;
         },
     ) => {
+        const token = await sessionTokenHashService.createSessionToken();
         const new_session = await prisma.loginSession.create({
             data: {
                 by_account_id: new_account_id,
-                token: sessionTokenHashService.create_session_token(new_account_id),
+                expires_at: token.expires_at,
+                selector: token.selector,
+                hashed_validator: token.hashed_validator,
+                created_at: token.created_at,
+                last_used_at: token.created_at,
                 ip_address: meta.ip,
                 user_agent: meta.agent,
             },
@@ -101,10 +114,10 @@ export const authModels = new (class Authentication_Model {
         return new_session;
     };
 
-    delete_1_session_by_its_token = async (session_token: TokenSelector) => {
+    delete_1_session_by_its_selector = async (selector: TokenSelector) => {
         return await prisma.loginSession.delete({
             where: {
-                token: session_token,
+                selector: selector,
             },
         });
     };
@@ -152,7 +165,7 @@ export const authModels = new (class Authentication_Model {
         });
     };
 
-    create_account_and_profile = async (
+    createProfile_Account_Password = async (
         data: { username: string; nickname: string | null; email: string | null },
         passwordHashResult: Argon2idHashResult,
     ) => {

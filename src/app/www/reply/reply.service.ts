@@ -35,7 +35,7 @@ export const Reply_Service = new (class Reply_Service {
             const updated_vote = await model.update_1_vote_to_reply(existedVote.id, -1);
             return !!updated_vote;
         }
-        const new_vote = await model.create_1_vote_to_reply(found_reply.id, false, profile_id);
+        const new_vote = await model.create_1_vote_to_reply(found_reply.id, -1, profile_id);
         return !!new_vote;
     };
 
@@ -50,7 +50,7 @@ export const Reply_Service = new (class Reply_Service {
             const updated_vote = await model.update_1_vote_to_reply(existedVote.id, 1);
             return !!updated_vote;
         }
-        const new_vote = await model.create_1_vote_to_reply(found_reply.id, true, profile_id);
+        const new_vote = await model.create_1_vote_to_reply(found_reply.id, 1, profile_id);
         return !!new_vote;
     };
 
@@ -93,7 +93,7 @@ export const Reply_Service = new (class Reply_Service {
             ]);
         }
         const created_reply = await model.create_1_reply_to_1_comment(profile_id, content, reply_to_id);
-        return created_reply;
+        return !!created_reply;
     };
     delete_reply = async ({ reply_id, profile_id }: { reply_id: string; profile_id: string }): Promise<boolean> => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);

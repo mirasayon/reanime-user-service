@@ -9,7 +9,7 @@
         "paths": {
             "[www]/*": ["./src/app/www/*"],
             "#/*": ["./src/*"],
-            "[orm]": ["./src/databases/orm/client.ts"],
+            "[orm]": ["./src/databases/orm/client.js"],
             "[T]/*": ["./src/types/*"]
         },
         "allowJs": false,

@@ -4,29 +4,27 @@ import { BadRequestException, ConflictException, ForbiddenException, Unauthorize
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { passwordHashingService } from "#/utilities/services/hash-passwords.service.js";
-import type { AccountPassword, ProfileAvatarPicture, UserAccount } from "[orm]";
+import type { AccountPassword, ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]";
 import { authModels } from "[www]/authentication/authentication.model.js";
-import { Profile_Model } from "[www]/profile/profile.model.js";
+import { profileRouteModel } from "[www]/profile/profile.model.js";
 
 /**
  * Service class responsible for handling authentication logic.
  */
 export const Authentication_Service = new (class Authentication_Service {
-    logout = async (session_token: TokenSelector, account_id: iObjectCuid) => {
-        const found_session = await authModels.find_one_session_by_its_token(session_token);
+    logout = async (session_token: TokenSelector, account_id: iObjectCuid): Promise<boolean> => {
+        const found_session = await authModels.find_one_session_by_its_selector(session_token);
         if (found_session.by_account_id !== account_id) {
             throw new UnauthorizedException(["This session token is not yours!"]);
         }
-        const deleted_session = await authModels.delete_one_session_by_its_token(session_token);
-        return {
-            deleted_session_token: deleted_session.token,
-        };
+        const deleted_session = await authModels.delete_one_session_by_its_selector(session_token);
+        return !!deleted_session;
     };
 
-    check_session = async (account_id: string): Promise<{ account: UserAccount; avatar: ProfileAvatarPicture | null }> => {
+    check_session = async (account_id: string): Promise<{ account: UserAccount; avatar: ProfileAvatarPicture | null; profile: UserProfile }> => {
         const account = await authModels.find_account_by_ids_id(account_id);
-        const avatar = await Profile_Model.find_profile_by_username_AND_give_avatar_data(account.username);
-        return { account, avatar: avatar.userProfile.avatar };
+        const { profile, avatar } = await profileRouteModel.find_profile_by_username_AND_give_avatar_data(account.username);
+        return { account, avatar, profile };
     };
 
     login_via_username = async ({
@@ -44,8 +42,9 @@ export const Authentication_Service = new (class Authentication_Service {
         if (!account) {
             throw new UnauthorizedException(["Неправильный пароль или юзернейм"]);
         }
+        const stored = await authModels.getPasswordDataFromAccountId(account.id);
 
-        const is_correct = await bcryptjsService.compare_raw_to_hash(password, account.password_hash);
+        const is_correct = await passwordHashingService.verifyPasswordWithStored({ password: password, stored: stored });
 
         if (!is_correct) {
             throw new UnauthorizedException(["Неправильный пароль или юзернейм"]);
@@ -58,20 +57,20 @@ export const Authentication_Service = new (class Authentication_Service {
         }
 
         const session = await authModels.create_user_session(account.id, {
-            // username,
-            // password,
             ip,
             agent,
-            // email,
-            // name
         });
 
         return { account, session };
     };
     login_via_email = async ({ email, password, ip, agent }: { email: string; password: string; ip: string | null; agent: string | null }) => {
         const account = await authModels.find_1_account_by_email_throw_error(email);
+        const stored = await authModels.getPasswordDataFromAccountId(account.id);
 
-        const is_correct = await bcryptjsService.compare_raw_to_hash(password, account.password_hash);
+        const is_correct = await passwordHashingService.verifyPasswordWithStored({
+            password: password,
+            stored: stored,
+        });
         if (!is_correct) {
             throw new UnauthorizedException(["Неправильный пароль или почта"]);
         }
@@ -81,14 +80,10 @@ export const Authentication_Service = new (class Authentication_Service {
         if (sessions_count >= SAME_TIME_SESSIONS_LIMIT) {
             throw new ForbiddenException([`Пользователь не должен иметь более ${SAME_TIME_SESSIONS_LIMIT} активных сессий одновременно`]);
         }
-
         const session = await authModels.create_user_session(account.id, {
-            // username: account.username,
-            // password,
             ip,
             agent,
         });
-
         return { account, session };
     };
 
@@ -135,20 +130,7 @@ export const Authentication_Service = new (class Authentication_Service {
 
         const passwordHashResult = await passwordHashingService.hashPasswordArgon2id(password);
 
-        const account = await authModels.create_account_and_profile(
-            {
-                ..._credentials,
-            },
-            passwordHashResult,
-        );
-
-        if (!account.profile) {
-            throw new UnexpectedInternalServerErrorException({
-                errorMessageToClient: "Неожиданная внутренняя ошибка сервера. Попробуйте позже",
-                errorItselfOrPrivateMessageToServer: "This account does not have a profile: account_id = " + account.id,
-                service_name: this.registration.name,
-            });
-        }
+        const account = await authModels.createProfile_Account_Password(_credentials, passwordHashResult);
         const session = await authModels.create_user_session(account.id, _credentials);
         return { account, session };
     };

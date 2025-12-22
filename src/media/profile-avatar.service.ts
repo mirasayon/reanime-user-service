@@ -1,6 +1,6 @@
 import type { default as ExpressJS } from "express";
 import { avatar_image_height, avatar_image_width } from "#/configs/constants/media-module.js";
-import { avatars_folder, tempProcessPath } from "#/configs/paths.config.js";
+import { baseProcessPathForAvatar, tempProcessPathForAvatar } from "#/configs/paths.config.js";
 import { ConflictException, NotFoundException } from "#/errors/client-side-exceptions.js";
 import { BadGatewayException } from "#/errors/server-side-exceptions.js";
 import consola from "consola";
@@ -21,7 +21,7 @@ type avatar_update_ServiceParameters = { profile_cuid: string; file: ExpressJS_M
 export const avatarService = new (class Avatar_Post_Service {
     /** Deletes Avatar File */
     avatar_delete = async (profile_cuid: string) => {
-        const prod_path = join(avatars_folder, `${profile_cuid}.webp`);
+        const prod_path = join(baseProcessPathForAvatar, `${profile_cuid}.webp`);
         if (!existsSync(prod_path)) {
             throw new NotFoundException(["Аватарка не найдена для удаления [2]"]);
         }
@@ -29,9 +29,9 @@ export const avatarService = new (class Avatar_Post_Service {
     };
     avatar_set = async ({ profile_cuid, file }: avatar_upload_ServiceParameters) => {
         let errored = false;
-        const prod_path = join(avatars_folder, `${profile_cuid}.webp`) as string;
+        const prod_path = join(baseProcessPathForAvatar, `${profile_cuid}.webp`) as string;
         const extname = avatarServiceUtils.get_correct_extname(file.mimetype);
-        const temp_path = join(tempProcessPath, `${profile_cuid}.${extname}`);
+        const temp_path = join(tempProcessPathForAvatar, `${profile_cuid}.${extname}`);
         if (existsSync(prod_path)) {
             throw new ConflictException([
                 "Аватар с таким идентификатором профиля уже существует. Используйте другой идентификатор профиля или обновите существующий аватар.",
@@ -79,7 +79,7 @@ export const avatarService = new (class Avatar_Post_Service {
         }
     };
     serveAvatarImage = async (user_cuid: string, req: ExpressJS.Request, res: ExpressJS.Response) => {
-        const filePath = join(avatars_folder, `${user_cuid}.webp`);
+        const filePath = join(baseProcessPathForAvatar, `${user_cuid}.webp`);
         return await serveFile(req, res, filePath);
     };
 })();

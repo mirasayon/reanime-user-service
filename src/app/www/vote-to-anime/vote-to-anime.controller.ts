@@ -1,8 +1,8 @@
 import { goReplyHttp } from "#/handlers/final-responder/all-http-responder.js";
 import type { ResponseTypesForVoteToAnime } from "#/shared/response-patterns/favorite-animes.routes.js";
 import { ControllerUtils } from "#/utilities/controller.js";
-import type { Favorite_Animes_ReqDto } from "[www]/favorite_animes/favorite_animes.pipes.js";
-import { FavoriteAnimes_Services as service } from "[www]/favorite_animes/favorite_animes.service.js";
+import type { Favorite_Animes_ReqDto } from "[www]/vote-to-anime/vote-to-anime.pipes.js";
+import { FavoriteAnimes_Services as service } from "[www]/vote-to-anime/vote-to-anime.service.js";
 import type { default as ExpressJS } from "express";
 export const FavoriteAnimes_Controller = new (class FavoriteAnimes_Controller {
     explore_likes = async (req: Favorite_Animes_ReqDto.explore_likes, res: ExpressJS.Response) => {
@@ -12,7 +12,6 @@ export const FavoriteAnimes_Controller = new (class FavoriteAnimes_Controller {
         const message = "Ваши любимые аниме";
         return goReplyHttp.ok(res, { data, message });
     };
-
     explore_dislikes = async (req: Favorite_Animes_ReqDto.explore_dislikes, res: ExpressJS.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
         const { dislikes } = await service.explore_dislikes(auth.profile.id);
@@ -22,7 +21,7 @@ export const FavoriteAnimes_Controller = new (class FavoriteAnimes_Controller {
     };
     view_vote_on_anime = async (req: Favorite_Animes_ReqDto.view_vote_on_anime, res: ExpressJS.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const { vote } = await service.view_vote_on_anime(auth.profile.id, dto);
+        const vote = await service.view_vote_on_anime(auth.profile.id, dto);
         const data: ResponseTypesForVoteToAnime.view_vote_on_anime = vote;
         const message = "Ваш лайк/дизлайк на это аниме";
         return goReplyHttp.ok(res, { data, message });
@@ -36,7 +35,7 @@ export const FavoriteAnimes_Controller = new (class FavoriteAnimes_Controller {
     };
     delete_like_from_anime = async (req: Favorite_Animes_ReqDto.delete_like_from_anime, res: ExpressJS.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const { deleted } = await service.delete_like_from_anime(auth.profile.id, dto);
+        const deleted = await service.delete_like_from_anime(auth.profile.id, dto);
         const data: ResponseTypesForVoteToAnime.delete_like_from_anime = deleted;
         const message = "Успешно удалён лайк с аниме";
         return goReplyHttp.ok(res, { data, message });
@@ -51,8 +50,8 @@ export const FavoriteAnimes_Controller = new (class FavoriteAnimes_Controller {
     };
     delete_dislike_from_anime = async (req: Favorite_Animes_ReqDto.delete_dislike_from_anime, res: ExpressJS.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const { deleted } = await service.delete_dislike_from_anime(auth.profile.id, dto);
-        const data: ResponseTypesForVoteToAnime.delete_dislike_from_anime = deleted;
+        const sr = await service.delete_dislike_from_anime(auth.profile.id, dto);
+        const data: ResponseTypesForVoteToAnime.delete_dislike_from_anime = sr;
         const message = "Успешно удалён дизлайк с аниме";
         return goReplyHttp.ok(res, { data, message });
     };

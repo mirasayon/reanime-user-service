@@ -1,4 +1,4 @@
-import { PathsConfig } from "#/configs/paths.config.js";
+import { pathsMainConfig } from "#/configs/paths.config.js";
 import type { Application } from "express";
 import { default as expressJs } from "express";
 /**
@@ -9,13 +9,13 @@ export function createConfiguredRouter(): ReturnType<typeof expressJs.Router> {
     return expressJs.Router({ caseSensitive: true, strict: true });
 }
 /** Static Folder middleware */
-export const mainStaticServerMiddleware = expressJs.static(PathsConfig.static, {
+export const mainStaticServerMiddleware = expressJs.static(pathsMainConfig.static, {
     etag: false,
     index: false,
     lastModified: false,
 });
 
-/** Json Body-parser middleware */
+/** Промежуточный обработчик запросов для парсинга JSON-тела в запросе */
 export const jsonBodyParserMiddleware = expressJs.json({
     strict: true,
     limit: "100kb",
@@ -23,9 +23,7 @@ export const jsonBodyParserMiddleware = expressJs.json({
     type: "application/json",
 });
 /**
- * Starts the server and returns the instance
- * @param port Port number
- * @param host Hostname
+ * Запускает сервер и возвращает экземпляр сервера.
  */
 export async function startListeningTheServer(
     app: Application,

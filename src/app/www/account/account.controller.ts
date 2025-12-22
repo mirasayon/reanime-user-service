@@ -23,7 +23,7 @@ export const Account_Controller = new (class Account_Controller {
 
     set_email = async (req: Account_ReqDtos.set_email, res: ExpressJS.Response) => {
         const { auth, dto: email } = ControllerUtils.check_dto_for_validity(req, ["auth", "dto"]);
-        const { updated_account } = await Account_Service.set_email({
+        const updated_account = await Account_Service.set_email({
             email,
             account_id: auth.session.by_account_id,
         });
@@ -63,7 +63,7 @@ export const Account_Controller = new (class Account_Controller {
 
     terminate_other_sessions = async (req: Account_ReqDtos.terminate_other_sessions, res: ExpressJS.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const sr = await Account_Service.terminate_other_sessions(auth.session.token, auth.session.by_account_id);
+        const sr = await Account_Service.terminate_other_sessions(auth.session.selector, auth.session.by_account_id);
         const data: ResponseTypesForAccount.delete_all_other_sessions = sr;
         const message = "Все остальные сеансы (кроме этой) успешно удалены";
         return goReplyHttp.accepted(res, { data, message });
@@ -78,7 +78,7 @@ export const Account_Controller = new (class Account_Controller {
     };
     delete_account = async (req: Account_ReqDtos.delete_account, res: ExpressJS.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { deleted_account } = await Account_Service.delete_account(auth.session.by_account_id);
+        const deleted_account = await Account_Service.delete_account(auth.session.by_account_id);
         const data: ResponseTypesForAccount.delete_account = deleted_account;
         const message = "Аккаунт успешно удален, навсегда!";
         return goReplyHttp.accepted(res, { data, message });

@@ -43,8 +43,7 @@ export const Account_Service = new (class Account_Service {
         const updated_account = await Account_Model.update_email_for_one(found_user.id, new_email);
         return { updated_account };
     };
-
-    set_email = async ({ email, account_id }: { email: iAccountEmail; account_id: iObjectCuid }): Promise<{ updated_account: UserAccount }> => {
+    set_email = async ({ email, account_id }: { email: iAccountEmail; account_id: iObjectCuid }): Promise<boolean> => {
         const account_by_id = await Account_Model.Get_account_by_its_id_throw_error(account_id);
         if (account_by_id.email) {
             throw new BadRequestException(["У этой учетной записи уже есть адрес электронной почты, вам нужно обновить его настройках"]);
@@ -53,8 +52,8 @@ export const Account_Service = new (class Account_Service {
         if (account_by_email) {
             throw new NotFoundException([email_is_used]);
         }
-        const updated_account = await Account_Model.update_email_for_one(account_by_id.id, email);
-        return { updated_account };
+        await Account_Model.update_email_for_one(account_by_id.id, email);
+        return true;
     };
     update_password = async ({
         new_password,
@@ -76,26 +75,19 @@ export const Account_Service = new (class Account_Service {
             throw new BadRequestException(["Новый введенный пароль и его повторный ввод различаются!"]);
         }
         const matches = await passwordHashingService.verifyPasswordWithStored({
-            stored: {
-                hash_base64: accountPassword.hash_base64,
-                salt_base64: accountPassword.salt_base64,
-                memory: accountPassword.memory,
-                passes: accountPassword.passes,
-                parallelism: accountPassword.parallelism,
-                tag_length: accountPassword.tag_length,
-            },
+            stored: accountPassword,
             password: current_password,
         });
         if (!matches) {
             throw new UnauthorizedException(["Текущий пароль неверный"]);
         }
         const new_password_hash = await passwordHashingService.hashPasswordArgon2id(new_password);
-        const is_password_updated = await Account_Model.update_password_hash_account({
+        await Account_Model.update_password_hash_account({
             account_id,
             hashResult: new_password_hash,
             password_id: accountPassword.id,
         });
-        return !!is_password_updated;
+        return true;
     };
     update_username = async ({ new_username, account_id }: { new_username: iAccountUsername; account_id: iObjectCuid }): Promise<boolean> => {
         const found_user = await Account_Model.Get_account_by_its_id_throw_error(account_id);
@@ -115,7 +107,8 @@ export const Account_Service = new (class Account_Service {
         const sessions = await Account_Model.find_all_sessions_by_account_id(found_account.id);
         return { sessions };
     };
-    terminate_other_sessions = async (selector: TokenSelector, account_id: iObjectCuid) => {
+    /** Возвращает количество удалённых сессий */
+    terminate_other_sessions = async (selector: TokenSelector, account_id: iObjectCuid): Promise<number> => {
         const found_account = await Account_Model.Get_account_by_its_id_throw_error(account_id);
         const this_session_id = (await Account_Model.find_one_session_by_its_selector(selector)).id;
 
@@ -132,15 +125,10 @@ export const Account_Service = new (class Account_Service {
         if (!isThisSessionOwner) {
             throw new UnauthorizedException(["Айди сессии неправилен или вы не являетесь собственником этой сессии"]);
         }
-        const deleted_session = await Account_Model.delete_one_session_by_id(targetSessionIdToDelete);
-        return deleted_session;
+        await Account_Model.delete_one_session_by_id(targetSessionIdToDelete);
+        return true;
     };
-
-    delete_account = async (
-        account_id: iObjectCuid,
-    ): Promise<{
-        deleted_account: UserAccount;
-    }> => {
+    delete_account = async (account_id: iObjectCuid): Promise<boolean> => {
         const found_account = await Account_Model.Get_account_by_its_id_throw_error(account_id);
         const found_profile = await Account_Model.find_profile_by_account_id_with_data_about_cover_and_avatar(found_account.id);
         if (found_profile.cover) {
@@ -149,9 +137,7 @@ export const Account_Service = new (class Account_Service {
         if (found_profile.avatar) {
             await avatarService.avatar_delete(found_profile.id);
         }
-        const deleted_account = await Account_Model.delete_account_by_its_id(found_account.id);
-        return {
-            deleted_account: deleted_account,
-        };
+        await Account_Model.delete_account_by_its_id(found_account.id);
+        return true;
     };
 })();

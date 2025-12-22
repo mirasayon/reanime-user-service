@@ -1,5 +1,5 @@
 import { AllowedImageFormats } from "#/configs/constants/media-module.js";
-import { PathsConfig } from "#/configs/paths.config.js";
+import { pathsMainConfig } from "#/configs/paths.config.js";
 import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import { Logger } from "log-it-colored";
 import { existsSync } from "node:fs";
@@ -33,7 +33,7 @@ export const avatarServiceUtils = new (class UtilsClass {
 
     /** Internal Service Utils.*/
     deleteOldAvatarForUpdatingIt = async (avatar_hash: string): Promise<path_prod> => {
-        const prod_path = path.join(PathsConfig.storage, "avatars", "base", `${avatar_hash}.webp`) as path_prod;
+        const prod_path = path.join(pathsMainConfig.storage, "avatars", "base", `${avatar_hash}.webp`) as path_prod;
         if (!existsSync(prod_path)) {
             throw new BadRequestException(["Avatar with this profile ID does not exist. Please upload a new avatar."]);
         }
@@ -44,7 +44,7 @@ export const avatarServiceUtils = new (class UtilsClass {
      * Internal Service Utils.
      */
     create_avatar_temp_path = async (avatar_hash: string, extname: string) => {
-        const temp_path = path.join(PathsConfig.storage, "avatars", "temp", `${avatar_hash}.${extname}`);
+        const temp_path = path.join(pathsMainConfig.storage, "avatars", "temp", `${avatar_hash}.${extname}`);
         await this.check_tempfile(temp_path);
         return temp_path;
     };

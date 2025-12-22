@@ -1,15 +1,15 @@
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import type { AvatarPicture, Comment, CommentVote, UserProfile } from "[orm]";
-import { Profile_Model } from "[www]/profile/profile.model.js";
+import type { ProfileAvatarPicture, CommentForAnime, VoteToComment, UserProfile } from "[orm]";
+import { profileRouteModel } from "[www]/profile/profile.model.js";
 
-export const Comment_Model = new (class Comment_Model {
+export const commentRouteModel = new (class Comment_Model {
     /** ! Наследование моделей */
-    inheritedModels = Profile_Model;
+    inheritedModels = profileRouteModel;
     get_comment_count_on_1_anime = async (by_profile_id: iObjectCuid, anime_id: number) => {
-        return await prisma.comment.count({
-            where: { by_profile_id, anime_id },
+        return await prisma.commentForAnime.count({
+            where: { by_profile_id, external_anime_id: anime_id },
         });
     };
 
@@ -22,10 +22,10 @@ export const Comment_Model = new (class Comment_Model {
         content: string;
         by_profile_id: string;
     }) => {
-        const found_comment = await prisma.comment.findFirst({
+        const found_comment = await prisma.commentForAnime.findFirst({
             where: {
                 content: content,
-                anime_id: anime_id,
+                external_anime_id: anime_id,
                 by_profile_id: by_profile_id,
             },
         });
@@ -36,10 +36,10 @@ export const Comment_Model = new (class Comment_Model {
         return found_comment;
     };
 
-    create_1_comment = async (by_profile_id: iObjectCuid, content: string, anime_id: number) => {
-        return prisma.comment.create({
+    create_1_comment = async (by_profile_id: iObjectCuid, content: string, external_anime_id: number) => {
+        return prisma.commentForAnime.create({
             data: {
-                anime_id,
+                external_anime_id,
                 by_profile_id,
                 content,
             },
@@ -51,10 +51,10 @@ export const Comment_Model = new (class Comment_Model {
         limit: number;
         anime_id: number;
     }): Promise<
-        (Comment & {
-            ratings: CommentVote[];
+        (CommentForAnime & {
+            ratings: VoteToComment[];
             by_profile: UserProfile & {
-                avatar: AvatarPicture | null;
+                avatar: ProfileAvatarPicture | null;
                 by_account: {
                     username: string;
                 };
@@ -63,9 +63,9 @@ export const Comment_Model = new (class Comment_Model {
     > => {
         const skip = (args.page - 1) * args.limit;
 
-        const all = await prisma.comment.findMany({
+        const all = await prisma.commentForAnime.findMany({
             where: {
-                anime_id: args.anime_id,
+                external_anime_id: args.anime_id,
             },
             skip: skip,
             include: {
@@ -87,10 +87,9 @@ export const Comment_Model = new (class Comment_Model {
         page: number;
         limit: number;
         by_profile_id: string;
-    }): Promise<Comment[]> => {
+    }): Promise<CommentForAnime[]> => {
         const skip = (page - 1) * limit;
-
-        const all = await prisma.comment.findMany({
+        const all = await prisma.commentForAnime.findMany({
             where: { by_profile_id },
             skip: skip,
             take: limit,
@@ -99,7 +98,7 @@ export const Comment_Model = new (class Comment_Model {
     };
 
     find_1_comment_by_its_id = async (comment_id: iObjectCuid) => {
-        const found_comment = await prisma.comment.findUnique({
+        const found_comment = await prisma.commentForAnime.findUnique({
             where: {
                 id: comment_id,
             },
@@ -111,46 +110,46 @@ export const Comment_Model = new (class Comment_Model {
         return found_comment;
     };
 
-    find_1_vote_by_comment_id_and_profile_id = async (comment_id: iObjectCuid, by_profile_id: iObjectCuid) => {
-        return await prisma.commentVote.findUnique({
+    find_1_vote_by_comment_id_and_profile_id = async (to_comment_id: iObjectCuid, by_profile_id: iObjectCuid) => {
+        return await prisma.voteToComment.findUnique({
             where: {
-                by_profile_id_comment_id: {
-                    comment_id,
+                by_profile_id_to_comment_id: {
+                    to_comment_id,
                     by_profile_id,
                 },
             },
         });
     };
 
-    create_1_vote_to_comment = async (comment_id: iObjectCuid, by_profile_id: iObjectCuid, vote: boolean) => {
-        return await prisma.commentVote.create({
+    create_1_vote_to_comment = async (to_comment_id: iObjectCuid, by_profile_id: iObjectCuid, value: 1 | -1) => {
+        return await prisma.voteToComment.create({
             data: {
-                vote,
+                value,
                 by_profile_id,
-                comment_id,
+                to_comment_id,
             },
         });
     };
 
     delete_1_vote_from_comment = async (existed_vote_id: string) => {
-        return await prisma.commentVote.delete({
+        return await prisma.voteToComment.delete({
             where: {
                 id: existed_vote_id,
             },
         });
     };
-    update_1_vote_to_comment = async (old_reply_id: iObjectCuid, vote: boolean) => {
-        return await prisma.commentVote.update({
+    update_1_vote_to_comment = async (old_reply_id: iObjectCuid, value: 1 | -1) => {
+        return await prisma.voteToComment.update({
             where: {
                 id: old_reply_id,
             },
             data: {
-                vote,
+                value,
             },
         });
     };
     delete_1_comment = async (comment_id: iObjectCuid) => {
-        return prisma.comment.delete({
+        return prisma.commentForAnime.delete({
             where: {
                 id: comment_id,
             },
@@ -158,7 +157,7 @@ export const Comment_Model = new (class Comment_Model {
     };
 
     update_1_comment_by_its_id = async (reply_id: iObjectCuid, new_content: string) => {
-        return await prisma.comment.update({
+        return await prisma.commentForAnime.update({
             where: {
                 id: reply_id,
             },

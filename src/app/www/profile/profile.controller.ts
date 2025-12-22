@@ -9,7 +9,7 @@ import { type Profile_ReqDtos } from "[www]/profile/profile.pipes.js";
 import { Profile_Service as service } from "[www]/profile/profile.service.js";
 
 export const Profile_Controller = new (class Profile_Controller {
-    /** Controller for create one comment by profile */
+    /** Просмотр других профилей пользователя */
     other_profiles = async (req: Profile_ReqDtos.other_profiles, res: ExpressJS.Response) => {
         const { dto: username } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
         const sr = await service.other_profiles(username);
@@ -17,9 +17,10 @@ export const Profile_Controller = new (class Profile_Controller {
         const message = "Информация профиля другого пользователя успешно получена";
         return goReplyHttp.ok(res, { data, message });
     };
+    /** Обновление никнейма пользователя */
     update_nickname = async (req: Profile_ReqDtos.update_name, res: ExpressJS.Response) => {
         const { auth, dto: new_nickname } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const { updated_profile } = await service.update_nickname({ new_nickname, profile_id: auth.profile.id });
+        const updated_profile = await service.update_nickname({ new_nickname, profile_id: auth.profile.id });
         const data: ResponseTypesForUserProfile.update_nickname = updated_profile;
         const message = "Ник успешно обновлен";
         return goReplyHttp.accepted(res, { data, message });
@@ -51,8 +52,8 @@ export const Profile_Controller = new (class Profile_Controller {
             throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
         }
         await avatarService.avatar_set({ profile_cuid, file });
-        const { new_avatar } = await service.set_avatar(profile_cuid);
-        const data: ResponseTypesForUserProfile.set_avatar = !!new_avatar.url;
+        const is_created = await service.set_avatar(profile_cuid);
+        const data: ResponseTypesForUserProfile.set_avatar = is_created;
         const message = "Аватарка успешно загружена";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -60,7 +61,7 @@ export const Profile_Controller = new (class Profile_Controller {
     delete_avatar = async (req: Profile_ReqDtos.delete_avatar, res: ExpressJS.Response) => {
         const { auth, dto } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
         await service.__check_if_has_avatar_for_delete(auth.profile.id);
-        const { deleted_avatar } = await service.delete_avatar(auth.profile.id);
+        const deleted_avatar = await service.delete_avatar(auth.profile.id);
         const data: ResponseTypesForUserProfile.delete_avatar = deleted_avatar;
         const message = "Аватарка пользователя успешно удалена";
         return goReplyHttp.accepted(res, { data, message });
@@ -76,8 +77,8 @@ export const Profile_Controller = new (class Profile_Controller {
             throw new BadRequestException(["Файл для загрузки аватара отсутствует"]);
         }
         await avatarService.avatar_update({ profile_cuid: auth.profile.id, file });
-        const { updated_avatar } = await service.update_avatar(found_profile.id);
-        const data: ResponseTypesForUserProfile.update_avatar = updated_avatar.url;
+        const updated_avatar = await service.update_avatar(found_profile.id);
+        const data: ResponseTypesForUserProfile.update_avatar = updated_avatar;
         const message = "Аватарка успешно обновлена";
         return goReplyHttp.accepted(res, { data, message });
     };

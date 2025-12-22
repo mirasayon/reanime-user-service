@@ -68,8 +68,8 @@ export const Authentication_Controller = new (class Authentication_Controller {
     };
     logout = async (req: Authentication_ReqDtos.logout, res: ExpressJS.Response) => {
         const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { deleted_session_token } = await services.logout(auth.session.selector, auth.session.by_account_id);
-        const data: ResponseTypesForAuthentication.logout = !!deleted_session_token;
+        const is_session_deleted = await services.logout(auth.session.selector, auth.session.by_account_id);
+        const data: ResponseTypesForAuthentication.logout = is_session_deleted;
         const message = "Этот сеанс успешно удален (выход из системы)";
         return goReplyHttp.accepted(res, { message, data });
     };
