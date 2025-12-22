@@ -7,7 +7,7 @@ import {
 } from "#/configs/frequent-errors.js";
 import { BadRequestException, ConflictException, NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import type { VoteToAnime } from "[orm]";
+import type { VoteToAnime } from "[orm]/client.js";
 import { FavoriteAnimes_Model as model } from "[www]/vote-to-anime/vote-to-anime.model.js";
 export const FavoriteAnimes_Services = new (class FavoriteAnimes_Services {
     explore_likes = async (profile_id: iObjectCuid) => {

@@ -21,7 +21,7 @@ export async function startMainServerScript(): Promise<void> {
         Logger.success(`${family}: ${chalk.magenta(url)} / ${altUrl} ${chalk.magenta(envMainConfig.NODE_ENVIRONMENT)}`);
 
         Logger.slate(
-            "Node.js: " + chalk.bold("v" + process.versions.node) + ". CpuArch: " + chalk.bold(arch()) + ". Platform: " + chalk.bold(platform()),
+            "Node.js: " + chalk.bold("v" + process.versions.node) + ". Arch: " + chalk.bold(arch()) + ". Platform: " + chalk.bold(platform()),
         );
         const shutdown = async () => {
             instance.close(() => {});

@@ -1,6 +1,6 @@
 import type { CommentForAnime, ProfileAvatarPicture, UserProfile, VoteToComment } from "../../databases/orm/client.js";
 
-/** RESPONSES For Comment Route */
+/** Типы ответов для маршрута комментариев на аниме */
 export namespace ResponseTypesForComment {
     export type create_comment = boolean;
     export type update_comment = boolean;

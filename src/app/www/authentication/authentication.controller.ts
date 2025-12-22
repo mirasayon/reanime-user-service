@@ -33,7 +33,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
     };
     registration = async (req: Authentication_ReqDtos.registration, reply: ExpressJS.Response) => {
         const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
-        const { account, session } = await services.registration({
+        const token = await services.registration({
             nickname: dto.nickname,
             username: dto.username,
             password: dto.password,
@@ -42,7 +42,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
             email: dto.email ?? null,
             agent: dto.agent ?? null,
         });
-        const data: ResponseTypesForAuthentication.registration = { account, session };
+        const data: ResponseTypesForAuthentication.registration = token;
         const message = "Пользователь успешно зарегистрирован и вошёл в систему";
         return goReplyHttp.accepted(reply, { data, message });
     };

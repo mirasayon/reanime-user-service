@@ -1,6 +1,6 @@
-import type { ReplyForComment } from "[orm]";
+import type { ReplyForComment } from "[orm]/client.js";
 
-/** RESPONSES For Reply Route */
+/** Типы ответов для маршрута ответа на комментарий */
 export namespace ResponseTypesForReplyToComment {
     export type edit_reply = boolean;
     export type get_1_reply_by_its_id = ReplyForComment;
@@ -10,17 +10,8 @@ export namespace ResponseTypesForReplyToComment {
     export type delete_like = boolean;
     export type delete_dislike = boolean;
     export type report = boolean;
-    /** Create reply
-     *
-     * true = Created
-     *
-     * false = error
-     */
+    /** `true` - если успех, `false` = если ошибка */
     export type create_reply = boolean;
-    /** Deleted reply type
-     * true = deleted
-     *
-     * false = error
-     */
+    /** `true` - если успех, `false` = если ошибка */
     export type delete_reply = boolean;
 }

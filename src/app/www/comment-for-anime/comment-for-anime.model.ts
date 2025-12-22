@@ -1,7 +1,7 @@
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import type { ProfileAvatarPicture, CommentForAnime, VoteToComment, UserProfile } from "[orm]";
+import type { ProfileAvatarPicture, CommentForAnime, VoteToComment, UserProfile } from "[orm]/client.js";
 import { profileRouteModel } from "[www]/profile/profile.model.js";
 
 export const commentRouteModel = new (class Comment_Model {

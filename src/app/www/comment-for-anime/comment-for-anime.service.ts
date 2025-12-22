@@ -2,7 +2,7 @@ import { vote_not_found } from "#/configs/frequent-errors.js";
 import { MAX_COMMENT_ON_ANIME_LIMIT } from "#/configs/rules.js";
 import { ConflictException, ForbiddenException, NotFoundException } from "#/errors/client-side-exceptions.js";
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
-import type { CommentForAnime, VoteToComment } from "[orm]";
+import type { CommentForAnime, VoteToComment } from "[orm]/client.js";
 import { commentRouteModel } from "[www]/comment-for-anime/comment-for-anime.model.js";
 
 /** Service Class with all methods for comments */

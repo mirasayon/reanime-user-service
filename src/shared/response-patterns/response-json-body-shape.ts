@@ -1,12 +1,11 @@
 import type { I_UserServiceResponseStatusCodes, ResponseHTTPCodes } from "../../shared/constants/response.constants.js";
 
-/**
- * Type representing the standard JSON response structure
- * @template Data - The type of data included in the response
- */
-export interface HTTPResponseBodyPattern<DATA> {
-    data: DATA | null;
+/** Тип, представляющий стандартную структуру JSON-ответа.
+ * @typeParam Data - Тип данных, включённые в поле `{data}` */
+export interface HTTPResponseBodyPattern<Data> {
+    data: Data | null;
     errors: string[];
+    /** `true` если запрос успешный, `false` если нет */
     ok: boolean;
     message: string;
     response_code: ResponseHTTPCodes;

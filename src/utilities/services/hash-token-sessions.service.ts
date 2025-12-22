@@ -2,9 +2,11 @@ import { envMainConfig } from "#/configs/environment-variables.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
+export type TokenStringRaw = `${string}.${string}`;
+
 import nodeCrypto from "crypto";
-type CreateSessionTokenType = {
-    token: `${string}.${string}`;
+export type CreateSessionTokenType = {
+    token: TokenStringRaw;
     selector: string;
     hashed_validator: string;
     created_at: Date;

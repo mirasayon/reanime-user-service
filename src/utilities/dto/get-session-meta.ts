@@ -1,5 +1,5 @@
 import type { SessionMetadataType } from "#/types/auth-middleware-shape.js";
-import type { LoginSession } from "[orm]";
+import type { LoginSession } from "[orm]/client.js";
 import { default as ExpressJS } from "express";
 /**
  * Returns meta from DB LoginSession

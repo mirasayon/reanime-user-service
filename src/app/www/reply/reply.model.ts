@@ -1,7 +1,7 @@
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import type { VoteToReply } from "[orm]";
+import type { VoteToReply } from "[orm]/client.js";
 
 export const Reply_Model = new (class Reply_Model {
     get_replies_count_on_1_comment = async (by_profile_id: iObjectCuid, to_comment_id: iObjectCuid) => {

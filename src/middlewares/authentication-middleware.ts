@@ -4,7 +4,7 @@ import type { AuthMiddlewareDTO } from "#/types/auth-middleware-shape.js";
 import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto/get-session-meta.js";
 import type { default as ExpressJS } from "express";
 import { getSessionTokenFromHeadersDto } from "#/utilities/dto/get-session-token.js";
-import type { LoginSession } from "[orm]";
+import type { LoginSession } from "[orm]/client.js";
 import { authModels } from "[www]/authentication/authentication.model.js";
 import { isDeepStrictEqual } from "node:util";
 import { sessionTokenHashService } from "#/utilities/services/hash-token-sessions.service.js";

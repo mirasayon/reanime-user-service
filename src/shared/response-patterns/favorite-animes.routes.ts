@@ -1,8 +1,6 @@
-import type { VoteToAnime } from "../../databases/orm/client.js";
+import type { VoteToAnime } from "[orm]/client.js";
 
-/**
- * Response types for vote to anime
- */
+/** Типы ответов для маршрута лайков/дизлайков на аниме */
 export namespace ResponseTypesForVoteToAnime {
     export type explore_likes = VoteToAnime[];
     export type explore_dislikes = VoteToAnime[];

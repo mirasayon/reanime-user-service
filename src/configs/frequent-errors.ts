@@ -1,4 +1,5 @@
 import { BadRequestException } from "#/errors/client-side-exceptions.js";
+import { SAME_TIME_SESSIONS_LIMIT } from "./rules.js";
 
 export const vote_not_found = "Лайк или дизлайк не найден" as const;
 export const profile_has_already_liked_anime = "Лайк уже оставлен на это аниме";
@@ -16,3 +17,5 @@ export const noImage_error_response = new BadRequestException(["Файл не з
 export const searchQueriesAreOutOfRange = "Параметры запроса переполнены больше, чем необходимо.";
 
 export const usernameNotFound = "Аккаунт с таким юзернеймом не найден";
+export const max_sessions_limit_error_message = `Пользователь не должен иметь более ${SAME_TIME_SESSIONS_LIMIT} активных сессий одновременно. Пожалуйста, выйдите с других сессий и попробуйте еще раз.`;
+export const invalid_credentials_error_message = "Неправильный пароль, юзернейм или почта";

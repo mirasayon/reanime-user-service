@@ -3,8 +3,8 @@ import { NotFoundException, UnauthorizedException } from "#/errors/client-side-e
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import type { Argon2idHashResult } from "#/utilities/services/hash-passwords.service.js";
-import { sessionTokenHashService } from "#/utilities/services/hash-token-sessions.service.js";
-import type { AccountPassword, LoginSession, UserAccount, UserProfile } from "[orm]";
+import { sessionTokenHashService, type CreateSessionTokenType } from "#/utilities/services/hash-token-sessions.service.js";
+import type { AccountPassword, LoginSession, UserAccount, UserProfile } from "[orm]/client.js";
 
 export const authModels = new (class Authentication_Model {
     find_1_session_by_its_selector = async (selector: TokenSelector) => {
@@ -87,18 +87,17 @@ export const authModels = new (class Authentication_Model {
         }
         return { session, profile };
     };
-    create_user_session = async (
-        new_account_id: iObjectCuid,
-        meta: {
-            // name: string | null;
-            // email: string | null;
-            // username: string;
-            ip: string | null;
-            agent: string | null;
-            // password: string;
-        },
-    ) => {
-        const token = await sessionTokenHashService.createSessionToken();
+    create_user_session = async ({
+        new_account_id,
+        ip_address,
+        user_agent,
+        token,
+    }: {
+        new_account_id: iObjectCuid;
+        ip_address: string | null;
+        user_agent: string | null;
+        token: CreateSessionTokenType;
+    }) => {
         const new_session = await prisma.loginSession.create({
             data: {
                 by_account_id: new_account_id,
@@ -107,8 +106,8 @@ export const authModels = new (class Authentication_Model {
                 hashed_validator: token.hashed_validator,
                 created_at: token.created_at,
                 last_used_at: token.created_at,
-                ip_address: meta.ip,
-                user_agent: meta.agent,
+                ip_address: ip_address,
+                user_agent: user_agent,
             },
         });
         return new_session;

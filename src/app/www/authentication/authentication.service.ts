@@ -1,13 +1,13 @@
+import { invalid_credentials_error_message, max_sessions_limit_error_message } from "#/configs/frequent-errors.js";
 import { SAME_TIME_SESSIONS_LIMIT } from "#/configs/rules.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import { passwordHashingService } from "#/utilities/services/hash-passwords.service.js";
-import type { AccountPassword, ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]";
+import { sessionTokenHashService, type TokenStringRaw } from "#/utilities/services/hash-token-sessions.service.js";
+import type { AccountPassword, ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
 import { authModels } from "[www]/authentication/authentication.model.js";
 import { profileRouteModel } from "[www]/profile/profile.model.js";
-
 /**
  * Service class responsible for handling authentication logic.
  */
@@ -15,7 +15,7 @@ export const Authentication_Service = new (class Authentication_Service {
     logout = async (session_token: TokenSelector, account_id: iObjectCuid): Promise<boolean> => {
         const found_session = await authModels.find_one_session_by_its_selector(session_token);
         if (found_session.by_account_id !== account_id) {
-            throw new UnauthorizedException(["This session token is not yours!"]);
+            throw new UnauthorizedException();
         }
         const deleted_session = await authModels.delete_one_session_by_its_selector(session_token);
         return !!deleted_session;
@@ -27,64 +27,63 @@ export const Authentication_Service = new (class Authentication_Service {
         return { account, avatar, profile };
     };
 
-    login_via_username = async ({
-        username,
-        password,
-        ip,
-        agent,
-    }: {
+    login_via_username = async (credentials: {
         username: string;
         password: string;
         ip: string | null;
         agent: string | null;
-    }) => {
-        const account = await authModels.find_1_account_by_username(username);
-        if (!account) {
-            throw new UnauthorizedException(["Неправильный пароль или юзернейм"]);
+    }): Promise<TokenStringRaw> => {
+        const account_id = (await authModels.find_1_account_by_username(credentials.username))?.id;
+        if (!account_id) {
+            throw new UnauthorizedException([invalid_credentials_error_message]);
         }
-        const stored = await authModels.getPasswordDataFromAccountId(account.id);
+        const storedPassword = await authModels.getPasswordDataFromAccountId(account_id);
 
-        const is_correct = await passwordHashingService.verifyPasswordWithStored({ password: password, stored: stored });
+        const is_correct = await passwordHashingService.verifyPasswordWithStored({ password: credentials.password, stored: storedPassword });
 
         if (!is_correct) {
-            throw new UnauthorizedException(["Неправильный пароль или юзернейм"]);
+            throw new UnauthorizedException([invalid_credentials_error_message]);
         }
-
-        const sessions_count = await authModels.get_count_of_sessions_by_account_id(account.id);
-
+        const sessions_count = await authModels.get_count_of_sessions_by_account_id(account_id);
         if (sessions_count >= SAME_TIME_SESSIONS_LIMIT) {
-            throw new ForbiddenException([`Пользователь не должен иметь более ${SAME_TIME_SESSIONS_LIMIT} активных сессий одновременно`]);
+            throw new ForbiddenException([max_sessions_limit_error_message]);
         }
-
-        const session = await authModels.create_user_session(account.id, {
-            ip,
-            agent,
+        const token = await sessionTokenHashService.createSessionToken();
+        await authModels.create_user_session({
+            new_account_id: account_id,
+            ip_address: credentials.ip,
+            user_agent: credentials.agent,
+            token,
         });
 
-        return { account, session };
+        return token.token;
     };
-    login_via_email = async ({ email, password, ip, agent }: { email: string; password: string; ip: string | null; agent: string | null }) => {
-        const account = await authModels.find_1_account_by_email_throw_error(email);
-        const stored = await authModels.getPasswordDataFromAccountId(account.id);
+    login_via_email = async (credentials: { email: string; password: string; ip: string | null; agent: string | null }): Promise<TokenStringRaw> => {
+        const account_id = (await authModels.find_1_account_by_email_throw_error(credentials.email)).id;
+        const stored = await authModels.getPasswordDataFromAccountId(account_id);
 
         const is_correct = await passwordHashingService.verifyPasswordWithStored({
-            password: password,
+            password: credentials.password,
             stored: stored,
         });
         if (!is_correct) {
-            throw new UnauthorizedException(["Неправильный пароль или почта"]);
+            throw new UnauthorizedException([invalid_credentials_error_message]);
         }
 
-        const sessions_count = await authModels.get_count_of_sessions_by_account_id(account.id);
+        const sessions_count = await authModels.get_count_of_sessions_by_account_id(account_id);
 
         if (sessions_count >= SAME_TIME_SESSIONS_LIMIT) {
-            throw new ForbiddenException([`Пользователь не должен иметь более ${SAME_TIME_SESSIONS_LIMIT} активных сессий одновременно`]);
+            throw new ForbiddenException([max_sessions_limit_error_message]);
         }
-        const session = await authModels.create_user_session(account.id, {
-            ip,
-            agent,
+
+        const token = await sessionTokenHashService.createSessionToken();
+        await authModels.create_user_session({
+            new_account_id: account_id,
+            ip_address: credentials.ip,
+            user_agent: credentials.agent,
+            token,
         });
-        return { account, session };
+        return token.token;
     };
 
     /**
@@ -94,15 +93,7 @@ export const Authentication_Service = new (class Authentication_Service {
      * @param registration_credentials - Data provided by the account during registration.
      * @returns An object containing the newly created account and their session.
      */
-    registration = async ({
-        nickname,
-        email,
-        username,
-        ip,
-        agent,
-        password,
-        password_repeat,
-    }: {
+    registration = async (credentials: {
         nickname: string | null;
         email: string | null;
         username: string;
@@ -110,29 +101,25 @@ export const Authentication_Service = new (class Authentication_Service {
         agent: string | null;
         password: string;
         password_repeat: string;
-    }) => {
-        if (password_repeat !== password) {
+    }): Promise<TokenStringRaw> => {
+        if (credentials.password_repeat !== credentials.password) {
             throw new BadRequestException(["Пароли не совпадают"]);
         }
-        const _credentials = {
-            nickname,
-            email,
-            username,
-            ip,
-            agent,
-            password,
-        };
-        const candidate = await authModels.find_1_account_by_username(username);
-
+        const candidate = await authModels.find_1_account_by_username(credentials.username);
         if (candidate) {
             throw new ConflictException([`Пользователь с таким именем (${candidate.username}) уже существует. Выберите другое имя пользователя.`]);
         }
+        const passwordHashResult = await passwordHashingService.hashPasswordArgon2id(credentials.password);
+        const token = await sessionTokenHashService.createSessionToken();
 
-        const passwordHashResult = await passwordHashingService.hashPasswordArgon2id(password);
-
-        const account = await authModels.createProfile_Account_Password(_credentials, passwordHashResult);
-        const session = await authModels.create_user_session(account.id, _credentials);
-        return { account, session };
+        const { id: account_id } = await authModels.createProfile_Account_Password(credentials, passwordHashResult);
+        await authModels.create_user_session({
+            new_account_id: account_id,
+            ip_address: credentials.ip,
+            user_agent: credentials.agent,
+            token,
+        });
+        return token.token;
     };
 
     /**

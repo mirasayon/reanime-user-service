@@ -1,11 +1,14 @@
 import type { LoginSession, ProfileAvatarPicture, UserAccount, UserProfile } from "../../databases/orm/client.js";
 
-/** RESPONSES For Auth Route */
+/** Типы ответов для маршрута аутентификации */
 export namespace ResponseTypesForAuthentication {
-    export type login_via_email = { session: LoginSession; account: UserAccount };
-    export type login_via_username = { session: LoginSession; account: UserAccount };
-    export type registration = { session: LoginSession; account: UserAccount };
-    /** `false` if username is used, `true` if available */
+    /** Токен сессии */
+    export type login_via_email = string;
+    /** Токен сессии */
+    export type login_via_username = string;
+    /** Токен сессии */
+    export type registration = string;
+    /** `false`- если используется имя пользователя, `true`- если доступно */
     export type check_username_availability = boolean;
     export type check_session = {
         session: LoginSession;
@@ -13,10 +16,6 @@ export namespace ResponseTypesForAuthentication {
         avatar: ProfileAvatarPicture | null;
         account: UserAccount;
     };
-    /**
-     * true = success
-     *
-     * false = error
-     */
+    /** `true` - если успех, `false` = если ошибка */
     export type logout = boolean;
 }

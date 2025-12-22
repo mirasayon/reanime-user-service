@@ -1,6 +1,6 @@
 import { UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import { AccountTypeEnum, type UserAccount, type UserProfile } from "[orm]";
+import { AccountTypeEnum, type UserAccount, type UserProfile } from "[orm]/client.js";
 import { Account_Model } from "[www]/account/account.model.js";
 import { Admin_Model } from "./admin.model.js";
 /** UserAccount Service */

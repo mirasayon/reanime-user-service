@@ -2,7 +2,7 @@ import { usernameNotFound } from "#/configs/frequent-errors.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
-import type { ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]";
+import type { ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
 export const profileRouteModel = new (class Profile_Model {
     find_profile_by_its_id = async (profile_id: iObjectCuid) => {
         const found_profile = await prisma.userProfile.findUnique({
