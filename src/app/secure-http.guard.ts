@@ -1,4 +1,4 @@
-import { envMainConfig } from "#/configs/environment-variables.js";
+import { envMainConfig } from "#/configs/environment-variables-config.js";
 import type { default as ExpressJS } from "express";
 import { UseSecureHTTPException } from "#/errors/client-side-exceptions.js";
 export function secureHttpGuard(req: ExpressJS.Request, res: ExpressJS.Response, next: ExpressJS.NextFunction) {

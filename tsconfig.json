@@ -7,7 +7,6 @@
         "moduleResolution": "NodeNext",
         "baseUrl": "./",
         "paths": {
-            "[www]/*": ["./src/app/www/*"],
             "#/*": ["./src/*"],
             "[orm]/*": ["./src/databases/orm/*"],
             "[T]/*": ["./src/types/*"]

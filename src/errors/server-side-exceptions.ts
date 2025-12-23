@@ -1,4 +1,4 @@
-import { ResponseHTTPCodes } from "#/shared/constants/response.constants.js";
+import { responseHTTPCodes } from "#/shared/response-codes-constants.shared.js";
 import consola from "consola";
 
 export type ServerSideExceptionClasses =
@@ -9,7 +9,7 @@ export type ServerSideExceptionClasses =
     | ServiceUnavailableException;
 
 export class UnexpectedInternalServerErrorException {
-    readonly response_code = ResponseHTTPCodes.UNEXPECTED_INTERNAL_ERROR;
+    readonly response_code = responseHTTPCodes.UNEXPECTED_INTERNAL_ERROR;
     readonly name = UnexpectedInternalServerErrorException.name;
     constructor(
         readonly messageToServer: string,
@@ -20,7 +20,7 @@ export class UnexpectedInternalServerErrorException {
 }
 
 export class ExpectedInternalServerErrorException {
-    readonly response_code = ResponseHTTPCodes.EXPECTED_INTERNAL_ERROR;
+    readonly response_code = responseHTTPCodes.EXPECTED_INTERNAL_ERROR;
     readonly name = ExpectedInternalServerErrorException.name;
 
     constructor(readonly errorMessage: string) {
@@ -28,7 +28,7 @@ export class ExpectedInternalServerErrorException {
     }
 }
 export class BadGatewayException {
-    readonly response_code = ResponseHTTPCodes.BAD_GATEWAY;
+    readonly response_code = responseHTTPCodes.BAD_GATEWAY;
     readonly name = BadGatewayException.name;
     constructor(
         readonly error: unknown,
@@ -38,7 +38,7 @@ export class BadGatewayException {
     }
 }
 export class NotImplementedException {
-    readonly response_code = ResponseHTTPCodes.NOT_IMPLEMENTED;
+    readonly response_code = responseHTTPCodes.NOT_IMPLEMENTED;
     readonly name = NotImplementedException.name;
     constructor(
         readonly error: unknown,
@@ -48,7 +48,7 @@ export class NotImplementedException {
     }
 }
 export class ServiceUnavailableException {
-    readonly response_code = ResponseHTTPCodes.SERVICE_UNAVAILABLE;
+    readonly response_code = responseHTTPCodes.SERVICE_UNAVAILABLE;
     readonly name = ServiceUnavailableException.name;
     constructor(
         readonly error: unknown,

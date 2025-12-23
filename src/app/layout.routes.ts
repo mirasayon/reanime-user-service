@@ -1,0 +1,28 @@
+import { apiKeyToServiceGuard } from "#/app/api-key.guard.js";
+import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
+import { accountSectionRouter } from "#/app/account/account.route.js";
+import { Administrator_Router } from "#/app/admin/admin.routes.js";
+import { Authentication_Router } from "#/app/authentication/authentication.route.js";
+import { Comment_Router } from "#/app/comment-for-anime/comment-for-anime.route.js";
+import { FavoriteAnimes_Router } from "#/app/vote-to-anime/vote-to-anime.route.js";
+import { MarkedAnimeCollection_Router } from "#/app/anime-bookmark-collection/anime-bookmark-collection.route.js";
+import { Ping_Router } from "#/app/ping/ping.route.js";
+import { Profile_Router } from "#/app/profile/profile.route.js";
+import { Reply_Router } from "#/app/reply/reply.route.js";
+import { secureHttpGuard } from "./secure-http.guard.js";
+/** Entry Point Router */
+export const mainServicesRouter = (() => {
+    const router = createConfiguredRouter();
+    router.use(apiKeyToServiceGuard);
+    router.use(secureHttpGuard);
+    router.use("/authentication", Authentication_Router);
+    router.use("/administrator", Administrator_Router);
+    router.use("/comment", Comment_Router);
+    router.use("/reply", Reply_Router);
+    router.use("/profile", Profile_Router);
+    router.use("/account", accountSectionRouter);
+    router.use("/anime/marked_collection", MarkedAnimeCollection_Router);
+    router.use("/favorite_animes", FavoriteAnimes_Router);
+    router.use("/ping", Ping_Router);
+    return router;
+})();

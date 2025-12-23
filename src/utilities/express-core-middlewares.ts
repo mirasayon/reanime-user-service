@@ -1,4 +1,4 @@
-import { pathsMainConfig } from "#/configs/paths.config.js";
+import { pathsMainConfig } from "#/configs/file-system-path-config.js";
 import type { Application } from "express";
 import { default as expressJs } from "express";
 /**

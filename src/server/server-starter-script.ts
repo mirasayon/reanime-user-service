@@ -1,6 +1,6 @@
-import { envMainConfig } from "#/configs/environment-variables.js";
-import { Service_Setting } from "#/configs/settings.js";
-import { prisma } from "#/databases/providers/database-connect.js";
+import { envMainConfig } from "#/configs/environment-variables-config.js";
+import { Service_Setting } from "#/constants/web-server-constants.js";
+import { prisma } from "#/databases/provider/database-connector.js";
 import { startListeningTheServer } from "#/utilities/express-core-middlewares.js";
 import consola from "consola";
 import { format } from "date-fns";
@@ -23,14 +23,23 @@ export async function startMainServerScript(): Promise<void> {
         Logger.slate(
             "Node.js: " + chalk.bold("v" + process.versions.node) + ". Arch: " + chalk.bold(arch()) + ". Platform: " + chalk.bold(platform()),
         );
-        const shutdown = async () => {
-            instance.close(() => {});
-            Logger.sky("Shutting down...");
-            await prisma.$disconnect().then(() => Logger.sky("db disconnected"));
-        };
+        async function shutdownAppAndDb() {
+            Logger.slate("Shutting down the server and db connection...");
+            return await new Promise<void>((resolve, reject) => {
+                try {
+                    return instance.close(async () => {
+                        await prisma.$disconnect();
+                        Logger.slate("Server stopped and db disconnected. Goodbye!");
+                        return resolve();
+                    });
+                } catch (error) {
+                    return reject(error);
+                }
+            });
+        }
 
-        process.on("SIGINT", shutdown);
-        process.on("SIGTERM", shutdown);
+        process.on("SIGINT", shutdownAppAndDb);
+        process.on("SIGTERM", shutdownAppAndDb);
     } catch (error) {
         consola.fatal("Error while starting the server: ");
         throw error;

@@ -1,17 +1,17 @@
-import { mainServicesRouter } from "#/app/main.route.js";
-import { envMainConfig } from "#/configs/environment-variables.js";
-import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#/handlers/errors/client-side-errors-handler.js";
-import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerMiddleware } from "#/handlers/errors/server-side-errors-handler.js";
+import { mainServicesRouter } from "#/app/layout.routes.js";
+import { envMainConfig } from "#/configs/environment-variables-config.js";
+import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#/handlers/client-side-errors-handler.js";
+import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerMiddleware } from "#/handlers/server-side-errors-handler.js";
 import { mainDevServerLogger } from "#/middlewares/development-env-logger-middleware.js";
 import { jsonBodyParserMiddleware, mainStaticServerMiddleware } from "#/utilities/express-core-middlewares.js";
 import compression from "compression";
 import cors from "cors";
-import express from "express";
+import expressJs from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 /** Main Express Application */
 export const expressMainApplication = (() => {
-    const app = express();
+    const app = expressJs();
     app.disable("x-powered-by");
     app.set("trust proxy", 1);
     app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));

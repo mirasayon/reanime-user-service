@@ -1,0 +1,129 @@
+import { envMainConfig } from "#/configs/environment-variables-config.js";
+import { invalidSessionTokenErrorMessage } from "#/constants/frequent-errors.js";
+import type { LoginSession } from "#/databases/orm/client.js";
+import { prisma } from "#/databases/provider/database-connector.js";
+import { UnauthorizedException } from "#/errors/client-side-exceptions.js";
+import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
+import type { AuthMiddlewareDTO } from "#/types/auth-middleware-shape.js";
+export type TokenStringRaw = `${string}.${string}`;
+
+import nodeCrypto from "crypto";
+export type CreateSessionTokenType = {
+    token: TokenStringRaw;
+    selector: string;
+    hashed_validator: string;
+    created_at: Date;
+    expires_at: Date;
+};
+
+class Authentication_Session_Token_Util {
+    /** Алгоритм хеширования токена сеанса */
+    readonly ALGORITHM = "sha512";
+    /** selector короткий, индексируемый */
+    private readonly TOKEN_SELECTOR_BYTES = 32;
+    /** validator — секретная часть */
+    private readonly TOKEN_VALIDATOR_BYTES = 32;
+    /** Срок действия сессии в часах */
+    private readonly SESSION_EXP_HOURS = 24;
+    private sessionTokenHmacSecret: string;
+    constructor() {
+        const secret = envMainConfig.sessionTokenHmacSecret;
+        if (!secret) {
+            throw new Error("SESSION_HMAC_SECRET not set");
+        }
+        this.sessionTokenHmacSecret = secret;
+    }
+    /** HEX string */
+    private getHmacFromValidatorString(validator: string): string {
+        return nodeCrypto.createHmac(this.ALGORITHM, this.sessionTokenHmacSecret).update(validator, "utf8").digest("hex");
+    }
+    /** Hex-like string */
+    private generateTokenPair(): {
+        selector: string;
+        validator: string;
+        token: `${string}.${string}`;
+    } {
+        const selector = nodeCrypto.randomBytes(this.TOKEN_SELECTOR_BYTES).toString("hex");
+        const validator = nodeCrypto.randomBytes(this.TOKEN_VALIDATOR_BYTES).toString("hex");
+        const token = `${selector}.${validator}` as const;
+        return { selector, validator, token };
+    }
+
+    createSessionToken = async (): Promise<CreateSessionTokenType> => {
+        const { selector, validator, token } = this.generateTokenPair();
+        const candidate = await prisma.loginSession.findUnique({ where: { selector } });
+        if (candidate) {
+            // re-generate token
+            return await this.createSessionToken();
+        }
+        const hashed_validator = this.getHmacFromValidatorString(validator);
+        const created_at = new Date();
+        const expires_at = new Date(created_at.getTime() + this.SESSION_EXP_HOURS * 3600 * 1000);
+        return { token, selector, hashed_validator, created_at, expires_at };
+    };
+
+    verifySessionToken = async (token: TokenStringRaw): Promise<{ dto: AuthMiddlewareDTO; session: LoginSession }> => {
+        if (!token) {
+            throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+        }
+        const parts = token.split(".");
+        if (parts.length !== 2) {
+            throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+        }
+        const [selector, validator] = parts;
+        if (!selector || !validator) {
+            throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+        }
+        const session = await prisma.loginSession.findUnique({ where: { selector } });
+        if (!session) {
+            throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+        }
+        if (session.expires_at < new Date()) {
+            await prisma.loginSession.delete({ where: { selector } });
+            throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+        }
+
+        const presentedHash = this.getHmacFromValidatorString(validator);
+        const a = Buffer.from(presentedHash, "hex");
+        const b = Buffer.from(session.hashed_validator, "hex");
+        if (a.length !== b.length) {
+            throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+        }
+        if (nodeCrypto.timingSafeEqual(a, b)) {
+            const updated_session = await prisma.loginSession.update({
+                where: { selector },
+                select: {
+                    by_account: {
+                        select: {
+                            id: true,
+                            username: true,
+                            profile: {
+                                select: {
+                                    id: true,
+                                },
+                            },
+                        },
+                    },
+                },
+                data: { last_used_at: new Date() },
+            });
+            if (!updated_session.by_account.profile) {
+                throw new UnexpectedInternalServerErrorException(
+                    `Профиль для айди аккаунта ${updated_session.by_account.id} не найден`,
+                    this.verifySessionToken.name,
+                );
+            }
+            return {
+                session,
+                dto: {
+                    selector: selector,
+                    account_id: updated_session.by_account.id,
+                    profile_id: updated_session.by_account.profile.id,
+                },
+            };
+        }
+
+        throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+    };
+}
+export const sessionTokenHashService = new Authentication_Session_Token_Util();

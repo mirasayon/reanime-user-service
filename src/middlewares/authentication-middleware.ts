@@ -1,13 +1,13 @@
-import { auth_ip_and_agent_do_not_match } from "#/configs/frequent-errors.js";
 import { BadRequestException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import type { AuthMiddlewareDTOFull } from "#/types/auth-middleware-shape.js";
-import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto/get-session-meta.js";
+import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto-factory-utils/get-session-meta.js";
 import type { default as ExpressJS } from "express";
-import { getSessionTokenFromHeadersDto } from "#/utilities/dto/get-session-token.js";
+import { getSessionTokenFromHeadersDto } from "#/utilities/dto-factory-utils/get-session-token.js";
 import type { LoginSession } from "[orm]/client.js";
-import { authenticationRouteModels } from "[www]/authentication/authentication.model.js";
+import { authenticationRouteModels } from "#/app/authentication/authentication.model.js";
 import { isDeepStrictEqual } from "node:util";
-import { sessionTokenHashService } from "#/utilities/services/hash-token-sessions.service.js";
+import { sessionTokenHashService } from "#/utilities/cryptography-services/hash-token-sessions.service.js";
+import { sessionMetaDoNotMatchErrorMessage } from "#/constants/frequent-errors.js";
 
 /**
  * Проверяет, соответствует ли метаданные запроса (IP и User-Agent) сохраненным в базе данным метаданным сессии.
@@ -19,7 +19,7 @@ function checkTwoMetadatas(session: LoginSession, requestMeta: ExpressJS.Request
     if (isDeepStrictEqual(session_Meta, request_Meta)) {
         return;
     }
-    throw new UnauthorizedException([auth_ip_and_agent_do_not_match]);
+    throw new UnauthorizedException([sessionMetaDoNotMatchErrorMessage]);
 }
 
 /**

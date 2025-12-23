@@ -12,9 +12,7 @@ export function vmFactory<
     A extends any = any,
 >(schema: Zod_x_Schema_type, get_req_body?: (req: RequestType) => Promise<A>) {
     return async (req: RequestType, res: ExpressJS.Response, next: ExpressJS.NextFunction) => {
-        /**
-         * If schema itself is for undefined. Then body also must be undefined
-         */
+        /**  If schema itself is for undefined. Then body also must be undefined */
         let rawData = undefined;
         if (get_req_body) {
             rawData = await get_req_body(req);

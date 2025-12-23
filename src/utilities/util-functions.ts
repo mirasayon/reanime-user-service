@@ -1,7 +1,7 @@
 import type { default as ExpressJS } from "express";
-import { searchQueriesAreOutOfRange } from "#/configs/frequent-errors.js";
 import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import { isDeepStrictEqual } from "node:util";
+import { searchQueriesAreOutOfRangeErrorMessage } from "#/constants/frequent-errors.js";
 /** Capitalizes First Letter of the string and lowercases the rest */
 export function capitalizeFirstLetter(str: string): string {
     const low = str.toLowerCase();
@@ -37,7 +37,7 @@ export function get_universal_search_query_value(query: ExpressJS.Request["query
         if (Object.hasOwn(query, sqKey)) {
             const SQName = query[sqKey];
             if (spName !== sqKey) {
-                throw new BadRequestException([searchQueriesAreOutOfRange]);
+                throw new BadRequestException([searchQueriesAreOutOfRangeErrorMessage]);
             }
             spNameV = String(SQName);
         }
@@ -71,7 +71,7 @@ export function get_universal_search_query_values_array<search_query_names exten
         }
     }
     if (!allDeepEqual([avKeys, spNames])) {
-        throw new BadRequestException([searchQueriesAreOutOfRange]);
+        throw new BadRequestException([searchQueriesAreOutOfRangeErrorMessage]);
     }
     return spAccumulator as {
         [keys in search_query_names[number]]: string;
