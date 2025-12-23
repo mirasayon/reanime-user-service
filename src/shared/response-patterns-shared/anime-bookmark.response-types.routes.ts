@@ -1,6 +1,6 @@
-import type { AnimeBookmark } from "../../databases/orm/client.js";
+import type { AnimeBookmark } from "[orm]/client.js";
 /** Типы ответов для маршрута коллекции аниме */
-export namespace ResponseTypesForAnimeBookmark {
+export namespace ResponseTypesFor_AnimeBookmark_Section {
     export type get_all_list = AnimeBookmark[];
     export type get_for_anime = AnimeBookmark;
     export type get_list_of_completed = AnimeBookmark[];

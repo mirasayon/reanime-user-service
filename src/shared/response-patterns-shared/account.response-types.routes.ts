@@ -1,7 +1,7 @@
 import type { LoginSession, UserAccount } from "../../databases/orm/client.js";
 
 /** Типы ответов для маршрута аккаунта */
-export namespace ResponseTypesForAccount {
+export namespace ResponseTypesFor_Account_Section {
     export type explore_me = UserAccount;
     export type update_email = UserAccount;
     export type set_email = boolean;

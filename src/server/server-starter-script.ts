@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import { chalk, Logger } from "log-it-colored";
 import type { AddressInfo } from "node:net";
 import { arch, platform } from "os";
-import { expressMainApplication } from "./first-level-app-skeleton.js";
+import { expressMainApplication } from "./server-skeleton.js";
 export async function startMainServerScript(): Promise<void> {
     try {
         const instance = await startListeningTheServer(expressMainApplication, envMainConfig.server);

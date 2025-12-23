@@ -12,6 +12,6 @@ export interface HTTPResponseBodyPattern<Data> {
     status_code: I_UserServiceResponseStatusCodes;
 }
 
-export type optionalMessage = { message?: string };
-export type optionalMessageAndErrors = { errors: string[]; message?: string };
-export type optionalMessageAndData<DATA> = { data: DATA | undefined; message?: string };
+export type BodyOptionalMessage = { message?: string };
+export type BodyOptionalMessageAndErrors = { errors: string[]; message?: string };
+export type BodyOptionalMessageAndData<DATA> = { data: DATA | undefined; message?: string };

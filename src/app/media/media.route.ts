@@ -3,7 +3,7 @@ import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js"
 import { mediaRouteController as c } from "#/app/media/media.controller.js";
 import { mediaRoutePipesMiddlewares as pm } from "#/app/media/media.pipes.js";
 import multer from "multer";
-import { mediaFileValidatorMiddleware } from "./utils-media-route/validators/file-validator-middleware-for-media.js";
+import { mediaFileValidatorMiddleware } from "./utils-media-route/validators-for-media-section/file-validator-middleware-for-media.js";
 export const mediaSectionRouter = (() => {
     const upload = multer({
         storage: multer.memoryStorage(),

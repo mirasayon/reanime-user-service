@@ -1,5 +1,5 @@
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { ResponseTypesForAuthentication } from "#/shared/response-patterns-shared/authentication.routes.js";
+import type { ResponseTypesForAuthentication } from "#/shared/response-patterns-shared/authentication.response-types.routes.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { default as ExpressJS } from "express";
 import type { Authentication_ReqDtos } from "#/app/authentication/authentication.pipes.js";

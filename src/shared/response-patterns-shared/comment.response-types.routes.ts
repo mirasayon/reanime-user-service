@@ -1,9 +1,7 @@
 import type { CommentForAnime, ProfileAvatarPicture, UserProfile, VoteToComment } from "../../databases/orm/client.js";
 
 /** Типы ответов для маршрута комментариев на аниме */
-export namespace ResponseTypesForComment {
-    export type create_comment = boolean;
-    export type update_comment = boolean;
+export namespace ResponseTypesFor_CommentForAnime_Section {
     export type get_all_for_anime = (CommentForAnime & {
         ratings: VoteToComment[];
         by_profile: UserProfile & {
@@ -13,6 +11,8 @@ export namespace ResponseTypesForComment {
             };
         };
     })[];
+    export type create_comment = boolean;
+    export type update_comment = boolean;
     export type all_for_public_profile = CommentForAnime[];
     export type all_my_comments = CommentForAnime[];
     export type add_like = boolean;

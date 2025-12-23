@@ -1,4 +1,4 @@
-import { mainServicesRouter } from "#/app/layout.routes.js";
+import { mainServicesRouter } from "#/app/app-layout.routes.js";
 import { envMainConfig } from "#/configs/environment-variables-config.js";
 import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#/handlers/client-side-errors-handler.js";
 import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerMiddleware } from "#/handlers/server-side-errors-handler.js";

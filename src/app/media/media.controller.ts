@@ -5,7 +5,7 @@ import { checkRequestForValidity } from "#/utilities/controller-utility-function
 import { type MediaRoutePipeDtos } from "#/app/media/media.pipes.js";
 import { mediaRouteService } from "./media.service.js";
 import { noImage_error_responseErrorMessage } from "#/constants/frequent-errors.js";
-import type { ResponseTypesForUserMedia } from "#/shared/response-patterns-shared/media.routes.js";
+import type { ResponseTypesFor_Media_Section } from "#/shared/response-patterns-shared/media.response-types.routes.js";
 
 class MediaRouteControllerClass {
     set_avatar = async (req: MediaRoutePipeDtos.set_avatar, res: ExpressJS.Response) => {
@@ -19,7 +19,7 @@ class MediaRouteControllerClass {
         }
         const is_created = await mediaRouteService.set_avatar(profile_cuid);
         await mediaRouteService.avatar_set({ profile_cuid, file });
-        const data: ResponseTypesForUserMedia.set_avatar = is_created;
+        const data: ResponseTypesFor_Media_Section.set_avatar = is_created;
         const message = "Аватарка успешно загружена";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -27,7 +27,7 @@ class MediaRouteControllerClass {
     delete_avatar = async (req: MediaRoutePipeDtos.delete_avatar, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const deleted_avatar = await mediaRouteService.delete_avatar(sessionDto.profile_id);
-        const data: ResponseTypesForUserMedia.delete_avatar = deleted_avatar;
+        const data: ResponseTypesFor_Media_Section.delete_avatar = deleted_avatar;
         const message = "Аватарка пользователя успешно удалена";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -43,7 +43,7 @@ class MediaRouteControllerClass {
         const updated_avatar = await mediaRouteService.update_avatar(sessionDto.profile_id);
 
         await mediaRouteService.avatar_update({ profile_cuid: sessionDto.profile_id, file });
-        const data: ResponseTypesForUserMedia.update_avatar = updated_avatar;
+        const data: ResponseTypesFor_Media_Section.update_avatar = updated_avatar;
         const message = "Аватарка успешно обновлена";
         return goReplyHttp.accepted(res, { data, message });
     };

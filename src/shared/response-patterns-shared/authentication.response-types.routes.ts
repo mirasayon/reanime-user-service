@@ -1,5 +1,3 @@
-import type { LoginSession, ProfileAvatarPicture, UserAccount, UserProfile } from "../../databases/orm/client.js";
-
 /** Типы ответов для маршрута аутентификации */
 export namespace ResponseTypesForAuthentication {
     /** Токен сессии */

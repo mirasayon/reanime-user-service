@@ -1,7 +1,7 @@
 import { z } from "zod";
 import psl from "better-psl";
 import consola from "consola";
-import { reservedWordsForUsernames } from "../static-shared-validator-constants/reserved-usernames-static-constants.js";
+import { reservedWordsForUsernames } from "./reserved-usernames-static-constants.js";
 /** Regexp for login string.
  *
  *  Description:

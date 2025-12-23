@@ -1,7 +1,7 @@
 import type { VoteToAnime } from "[orm]/client.js";
 
 /** Типы ответов для маршрута лайков/дизлайков на аниме */
-export namespace ResponseTypesForVoteToAnime {
+export namespace ResponseTypesFor_VoteToAnime_Section {
     export type explore_likes = VoteToAnime[];
     export type explore_dislikes = VoteToAnime[];
     export type view_vote_on_anime = VoteToAnime | null;

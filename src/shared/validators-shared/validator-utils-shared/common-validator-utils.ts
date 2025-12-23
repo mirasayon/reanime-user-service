@@ -4,8 +4,8 @@ export const zodUtilSchemas = new (class Utility_ValidatorSchemas {
     /** `undefined` data type validator */
     void = z.undefined();
     /** UserAccount inputted password
-     * @default min 8
-     * @default max 80
+     * @defaultValue min 8
+     * @defaultValue max 80
      */
     account_password = (() => {
         const min: number = 8;
@@ -21,8 +21,7 @@ export const zodUtilSchemas = new (class Utility_ValidatorSchemas {
                 error: `Пароль должен содержать меньше ${max} символов`,
             });
     })();
-    /**
-     * min = 0; max = 300;
+    /** min = 0; max = 300;
      * @param name
      * @returns ZodString
      */

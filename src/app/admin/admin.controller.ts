@@ -1,5 +1,5 @@
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { Administrator_ResponseTypes } from "#/shared/response-patterns-shared/administrator.routes.js";
+import type { ResponseTypesForAdministratorSection } from "#/shared/response-patterns-shared/administrator.response-types.routes.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { Administrator_ReqDtos } from "./admin.pipes.js";
 import { Admin_Service } from "./admin.service.js";
@@ -10,7 +10,7 @@ export const Administrator_Controller = new (class Administrator_Controller {
 
         const sr = await Admin_Service.get_all_users(sessionDto.account_id);
         const message = "Информация обо всех пользователях успешно получена.";
-        const data: Administrator_ResponseTypes.get_all_users = sr;
+        const data: ResponseTypesForAdministratorSection.get_all_users = sr;
         return goReplyHttp.ok(res, { data, message });
     };
 })();
