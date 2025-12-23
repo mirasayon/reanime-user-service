@@ -4,14 +4,12 @@ import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import { Logger } from "log-it-colored";
 import { existsSync } from "node:fs";
 import { unlink } from "node:fs/promises";
-import type { default as ExpressJS } from "express";
 import path from "node:path";
 import type { ExpressJS_Multer_File } from "#/types/express-types.js";
 
 /** A file with such a path should not exist. */
 type path_prod = string;
-/** Main utilities */
-export const avatarServiceUtils = new (class UtilsClass {
+class ProfileAvatarServiceClass {
     /** Internal Service Util */
     get_correct_extname = (mimetype: string) => {
         const ext = mimetype.split("/")[1];
@@ -21,10 +19,8 @@ export const avatarServiceUtils = new (class UtilsClass {
         return ext;
     };
 
-    /** Internal Service Util
-     *
-     * Checks the temporary file, if it exists, deletes it. */
-    check_tempfile = async (temp_path: string) => {
+    /** Checks the temporary file, if it exists, deletes it. */
+    private check_tempfile = async (temp_path: string) => {
         if (existsSync(temp_path)) {
             Logger.blue("Cleaned paths.temp file");
             await unlink(temp_path);
@@ -49,8 +45,7 @@ export const avatarServiceUtils = new (class UtilsClass {
         return temp_path;
     };
 
-    /** Controller Util */
-    get_first_media_field_from_request = (files: ExpressJS_Multer_File[]): ExpressJS_Multer_File => {
+    private get_first_media_field_from_request = (files: ExpressJS_Multer_File[]): ExpressJS_Multer_File => {
         const file = files.at(0);
         if (!file) {
             throw new BadRequestException(["Client did not give image file"]);
@@ -66,4 +61,5 @@ export const avatarServiceUtils = new (class UtilsClass {
         }
         return file;
     };
-})();
+}
+export const profileAvatarService = new ProfileAvatarServiceClass();

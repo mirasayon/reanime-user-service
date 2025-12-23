@@ -12,6 +12,7 @@ export const Profile_Router = (() => {
         },
     });
     const r = createConfiguredRouter();
+
     r.get("/explore_others_profile/:username", vm.other_profiles, c.other_profiles); // Open basic data of someone else's profile by username.
 
     r.get("/view_my_profile", vm.my_profile, mainAuthenticationMiddleware, c.view_my_profile); // Открыть свой профиль.

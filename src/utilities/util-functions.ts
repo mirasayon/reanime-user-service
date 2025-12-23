@@ -1,4 +1,4 @@
-import { default as ExpressJS } from "express";
+import type { default as ExpressJS } from "express";
 import { searchQueriesAreOutOfRange } from "#/configs/frequent-errors.js";
 import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import { isDeepStrictEqual } from "node:util";

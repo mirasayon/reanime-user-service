@@ -1,4 +1,4 @@
-import { default as ExpressJS } from "express";
+import type { default as ExpressJS } from "express";
 import { BadRequestException, PayloadTooLargeException } from "#/errors/client-side-exceptions.js";
 const payloadMB = 5;
 const PAYLOAD_MAX_SIZE = payloadMB * 1_024 * 1_024;

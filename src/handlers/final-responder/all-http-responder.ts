@@ -1,4 +1,4 @@
-import { default as ExpressJS } from "express";
+import type { default as ExpressJS } from "express";
 import type { optionalMessage, optionalMessageAndData, optionalMessageAndErrors } from "#/shared/response-patterns/response-json-body-shape.js";
 import { ResponseHTTPCodes } from "../../shared/constants/response.constants.js";
 import { allHttpResponseHandler } from "./all-http-responder-utils.js";

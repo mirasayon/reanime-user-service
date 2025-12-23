@@ -9,7 +9,7 @@ import { readFile, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import sharp from "sharp";
-import { avatarServiceUtils } from "./utils/avatar-file-system-service.js";
+import { profileAvatarService } from "./utils/avatar-file-system-service.js";
 import { serveFile } from "./utils/serve-static-for-avatars.js";
 import type { ExpressJS_Multer_File } from "#/types/express-types.js";
 //
@@ -30,7 +30,7 @@ export const avatarService = new (class Avatar_Post_Service {
     avatar_set = async ({ profile_cuid, file }: avatar_upload_ServiceParameters) => {
         let errored = false;
         const prod_path = join(baseProcessPathForAvatar, `${profile_cuid}.webp`) as string;
-        const extname = avatarServiceUtils.get_correct_extname(file.mimetype);
+        const extname = profileAvatarService.get_correct_extname(file.mimetype);
         const temp_path = join(tempProcessPathForAvatar, `${profile_cuid}.${extname}`);
         if (existsSync(prod_path)) {
             throw new ConflictException([
@@ -57,12 +57,12 @@ export const avatarService = new (class Avatar_Post_Service {
      */
     avatar_update = async ({ profile_cuid, file }: avatar_update_ServiceParameters) => {
         let errored = false;
-        const prod_path = await avatarServiceUtils.deleteOldAvatarForUpdatingIt(profile_cuid);
-        const extname = avatarServiceUtils.get_correct_extname(file.mimetype);
+        const prod_path = await profileAvatarService.deleteOldAvatarForUpdatingIt(profile_cuid);
+        const extname = profileAvatarService.get_correct_extname(file.mimetype);
         if (!extname) {
             throw new BadGatewayException(["Нету расширения загружаемого файла"]);
         }
-        const temp_path = await avatarServiceUtils.create_avatar_temp_path(profile_cuid, extname);
+        const temp_path = await profileAvatarService.create_avatar_temp_path(profile_cuid, extname);
 
         try {
             await writeFile(temp_path, file.buffer);
