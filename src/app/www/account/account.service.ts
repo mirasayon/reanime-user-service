@@ -7,11 +7,11 @@ import {
     UnauthorizedException,
 } from "#/errors/client-side-exceptions.js";
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
-import { avatarService } from "#/media/profile-avatar.service.js";
 import type { iAccountEmail, iAccountUsername, iObjectCuid, iRawUserPassword, TokenSelector } from "#/shared/types/inputs/informative.types.js";
 import { passwordHashingService } from "#/utilities/services/hash-passwords.service.js";
 import type { LoginSession, UserAccount } from "[orm]/client.js";
 import { Account_Model } from "[www]/account/account.model.js";
+import { avatarService } from "[www]/media/utils-media-route/profile-avatar.service.js";
 /** UserAccount Service */
 export const Account_Service = new (class Account_Service {
     explore_me = async (account_id: iObjectCuid): Promise<UserAccount> => {

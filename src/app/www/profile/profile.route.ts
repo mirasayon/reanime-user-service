@@ -21,14 +21,5 @@ export const Profile_Router = (() => {
 
     r.patch("/update/nickname/to/:nickname", vm.update_nickname, mainAuthenticationMiddleware, c.update_nickname);
 
-    // Set User Avatar
-    r.post("/avatar/set", vm.set_avatar, mainAuthenticationMiddleware, upload.single("one_avatar_image_file"), c.set_avatar);
-
-    // Update User Avatar
-    r.patch("/avatar/update", vm.update_avatar, mainAuthenticationMiddleware, upload.single("one_avatar_image_file"), c.update_avatar);
-
-    r.get("/avatar/view/:username", vm.avatar_view, c.avatar_view);
-    // Upload User Avatar
-    r.delete("/avatar/delete", vm.delete_avatar, mainAuthenticationMiddleware, c.delete_avatar);
     return r;
 })();
