@@ -1,4 +1,4 @@
-import { ensuredJoinSync } from "#/utilities/tools/ensured-path-join.util.js";
+import { ensuredJoinSync } from "#/utilities/ensured-path-join-util.js";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 const _filename_ = fileURLToPath(import.meta.url);

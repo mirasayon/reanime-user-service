@@ -1,6 +1,6 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
-import { createConfiguredRouter } from "#/utilities/tools/express.js";
-import { Reply_Controller as c } from "[www]/reply/reply.controller.js";
+import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
+import { replyToCommentRouteController as c } from "[www]/reply/reply.controller.js";
 import { Reply_ReqPipes as vm } from "[www]/reply/reply.pipes.js";
 
 export const Reply_Router = (() => {

@@ -11,10 +11,11 @@ export namespace ResponseTypesForAuthentication {
     /** `false`- если используется имя пользователя, `true`- если доступно */
     export type check_username_availability = boolean;
     export type check_session = {
-        session: LoginSession;
-        profile: UserProfile;
-        avatar: ProfileAvatarPicture | null;
-        account: UserAccount;
+        username: string;
+        nickname: string | null;
+        email: string | null;
+        avatar_url: string | null;
+        selector: string;
     };
     /** `true` - если успех, `false` = если ошибка */
     export type logout = boolean;

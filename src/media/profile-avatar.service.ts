@@ -1,5 +1,5 @@
 import type { default as ExpressJS } from "express";
-import { avatar_image_height, avatar_image_width } from "#/configs/constants/media-module.js";
+import { avatar_image_height, avatar_image_width } from "#/configs/constants/media-module-config.js";
 import { baseProcessPathForAvatar, tempProcessPathForAvatar } from "#/configs/paths.config.js";
 import { ConflictException, NotFoundException } from "#/errors/client-side-exceptions.js";
 import { BadGatewayException } from "#/errors/server-side-exceptions.js";

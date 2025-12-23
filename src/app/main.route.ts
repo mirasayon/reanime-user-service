@@ -1,5 +1,5 @@
 import { apiKeyToServiceGuard } from "#/app/api-key.guard.js";
-import { createConfiguredRouter } from "#/utilities/tools/express.js";
+import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
 import { Account_Router } from "[www]/account/account.route.js";
 import { Administrator_Router } from "[www]/admin/admin.routes.js";
 import { Authentication_Router } from "[www]/authentication/authentication.route.js";

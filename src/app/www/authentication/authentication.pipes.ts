@@ -1,5 +1,5 @@
 import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto/get-session-meta.js";
-import { vmfactory as m } from "#/utilities/validators/factory.js";
+import { vmFactory as m } from "#/utilities/validator-middleware-factory.js";
 import type { Request_dto_auth as _ } from "#/types/dto-middleware-shape.js";
 import { authentication_schemas as schemas, type dto } from "#/shared/validators/authentication.validator.routes.js";
 

@@ -1,7 +1,10 @@
 import { envMainConfig } from "#/configs/environment-variables.js";
+import { invalid_token_error_message } from "#/configs/frequent-errors.js";
+import type { LoginSession } from "#/databases/orm/client.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
+import type { AuthMiddlewareDTO } from "#/types/auth-middleware-shape.js";
 export type TokenStringRaw = `${string}.${string}`;
 
 import nodeCrypto from "crypto";
@@ -30,27 +33,20 @@ class Authentication_Session_Token_Util {
         }
         this.sessionTokenHmacSecret = secret;
     }
-    /** используем HMAC-SHA-512. Base64 */
-    private getHmacFromValidatorSession(validator: string): string {
-        return nodeCrypto.createHmac(this.ALGORITHM, this.sessionTokenHmacSecret).update(validator).digest("hex");
+    /** HEX string */
+    private getHmacFromValidatorString(validator: string): string {
+        return nodeCrypto.createHmac(this.ALGORITHM, this.sessionTokenHmacSecret).update(validator, "utf8").digest("hex");
     }
+    /** Hex-like string */
     private generateTokenPair(): {
         selector: string;
         validator: string;
         token: `${string}.${string}`;
     } {
-        try {
-            const selector = nodeCrypto.randomBytes(this.TOKEN_SELECTOR_BYTES).toString("hex");
-            const validator = nodeCrypto.randomBytes(this.TOKEN_VALIDATOR_BYTES).toString("hex");
-            const token = `${selector}.${validator}` as const;
-            return { selector, validator, token };
-        } catch (error) {
-            throw new UnexpectedInternalServerErrorException({
-                errorMessageToClient: "Ошибка генерации токена сеанса",
-                errorItselfOrPrivateMessageToServer: "Error while generating session token: " + error,
-                service_name: this.generateTokenPair.name,
-            });
-        }
+        const selector = nodeCrypto.randomBytes(this.TOKEN_SELECTOR_BYTES).toString("hex");
+        const validator = nodeCrypto.randomBytes(this.TOKEN_VALIDATOR_BYTES).toString("hex");
+        const token = `${selector}.${validator}` as const;
+        return { selector, validator, token };
     }
 
     createSessionToken = async (): Promise<CreateSessionTokenType> => {
@@ -60,50 +56,74 @@ class Authentication_Session_Token_Util {
             // re-generate token
             return await this.createSessionToken();
         }
-        const hashed_validator = this.getHmacFromValidatorSession(validator);
+        const hashed_validator = this.getHmacFromValidatorString(validator);
         const created_at = new Date();
         const expires_at = new Date(created_at.getTime() + this.SESSION_EXP_HOURS * 3600 * 1000);
         return { token, selector, hashed_validator, created_at, expires_at };
     };
 
-    verifySessionToken = async (token: string) => {
+    verifySessionToken = async (token: TokenStringRaw): Promise<{ dto: AuthMiddlewareDTO; session: LoginSession }> => {
         if (!token) {
-            return null;
+            throw new UnauthorizedException([invalid_token_error_message]);
         }
         const parts = token.split(".");
         if (parts.length !== 2) {
-            throw new UnauthorizedException(["Токен сеанса отсутствует"]);
+            throw new UnauthorizedException([invalid_token_error_message]);
         }
         const [selector, validator] = parts;
         if (!selector || !validator) {
-            throw new UnauthorizedException(["Неверный формат токена сеанса или токен сеанса отсутствует"]);
+            throw new UnauthorizedException([invalid_token_error_message]);
         }
         const session = await prisma.loginSession.findUnique({ where: { selector } });
         if (!session) {
-            throw new UnauthorizedException(["Сеанс не найден. Пожалуйста, войдите снова"]);
+            throw new UnauthorizedException([invalid_token_error_message]);
         }
         if (session.expires_at < new Date()) {
             await prisma.loginSession.delete({ where: { selector } });
-            throw new UnauthorizedException(["Срок действия сессии истек. Пожалуйста, войдите снова"]);
+            throw new UnauthorizedException([invalid_token_error_message]);
         }
 
-        const presentedHash = this.getHmacFromValidatorSession(validator);
+        const presentedHash = this.getHmacFromValidatorString(validator);
         const a = Buffer.from(presentedHash, "hex");
         const b = Buffer.from(session.hashed_validator, "hex");
         if (a.length !== b.length) {
-            return null;
+            throw new UnauthorizedException([invalid_token_error_message]);
         }
-        if (!nodeCrypto.timingSafeEqual(a, b)) {
-            return null;
+        if (nodeCrypto.timingSafeEqual(a, b)) {
+            const updated_session = await prisma.loginSession.update({
+                where: { selector },
+                select: {
+                    by_account: {
+                        select: {
+                            id: true,
+                            username: true,
+                            profile: {
+                                select: {
+                                    id: true,
+                                },
+                            },
+                        },
+                    },
+                },
+                data: { last_used_at: new Date() },
+            });
+            if (!updated_session.by_account.profile) {
+                throw new UnexpectedInternalServerErrorException(
+                    `Профиль для айди аккаунта ${updated_session.by_account.id} не найден`,
+                    this.verifySessionToken.name,
+                );
+            }
+            return {
+                session,
+                dto: {
+                    selector: selector,
+                    account_id: updated_session.by_account.id,
+                    profile_id: updated_session.by_account.profile.id,
+                },
+            };
         }
 
-        // обновим lastUsed при необходимости
-        await prisma.loginSession.update({
-            where: { selector },
-            data: { last_used_at: new Date() },
-        });
-
-        return session;
+        throw new UnauthorizedException([invalid_token_error_message]);
     };
 }
 export const sessionTokenHashService = new Authentication_Session_Token_Util();

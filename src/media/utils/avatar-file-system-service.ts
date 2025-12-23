@@ -1,4 +1,4 @@
-import { AllowedImageFormats } from "#/configs/constants/media-module.js";
+import { AllowedImageFormats } from "#/configs/constants/media-module-config.js";
 import { pathsMainConfig } from "#/configs/paths.config.js";
 import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import { Logger } from "log-it-colored";

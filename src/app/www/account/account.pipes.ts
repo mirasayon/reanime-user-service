@@ -1,4 +1,4 @@
-import { vmfactory } from "#/utilities/validators/factory.js";
+import { vmFactory } from "#/utilities/validator-middleware-factory.js";
 import type { Request_dto_auth as _ } from "#/types/dto-middleware-shape.js";
 import { account_schemas as schemas, type dto } from "#/shared/validators/account.validator.routes.js";
 
@@ -15,13 +15,13 @@ export namespace rd {
 }
 export type { rd as Account_ReqDtos };
 export const Account_ReqPipes = new (class Account_ReqPipes {
-    explore_me = vmfactory<rd.explore_me>(schemas.explore_me);
-    get_sessions = vmfactory<rd.get_sessions>(schemas.get_sessions);
-    delete_account = vmfactory<rd.delete_account>(schemas.delete_account);
-    update_email = vmfactory<rd.update_email>(schemas.update_email, async (req) => req.body);
-    set_email = vmfactory<rd.set_email>(schemas.set_email, async (req) => req.body.email);
-    update_password = vmfactory<rd.update_password>(schemas.update_password, async (req) => req.body);
-    update_username = vmfactory<rd.update_username>(schemas.update_username, async (req) => req.body.username);
-    terminate_other_sessions = vmfactory<rd.terminate_other_sessions>(schemas.terminate_other_sessions);
-    terminate_specific_session = vmfactory<rd.terminate_specific_session>(schemas.terminate_specific_session, async (req) => req.params.session_id);
+    explore_me = vmFactory<rd.explore_me>(schemas.explore_me);
+    get_sessions = vmFactory<rd.get_sessions>(schemas.get_sessions);
+    delete_account = vmFactory<rd.delete_account>(schemas.delete_account);
+    update_email = vmFactory<rd.update_email>(schemas.update_email, async (req) => req.body);
+    set_email = vmFactory<rd.set_email>(schemas.set_email, async (req) => req.body.email);
+    update_password = vmFactory<rd.update_password>(schemas.update_password, async (req) => req.body);
+    update_username = vmFactory<rd.update_username>(schemas.update_username, async (req) => req.body.username);
+    terminate_other_sessions = vmFactory<rd.terminate_other_sessions>(schemas.terminate_other_sessions);
+    terminate_specific_session = vmFactory<rd.terminate_specific_session>(schemas.terminate_specific_session, async (req) => req.params.session_id);
 })();

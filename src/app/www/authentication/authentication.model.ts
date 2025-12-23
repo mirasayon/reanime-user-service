@@ -1,17 +1,12 @@
+import { invalid_credentials_error_message } from "#/configs/frequent-errors.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { TokenSelector, iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import type { Argon2idHashResult } from "#/utilities/services/hash-passwords.service.js";
-import { sessionTokenHashService, type CreateSessionTokenType } from "#/utilities/services/hash-token-sessions.service.js";
-import type { AccountPassword, LoginSession, UserAccount, UserProfile } from "[orm]/client.js";
+import { type CreateSessionTokenType } from "#/utilities/services/hash-token-sessions.service.js";
+import type { AccountPassword, LoginSession, UserAccount } from "[orm]/client.js";
 
-export const authModels = new (class Authentication_Model {
-    find_1_session_by_its_selector = async (selector: TokenSelector) => {
-        return await prisma.loginSession.findUnique({
-            where: { selector },
-        });
-    };
+class AuthenticationRouteModelClass {
     getPasswordDataFromAccountId = async (account_id: iObjectCuid): Promise<AccountPassword> => {
         const found_password = await prisma.accountPassword.findUnique({
             where: {
@@ -19,7 +14,7 @@ export const authModels = new (class Authentication_Model {
             },
         });
         if (!found_password) {
-            throw new NotFoundException(["Аккаунт с таким айди не найден"]);
+            throw new NotFoundException();
         }
 
         return found_password;
@@ -35,58 +30,32 @@ export const authModels = new (class Authentication_Model {
         }
         return account;
     };
-    /** Migrated from account module */
-    find_one_session_by_its_selector = async (selector: TokenSelector): Promise<LoginSession> => {
-        const found_session = await prisma.loginSession.findUnique({
-            where: {
-                selector,
-            },
+    findSessionByItsSelector = async (selector: TokenSelector): Promise<LoginSession> => {
+        const session = await prisma.loginSession.findUnique({
+            where: { selector: selector },
         });
-        if (!found_session) {
-            throw new NotFoundException([
-                "Сеанс с таким айди не найден. Проверьте токен сеанса. Если вы не аутентифицированы, сначала войдите в систему.",
-            ]);
+        if (!session) {
+            throw new UnauthorizedException();
         }
-
-        return found_session;
+        return session;
     };
 
-    /** Migrated from account module */
     delete_one_session_by_its_selector = async (selector: TokenSelector) => {
         return await prisma.loginSession.delete({
             where: { selector },
         });
     };
 
-    find_session_by_its_selector_and_return_also_profile_data = async (
-        selector: TokenSelector,
-    ): Promise<{
-        session: LoginSession;
-        profile: UserProfile;
-    }> => {
+    findSessionByItsId = async (session_id: iObjectCuid): Promise<LoginSession> => {
         const session = await prisma.loginSession.findUnique({
-            where: { selector: selector },
+            where: { id: session_id },
         });
         if (!session) {
-            throw new UnauthorizedException(["Сеанс не найден. Пожалуйста, войдите снова"]);
+            throw new UnauthorizedException();
         }
-        const profile = await prisma.userProfile.findUnique({
-            where: {
-                by_account_id: session.by_account_id,
-            },
-        });
-        if (!profile) {
-            throw new UnexpectedInternalServerErrorException({
-                service_name: this.find_session_by_its_selector_and_return_also_profile_data.name,
-                errorMessageToClient: "Ошибка сервера. Не удалось найти сессию.",
-                errorItselfOrPrivateMessageToServer: `We couldn't find profile that linked to this session and account: ${JSON.stringify({
-                    session_id: session.id,
-                    account_id: session.by_account_id,
-                })}`,
-            });
-        }
-        return { session, profile };
+        return session;
     };
+
     create_user_session = async ({
         new_account_id,
         ip_address,
@@ -151,7 +120,7 @@ export const authModels = new (class Authentication_Model {
             },
         });
         if (!account) {
-            throw new UnauthorizedException(["Неправильный пароль или почта"]);
+            throw new UnauthorizedException([invalid_credentials_error_message]);
         }
         return account;
     };
@@ -188,4 +157,5 @@ export const authModels = new (class Authentication_Model {
             },
         });
     };
-})();
+}
+export const authenticationRouteModels = new AuthenticationRouteModelClass();

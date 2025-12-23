@@ -1,20 +1,20 @@
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import { goReplyHttp } from "#/handlers/final-responder/all-http-responder.js";
 import type { ResponseTypesForComment } from "#/shared/response-patterns/comment.routes.js";
-import { ControllerUtils } from "#/utilities/controller.js";
+import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { default as ExpressJS } from "express";
 import type { Comment_ReqDtos } from "[www]/comment-for-anime/comment-for-anime.pipes.js";
 import { commentRouteService } from "[www]/comment-for-anime/comment-for-anime.service.js";
 
-export const Comment_Controller = new (class Comment_Controller {
+class CommentToAnimeRouteControllerClass {
     /** Controller for create one comment by profile */
     create_comment = async (req: Comment_ReqDtos.create, res: ExpressJS.Response) => {
-        const { dto, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
+        const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
 
         const created_comment = await commentRouteService.create_comment({
             anime_id: dto.anime_id,
             content: dto.content,
-            by_profile_id: auth.profile.id,
+            by_profile_id: sessionDto.profile_id,
         });
 
         const data: ResponseTypesForComment.create_comment = created_comment;
@@ -24,12 +24,12 @@ export const Comment_Controller = new (class Comment_Controller {
 
     /** Edit the comment by profile */
     update_comment = async (req: Comment_ReqDtos.update, res: ExpressJS.Response) => {
-        const { dto, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
+        const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
 
         const updated_comment = await commentRouteService.update_comment({
             comment_id: dto.comment_id,
             new_content: dto.new_content,
-            profile_id: auth.profile.id,
+            profile_id: sessionDto.profile_id,
         });
 
         const data: ResponseTypesForComment.update_comment = updated_comment;
@@ -38,7 +38,7 @@ export const Comment_Controller = new (class Comment_Controller {
     };
     /** Gives the list of comments from specified anime ID */
     get_all_for_anime = async (req: Comment_ReqDtos.get_all_for_anime, res: ExpressJS.Response) => {
-        const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
+        const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await commentRouteService.get_all_comments_by_animeId(dto);
 
         const data: ResponseTypesForComment.get_all_for_anime = sr;
@@ -50,20 +50,16 @@ export const Comment_Controller = new (class Comment_Controller {
      * Получить все комментарии для публичного профиля
      */
     all_for_public_profile = async (req: Comment_ReqDtos.all_for_public_profile, res: ExpressJS.Response) => {
-        const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
+        const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await commentRouteService.all_for_public_profile({ by_username: dto.username, limit: dto.limit, page: dto.page });
 
         const data: ResponseTypesForComment.all_for_public_profile = sr;
         const message = "Все комментарии этого публичного профиля";
         return goReplyHttp.ok(res, { data, message });
     };
-
-    /** new 2025.11.15
-     * Получить все комментарии для одного пользователя
-     */
     all_my_comments = async (req: Comment_ReqDtos.all_my_comments, res: ExpressJS.Response) => {
-        const { dto, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
-        const sr = await commentRouteService.all_my_comments({ by_profile_id: auth.profile.id, limit: dto.limit, page: dto.page });
+        const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
+        const sr = await commentRouteService.all_my_comments({ by_profile_id: sessionDto.profile_id, limit: dto.limit, page: dto.page });
 
         const data: ResponseTypesForComment.all_my_comments = sr;
         const message = "Все ваши комментарии";
@@ -72,10 +68,10 @@ export const Comment_Controller = new (class Comment_Controller {
 
     /** Vote for the comment. Accepts "like" or "dislike" */
     add_like = async (req: Comment_ReqDtos.vote_like, res: ExpressJS.Response) => {
-        const { auth, dto: comment_id } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
+        const { sessionDto, dto: comment_id } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const sr = await commentRouteService.add_like({
             comment_id,
-            profile_id: auth.profile.id,
+            profile_id: sessionDto.profile_id,
         });
         const data: ResponseTypesForComment.add_like = sr;
         const message = "Успешно поставлен лайк к комментарию";
@@ -84,10 +80,10 @@ export const Comment_Controller = new (class Comment_Controller {
 
     /** Deletes Like */
     delete_like = async (req: Comment_ReqDtos.vote_like, res: ExpressJS.Response) => {
-        const { auth, dto: comment_id } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
+        const { sessionDto, dto: comment_id } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const deleted_vote = await commentRouteService.delete_like({
             comment_id,
-            profile_id: auth.profile.id,
+            profile_id: sessionDto.profile_id,
         });
 
         const data: ResponseTypesForComment.delete_like = deleted_vote;
@@ -96,10 +92,10 @@ export const Comment_Controller = new (class Comment_Controller {
     };
 
     add_dislike = async (req: Comment_ReqDtos.vote_dislike, res: ExpressJS.Response) => {
-        const { dto: comment_id, auth } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
+        const { dto: comment_id, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const sr = await commentRouteService.add_dislike({
             comment_id,
-            profile_id: auth.profile.id,
+            profile_id: sessionDto.profile_id,
         });
 
         const data: ResponseTypesForComment.add_dislike = sr;
@@ -109,10 +105,10 @@ export const Comment_Controller = new (class Comment_Controller {
 
     /** Deletes Dislike */
     delete_dislike = async (req: Comment_ReqDtos.vote_dislike, res: ExpressJS.Response) => {
-        const { auth, dto: comment_id } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
+        const { sessionDto, dto: comment_id } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const deleted_vote = await commentRouteService.delete_dislike({
             comment_id,
-            profile_id: auth.profile.id,
+            profile_id: sessionDto.profile_id,
         });
 
         const data: ResponseTypesForComment.delete_dislike = deleted_vote;
@@ -126,13 +122,14 @@ export const Comment_Controller = new (class Comment_Controller {
     };
     /** Delete a comment */
     delete_comment = async (req: Comment_ReqDtos.delete_comment, reply: ExpressJS.Response) => {
-        const { auth, dto: comment_id } = ControllerUtils.check_dto_for_validity(req, ["dto", "auth"]);
+        const { sessionDto, dto: comment_id } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const deleted_comment = await commentRouteService.delete_comment({
             comment_id,
-            profile_id: auth.profile.id,
+            profile_id: sessionDto.profile_id,
         });
         const data: ResponseTypesForComment.delete_comment = deleted_comment;
         const message = "Комментарий успешно удалён";
         return goReplyHttp.accepted(reply, { data, message });
     };
-})();
+}
+export const commentToAnimeRouteController = new CommentToAnimeRouteControllerClass();

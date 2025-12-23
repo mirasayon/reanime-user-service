@@ -1,13 +1,13 @@
 import { goReplyHttp } from "#/handlers/final-responder/all-http-responder.js";
 import type { ResponseTypesForAuthentication } from "#/shared/response-patterns/authentication.routes.js";
-import { ControllerUtils } from "#/utilities/controller.js";
+import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { default as ExpressJS } from "express";
 import type { Authentication_ReqDtos } from "[www]/authentication/authentication.pipes.js";
-import { Authentication_Service as services } from "[www]/authentication/authentication.service.js";
+import { authenticationRouteService as services } from "[www]/authentication/authentication.service.js";
 
 export const Authentication_Controller = new (class Authentication_Controller {
     login_via_email = async (req: Authentication_ReqDtos.login_via_email, reply: ExpressJS.Response) => {
-        const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
+        const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await services.login_via_email({
             agent: dto.agent ?? null,
             ip: dto.ip ?? null,
@@ -20,7 +20,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
     };
 
     login_via_username = async (req: Authentication_ReqDtos.login_via_username, reply: ExpressJS.Response) => {
-        const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
+        const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await services.login_via_username({
             agent: dto.agent ?? null,
             ip: dto.ip ?? null,
@@ -32,7 +32,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
         return goReplyHttp.accepted(reply, { data, message });
     };
     registration = async (req: Authentication_ReqDtos.registration, reply: ExpressJS.Response) => {
-        const { dto } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
+        const { dto } = checkRequestForValidity(req, ["dto"]);
         const token = await services.registration({
             nickname: dto.nickname,
             username: dto.username,
@@ -48,27 +48,28 @@ export const Authentication_Controller = new (class Authentication_Controller {
     };
 
     check_username_availability = async (req: Authentication_ReqDtos.check_username_availability, reply: ExpressJS.Response) => {
-        const { dto: username } = ControllerUtils.check_dto_for_validity(req, ["dto"]);
+        const { dto: username } = checkRequestForValidity(req, ["dto"]);
         const sr = await services.check_username_availability({ username });
         const data: ResponseTypesForAuthentication.check_username_availability = sr;
         const message = "Проверка доступности имени пользователя";
         return goReplyHttp.ok(reply, { data, message });
     };
     check_session = async (req: Authentication_ReqDtos.check_session, reply: ExpressJS.Response) => {
-        const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const { account, avatar } = await services.check_session(auth.session.by_account_id);
+        const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
+        const { account, avatar, profile } = await services.check_session(sessionDto.account_id);
         const data: ResponseTypesForAuthentication.check_session = {
-            profile: auth.profile,
-            account: account,
-            avatar: avatar,
-            session: auth.session,
+            avatar_url: avatar?.path || null,
+            username: account.username,
+            nickname: profile.nickname || null,
+            email: account.email || null,
+            selector: sessionDto.selector,
         };
         const message = "Ваша текущая сессия";
         return goReplyHttp.ok(reply, { data, message });
     };
     logout = async (req: Authentication_ReqDtos.logout, res: ExpressJS.Response) => {
-        const { auth } = ControllerUtils.check_dto_for_validity(req, ["auth"]);
-        const is_session_deleted = await services.logout(auth.session.selector, auth.session.by_account_id);
+        const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
+        const is_session_deleted = await services.logout(sessionDto.selector, sessionDto.account_id);
         const data: ResponseTypesForAuthentication.logout = is_session_deleted;
         const message = "Этот сеанс успешно удален (выход из системы)";
         return goReplyHttp.accepted(res, { message, data });

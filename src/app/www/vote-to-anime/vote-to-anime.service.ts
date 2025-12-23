@@ -9,7 +9,7 @@ import { BadRequestException, ConflictException, NotFoundException } from "#/err
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import type { VoteToAnime } from "[orm]/client.js";
 import { FavoriteAnimes_Model as model } from "[www]/vote-to-anime/vote-to-anime.model.js";
-export const FavoriteAnimes_Services = new (class FavoriteAnimes_Services {
+export const voteToAnimeRouteService = new (class FavoriteAnimes_Services {
     explore_likes = async (profile_id: iObjectCuid) => {
         const likes = await model.get_all_likes_by_profile_id(profile_id);
         return { likes };

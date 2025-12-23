@@ -1,6 +1,7 @@
 import { usernameNotFound } from "#/configs/frequent-errors.js";
 import { prisma } from "#/databases/providers/database-connect.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
+import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { iObjectCuid } from "#/shared/types/inputs/informative.types.js";
 import type { ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
 export const profileRouteModel = new (class Profile_Model {
@@ -63,7 +64,10 @@ export const profileRouteModel = new (class Profile_Model {
         });
 
         if (!profile) {
-            throw new NotFoundException(["Профиль с таким аккаунтом айди не найден"]);
+            throw new UnexpectedInternalServerErrorException(
+                `Для аккаунта ${account.id} не найден профиль`,
+                this.find_profile_by_username_AND_give_avatar_data.name,
+            );
         }
         const avatar = await prisma.profileAvatarPicture.findUnique({
             where: {

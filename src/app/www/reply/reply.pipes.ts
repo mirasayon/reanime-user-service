@@ -1,4 +1,4 @@
-import { vmfactory as m } from "#/utilities/validators/factory.js";
+import { vmFactory as m } from "#/utilities/validator-middleware-factory.js";
 import type { Request_dto_auth as _ } from "#/types/dto-middleware-shape.js";
 import { type dto, reply_schemas as schemas } from "#/shared/validators/comment-reply.validator.routes.js";
 

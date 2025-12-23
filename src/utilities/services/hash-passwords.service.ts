@@ -40,9 +40,7 @@ class Argon2idHashingService {
             });
         });
     };
-    /**
-     * Параметры по-умолчанию для Argon2id.
-     */
+    /** Параметры по-умолчанию для Argon2id. */
     public readonly _defaultParams: Argon2idDefaultsParameters = {
         parallelism: 2,
         tag_length: 32,

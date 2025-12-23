@@ -150,11 +150,10 @@ class AccountModelClass {
             where: { by_account_id: account_id },
         });
         if (!found_profile) {
-            throw new UnexpectedInternalServerErrorException({
-                service_name: this.find_profile_by_account_id.name,
-                errorMessageToClient: "Ошибка сервера при получении данных о пользователе. Попробуйте позже",
-                errorItselfOrPrivateMessageToServer: "UserProfile not found with this account id: " + account_id,
-            });
+            throw new UnexpectedInternalServerErrorException(
+                "UserProfile not found with this account id: " + account_id,
+                this.find_profile_by_account_id.name,
+            );
         }
         return found_profile;
     };
@@ -165,11 +164,10 @@ class AccountModelClass {
             include: { cover: true, avatar: true },
         });
         if (!found_profile) {
-            throw new UnexpectedInternalServerErrorException({
-                service_name: this.find_profile_by_account_id.name,
-                errorMessageToClient: "Ошибка сервера при получении данных о пользователе. Попробуйте позже",
-                errorItselfOrPrivateMessageToServer: "UserProfile not found with this account id: " + account_id,
-            });
+            throw new UnexpectedInternalServerErrorException(
+                "UserProfile not found with this account id: " + account_id,
+                this.find_profile_by_account_id_with_data_about_cover_and_avatar.name,
+            );
         }
         return found_profile;
     };

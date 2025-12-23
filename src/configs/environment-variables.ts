@@ -1,5 +1,5 @@
 import { validateEnvironment, builtInSchemas as v } from "safest-env";
-import { frontendUrl } from "./constants/frontend-url.js";
+import { frontendUrl } from "./constants/frontend-url-constant.js";
 const _env = validateEnvironment({
     PASSWORD_HASH_PEPPER: v.string().min(5),
     SESSION_TOKEN_HMAC_SECRET: v.string().min(5),
@@ -11,8 +11,6 @@ const _env = validateEnvironment({
 });
 /** Environment variables configuration class */
 class EnvironmentConfigClass {
-    /** Standard NODE_ENVIRONMENT. Running mode for application. */
-    NODE_ENVIRONMENT = _env.NODE_ENVIRONMENT;
     constructor() {
         let mode: "dev" | "test" | "prod";
         switch (this.NODE_ENVIRONMENT) {
@@ -35,12 +33,13 @@ class EnvironmentConfigClass {
         this.frontendUrl = frontendUrl[mode];
         this.currentMode = mode;
     }
+
+    /** Standard NODE_ENVIRONMENT */
+    NODE_ENVIRONMENT = _env.NODE_ENVIRONMENT;
     is_dev = this.NODE_ENVIRONMENT === "development";
     is_test = this.NODE_ENVIRONMENT === "test";
     is_prod = this.NODE_ENVIRONMENT === "production";
-    /**
-     * Current running mode.
-     */
+    /** Текущий режим работы. dev, test, prod */
     currentMode: "dev" | "test" | "prod";
     passwordHashPepper = _env.PASSWORD_HASH_PEPPER;
     /** DB Connection URL */
@@ -55,7 +54,5 @@ class EnvironmentConfigClass {
         host: _env.SERVER_HOSTNAME,
     };
 }
-/**
- * Environment variables configuration
- */
+/** Main Environment Variables Configuration */
 export const envMainConfig = new EnvironmentConfigClass();

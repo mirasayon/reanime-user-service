@@ -1,5 +1,5 @@
 import { checkIfAccountAlreadyLoggedMiddleware, mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
-import { createConfiguredRouter } from "#/utilities/tools/express.js";
+import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
 import { Authentication_Controller as c } from "[www]/authentication/authentication.controller.js";
 import { Authentication_ReqPipes as vm } from "[www]/authentication/authentication.pipes.js";
 

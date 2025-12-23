@@ -3,7 +3,7 @@ import { envMainConfig } from "#/configs/environment-variables.js";
 import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#/handlers/errors/client-side-errors-handler.js";
 import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerMiddleware } from "#/handlers/errors/server-side-errors-handler.js";
 import { mainDevServerLogger } from "#/middlewares/development-env-logger-middleware.js";
-import { jsonBodyParserMiddleware, mainStaticServerMiddleware } from "#/utilities/tools/express.js";
+import { jsonBodyParserMiddleware, mainStaticServerMiddleware } from "#/utilities/express-core-middlewares.js";
 import compression from "compression";
 import cors from "cors";
 import express from "express";
