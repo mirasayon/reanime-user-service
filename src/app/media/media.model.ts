@@ -2,27 +2,29 @@ import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
 import type { ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
+export type DataTypeForUploadOrUpdateAvatar = Omit<ProfileAvatarPicture, "id" | "created_at" | "updated_at">;
 class MediaRouteModelClass {
-    update_avatar_by_id = async (profile_id: DbCuidType, path: string, mime_type: string, size_bytes: number): Promise<ProfileAvatarPicture> => {
+    update_avatar_by_id = async (avatarData: DataTypeForUploadOrUpdateAvatar): Promise<ProfileAvatarPicture> => {
         return await prisma.profileAvatarPicture.update({
             where: {
-                by_profile_id: profile_id,
+                by_profile_id: avatarData.by_profile_id,
             },
             data: {
-                path,
-                size_bytes,
-                mime_type,
+                height: avatarData.height,
+                width: avatarData.width,
+                path_dirname: avatarData.path_dirname,
+                path_filename: avatarData.path_filename,
+                size_bytes: avatarData.size_bytes,
+                original_name: avatarData.original_name,
+                mime_type: avatarData.mime_type,
+                hash_algorithm_version: avatarData.hash_algorithm_version,
+                file_hash: avatarData.file_hash,
             },
         });
     };
-    set_avatar_by_id = async (profile_id: DbCuidType, path: string, mime_type: string, size_bytes: number): Promise<ProfileAvatarPicture> => {
+    set_avatar_by_id = async (avatarData: DataTypeForUploadOrUpdateAvatar): Promise<ProfileAvatarPicture> => {
         return await prisma.profileAvatarPicture.create({
-            data: {
-                by_profile_id: profile_id,
-                path,
-                size_bytes,
-                mime_type,
-            },
+            data: avatarData,
         });
     };
 
@@ -45,6 +47,13 @@ class MediaRouteModelClass {
         });
     };
 
+    delete_avatar_by_id = async (id: DbCuidType): Promise<ProfileAvatarPicture> => {
+        return await prisma.profileAvatarPicture.delete({
+            where: {
+                id: id,
+            },
+        });
+    };
     delete_avatar_from_profile_if_exists = async (profile_id: DbCuidType): Promise<void> => {
         const found_avatar = await prisma.profileAvatarPicture.findUnique({
             where: {

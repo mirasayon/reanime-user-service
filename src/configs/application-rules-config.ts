@@ -8,4 +8,5 @@ export const REPLIES_LIMIT_TO_ONE_COMMENT = 5 as const;
 
 export const MAX_COMMENT_ON_ANIME_LIMIT = 5 as const;
 export const maxAvatarPayloadInMB = 5 as const;
+/** 5 MB */
 export const PAYLOAD_MAX_SIZE = maxAvatarPayloadInMB * 1_024 * 1_024;

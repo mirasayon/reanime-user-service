@@ -3,7 +3,7 @@ import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js"
 import { mediaSectionController as c } from "#/app/media/media.controller.js";
 import { mediaRoutePipesMiddlewares as pm } from "#/app/media/media.pipes.js";
 import multer from "multer";
-import { mediaFileValidatorMiddleware } from "./validators-for-media-section/file-validator-middleware-for-media.js";
+import { mediaFileValidatorValidatorMiddleware, requestContentLengthValidatorMiddleware } from "./media.middleware.js";
 export const mediaSectionRouter = (() => {
     const upload = multer({
         storage: multer.memoryStorage(),
@@ -14,15 +14,24 @@ export const mediaSectionRouter = (() => {
     const r = createConfiguredRouter();
 
     // Set User Avatar
-    r.post("/avatar/set", mediaFileValidatorMiddleware, pm.set_avatar, mainAuthenticationMiddleware, upload.single("one_image_file"), c.set_avatar);
+    r.post(
+        "/avatar/set",
+        requestContentLengthValidatorMiddleware,
+        pm.set_avatar,
+        mainAuthenticationMiddleware,
+        upload.single("one_image_file"),
+        mediaFileValidatorValidatorMiddleware,
+        c.set_avatar,
+    );
 
     // Update User Avatar
     r.patch(
         "/avatar/update",
-        mediaFileValidatorMiddleware,
+        requestContentLengthValidatorMiddleware,
         pm.update_avatar,
         mainAuthenticationMiddleware,
         upload.single("one_image_file"),
+        mediaFileValidatorValidatorMiddleware,
         c.update_avatar,
     );
 

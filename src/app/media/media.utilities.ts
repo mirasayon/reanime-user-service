@@ -1,41 +1,24 @@
-import { BadRequestException, NotFoundException, ConflictException } from "#/errors/client-side-exceptions.js";
+import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import { mediaRouteModel } from "#/app/media/media.model.js";
 import type { default as ExpressJS } from "express";
-import { profileRouteModel } from "#/app/profile/profile.model.js";
-import { pathsMainConfig } from "#/configs/file-system-path-config.js";
-import { Logger } from "log-it-colored";
-import path, { extname, join } from "node:path";
+import { extname } from "node:path";
 import { AVATAR_IMAGE_FILE_HEIGHT_PIXELS, AVATAR_IMAGE_FILE_WIDTH_PIXELS } from "#/constants/media-module-config.js";
-import { baseProcessPathForAvatar, tempProcessPathForAvatar } from "#/configs/file-system-path-config.js";
-import { BadGatewayException } from "#/errors/server-side-exceptions.js";
-import consola from "consola";
-import { setTimeout as delay } from "node:timers/promises";
 import sharp from "sharp";
-import type { ExpressJSMulterFileType } from "#/types/util-expressjs-types.js";
 import { AVATAR_IMAGE_FILE_ALLOWED_MIME_TYPES } from "#/constants/media-module-config.js";
 import { createReadStream, statSync, existsSync } from "node:fs";
-import { readFile, unlink, writeFile } from "node:fs/promises";
+import { unlink, writeFile } from "node:fs/promises";
 import { mediaHashService } from "#/utilities/cryptography-services/media-filename-hashing.service.js";
 import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
 
-/** Removes a file with a delay if it exists. */
-export async function removeFileIfExistsWithDelay(path: string, seconds: number = 2000) {
-    if (existsSync(path)) {
-        await delay(seconds);
-        await unlink(path);
-    }
-}
 /** Removes a file if it exists. */
-export async function removeFileIfExists(path: string): Promise<void> {
+async function removeFileIfExists(path: string): Promise<void> {
     if (existsSync(path)) {
         await unlink(path);
     }
 }
 
-export async function editForProdTheImageSharp(tempFilePath: string, prodFilePath: string) {
-    const inputBuffer = await readFile(tempFilePath);
-    const sharpInstance = sharp(inputBuffer);
-    const editedImageFile = await sharpInstance
+export async function editForProdTheImageSharp(reqBuffer: Buffer<ArrayBufferLike>, prodFilePath: string) {
+    const editedImageFile = await sharp(reqBuffer)
         .rotate()
         .resize({
             width: AVATAR_IMAGE_FILE_WIDTH_PIXELS,
@@ -47,15 +30,13 @@ export async function editForProdTheImageSharp(tempFilePath: string, prodFilePat
         .toBuffer();
     await writeFile(prodFilePath, editedImageFile);
     const hash = mediaHashService.hashFileB64Url(editedImageFile);
-    removeFileIfExistsWithDelay(tempFilePath);
     return { hash, size_bytes: editedImageFile.length };
 }
-export async function destroyFilesAfterTrigger(trigger: boolean, profile_id: DbCuidType, tempPath: string, prodPath: string): Promise<boolean> {
+export async function destroyFilesAfterTrigger(trigger: boolean, profile_id: DbCuidType, prodPath: string): Promise<boolean> {
     if (!trigger) {
         return false;
     }
     if (trigger === true) {
-        await removeFileIfExists(tempPath);
         await mediaRouteModel.delete_avatar_from_profile_if_exists(profile_id);
         await removeFileIfExists(prodPath);
         return true;

@@ -21,3 +21,5 @@ export const maxSessionsLimitReachedErrorMessage = `Пользователь н�
 export const invalidCredentialsErrorMessage = "Неправильный пароль, юзернейм или почта";
 
 export const invalidSessionTokenErrorMessage = "Неправильный токен сеанса или токен сеанса отсутствует";
+
+export const invalidMediaFileToUploadErrorMessage = "Недопустимый тип файла для загрузки. Пожалуйста, загрузите файл в формате JPEG, PNG или WEBP";

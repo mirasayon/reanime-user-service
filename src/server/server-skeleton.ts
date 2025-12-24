@@ -1,7 +1,7 @@
 import { mainServicesRouter } from "#/app/app-layout.routes.js";
 import { envMainConfig } from "#/configs/environment-variables-config.js";
 import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#/handlers/client-side-errors-handler.js";
-import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerMiddleware } from "#/handlers/server-side-errors-handler.js";
+import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerLastMiddleware } from "#/handlers/server-side-errors-handler.js";
 import { mainDevServerLogger } from "#/middlewares/development-env-logger-middleware.js";
 import { jsonBodyParserMiddleware, mainStaticServerMiddleware } from "#/utilities/express-core-middlewares.js";
 import compression from "compression";
@@ -34,6 +34,6 @@ export const expressMainApplication = (() => {
     app.use(notFoundRouteErrorMiddleware);
     app.use(clientSideErrorMiddleware);
     app.use(serverSideExceptionHandlerMiddleware);
-    app.use(unknownServerSideExceptionHandlerMiddleware);
+    app.use(unknownServerSideExceptionHandlerLastMiddleware);
     return app;
 })();

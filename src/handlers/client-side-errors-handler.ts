@@ -70,5 +70,5 @@ export function clientSideErrorMiddleware(
 }
 
 export function notFoundRouteErrorMiddleware(req: ExpressJS.Request, res: ExpressJS.Response, next: ExpressJS.NextFunction): void {
-    return goReplyHttp.not_found(res, { errors: ["Default Not Found Error"] });
+    return goReplyHttp.not_found(res, { errors: ['Ошибка "Не найдено"'] });
 }

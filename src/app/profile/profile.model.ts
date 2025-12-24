@@ -28,6 +28,18 @@ class ProfileRouteModelClass {
         }
         return found_profile;
     };
+
+    findAvatarByProfileId = async (profile_id: DbCuidType) => {
+        const found_profile = await prisma.profileAvatarPicture.findUnique({
+            where: {
+                by_profile_id: profile_id,
+            },
+        });
+        if (!found_profile) {
+            throw new NotFoundException(["Аватарки у вас нет"]);
+        }
+        return found_profile;
+    };
     find_profile_by_username = async (username: DbCuidType): Promise<{ account: UserAccount; profile: UserProfile }> => {
         const account = await prisma.userAccount.findUnique({
             where: { username },

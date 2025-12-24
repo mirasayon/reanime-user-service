@@ -10,6 +10,7 @@ import { Ping_Router } from "#/app/ping/ping.route.js";
 import { Profile_Router } from "#/app/profile/profile.route.js";
 import { Reply_Router } from "#/app/reply/reply.route.js";
 import { secureHttpGuard } from "./secure-http.guard.js";
+import { mediaSectionRouter } from "./media/media.route.js";
 /** Entry Point Router */
 export const mainServicesRouter = (() => {
     const router = createConfiguredRouter();
@@ -20,6 +21,7 @@ export const mainServicesRouter = (() => {
     router.use("/comment", Comment_Router);
     router.use("/reply", Reply_Router);
     router.use("/profile", Profile_Router);
+    router.use("/media", mediaSectionRouter);
     router.use("/account", accountSectionRouter);
     router.use("/anime/marked_collection", MarkedAnimeCollection_Router);
     router.use("/favorite_animes", FavoriteAnimes_Router);

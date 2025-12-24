@@ -148,7 +148,8 @@ model ProfileAvatarPicture {
   /// MIME-тип файла (например "image/webp").
   mime_type              String
   /// Относительный путь к файлу в хранилище (без домена).
-  path                   String      @unique
+  path_dirname           String
+  path_filename          String
   /// Оригинальное имя загруженного файла (для отображения/лога).
   original_name          String?
   /// Профиль, которому принадлежит эта картинка. При удалении профиля — каскадно удаляется картинка.
@@ -165,6 +166,8 @@ model ProfileAvatarPicture {
   hash_algorithm_version Int
   /// Хеш файла в base64url.
   file_hash              String
+
+  @@unique([path_dirname, path_filename])
 }
 
 /// Изображение обложки профиля: путь, mime и метаданные.
@@ -175,7 +178,8 @@ model ProfileCoverPicture {
   /// MIME-тип файла (например "image/webp").
   mime_type              String
   /// Относительный путь к файлу обложки.
-  path                   String      @unique
+  path_dirname           String
+  path_filename          String
   /// Оригинальное имя файла.
   original_name          String?
   /// Профиль, которому принадлежит обложка.
@@ -192,6 +196,8 @@ model ProfileCoverPicture {
   hash_algorithm_version Int
   /// Хеш файла в base64url.
   file_hash              String
+
+  @@unique([path_dirname, path_filename])
 }
 
 /// Публичный профиль пользователя — био, ник, настройки приватности и связи с аккаунтом.

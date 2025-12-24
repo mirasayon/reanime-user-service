@@ -58,7 +58,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const { account, avatar, profile } = await services.check_session(sessionDto.account_id);
         const data: ResponseTypesForAuthentication.check_session = {
-            avatar_url: avatar?.path || null,
+            avatar_url: avatar ? avatar.path_dirname + "/" + avatar.path_filename : null,
             username: account.username,
             nickname: profile.nickname || null,
             email: account.email || null,
