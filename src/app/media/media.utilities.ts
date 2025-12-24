@@ -16,6 +16,7 @@ import { AVATAR_IMAGE_FILE_ALLOWED_MIME_TYPES } from "#/constants/media-module-c
 import { createReadStream, statSync, existsSync } from "node:fs";
 import { readFile, unlink, writeFile } from "node:fs/promises";
 import { mediaHashService } from "#/utilities/cryptography-services/media-filename-hashing.service.js";
+import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
 
 /** Removes a file with a delay if it exists. */
 export async function removeFileIfExistsWithDelay(path: string, seconds: number = 2000) {
@@ -47,16 +48,16 @@ export async function editForProdTheImageSharp(tempFilePath: string, prodFilePat
     await writeFile(prodFilePath, editedImageFile);
     const hash = mediaHashService.hashFileB64Url(editedImageFile);
     removeFileIfExistsWithDelay(tempFilePath);
-    return hash;
+    return { hash, size_bytes: editedImageFile.length };
 }
-export async function destroyFilesAfterTrigger(trigger: boolean, paths: string[]): Promise<boolean> {
-    if (!trigger || !paths?.length) {
+export async function destroyFilesAfterTrigger(trigger: boolean, profile_id: DbCuidType, tempPath: string, prodPath: string): Promise<boolean> {
+    if (!trigger) {
         return false;
     }
     if (trigger === true) {
-        for await (const path of paths) {
-            await removeFileIfExists(path);
-        }
+        await removeFileIfExists(tempPath);
+        await mediaRouteModel.delete_avatar_from_profile_if_exists(profile_id);
+        await removeFileIfExists(prodPath);
         return true;
     }
     return false;

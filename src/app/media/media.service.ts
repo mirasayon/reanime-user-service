@@ -14,6 +14,7 @@ import { statSync, existsSync } from "node:fs";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 import { mediaHashService } from "#/utilities/cryptography-services/media-filename-hashing.service.js";
 import { editForProdTheImageSharp, destroyFilesAfterTrigger, serveMediaFile } from "./media.utilities.js";
+import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
 type FileSystemAvatarMeta = {
     path: string;
     mime_type: string;
@@ -44,26 +45,27 @@ class MediaRouteServiceClass {
             throw new BadRequestException(["Аватар не найден"]);
         }
     };
-    private checkIfUserALreadyHasAvatar = async (profile_id: string) => {
+    private checkDBIfUserALreadyHasAvatar = async (profile_id: string) => {
         const found_profile = await profileRouteModel.find_profile_by_its_id_with_avatar_data(profile_id);
         if (found_profile.avatar) {
             throw new BadRequestException(["Вам нужно обновить аватар, но вы загружаете"]);
         }
     };
-    set_avatar = async (profile_cuid: string, file: ExpressJSMulterFileType): Promise<boolean> => {
-        const avatarFileMeta = await mediaSectionService.avatarSetToFS(file);
-        await this.checkIfUserALreadyHasAvatar(profile_cuid);
+    set_avatar = async (profile_id: string, file: ExpressJSMulterFileType): Promise<boolean> => {
+        await this.checkDBIfUserALreadyHasAvatar(profile_id);
+        const avatarFileMeta = await this.avatarSetToFS(file, profile_id);
 
-        const found_profile = await profileRouteModel.find_profile_by_its_id_with_avatar_data(profile_cuid);
-        if (found_profile.avatar) {
-            throw new BadRequestException(["Вам нужно обновить аватар, но вы загружаете"]);
-        }
-        const username = (await profileRouteModel.find_by_account_id_AND_return_account_and_profile(found_profile.by_account_id)).account.username;
-        const new_avatar = await mediaRouteModel.set_avatar_by_id(found_profile.id, username, "", 1);
+        const new_avatar = await mediaRouteModel.set_avatar_by_id(
+            profile_id,
+            avatarFileMeta.path,
+            avatarFileMeta.mime_type,
+            avatarFileMeta.size_bytes,
+        );
         return !!new_avatar;
     };
     update_avatar = async (profile_id: string, file: ExpressJSMulterFileType): Promise<boolean> => {
-        await this.avatarUpdateFileSystem("", file);
+        const found_avatar = await mediaRouteModel.find_avatar_by_profile_id(profile_id);
+        await this.avatarUpdateFileSystem(found_avatar.path, file, profile_id);
         const { found_profile } = await this.checkIfUserHasAvatar(profile_id);
         const username = (await profileRouteModel.find_by_account_id_AND_return_account_and_profile(found_profile.by_account_id)).account.username;
         const updated_avatar = await mediaRouteModel.update_avatar_by_id(found_profile.id, username, "", 1);
@@ -74,7 +76,7 @@ class MediaRouteServiceClass {
         await this.checkIfProfileHasAvatarForDeletingIt(profile_id);
 
         const deleted_avatar = await mediaRouteModel.delete_avatar_from_profile(profile_id);
-        await this.avatarDeleteFileSystem(profile_id);
+        await this.avatarDeleteFileSystem(deleted_avatar.path);
         return !!deleted_avatar;
     };
     avatar_view = async (username: string, req: ExpressJS.Request, res: ExpressJS.Response) => {
@@ -140,10 +142,10 @@ class MediaRouteServiceClass {
         }
         throw new UnexpectedInternalServerErrorException("Аватарка не найдена для удаления", this.avatarDeleteFileSystem.name);
     };
-    private avatarSetToFS = async (file: ExpressJSMulterFileType): Promise<FileSystemAvatarMeta> => {
+    private avatarSetToFS = async (file: ExpressJSMulterFileType, profile_id: DbCuidType): Promise<FileSystemAvatarMeta> => {
         const genName = mediaHashService.genFilenamePairForProduction();
 
-        const prod_path = join(baseProcessPathForAvatar, genName.dirName, `${genName.dirName}.webp`) as string;
+        const prod_path = join(baseProcessPathForAvatar, genName.dirName, `${genName.fileName}.webp`) as string;
         const extname = this.get_correct_extname(file.mimetype);
 
         const temp_path = join(tempProcessPathForAvatar, genName.dirName, `${genName.dirName}.${extname}`);
@@ -151,37 +153,46 @@ class MediaRouteServiceClass {
             throw new UnexpectedInternalServerErrorException("Аватар с таким идентификатором профиля уже существует", this.avatarSetToFS.name);
         }
         // ---- Image Processing
-        return await this.fromTempToProdProcess(temp_path, prod_path, file);
+        return await this.fromTempToProdProcess(temp_path, prod_path, file, profile_id);
     };
 
-    private fromTempToProdProcess = async (temp_path: string, prod_path: string, file: ExpressJSMulterFileType): Promise<FileSystemAvatarMeta> => {
+    private fromTempToProdProcess = async (
+        tempPath: string,
+        prodPath: string,
+        file: ExpressJSMulterFileType,
+        profile_id: DbCuidType,
+    ): Promise<FileSystemAvatarMeta> => {
         let errored = false;
 
         try {
-            await writeFile(temp_path, file.buffer);
-            const hash = await editForProdTheImageSharp(temp_path, prod_path);
+            await writeFile(tempPath, file.buffer);
+            const { hash, size_bytes } = await editForProdTheImageSharp(tempPath, prodPath);
             return {
-                path: prod_path,
+                path: prodPath,
                 mime_type: file.mimetype,
                 original_name: file.originalname,
                 width: AVATAR_IMAGE_FILE_WIDTH_PIXELS,
                 file_hash: hash,
                 height: AVATAR_IMAGE_FILE_HEIGHT_PIXELS,
-                size_bytes: statSync(prod_path).size,
+                size_bytes: size_bytes,
             } satisfies FileSystemAvatarMeta;
         } catch (error) {
             errored = true;
             throw error;
         } finally {
             try {
-                await destroyFilesAfterTrigger(errored, [temp_path, prod_path]);
+                await destroyFilesAfterTrigger(errored, profile_id, tempPath, prodPath);
             } catch (cleanupErr) {
-                consola.warn(`Cleanup failed (${destroyFilesAfterTrigger.name}): `, cleanupErr);
+                consola.warn(`Cleanup failed ${destroyFilesAfterTrigger.name}(): `, cleanupErr);
             }
         }
     };
 
-    private avatarUpdateFileSystem = async (pathToDelete: string, file: ExpressJSMulterFileType): Promise<FileSystemAvatarMeta> => {
+    private avatarUpdateFileSystem = async (
+        pathToDelete: string,
+        file: ExpressJSMulterFileType,
+        profile_id: DbCuidType,
+    ): Promise<FileSystemAvatarMeta> => {
         await this.destroyProdAvatarFile(pathToDelete);
         const genName = mediaHashService.genFilenamePairForProduction();
 
@@ -194,9 +205,9 @@ class MediaRouteServiceClass {
         }
 
         // ---- Image Processing
-        return await this.fromTempToProdProcess(temp_path, prod_path, file);
+        return await this.fromTempToProdProcess(temp_path, prod_path, file, profile_id);
     };
-    serveAvatarImage = async (profile_id: string, req: ExpressJS.Request, res: ExpressJS.Response) => {
+    private serveAvatarImage = async (profile_id: string, req: ExpressJS.Request, res: ExpressJS.Response) => {
         const filePath = join(baseProcessPathForAvatar, `${profile_id}.webp`);
         return await serveMediaFile(req, res, filePath);
     };

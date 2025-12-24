@@ -8,12 +8,12 @@ import type { ResponseTypesFor_Media_Section } from "#/shared/response-patterns-
 
 class MediaSectionControllerClass {
     set_avatar = async (req: MediaRoutePipeDtos.set_avatar, res: ExpressJS.Response) => {
-        const { file, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
+        const { file, sessionDto } = checkRequestForValidity(req, ["file", "sessionDto"]);
         if (!file) {
             throw noImage_error_responseErrorObj;
         }
-        const is_created = await mediaSectionService.set_avatar(sessionDto.profile_id, file);
-        const data: ResponseTypesFor_Media_Section.set_avatar = is_created;
+        const isCreated = await mediaSectionService.set_avatar(sessionDto.profile_id, file);
+        const data: ResponseTypesFor_Media_Section.set_avatar = isCreated;
         const message = "Аватарка успешно загружена";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -26,7 +26,7 @@ class MediaSectionControllerClass {
         return goReplyHttp.accepted(res, { data, message });
     };
     update_avatar = async (req: MediaRoutePipeDtos.update_avatar, res: ExpressJS.Response) => {
-        const { sessionDto, file } = checkRequestForValidity(req, ["sessionDto"]);
+        const { sessionDto, file } = checkRequestForValidity(req, ["sessionDto", "file"]);
         if (!file) {
             throw noImage_error_responseErrorObj;
         }

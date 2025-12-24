@@ -14,14 +14,7 @@ export const mediaSectionRouter = (() => {
     const r = createConfiguredRouter();
 
     // Set User Avatar
-    r.post(
-        "/avatar/set",
-        mediaFileValidatorMiddleware,
-        pm.set_avatar,
-        mainAuthenticationMiddleware,
-        upload.single("one_avatar_image_file"),
-        c.set_avatar,
-    );
+    r.post("/avatar/set", mediaFileValidatorMiddleware, pm.set_avatar, mainAuthenticationMiddleware, upload.single("one_image_file"), c.set_avatar);
 
     // Update User Avatar
     r.patch(
@@ -29,7 +22,7 @@ export const mediaSectionRouter = (() => {
         mediaFileValidatorMiddleware,
         pm.update_avatar,
         mainAuthenticationMiddleware,
-        upload.single("one_avatar_image_file"),
+        upload.single("one_image_file"),
         c.update_avatar,
     );
 

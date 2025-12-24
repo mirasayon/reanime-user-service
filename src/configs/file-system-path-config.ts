@@ -18,5 +18,8 @@ class PathsMainConfig {
     src: string = ensuredJoinSync(_dirname_, "..");
 }
 export const pathsMainConfig = new PathsMainConfig();
+/** ensuredJoinSync(pathsMainConfig.storage, "avatars", "base"); */
 export const baseProcessPathForAvatar = ensuredJoinSync(pathsMainConfig.storage, "avatars", "base");
+
+/** ensuredJoinSync(pathsMainConfig.storage, "avatars", "temp"); */
 export const tempProcessPathForAvatar = ensuredJoinSync(pathsMainConfig.storage, "avatars", "temp");

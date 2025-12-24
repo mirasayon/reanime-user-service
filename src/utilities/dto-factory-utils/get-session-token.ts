@@ -6,7 +6,6 @@ const TOKEN_RE = /^[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+$/;
 /** Возвращает токен сеанса из заголовков запроса */
 export function getSessionTokenFromHeadersDto(requestHeaders: IncomingHttpHeaders): TokenStringRaw | null {
     const header = requestHeaders["authorization"];
-    console.info({ header });
 
     if (!header || typeof header !== "string") {
         return null;
@@ -29,7 +28,6 @@ export function getSessionTokenFromHeadersDto(requestHeaders: IncomingHttpHeader
         return null;
     }
     if (TOKEN_RE.test(token)) {
-        console.info({ token });
         return token as TokenStringRaw;
     }
     return null;
