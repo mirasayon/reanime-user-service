@@ -1,8 +1,8 @@
 // hashing-service.ts
 import { envMainConfig } from "#/configs/environment-variables-config.js";
 import { argon2, randomBytes, timingSafeEqual, type Argon2Parameters } from "node:crypto";
-type Argon2idDefaultsParameters = Omit<Argon2idHashResult, "hash_base64" | "salt_base64">;
-export type Argon2idHashResult = {
+type Argon2idDefaultsParameters = Omit<Argon2idHashResultType, "hash_base64" | "salt_base64">;
+export type Argon2idHashResultType = {
     /**
      * Полученный хэш пароля в формате base64.
      */
@@ -62,7 +62,7 @@ class Argon2idHashingService {
      * Хэширует пароль и возвращает объект, который потом можно сохранить в БД.
      * derivedB64 и saltB64 — base64-строки.
      */
-    hashPasswordArgon2id = async (password: string): Promise<Argon2idHashResult> => {
+    hashPasswordArgon2id = async (password: string): Promise<Argon2idHashResultType> => {
         const salt = randomBytes(16);
         const params: Argon2Parameters = {
             message: Buffer.from(password, "utf8"),
@@ -83,14 +83,14 @@ class Argon2idHashingService {
             passes: params.passes,
             parallelism: params.parallelism,
             tag_length: params.tagLength,
-        } satisfies Argon2idHashResult;
+        } satisfies Argon2idHashResultType;
     };
 
     /**
      * Проверка: принимает candidate password и объект, как из БД.
      * Возвращает `true`/`false`.
      */
-    verifyPasswordWithStored = async ({ password, stored }: { password: string; stored: Argon2idHashResult }): Promise<boolean> => {
+    verifyPasswordWithStored = async ({ password, stored }: { password: string; stored: Argon2idHashResultType }): Promise<boolean> => {
         /** Пароль из БД в формате base64. */
         const storedDerived = Buffer.from(stored.hash_base64, "base64");
 

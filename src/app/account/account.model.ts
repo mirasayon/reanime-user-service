@@ -2,10 +2,10 @@ import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { iAccountEmail, iAccountUsername, DbCuidType, TokenSelector } from "#/shared/types-shared/informative-input-types-shared.js";
-import type { Argon2idHashResult } from "#/utilities/cryptography-services/hash-passwords.service.js";
+import type { Argon2idHashResultType } from "#/utilities/cryptography-services/hash-passwords.service.js";
 import type { AccountPassword, LoginSession, ProfileAvatarPicture, ProfileCoverPicture, UserAccount, UserProfile } from "[orm]/client.js";
 export type ProfileWithCoverAndAvatarData = UserProfile & { cover: ProfileCoverPicture | null } & { avatar: ProfileAvatarPicture | null };
-class AccountModelClass {
+class AccountSectionModelsClass {
     Get_account_by_its_id_throw_error = async (account_id: DbCuidType): Promise<UserAccount> => {
         const found_account = await prisma.userAccount.findUnique({
             where: {
@@ -90,7 +90,7 @@ class AccountModelClass {
         hashResult,
         password_id,
     }: {
-        hashResult: Argon2idHashResult;
+        hashResult: Argon2idHashResultType;
         account_id: DbCuidType;
         password_id: string;
     }) => {
@@ -197,4 +197,4 @@ class AccountModelClass {
         return deleted_session;
     };
 }
-export const Account_Model = new AccountModelClass();
+export const accountSectionModels = new AccountSectionModelsClass();

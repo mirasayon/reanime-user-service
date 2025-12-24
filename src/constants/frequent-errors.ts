@@ -12,7 +12,7 @@ export const sessionMetaDoNotMatchErrorMessage = "IP-адрес клиента �
 
 export const emailIsUsedErrorMessage = "Эта почта уже используется другим аккаунтом" as const;
 
-export const noImage_error_responseErrorMessage = new BadRequestException(["Файл не загружен. Пожалуйста, загрузите изображение"]);
+export const noImage_error_responseErrorObj = new BadRequestException(["Файл не загружен. Пожалуйста, загрузите изображение"]);
 
 export const searchQueriesAreOutOfRangeErrorMessage = "Параметры запроса переполнены больше, чем необходимо.";
 

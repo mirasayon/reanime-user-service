@@ -2,7 +2,7 @@ import { invalidCredentialsErrorMessage } from "#/constants/frequent-errors.js";
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import type { TokenSelector, DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
-import type { Argon2idHashResult } from "#/utilities/cryptography-services/hash-passwords.service.js";
+import type { Argon2idHashResultType } from "#/utilities/cryptography-services/hash-passwords.service.js";
 import { type CreateSessionTokenType } from "#/utilities/cryptography-services/hash-token-sessions.service.js";
 import type { AccountPassword, LoginSession, UserAccount } from "[orm]/client.js";
 
@@ -135,7 +135,7 @@ class AuthenticationRouteModelClass {
 
     createProfile_Account_Password = async (
         data: { username: string; nickname: string | null; email: string | null },
-        passwordHashResult: Argon2idHashResult,
+        passwordHashResult: Argon2idHashResultType,
     ) => {
         return await prisma.userAccount.create({
             data: {

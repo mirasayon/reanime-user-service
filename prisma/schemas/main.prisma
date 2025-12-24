@@ -140,50 +140,58 @@ model LoginSession {
 /// Изображение аватарки пользователя: путь, mime и метаданные.
 model ProfileAvatarPicture {
   /// Уникальный идентификатор картинки.
-  id            String      @id @default(cuid())
+  id                     String      @id @default(cuid())
   /// Дата добавления картинки.
-  created_at    DateTime    @default(now()) @db.Timestamptz
+  created_at             DateTime    @default(now()) @db.Timestamptz
   /// Дата последнего обновления метаданных.
-  updated_at    DateTime    @updatedAt @db.Timestamptz
+  updated_at             DateTime    @updatedAt @db.Timestamptz
   /// MIME-тип файла (например "image/webp").
-  mime_type     String
+  mime_type              String
   /// Относительный путь к файлу в хранилище (без домена).
-  path          String
+  path                   String      @unique
   /// Оригинальное имя загруженного файла (для отображения/лога).
-  original_name String?
+  original_name          String?
   /// Профиль, которому принадлежит эта картинка. При удалении профиля — каскадно удаляется картинка.
-  by_profile    UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile             UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   /// Айди профиля-владельца картинки (уникально — 1:1 связь).
-  by_profile_id String      @unique
+  by_profile_id          String      @unique
   /// Ширина изображения в пикселях (если известно).
-  width         Int?
+  width                  Int?
   /// Высота изображения в пикселях (если известно).
-  height        Int?
+  height                 Int?
   /// Размер файла в байтах.
-  size_bytes    Int
+  size_bytes             Int
+  /// Версия алгоритма хеширования. 1 = Sha3-512 (локальная конвенция).
+  hash_algorithm_version Int
+  /// Хеш файла в base64url.
+  file_hash              String
 }
 
 /// Изображение обложки профиля: путь, mime и метаданные.
 model ProfileCoverPicture {
-  id            String      @id @default(cuid())
-  created_at    DateTime    @default(now()) @db.Timestamptz
-  updated_at    DateTime    @updatedAt @db.Timestamptz
+  id                     String      @id @default(cuid())
+  created_at             DateTime    @default(now()) @db.Timestamptz
+  updated_at             DateTime    @updatedAt @db.Timestamptz
   /// MIME-тип файла (например "image/webp").
-  mime_type     String
+  mime_type              String
   /// Относительный путь к файлу обложки.
-  path          String
+  path                   String      @unique
   /// Оригинальное имя файла.
-  original_name String?
+  original_name          String?
   /// Профиль, которому принадлежит обложка.
-  by_profile    UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  by_profile             UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   /// Айди профиля-владельца (уникально — 1:1 связь).
-  by_profile_id String      @unique
+  by_profile_id          String      @unique
   /// Ширина в пикселях (если известно).
-  width         Int?
+  width                  Int?
   /// Высота в пикселях (если известно).
-  height        Int?
+  height                 Int?
   /// Размер файла в байтах.
-  size_bytes    Int
+  size_bytes             Int
+  /// Версия алгоритма хеширования. 1 = Sha3-512 (локальная конвенция).
+  hash_algorithm_version Int
+  /// Хеш файла в base64url.
+  file_hash              String
 }
 
 /// Публичный профиль пользователя — био, ник, настройки приватности и связи с аккаунтом.
