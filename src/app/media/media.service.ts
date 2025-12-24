@@ -8,10 +8,12 @@ import { fsPathForAvatar } from "#/configs/file-system-path-config.js";
 import consola from "consola";
 import type { ExpressJSMulterFileType } from "#/types/util-expressjs-types.js";
 import { existsSync } from "node:fs";
-import { mkdir, readdir, rm, stat, unlink } from "node:fs/promises";
+import { mkdir, readdir, rm, unlink } from "node:fs/promises";
 import { mediaHashService } from "#/utilities/cryptography-services/media-filename-hashing.service.js";
 import { editForProdTheImageSharp, destroyFilesAfterTrigger, serveMediaFile } from "./media.utilities.js";
 import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { ProfileAvatarPicture } from "#/databases/orm/client.js";
+import { timingSafeEqual } from "node:crypto";
 export type MediaPathPairAndFullPath = {
     dirName: string;
     fileName: string;
@@ -19,13 +21,13 @@ export type MediaPathPairAndFullPath = {
 };
 /** Service Class with all methods for comments */
 class MediaRouteServiceClass {
-    private checkIfUserHasAvatar = async (profile_id: string) => {
-        const found_profile = await profileRouteModel.find_profile_by_its_id_with_avatar_data(profile_id);
+    private checkIfUserHasAvatar = async (profile_id: string): Promise<ProfileAvatarPicture> => {
+        const avatar = await profileRouteModel.findAvatarByProfileId(profile_id);
 
-        if (!found_profile.avatar) {
+        if (!avatar) {
             throw new BadRequestException(["Вам нужно установить аватар, но вы пытаетесь обновить"]);
         }
-        return found_profile;
+        return avatar;
     };
     private checkDBIfUserAlreadyHasAvatar = async (profile_id: string) => {
         const found_profile = await profileRouteModel.find_profile_by_its_id_with_avatar_data(profile_id);
@@ -51,16 +53,21 @@ class MediaRouteServiceClass {
         });
         return !!new_avatar;
     };
+    private checkForDuplicateUploadFiles = (file: ExpressJSMulterFileType, stored_hash: string) => {
+        const hash = mediaHashService.hashFileB64Url(file.buffer);
+        if (timingSafeEqual(Buffer.from(hash), Buffer.from(stored_hash))) {
+            throw new BadRequestException(["Такой файл уже загружен ранее"]);
+        }
+    };
     update_avatar = async (profile_id: string, file: ExpressJSMulterFileType): Promise<boolean> => {
-        const found_avatar = await mediaRouteModel.find_avatar_by_profile_id(profile_id);
+        const found_avatar = await this.checkIfUserHasAvatar(profile_id);
+        this.checkForDuplicateUploadFiles(file, found_avatar.file_hash);
         const newMeta = await this.avatarUpdateToFS(join(found_avatar.path_dirname, found_avatar.path_filename), file, profile_id);
-        await this.checkIfUserHasAvatar(profile_id);
         const updated_avatar = await mediaRouteModel.update_avatar_by_id({
             by_profile_id: profile_id,
             path_dirname: newMeta.path_dirname,
             path_filename: newMeta.path_filename,
             mime_type: newMeta.mime_type,
-
             height: newMeta.height,
             width: newMeta.width,
             size_bytes: newMeta.size_bytes,
@@ -78,7 +85,6 @@ class MediaRouteServiceClass {
         return true;
     };
     avatar_view = async (username: string, req: ExpressJS.Request, res: ExpressJS.Response) => {
-        console.log({ username });
         const foundProfile = await profileRouteModel.find_profile_by_username(username);
 
         const avatar = await profileRouteModel.findAvatarByProfileId(foundProfile.profile.id).catch(() => null);
@@ -139,7 +145,9 @@ class MediaRouteServiceClass {
     ): Promise<DataTypeForUploadOrUpdateAvatar> => {
         let errored = false;
         try {
-            const { hash, size_bytes } = await editForProdTheImageSharp(file.buffer, pathPair.fullPath);
+            const size_bytes = await editForProdTheImageSharp(file.buffer, pathPair.fullPath);
+            const file_hash = mediaHashService.hashFileB64Url(file.buffer);
+
             return {
                 path_dirname: pathPair.dirName,
                 path_filename: pathPair.fileName,
@@ -147,7 +155,7 @@ class MediaRouteServiceClass {
                 original_name: file.originalname,
                 width: AVATAR_IMAGE_FILE_WIDTH_PIXELS,
                 by_profile_id: profile_id,
-                file_hash: hash,
+                file_hash: file_hash,
                 height: AVATAR_IMAGE_FILE_HEIGHT_PIXELS,
                 hash_algorithm_version: mediaHashService.BUFFER_HASH_ALGORITHM_VERSION,
                 size_bytes: size_bytes,
@@ -169,7 +177,7 @@ class MediaRouteServiceClass {
         file: ExpressJSMulterFileType,
         profile_id: DbCuidType,
     ): Promise<DataTypeForUploadOrUpdateAvatar> => {
-        await this.deleteAvatarFile(oldAvatarPath);
+        await this.deleteAvatarFile(oldAvatarPath + ".webp");
         const newAvatarPath = await this.genAvatarPath();
         return await this.fromTempToProdProcess(newAvatarPath, file, profile_id);
     };

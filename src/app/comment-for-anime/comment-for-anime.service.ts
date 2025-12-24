@@ -4,6 +4,7 @@ import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import type { CommentForAnime, VoteToComment } from "[orm]/client.js";
 import { commentRouteModel } from "#/app/comment-for-anime/comment-for-anime.model.js";
 import { voteNotFoundErrorMessage } from "#/constants/frequent-errors.js";
+import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/response-patterns-shared/comment.response-types.routes.js";
 
 /** Service Class with all methods for comments */
 export const commentRouteService = new (class Comment_Service {
@@ -50,7 +51,11 @@ export const commentRouteService = new (class Comment_Service {
         return comments;
     };
 
-    get_all_comments_by_animeId = async (args: { page: number; limit: number; anime_id: number }) => {
+    get_all_comments_by_animeId = async (args: {
+        page: number;
+        limit: number;
+        anime_id: number;
+    }): Promise<ResponseTypesFor_CommentForAnime_Section.get_all_for_anime> => {
         const comments = await commentRouteModel.get_all_comments_for_anime(args);
         return comments;
     };

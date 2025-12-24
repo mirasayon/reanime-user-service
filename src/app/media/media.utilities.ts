@@ -29,8 +29,7 @@ export async function editForProdTheImageSharp(reqBuffer: Buffer<ArrayBufferLike
         .rotate()
         .toBuffer();
     await writeFile(prodFilePath, editedImageFile);
-    const hash = mediaHashService.hashFileB64Url(editedImageFile);
-    return { hash, size_bytes: editedImageFile.length };
+    return editedImageFile.length;
 }
 export async function destroyFilesAfterTrigger(trigger: boolean, profile_id: DbCuidType, prodPath: string): Promise<boolean> {
     if (!trigger) {

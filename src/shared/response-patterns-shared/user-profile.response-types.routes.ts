@@ -10,7 +10,10 @@ export namespace ResponseTypesFor_UserProfile_Section {
     export type update_nickname = boolean;
     export type update_bio = boolean;
     export type view_my_profile = {
-        account: UserAccount;
-        profile: UserProfile & { avatar: ProfileAvatarPicture | null };
+        account_type: "COMMON" | "BANNED" | "ADMIN" | "DEVELOPER" | "TESTER";
+        email: string | null;
+        username: string;
+        bio: string | null;
+        nickname: string | null;
     };
 }

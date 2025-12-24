@@ -39,9 +39,8 @@ class CommentToAnimeRouteControllerClass {
     /** Gives the list of comments from specified anime ID */
     get_all_for_anime = async (req: Comment_ReqDtos.get_all_for_anime, res: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
-        const sr = await commentRouteService.get_all_comments_by_animeId(dto);
 
-        const data: ResponseTypesFor_CommentForAnime_Section.get_all_for_anime = sr;
+        const data: ResponseTypesFor_CommentForAnime_Section.get_all_for_anime = await commentRouteService.get_all_comments_by_animeId(dto);
         const message = "Все комментарии к этому аниме";
         return goReplyHttp.ok(res, { data, message });
     };

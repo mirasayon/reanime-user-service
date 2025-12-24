@@ -3,6 +3,7 @@ import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
 import type { ProfileAvatarPicture, CommentForAnime, VoteToComment, UserProfile } from "[orm]/client.js";
 import { profileRouteModel } from "#/app/profile/profile.model.js";
+import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/response-patterns-shared/comment.response-types.routes.js";
 
 export const commentRouteModel = new (class Comment_Model {
     /** ! Наследование моделей */
@@ -50,17 +51,7 @@ export const commentRouteModel = new (class Comment_Model {
         page: number;
         limit: number;
         anime_id: number;
-    }): Promise<
-        (CommentForAnime & {
-            ratings: VoteToComment[];
-            by_profile: UserProfile & {
-                avatar: ProfileAvatarPicture | null;
-                by_account: {
-                    username: string;
-                };
-            };
-        })[]
-    > => {
+    }): Promise<ResponseTypesFor_CommentForAnime_Section.get_all_for_anime> => {
         const skip = (args.page - 1) * args.limit;
 
         const all = await prisma.commentForAnime.findMany({

@@ -21,12 +21,15 @@ class Profile_Service_Class {
         const updated_profile = await profileRouteModel.update_nickname_by_id(found_profile.id, new_nickname);
         return !!updated_profile;
     };
-    view_my_profile = async (
-        account_id: string,
-    ): Promise<{ account: UserAccount; profile: UserProfile & { avatar: ProfileAvatarPicture | null } }> => {
+    view_my_profile = async (account_id: string) => {
         const found_profile = await profileRouteModel.find_by_account_id_AND_return_account_and_profile(account_id);
-
-        return found_profile;
+        return {
+            account_type: found_profile.account.account_type,
+            email: found_profile.account.email,
+            username: found_profile.account.username,
+            bio: found_profile.profile.bio,
+            nickname: found_profile.profile.nickname,
+        };
     };
     other_profiles = async (username: string): Promise<{ profile: UserProfile; avatar: ProfileAvatarPicture | null; account: UserAccount }> => {
         const found_account = await profileRouteModel.find_profile_by_username_AND_give_avatar_data(username);
