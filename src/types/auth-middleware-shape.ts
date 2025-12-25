@@ -1,11 +1,11 @@
-export type AuthMiddlewareDTO = {
+export type DtoTypeForAuthSession = {
     account_id: string;
     profile_id: string;
     selector: string;
 };
 /** DTO for auth */
-export type AuthMiddlewareDTOFull = {
-    sessionDto?: AuthMiddlewareDTO;
+export type RequestTypeWithDtoForAuthSession = {
+    sessionDto?: DtoTypeForAuthSession;
 };
 
 /** IP and User-Agent */

@@ -4,7 +4,7 @@ import type { LoginSession } from "#/databases/orm/client.js";
 import { prisma } from "#/databases/provider/database-connector.js";
 import { UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
-import type { AuthMiddlewareDTO } from "#/types/auth-middleware-shape.js";
+import type { DtoTypeForAuthSession } from "#/types/auth-middleware-shape.js";
 export type TokenStringRaw = `${string}.${string}`;
 
 import nodeCrypto from "crypto";
@@ -62,7 +62,7 @@ class Authentication_Session_Token_Util {
         return { token, selector, hashed_validator, created_at, expires_at };
     };
 
-    verifySessionToken = async (token: TokenStringRaw): Promise<{ dto: AuthMiddlewareDTO; session: LoginSession }> => {
+    verifySessionToken = async (token: TokenStringRaw): Promise<{ dto: DtoTypeForAuthSession; session: LoginSession }> => {
         if (!token) {
             throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
         }

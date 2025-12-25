@@ -59,15 +59,45 @@ export const commentRouteModel = new (class Comment_Model {
                 external_anime_id: args.anime_id,
             },
             skip: skip,
-            include: {
+            select: {
+                content: true,
+                is_visible: true,
+                external_anime_id: true,
                 ratings: true,
-                // replies: true,
-                by_profile: { include: { avatar: true, by_account: { select: { username: true } } } },
+                by_profile: {
+                    select: {
+                        nickname: true,
+                        avatar: {
+                            select: {
+                                path_dirname: true,
+                                path_filename: true,
+                            },
+                        },
+                        by_account: { select: { username: true } },
+                    },
+                },
             },
             orderBy: { created_at: "desc" },
             take: args.limit,
         });
-        return all;
+        return all.map((item) => {
+            return {
+                avatar: item.by_profile.avatar
+                    ? {
+                          path_dirname: item.by_profile.avatar.path_dirname,
+                          path_filename: item.by_profile.avatar.path_filename,
+                      }
+                    : null,
+                username: item.by_profile.by_account.username,
+                nickname: item.by_profile.nickname,
+                content: item.content,
+                is_visible: item.is_visible,
+                external_anime_id: item.external_anime_id,
+                ratings: item.ratings.map((rating) => {
+                    return rating.value;
+                }),
+            } satisfies ResponseTypesFor_CommentForAnime_Section.get_all_for_anime[number];
+        });
     };
 
     get_all_comments_for_public_profile = async ({

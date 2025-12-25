@@ -19,9 +19,9 @@
         "outDir": "./dist",
         "removeComments": true,
         "newLine": "crlf",
-        "isolatedModules": true,
         "verbatimModuleSyntax": true,
         "forceConsistentCasingInFileNames": true,
+        "noEmitOnError": true,
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
@@ -34,7 +34,6 @@
         "noUncheckedIndexedAccess": true,
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": true,
-        "allowUnusedLabels": true,
         "allowUnreachableCode": false,
         "plugins": [
             {

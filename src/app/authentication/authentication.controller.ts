@@ -6,7 +6,7 @@ import type { Authentication_ReqDtos } from "#/app/authentication/authentication
 import { authenticationRouteService as services } from "#/app/authentication/authentication.service.js";
 
 export const Authentication_Controller = new (class Authentication_Controller {
-    login_via_email = async (req: Authentication_ReqDtos.login_via_email, reply: ExpressJS.Response) => {
+    login_by_email = async (req: Authentication_ReqDtos.login_by_email, reply: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await services.login_via_email({
             agent: dto.agent ?? null,
@@ -19,7 +19,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
         return goReplyHttp.accepted(reply, { data, message });
     };
 
-    login_via_username = async (req: Authentication_ReqDtos.login_via_username, reply: ExpressJS.Response) => {
+    login_by_username = async (req: Authentication_ReqDtos.login_by_username, reply: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await services.login_via_username({
             agent: dto.agent ?? null,

@@ -1,12 +1,12 @@
 import { BadRequestException } from "#/errors/client-side-exceptions.js";
-import type { AuthMiddlewareDTO } from "#/types/auth-middleware-shape.js";
+import type { DtoTypeForAuthSession } from "#/types/auth-middleware-shape.js";
 import type { z, ZodType } from "zod";
 import type { default as ExpressJS } from "express";
 /** Функция-фабрика для создания промежуточного обработчика запроса валидатором */
 export function vmFactory<
     RequestType extends ExpressJS.Request & {
         dto?: z.infer<Zod_x_Schema_type>;
-        sessionDto?: AuthMiddlewareDTO;
+        sessionDto?: DtoTypeForAuthSession;
     },
     Zod_x_Schema_type extends ZodType = ZodType,
     A extends any = any,

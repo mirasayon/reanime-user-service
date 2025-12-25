@@ -1,5 +1,5 @@
 import { BadRequestException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import type { AuthMiddlewareDTOFull } from "#/types/auth-middleware-shape.js";
+import type { RequestTypeWithDtoForAuthSession } from "#/types/auth-middleware-shape.js";
 import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto-factory-utils/get-session-meta.js";
 import type { default as ExpressJS } from "express";
 import { getSessionTokenFromHeadersDto } from "#/utilities/dto-factory-utils/get-session-token.js";
@@ -27,7 +27,7 @@ function checkTwoMetadatas(session: LoginSession, requestMeta: ExpressJS.Request
  * Если пользователь вошел, то добавляет свойство `auth` к запросу и передает на следующему обработчику.
  */
 export async function mainAuthenticationMiddleware(
-    req: ExpressJS.Request & AuthMiddlewareDTOFull,
+    req: ExpressJS.Request & RequestTypeWithDtoForAuthSession,
     res: ExpressJS.Response,
     next: ExpressJS.NextFunction,
 ): Promise<void> {
@@ -44,7 +44,7 @@ export async function mainAuthenticationMiddleware(
 /**
  * Функция для проверки аутентификации запроса. Не модифицирует запрос или ответ.
  */
-export async function checkAuthenticationFunction(req: ExpressJS.Request): Promise<LoginSession | null> {
+export async function checkAuthenticationFunction(req: ExpressJS.Request & RequestTypeWithDtoForAuthSession): Promise<LoginSession | null> {
     const req_session_token = getSessionTokenFromHeadersDto(req.headers);
     if (!req_session_token) {
         return null;
@@ -57,12 +57,9 @@ export async function checkAuthenticationFunction(req: ExpressJS.Request): Promi
     return session;
 }
 
-/**
- * Промежуточный обработчик запроса который проверяет, если пользователь уже вошел в систему.
- * Если пользователь уже вошел, то бросает ошибку `BadRequestException`(400)
- */
+/** Промежуточный обработчик запроса который проверяет, если пользователь уже вошел в систему. */
 export async function checkIfAccountAlreadyLoggedMiddleware(
-    req: ExpressJS.Request & { auth?: AuthMiddlewareDTOFull },
+    req: ExpressJS.Request & RequestTypeWithDtoForAuthSession,
     res: ExpressJS.Response,
     next: ExpressJS.NextFunction,
 ): Promise<void> {

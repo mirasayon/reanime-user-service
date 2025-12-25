@@ -19,7 +19,7 @@ const schemas = new (class Auth_ValidatorSchemas {
     check_session = zodUtilSchemas.void;
 
     /** */
-    login_via_username = z.strictObject({
+    login_by_username = z.strictObject({
         username: account_username,
         ip: zodUtilSchemas.ip_address,
         agent: zodUtilSchemas.user_agent,
@@ -29,7 +29,7 @@ const schemas = new (class Auth_ValidatorSchemas {
     /** For checking username for availability */
     check_username_availability = account_username;
 
-    login_via_email = z.strictObject({
+    login_by_email = z.strictObject({
         email: zodUtilSchemas.email,
         ip: zodUtilSchemas.ip_address,
         agent: zodUtilSchemas.user_agent,
@@ -44,8 +44,8 @@ export namespace dto {
     export type logout = z.infer<Schemas["logout"]>;
     export type registration = z.infer<Schemas["registration"]>;
     export type check_session = z.infer<Schemas["check_session"]>;
-    export type login_via_email = z.infer<Schemas["login_via_email"]>;
-    export type login_via_username = z.infer<Schemas["login_via_username"]>;
+    export type login_by_email = z.infer<Schemas["login_by_email"]>;
+    export type login_by_username = z.infer<Schemas["login_by_username"]>;
 
     export type check_username_availability = z.infer<Schemas["check_username_availability"]>;
 }

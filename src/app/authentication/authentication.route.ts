@@ -7,8 +7,8 @@ export const Authentication_Router = (() => {
     const r = createConfiguredRouter();
     r.post("/registration", vm.registration, checkIfAccountAlreadyLoggedMiddleware, c.registration);
 
-    r.post("/login/via/email", vm.login_via_email, checkIfAccountAlreadyLoggedMiddleware, c.login_via_email);
-    r.post("/login/via/username", vm.login_via_username, checkIfAccountAlreadyLoggedMiddleware, c.login_via_username);
+    r.post("/login/by/email", vm.login_by_email, checkIfAccountAlreadyLoggedMiddleware, c.login_by_email);
+    r.post("/login/by/username", vm.login_by_username, checkIfAccountAlreadyLoggedMiddleware, c.login_by_username);
 
     r.get("/check_username_availability/:username", vm.check_username_availability, c.check_username_availability);
 
