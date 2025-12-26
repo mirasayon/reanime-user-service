@@ -85,6 +85,8 @@ export namespace ResponseTypesForAuthentication {
     /** `false`- если используется имя пользователя, `true`- если доступно */
     export type check_username_availability = boolean;
     export type check_session = {
+        id: string;
+        profile_id: string;
         username: string;
         nickname: string | null;
         email: string | null;
@@ -99,7 +101,17 @@ export namespace ResponseTypesForAuthentication {
 export namespace ResponseTypesFor_CommentForAnime_Section {
     export type get_all_for_anime = {
         id: string;
-        ratings: number[];
+        created_at: Date;
+        updated_at: Date;
+        by_profile_id: string;
+        ratings: {
+            by_profile_id: string;
+            id: string;
+            created_at: Date;
+            updated_at: Date;
+            value: number;
+            to_comment_id: string;
+        }[];
         nickname: string | null;
         avatar: {
             path_dirname: string;

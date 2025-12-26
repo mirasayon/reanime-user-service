@@ -56,7 +56,10 @@ export const commentRouteModel = new (class Comment_Model {
             },
             skip: skip,
             select: {
+                by_profile_id: true,
                 id: true,
+                created_at: true,
+                updated_at: true,
                 content: true,
                 is_visible: true,
                 external_anime_id: true,
@@ -79,7 +82,10 @@ export const commentRouteModel = new (class Comment_Model {
         });
         return all.map((item) => {
             return {
+                by_profile_id: item.by_profile_id,
                 id: item.id,
+                created_at: item.created_at,
+                updated_at: item.updated_at,
                 avatar: item.by_profile.avatar
                     ? {
                           path_dirname: item.by_profile.avatar.path_dirname,
@@ -91,9 +97,7 @@ export const commentRouteModel = new (class Comment_Model {
                 content: item.content,
                 is_visible: item.is_visible,
                 external_anime_id: item.external_anime_id,
-                ratings: item.ratings.map((rating) => {
-                    return rating.value;
-                }),
+                ratings: item.ratings,
             } satisfies ResponseTypesFor_CommentForAnime_Section.get_all_for_anime[number];
         });
     };

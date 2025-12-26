@@ -58,6 +58,8 @@ class AuthenticationSectionController {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const { account, avatar, profile } = await services.check_session(sessionDto.account_id);
         const data: ResponseTypesForAuthentication.check_session = {
+            id: account.id,
+            profile_id: profile.id,
             avatar_url: avatar ? avatar.path_dirname + "/" + avatar.path_filename : null,
             username: account.username,
             nickname: profile.nickname || null,
