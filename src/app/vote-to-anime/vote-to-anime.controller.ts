@@ -3,7 +3,7 @@ import { checkRequestForValidity } from "#/utilities/controller-utility-function
 import type { FavoriteAnimesSectionRequestTypes } from "#/app/vote-to-anime/vote-to-anime.pipes.js";
 import { voteToAnimeRouteService } from "#/app/vote-to-anime/vote-to-anime.service.js";
 import type ExpressJS from "express";
-import type { ResponseTypesFor_VoteToAnime_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesFor_VoteToAnime_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 class VoteToAnimeRouteControllerClass {
     explore_likes = async (req: FavoriteAnimesSectionRequestTypes.explore_likes, res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);

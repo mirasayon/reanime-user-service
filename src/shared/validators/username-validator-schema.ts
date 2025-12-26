@@ -1,7 +1,7 @@
 import { z } from "zod";
 import psl from "better-psl";
 import consola from "consola";
-import { reservedWordsForUsernames } from "./reserved-usernames-static-constants.js";
+import { reservedWordsForUsernames } from "./reserved-usernames-words.static.js";
 /** Regexp for login string.
  *
  *  Description:
@@ -32,10 +32,10 @@ export const accountUsernameZodSchema = (() => {
         })
         .trim()
         .min(min, {
-            error: `Имя пользователя должно содержать более ${min} символов`,
+            error: `Имя пользователя должно содержать как минимум ${min} символов`,
         })
         .max(max, {
-            error: `Имя пользователя должно содержать меньше ${max} символов`,
+            error: `Имя пользователя должно содержать меньше либо ровно ${max} символов`,
         })
         .regex(_username_regex, { error: username_regex_error })
         .transform((val) => val.toLowerCase())

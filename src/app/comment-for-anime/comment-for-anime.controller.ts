@@ -4,7 +4,7 @@ import { checkRequestForValidity } from "#/utilities/controller-utility-function
 import type ExpressJS from "express";
 import type { CommentToAnimeSectionRequestTypes } from "#/app/comment-for-anime/comment-for-anime.pipes.js";
 import { commentRouteService } from "#/app/comment-for-anime/comment-for-anime.service.js";
-import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 
 class CommentToAnimeRouteControllerClass {
     /** Controller for create one comment by profile */

@@ -4,7 +4,7 @@ import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import type { CommentForAnime } from "[orm]/client.js";
 import { commentRouteModel } from "#/app/comment-for-anime/comment-for-anime.model.js";
 import { voteNotFoundErrorMessage } from "#/constants/frequent-errors.js";
-import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 import { profileRouteModel } from "../profile/profile.model.js";
 
 /** Service Class with all methods for comments */

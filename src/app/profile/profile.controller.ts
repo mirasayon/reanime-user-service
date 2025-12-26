@@ -3,7 +3,7 @@ import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import { type ProfileSectionRequestTypes } from "#/app/profile/profile.pipes.js";
 import { profileRouteService } from "#/app/profile/profile.service.js";
-import type { ResponseTypesFor_UserProfile_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesFor_UserProfile_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 
 class Profile_ControllerClass {
     /** Просмотр других профилей пользователя */

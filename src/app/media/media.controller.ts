@@ -4,7 +4,7 @@ import { checkRequestForValidity } from "#/utilities/controller-utility-function
 import { type MediaRoutePipeDtos } from "#/app/media/media.pipes.js";
 import { mediaSectionService } from "./media.service.js";
 import { noImage_error_responseErrorObj } from "#/constants/frequent-errors.js";
-import type { ResponseTypesFor_Media_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesFor_Media_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 
 class MediaSectionControllerClass {
     set_avatar = async (req: MediaRoutePipeDtos.set_avatar, res: ExpressJS.Response) => {

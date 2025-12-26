@@ -3,7 +3,7 @@ import { checkRequestForValidity } from "#/utilities/controller-utility-function
 import type ExpressJS from "express";
 import type { accountSectionReqFullDtos } from "#/app/account/account.pipes.js";
 import { accountRouteService } from "#/app/account/account.service.js";
-import type { ResponseTypesFor_Account_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesFor_Account_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 
 class AccountRouteControllerClass {
     explore_me = async (req: accountSectionReqFullDtos.explore_me, res: ExpressJS.Response) => {

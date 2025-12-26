@@ -1,5 +1,5 @@
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { ResponseTypesForAdministratorSection } from "#/shared/types/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesForAdministratorSection } from "#/shared/user-service-response-types-for-all.routes.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { Administrator_ReqDtos } from "./admin.pipes.js";
 import { adminSectionService } from "./admin.service.js";

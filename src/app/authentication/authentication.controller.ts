@@ -3,7 +3,7 @@ import { checkRequestForValidity } from "#/utilities/controller-utility-function
 import type ExpressJS from "express";
 import type { AuthenticationSectionRequestTypes } from "#/app/authentication/authentication.pipes.js";
 import { authenticationRouteService as services } from "#/app/authentication/authentication.service.js";
-import type { ResponseTypesForAuthentication } from "#/shared/types/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesForAuthentication } from "#/shared/user-service-response-types-for-all.routes.js";
 
 export const Authentication_Controller = new (class Authentication_Controller {
     login_by_email = async (req: AuthenticationSectionRequestTypes.login_by_email, reply: ExpressJS.Response) => {
