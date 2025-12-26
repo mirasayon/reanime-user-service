@@ -1,9 +1,5 @@
 import type { default as ExpressJS } from "express";
-import type {
-    BodyOptionalMessage,
-    BodyOptionalMessageAndData,
-    BodyOptionalMessageAndErrors,
-} from "#/shared/response-patterns-shared/response-json-body-shape.js";
+import type { BodyOptionalMessage, BodyOptionalMessageAndData, BodyOptionalMessageAndErrors } from "#/shared/types/response-json-body-shape.js";
 import { allHttpResponseHandler } from "./all-http-responder-utils.js";
 import { responseHTTPCodes } from "#/shared/response-codes-constants.shared.js";
 

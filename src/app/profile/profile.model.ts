@@ -2,7 +2,7 @@ import { usernameNotFoundErrorMessage } from "#/constants/frequent-errors.js";
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
-import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
 class ProfileRouteModelClass {
     find_profile_by_its_id = async (profile_id: DbCuidType) => {

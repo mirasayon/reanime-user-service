@@ -8,7 +8,7 @@ import { AVATAR_IMAGE_FILE_ALLOWED_MIME_TYPES } from "#/constants/media-module-c
 import { createReadStream, statSync, existsSync } from "node:fs";
 import { unlink, writeFile } from "node:fs/promises";
 import { mediaHashService } from "#/utilities/cryptography-services/media-filename-hashing.service.js";
-import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 
 /** Removes a file if it exists. */
 async function removeFileIfExists(path: string): Promise<void> {

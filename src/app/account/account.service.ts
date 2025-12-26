@@ -6,13 +6,7 @@ import {
     UnauthorizedException,
 } from "#/errors/client-side-exceptions.js";
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
-import type {
-    iAccountEmail,
-    iAccountUsername,
-    DbCuidType,
-    iRawUserPassword,
-    TokenSelector,
-} from "#/shared/types-shared/informative-input-types-shared.js";
+import type { iAccountEmail, iAccountUsername, DbCuidType, iRawUserPassword, TokenSelector } from "#/shared/types/informative-input-types-shared.js";
 import { passwordHashingService } from "#/utilities/cryptography-services/hash-passwords.service.js";
 import type { LoginSession, UserAccount } from "[orm]/client.js";
 import { accountSectionModels } from "#/app/account/account.model.js";

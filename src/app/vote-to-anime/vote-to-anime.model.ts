@@ -1,5 +1,5 @@
 import { prisma } from "#/databases/provider/database-connector.js";
-import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { VoteToSomethingType } from "#/types/utility-types-for-db-models.js";
 
 export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {

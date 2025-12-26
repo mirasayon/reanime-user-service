@@ -1,13 +1,7 @@
 import { z } from "zod";
 /** Regex for Unicode letters (L) and combining marks (M), plus spaces, hyphens, apostrophes, underscores, and digits: */
 export const nicknameRegex = /^[\p{L}\p{M}0-9 _'-]+$/u;
-/**
- * UserProfile nickname validator
- *
- * min 1 chars
- *
- * max 30 chars
- */
+/**  UserProfile nickname validator. Min 1 chars. Max 30 chars */
 export const profileNicknameValidatorSchema = (() => {
     const name = "Никнейм";
     return z

@@ -1,6 +1,6 @@
 import type { default as ExpressJS } from "express";
 import { type I_UserServiceResponseStatusCodes, type responseHTTPCodes, ResponseHTTPStatusCodes } from "#/shared/response-codes-constants.shared.js";
-import type { HTTPResponseBodyPattern } from "#/shared/response-patterns-shared/response-json-body-shape.js";
+import type { HTTPResponseBodyPattern } from "#/shared/types/response-json-body-shape.js";
 
 type AllHTTPResponseBody<T> = {
     res: ExpressJS.Response;

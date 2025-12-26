@@ -1,7 +1,7 @@
 import { get_universal_search_query_values_array } from "#/utilities/util-functions.js";
 import { vmFactory as m } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory as _ } from "#/types/dto-middleware-shape.js";
-import { type dto, comment_schemas } from "#/shared/validators-shared/comment.validator.routes.js";
+import { type dto, commentToAnimeSectionValidatorSchemas } from "#/shared/validators-shared/comment.validator.routes.js";
 
 namespace rd {
     export type create = _<dto.create, { anime_id: string }>;
@@ -19,7 +19,7 @@ namespace rd {
 export type { rd as Comment_ReqDtos };
 
 export const Comment_ReqPipes = new (class Comment_ReqPipes {
-    create = m<rd.create>(comment_schemas.create, async (req) => {
+    create = m<rd.create>(commentToAnimeSectionValidatorSchemas.create, async (req) => {
         return {
             ...req.body,
             anime_id: req.params.anime_id,
@@ -27,21 +27,21 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
     });
 
     /** GET Request  */
-    get_all_for_anime = m<rd.get_all_for_anime>(comment_schemas.get_all_for_anime, async (req) => {
+    get_all_for_anime = m<rd.get_all_for_anime>(commentToAnimeSectionValidatorSchemas.get_all_for_anime, async (req) => {
         const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
         const { anime_id } = req.params;
         return { page, limit, anime_id };
     });
 
-    update = m<rd.update>(comment_schemas.update, async (req) => {
+    update = m<rd.update>(commentToAnimeSectionValidatorSchemas.update, async (req) => {
         return { comment_id: req.params.comment_id, ...req.body };
     });
 
-    delete_comment = m<rd.delete_comment>(comment_schemas.delete_comment, async (req) => req.params.comment_id);
+    delete_comment = m<rd.delete_comment>(commentToAnimeSectionValidatorSchemas.delete_comment, async (req) => req.params.comment_id);
 
-    report = m<rd.report>(comment_schemas.report, async (req) => req.body);
+    report = m<rd.report>(commentToAnimeSectionValidatorSchemas.report, async (req) => req.body);
     /** new 2025.11.15 */
-    all_my_comments = m<rd.all_my_comments>(comment_schemas.all_my_comments, async (req) => {
+    all_my_comments = m<rd.all_my_comments>(commentToAnimeSectionValidatorSchemas.all_my_comments, async (req) => {
         const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
         return {
             limit: limit,
@@ -49,7 +49,7 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
         };
     });
     /** new 2025.11.15 */
-    all_for_public_profile = m<rd.all_for_public_profile>(comment_schemas.all_for_public_profile, async (req) => {
+    all_for_public_profile = m<rd.all_for_public_profile>(commentToAnimeSectionValidatorSchemas.all_for_public_profile, async (req) => {
         const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
         return {
             limit: limit,
@@ -58,9 +58,9 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
         };
     });
 
-    add_like = m<rd.vote_like>(comment_schemas.add_like, async (req) => req.params.comment_id);
-    add_dislike = m<rd.vote_dislike>(comment_schemas.add_dislike, async (req) => req.params.comment_id);
+    add_like = m<rd.vote_like>(commentToAnimeSectionValidatorSchemas.add_like, async (req) => req.params.comment_id);
+    add_dislike = m<rd.vote_dislike>(commentToAnimeSectionValidatorSchemas.add_dislike, async (req) => req.params.comment_id);
 
-    delete_like = m<rd.delete_like>(comment_schemas.delete_like, async (req) => req.params.comment_id);
-    delete_dislike = m<rd.delete_dislike>(comment_schemas.delete_dislike, async (req) => req.params.comment_id);
+    delete_like = m<rd.delete_like>(commentToAnimeSectionValidatorSchemas.delete_like, async (req) => req.params.comment_id);
+    delete_dislike = m<rd.delete_dislike>(commentToAnimeSectionValidatorSchemas.delete_dislike, async (req) => req.params.comment_id);
 })();

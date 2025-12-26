@@ -22,9 +22,13 @@ model UserAccount {
   updated_at DateTime @updatedAt @db.Timestamptz
 
   /// Роль / тип учетной записи аккаунта (COMMON, BANNED, ADMIN и т.д.). Используется для контроля прав доступа.
-  account_type            AccountTypeEnum   @default(COMMON)
+  account_type AccountTypeEnum @default(COMMON)
   /// Электронная почта пользователя. Может быть null — значит пользователь не указал почту.
-  email                   String?           @unique
+  email        String?         @unique
+
+  /// Видимость публичного адреса электронной почты для других пользователей.
+  email_visibility EmailVisibilityEnum @default(HIDE)
+
   /// Уникальный логин (без символа "@"). Служит для публичного отображения и входа.
   username                String            @unique
   /// Связанная запись с хэшем пароля и параметрами алгоритма. Отдельная модель для безопасности и истории.
@@ -502,6 +506,13 @@ enum BirthdateVisibilityEnum {
   YEAR_ONLY
   /// Показывать полную дату рождения (день, месяц, год).
   FULL
+}
+
+enum EmailVisibilityEnum {
+  /// Показывать пользователю публичный адрес электронной почты.
+  SHOW
+  /// Не показывать публичный адрес электронной почты.
+  HIDE
 }
 
 /// Видимость гендерной информации профиля.

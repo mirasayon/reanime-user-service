@@ -1,7 +1,7 @@
 import { SAME_TIME_SESSIONS_LIMIT } from "#/configs/application-rules-config.js";
 import { prisma } from "#/databases/provider/database-connector.js";
 import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import type { TokenSelector, DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { TokenSelector, DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import { passwordHashingService } from "#/utilities/cryptography-services/hash-passwords.service.js";
 import { sessionTokenHashService, type TokenStringRaw } from "#/utilities/cryptography-services/hash-token-sessions.service.js";
 import type { AccountPassword, ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";

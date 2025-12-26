@@ -1,6 +1,6 @@
 import { AnimeStatusEnum } from "#/databases/orm/enums.js";
 import { ConflictException, NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import { MarkedAnimeCollection_Model as model } from "#/app/anime-bookmark-collection/anime-bookmark-collection.model.js";
 import consola from "consola";
 

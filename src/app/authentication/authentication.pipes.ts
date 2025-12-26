@@ -1,7 +1,7 @@
 import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto-factory-utils/get-session-meta.js";
 import { vmFactory as m } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory as _ } from "#/types/dto-middleware-shape.js";
-import { authentication_schemas as schemas, type dto } from "#/shared/validators-shared/authentication.validator.routes.js";
+import { authenticationSectionSchemas as schemas, type dto } from "#/shared/validators-shared/authentication.validator.routes.js";
 
 /** Namespace for all validation types for Comments logic */
 namespace rd {

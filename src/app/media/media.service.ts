@@ -11,7 +11,7 @@ import { existsSync } from "node:fs";
 import { mkdir, readdir, rm, unlink } from "node:fs/promises";
 import { mediaHashService } from "#/utilities/cryptography-services/media-filename-hashing.service.js";
 import { editForProdTheImageSharp, destroyFilesAfterTrigger, serveMediaFile } from "./media.utilities.js";
-import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { ProfileAvatarPicture } from "#/databases/orm/client.js";
 import { timingSafeEqual } from "node:crypto";
 export type MediaPathPairAndFullPath = {

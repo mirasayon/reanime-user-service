@@ -1,7 +1,7 @@
 import { AnimeStatusEnum } from "#/databases/orm/enums.js";
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 
 export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Model {
     delete_watching_by_profile_id = async (by_profile_id: DbCuidType, external_anime_id: number, id: string) => {

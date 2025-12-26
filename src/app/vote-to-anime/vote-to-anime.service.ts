@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { VoteToAnime } from "[orm]/client.js";
 import { FavoriteAnimes_Model as model } from "#/app/vote-to-anime/vote-to-anime.model.js";
 import {

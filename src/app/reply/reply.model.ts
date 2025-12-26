@@ -1,6 +1,6 @@
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { VoteToReply } from "[orm]/client.js";
 
 export const Reply_Model = new (class Reply_Model {

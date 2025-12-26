@@ -1,6 +1,6 @@
 import { z } from "zod";
 /** Utility Zod schemas */
-export const zodUtilSchemas = new (class Utility_ValidatorSchemas {
+export const zodUtilSchemas = new (class ZodUtilSchemas {
     /** `undefined` data type validator */
     void = z.undefined();
     /** UserAccount inputted password
@@ -43,9 +43,7 @@ export const zodUtilSchemas = new (class Utility_ValidatorSchemas {
             .optional();
     })();
     /** IP format */
-    ip_address = (() => {
-        return z.string({ error: "IP-адрес обязателен" });
-    })();
+    ip_address = z.string({ error: "IP-адрес обязателен" });
 
     /** Just boolean type validator.  */
     just_boolean = (name: string) => {
@@ -144,9 +142,7 @@ export const zodUtilSchemas = new (class Utility_ValidatorSchemas {
             });
     };
     /**
-     * Classic CUID validator
-     *
-     * @length 20
+     * Classic CUID validator  @length 20
      * @param name
      * @returns zod schema
      */
@@ -160,18 +156,17 @@ export const zodUtilSchemas = new (class Utility_ValidatorSchemas {
     comment_id = this.cuid("Айди комментария");
 
     /** Email Validator */
-    email = (() => {
-        return z
-            .email({ error: "Адрес электронной почты должен быть действительным" })
-            .trim()
-            .max(100, { error: "Адрес электронной почты должен быть короче 100 символов" });
-    })();
+    email = z
+        .email({ error: "Адрес электронной почты должен быть действительным" })
+        .trim()
+        .max(100, { error: "Адрес электронной почты должен быть короче 100 символов" });
+
     /** Zod validator for LoginSession Token in the header from the request
-     * @lenght 577
+     * @stringLength 577
      */
-    session_token = (() => {
-        return z.string().length(577, { error: "Длина токена сеанса должна составлять ровно 577 символов" });
-    })();
+    // session_token = (() => {
+    //     return z.string().length(577, { error: "Длина токена сеанса должна составлять ровно 577 символов" });
+    // })();
 
     session_meta = z.strictObject({
         ip: this.ip_address,
@@ -182,10 +177,6 @@ export const zodUtilSchemas = new (class Utility_ValidatorSchemas {
      * For reporting replies and comments
      */
     details = this.message("Подробности");
-    /**
-     * For report type
-     *
-     * Enum
-     */
+    /** For report type  */
     report_type = z.enum(["spam", "offensive", "other"] as const);
 })();

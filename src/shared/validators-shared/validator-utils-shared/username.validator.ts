@@ -22,7 +22,7 @@ const username_regex_error =
  * @param name
  * @returns
  */
-export const account_username = (() => {
+export const accountUsernameZodSchema = (() => {
     const min = 4;
     const max = 24;
     const error = `Имя пользователя обязательна`;

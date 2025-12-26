@@ -1,5 +1,5 @@
 import { UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
+import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import { AccountTypeEnum, type UserAccount, type UserProfile } from "[orm]/client.js";
 import { accountSectionModels } from "#/app/account/account.model.js";
 import { Admin_Model } from "./admin.model.js";
