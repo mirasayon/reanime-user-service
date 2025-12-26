@@ -56,6 +56,7 @@ export const commentRouteModel = new (class Comment_Model {
             },
             skip: skip,
             select: {
+                id: true,
                 content: true,
                 is_visible: true,
                 external_anime_id: true,
@@ -78,6 +79,7 @@ export const commentRouteModel = new (class Comment_Model {
         });
         return all.map((item) => {
             return {
+                id: item.id,
                 avatar: item.by_profile.avatar
                     ? {
                           path_dirname: item.by_profile.avatar.path_dirname,

@@ -11,6 +11,7 @@ export namespace ResponseTypesFor_Account_Section {
     export type update_password = boolean;
     export type update_username = boolean;
     export type get_sessions = {
+        id: string;
         created_at: Date;
         expires_at: Date;
         last_used_at: Date;
@@ -32,6 +33,7 @@ export namespace ResponseTypesFor_Account_Section {
 /** Response types for administrator section */
 export namespace ResponseTypesForAdministratorSection {
     export type get_all_users = {
+        id: string;
         email: string | null;
         username: string;
         created_at: Date;
@@ -47,6 +49,7 @@ export namespace ResponseTypesForAdministratorSection {
 }
 
 type AnimeBookmark = {
+    id: string;
     created_at: Date;
     updated_at: Date;
     by_profile_id: string;
@@ -95,6 +98,7 @@ export namespace ResponseTypesForAuthentication {
 /** Типы ответов для маршрута комментариев на аниме */
 export namespace ResponseTypesFor_CommentForAnime_Section {
     export type get_all_for_anime = {
+        id: string;
         ratings: number[];
         nickname: string | null;
         avatar: {
@@ -109,11 +113,13 @@ export namespace ResponseTypesFor_CommentForAnime_Section {
     export type create_comment = boolean;
     export type update_comment = boolean;
     export type all_for_public_profile = {
+        id: string;
         content: string;
         is_visible: boolean;
         external_anime_id: number;
     }[];
     export type all_my_comments = {
+        id: string;
         content: string;
         is_visible: boolean;
         external_anime_id: number;
@@ -137,6 +143,7 @@ export namespace ResponseTypesFor_Ping_Section {
 }
 
 type ReplyForComment = {
+    id: string;
     created_at: Date;
     updated_at: Date;
     content: string;
@@ -186,6 +193,7 @@ export namespace ResponseTypesFor_UserProfile_Section {
     };
 }
 type VoteToAnime = {
+    id: string;
     created_at: Date;
     external_anime_id: number;
     value: number;

@@ -1,6 +1,6 @@
 import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { replyForCommentSectionZodSchemas, type ReplyForCommentReqDtos } from "#/shared/validators/app-validator-for-all.routes.js";
+import { replyForCommentSectionZodSchemas, type ReplyForCommentReqDtos } from "#/shared/validators/request-validator-for-all.routes.js";
 
 export namespace ReplyForCommentSectionRequestTypes {
     export type create_reply = RequestDtoTypeFactory<ReplyForCommentReqDtos.create_reply>;

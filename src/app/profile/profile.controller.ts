@@ -5,7 +5,7 @@ import { type ProfileSectionRequestTypes } from "#/app/profile/profile.pipes.js"
 import { profileRouteService } from "#/app/profile/profile.service.js";
 import type { ResponseTypesFor_UserProfile_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 
-class Profile_ControllerClass {
+class ProfileSectionController {
     /** Просмотр других профилей пользователя */
     other_profiles = async (req: ProfileSectionRequestTypes.other_profiles, res: ExpressJS.Response) => {
         const username = checkRequestForValidity(req, ["dto"]).dto;
@@ -59,4 +59,4 @@ class Profile_ControllerClass {
         return goReplyHttp.ok(res, { data, message });
     };
 }
-export const Profile_Controller = new Profile_ControllerClass();
+export const profileSectionController = new ProfileSectionController();

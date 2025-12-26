@@ -5,7 +5,7 @@ import { Administrator_Router } from "#/app/admin/admin.routes.js";
 import { Authentication_Router } from "#/app/authentication/authentication.route.js";
 import { Comment_Router } from "#/app/comment-for-anime/comment-for-anime.route.js";
 import { FavoriteAnimes_Router } from "#/app/vote-to-anime/vote-to-anime.route.js";
-import { MarkedAnimeCollection_Router } from "#/app/anime-bookmark-collection/anime-bookmark-collection.route.js";
+import { animeBookmarkSectionRouter } from "#/app/anime-bookmark-collection/anime-bookmark-collection.route.js";
 import { Ping_Router } from "#/app/ping/ping.route.js";
 import { Profile_Router } from "#/app/profile/profile.route.js";
 import { Reply_Router } from "#/app/reply/reply.route.js";
@@ -23,7 +23,7 @@ export const apiRouterLayout = (() => {
     router.use("/profile", Profile_Router);
     router.use("/media", mediaSectionRouter);
     router.use("/account", accountSectionRouter);
-    router.use("/anime/marked_collection", MarkedAnimeCollection_Router);
+    router.use("/anime/marked_collection", animeBookmarkSectionRouter);
     router.use("/favorite_animes", FavoriteAnimes_Router);
     router.use("/ping", Ping_Router);
     return router;

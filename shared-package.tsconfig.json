@@ -9,7 +9,7 @@
         "allowJs": false,
         "checkJs": false,
         "declaration": true,
-        "outDir": "./generated-shared-export",
+        "outDir": "./user-service-shared-package",
         "removeComments": true,
         "newLine": "crlf",
         "verbatimModuleSyntax": true,

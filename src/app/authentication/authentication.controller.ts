@@ -5,7 +5,7 @@ import type { AuthenticationSectionRequestTypes } from "#/app/authentication/aut
 import { authenticationRouteService as services } from "#/app/authentication/authentication.service.js";
 import type { ResponseTypesForAuthentication } from "#/shared/user-service-response-types-for-all.routes.js";
 
-export const Authentication_Controller = new (class Authentication_Controller {
+class AuthenticationSectionController {
     login_by_email = async (req: AuthenticationSectionRequestTypes.login_by_email, reply: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await services.login_via_email({
@@ -68,10 +68,12 @@ export const Authentication_Controller = new (class Authentication_Controller {
         return goReplyHttp.ok(reply, { data, message });
     };
     logout = async (req: AuthenticationSectionRequestTypes.logout, res: ExpressJS.Response) => {
-        const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
-        const is_session_deleted = await services.logout(sessionDto.selector, sessionDto.account_id);
+        const { account_id, selector } = checkRequestForValidity(req, ["sessionDto"]).sessionDto;
+        const is_session_deleted = await services.logout(selector, account_id);
         const data: ResponseTypesForAuthentication.logout = is_session_deleted;
         const message = "Этот сеанс успешно удален (выход из системы)";
         return goReplyHttp.accepted(res, { message, data });
     };
-})();
+}
+
+export const authenticationSectionController = new AuthenticationSectionController();

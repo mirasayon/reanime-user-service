@@ -1,7 +1,7 @@
 import { prisma } from "#/databases/provider/database-connector.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
 import type { ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
-export const adminSectionModel = new (class Account_Model {
+class AdministratorSectionModel {
     get_all_accounts_and_its_profiles = async (): Promise<
         {
             avatar: ProfileAvatarPicture | null;
@@ -33,4 +33,5 @@ export const adminSectionModel = new (class Account_Model {
             };
         });
     };
-})();
+}
+export const administratorSectionModel = new AdministratorSectionModel();

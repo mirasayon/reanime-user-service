@@ -1,7 +1,7 @@
 import { AnimeStatusEnum } from "#/databases/orm/enums.js";
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
-export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Model {
+class AnimeBookmarkSectionModel {
     delete_watching_by_profile_id = async (by_profile_id: string, external_anime_id: number, id: string) => {
         return await prisma.animeBookmark.delete({
             where: {
@@ -151,4 +151,6 @@ export const MarkedAnimeCollection_Model = new (class MarkedAnimeCollection_Mode
         }
         return found_vote;
     };
-})();
+}
+
+export const animeBookmarkSectionModel = new AnimeBookmarkSectionModel();

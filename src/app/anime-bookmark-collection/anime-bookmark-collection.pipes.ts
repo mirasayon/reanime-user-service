@@ -1,8 +1,8 @@
-import { animeMarkedCollection_schemas, type MarkedAnimeCollectionReqDtoTypes } from "#/shared/validators/app-validator-for-all.routes.js";
+import { animeMarkedCollection_schemas, type MarkedAnimeCollectionReqDtoTypes } from "#/shared/validators/request-validator-for-all.routes.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
 import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 
-export namespace MarkedAnimeCollectionRequestTypes {
+export namespace AnimeBookmarkSectionRequestTypes {
     export type get_all_list = RequestDtoTypeFactory<MarkedAnimeCollectionReqDtoTypes.get_all_list>;
     export type get_for_anime = RequestDtoTypeFactory<MarkedAnimeCollectionReqDtoTypes.explore_for_anime, { anime_id: string }>;
     export type get_list_of_completed = RequestDtoTypeFactory<MarkedAnimeCollectionReqDtoTypes.get_list_of_completed>;
@@ -21,56 +21,56 @@ export namespace MarkedAnimeCollectionRequestTypes {
     export type delete_watching = RequestDtoTypeFactory<MarkedAnimeCollectionReqDtoTypes.delete_watching, { anime_id: string }>;
 }
 
-export const MarkedAnimeCollection_ReqPipes = new (class MarkedAnimeCollection_ReqPipes {
-    get_all_list = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.get_all_list>(animeMarkedCollection_schemas.get_all_list);
-    get_for_anime = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.get_for_anime>(
+export const animeBookmarkSectionReqPipes = new (class MarkedAnimeCollection_ReqPipes {
+    get_all_list = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.get_all_list>(animeMarkedCollection_schemas.get_all_list);
+    get_for_anime = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.get_for_anime>(
         animeMarkedCollection_schemas.explore_for_anime,
         async (req) => req.params.anime_id,
     );
 
-    get_list_of_completed = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.get_list_of_completed>(
+    get_list_of_completed = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.get_list_of_completed>(
         animeMarkedCollection_schemas.get_list_of_completed,
     );
-    get_list_of_planned = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.get_list_of_planned>(
+    get_list_of_planned = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.get_list_of_planned>(
         animeMarkedCollection_schemas.get_list_of_planned,
     );
-    get_list_of_abandoned = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.get_list_of_abandoned>(
+    get_list_of_abandoned = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.get_list_of_abandoned>(
         animeMarkedCollection_schemas.get_list_of_abandoned,
     );
-    get_list_of_watching = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.get_list_of_watching>(
+    get_list_of_watching = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.get_list_of_watching>(
         animeMarkedCollection_schemas.get_list_of_watching,
     );
 
-    create_watching = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.create_watching>(
+    create_watching = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.create_watching>(
         animeMarkedCollection_schemas.create_watching,
         async (req) => req.params.anime_id,
     );
-    create_abandoned = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.create_abandoned>(
+    create_abandoned = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.create_abandoned>(
         animeMarkedCollection_schemas.create_abandoned,
         async (req) => req.params.anime_id,
     );
-    create_planned = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.create_planned>(
+    create_planned = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.create_planned>(
         animeMarkedCollection_schemas.create_planned,
         async (req) => req.params.anime_id,
     );
-    create_completed = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.create_completed>(
+    create_completed = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.create_completed>(
         animeMarkedCollection_schemas.create_completed,
         async (req) => req.params.anime_id,
     );
 
-    delete_completed = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.delete_completed>(
+    delete_completed = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.delete_completed>(
         animeMarkedCollection_schemas.delete_completed,
         async (req) => req.params.anime_id,
     );
-    delete_planned = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.delete_planned>(
+    delete_planned = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.delete_planned>(
         animeMarkedCollection_schemas.delete_planned,
         async (req) => req.params.anime_id,
     );
-    delete_abandoned = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.delete_abandoned>(
+    delete_abandoned = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.delete_abandoned>(
         animeMarkedCollection_schemas.delete_abandoned,
         async (req) => req.params.anime_id,
     );
-    delete_watching = validatorMiddlewareFactory<MarkedAnimeCollectionRequestTypes.delete_watching>(
+    delete_watching = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.delete_watching>(
         animeMarkedCollection_schemas.delete_watching,
         async (req) => req.params.anime_id,
     );
