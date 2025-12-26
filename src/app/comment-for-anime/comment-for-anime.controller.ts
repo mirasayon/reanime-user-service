@@ -1,7 +1,7 @@
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import type { CommentToAnimeSectionRequestTypes } from "#/app/comment-for-anime/comment-for-anime.pipes.js";
 import { commentRouteService } from "#/app/comment-for-anime/comment-for-anime.service.js";
 import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";

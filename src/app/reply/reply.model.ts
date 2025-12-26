@@ -1,10 +1,9 @@
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { VoteToReply } from "[orm]/client.js";
 
 export const Reply_Model = new (class Reply_Model {
-    get_replies_count_on_1_comment = async (by_profile_id: DbCuidType, to_comment_id: DbCuidType) => {
+    get_replies_count_on_1_comment = async (by_profile_id: string, to_comment_id: string) => {
         return await prisma.replyForComment.count({
             where: {
                 by_profile_id,
@@ -13,7 +12,7 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
 
-    get_all_replies_for_1_comment_by_comment_id = async (to_comment_id: DbCuidType, page: number, limit: number) => {
+    get_all_replies_for_1_comment_by_comment_id = async (to_comment_id: string, page: number, limit: number) => {
         const skip = (page - 1) * limit;
         return await prisma.replyForComment.findMany({
             where: {
@@ -24,7 +23,7 @@ export const Reply_Model = new (class Reply_Model {
             orderBy: { created_at: "desc" },
         });
     };
-    create_1_reply_to_1_comment = async (by_profile_id: DbCuidType, content: string, to_comment_id: DbCuidType) => {
+    create_1_reply_to_1_comment = async (by_profile_id: string, content: string, to_comment_id: string) => {
         return await prisma.replyForComment.create({
             data: {
                 by_profile_id,
@@ -33,7 +32,7 @@ export const Reply_Model = new (class Reply_Model {
             },
         });
     };
-    find_1_reply_by_its_id = async (reply_id: DbCuidType) => {
+    find_1_reply_by_its_id = async (reply_id: string) => {
         const found_reply = await prisma.replyForComment.findUnique({
             where: {
                 id: reply_id,
@@ -46,7 +45,7 @@ export const Reply_Model = new (class Reply_Model {
         return found_reply;
     };
 
-    find_1_comment_by_its_id = async (comment_id: DbCuidType) => {
+    find_1_comment_by_its_id = async (comment_id: string) => {
         const found_comment = await prisma.commentForAnime.findUnique({
             where: {
                 id: comment_id,
@@ -58,7 +57,7 @@ export const Reply_Model = new (class Reply_Model {
 
         return found_comment;
     };
-    find_1_vote_by_reply_id_and_profile_id = async (to_reply_id: DbCuidType, by_profile_id: DbCuidType): Promise<VoteToReply | null> => {
+    find_1_vote_by_reply_id_and_profile_id = async (to_reply_id: string, by_profile_id: string): Promise<VoteToReply | null> => {
         return await prisma.voteToReply.findUnique({
             where: {
                 by_profile_id_to_reply_id: {
@@ -69,7 +68,7 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
 
-    create_1_vote_to_reply = async (to_reply_id: DbCuidType, value: 1 | -1, by_profile_id: DbCuidType) => {
+    create_1_vote_to_reply = async (to_reply_id: string, value: 1 | -1, by_profile_id: string) => {
         return await prisma.voteToReply.create({
             data: {
                 to_reply_id,
@@ -79,7 +78,7 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
 
-    update_1_vote_to_reply = async (vote_id: DbCuidType, value: number) => {
+    update_1_vote_to_reply = async (vote_id: string, value: number) => {
         return await prisma.voteToReply.update({
             where: {
                 id: vote_id,
@@ -90,7 +89,7 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
 
-    Delete_vote_from_reply_by_its_id = async (reply_vote_id: DbCuidType) => {
+    Delete_vote_from_reply_by_its_id = async (reply_vote_id: string) => {
         return await prisma.voteToReply.delete({
             where: {
                 id: reply_vote_id,
@@ -98,7 +97,7 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
 
-    delete_1_reply = async (reply_id: DbCuidType) => {
+    delete_1_reply = async (reply_id: string) => {
         return prisma.replyForComment.delete({
             where: {
                 id: reply_id,
@@ -106,7 +105,7 @@ export const Reply_Model = new (class Reply_Model {
         });
     };
 
-    update_1_reply_by_its_id = async (reply_id: DbCuidType, new_reply_content: string) => {
+    update_1_reply_by_its_id = async (reply_id: string, new_reply_content: string) => {
         return await prisma.replyForComment.update({
             where: {
                 id: reply_id,

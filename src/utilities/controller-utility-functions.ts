@@ -1,5 +1,5 @@
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 /** Возвращает исключение `UnexpectedInternalServerErrorException`, если DTO не заполнен. */
 export function checkRequestForValidity<CustomReq extends ExpressJS.Request, Fields extends ("dto" | "sessionDto" | "file")[]>(
     req: CustomReq,

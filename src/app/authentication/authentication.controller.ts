@@ -1,6 +1,6 @@
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import type { AuthenticationSectionRequestTypes } from "#/app/authentication/authentication.pipes.js";
 import { authenticationRouteService as services } from "#/app/authentication/authentication.service.js";
 import type { ResponseTypesForAuthentication } from "#/shared/types/user-service-response-types-for-all.routes.js";

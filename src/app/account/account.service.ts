@@ -6,7 +6,6 @@ import {
     UnauthorizedException,
 } from "#/errors/client-side-exceptions.js";
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
-import type { iAccountEmail, iAccountUsername, DbCuidType, iRawUserPassword, TokenSelector } from "#/shared/types/informative-input-types-shared.js";
 import { passwordHashingService } from "#/utilities/cryptography-services/hash-passwords.service.js";
 import type { LoginSession, UserAccount } from "[orm]/client.js";
 import { accountSectionModels } from "#/app/account/account.model.js";
@@ -14,7 +13,7 @@ import { mediaSectionService } from "#/app/media/media.service.js";
 import { emailIsUsedErrorMessage } from "#/constants/frequent-errors.js";
 /** UserAccount Service */
 class AccountRouteServiceClass {
-    explore_me = async (account_id: DbCuidType): Promise<UserAccount> => {
+    explore_me = async (account_id: string): Promise<UserAccount> => {
         const found_user = await accountSectionModels.Get_account_by_its_id_throw_error(account_id);
         return found_user;
     };
@@ -23,9 +22,9 @@ class AccountRouteServiceClass {
         new_email,
         by_account_id,
     }: {
-        current_email: iAccountEmail;
-        new_email: iAccountEmail;
-        by_account_id: DbCuidType;
+        current_email: string;
+        new_email: string;
+        by_account_id: string;
     }): Promise<boolean> => {
         const found_user = await accountSectionModels.Get_account_by_email_throw_error(current_email);
         if (found_user.email === new_email) {
@@ -41,7 +40,7 @@ class AccountRouteServiceClass {
         const updated_account = await accountSectionModels.update_email_for_one(found_user.id, new_email);
         return !!updated_account;
     };
-    set_email = async ({ email, account_id }: { email: iAccountEmail; account_id: DbCuidType }): Promise<boolean> => {
+    set_email = async ({ email, account_id }: { email: string; account_id: string }): Promise<boolean> => {
         const account_by_id = await accountSectionModels.Get_account_by_its_id_throw_error(account_id);
         if (account_by_id.email) {
             throw new BadRequestException(["У этой учетной записи уже есть адрес электронной почты, вам нужно обновить его настройках"]);
@@ -59,10 +58,10 @@ class AccountRouteServiceClass {
         current_password,
         account_id,
     }: {
-        account_id: DbCuidType;
-        current_password: iRawUserPassword;
-        new_password: iRawUserPassword;
-        repeat_new_password: iRawUserPassword;
+        account_id: string;
+        current_password: string;
+        new_password: string;
+        repeat_new_password: string;
     }): Promise<boolean> => {
         const accountPassword = await accountSectionModels.getPasswordDataFromAccountId(account_id);
 
@@ -87,7 +86,7 @@ class AccountRouteServiceClass {
         });
         return true;
     };
-    update_username = async ({ new_username, account_id }: { new_username: iAccountUsername; account_id: DbCuidType }): Promise<boolean> => {
+    update_username = async ({ new_username, account_id }: { new_username: string; account_id: string }): Promise<boolean> => {
         const found_user = await accountSectionModels.Get_account_by_its_id_throw_error(account_id);
         if (found_user.username === new_username) {
             throw new ConflictException(["Новый юзернейм совпадает со старым. Введите другое имя пользователя"]);
@@ -100,13 +99,13 @@ class AccountRouteServiceClass {
         const updated_username = await accountSectionModels.update_username_for_account(found_user.id, new_username);
         return !!updated_username;
     };
-    get_sessions = async (account_id: DbCuidType): Promise<{ sessions: LoginSession[] }> => {
+    get_sessions = async (account_id: string): Promise<{ sessions: LoginSession[] }> => {
         const found_account = await accountSectionModels.Get_account_by_its_id_throw_error(account_id);
         const sessions = await accountSectionModels.find_all_sessions_by_account_id(found_account.id);
         return { sessions };
     };
     /** Возвращает количество удалённых сессий */
-    terminate_other_sessions = async (selector: TokenSelector, account_id: DbCuidType): Promise<number> => {
+    terminate_other_sessions = async (selector: string, account_id: string): Promise<number> => {
         const found_account = await accountSectionModels.Get_account_by_its_id_throw_error(account_id);
         const this_session_id = (await accountSectionModels.find_one_session_by_its_selector(selector)).id;
 
@@ -115,7 +114,7 @@ class AccountRouteServiceClass {
         return deleted_sessions.count;
     };
 
-    terminate_specific_session = async (targetSessionIdToDelete: DbCuidType, account_id: DbCuidType) => {
+    terminate_specific_session = async (targetSessionIdToDelete: string, account_id: string) => {
         const found_account = await accountSectionModels.Get_account_by_its_id_throw_error(account_id);
 
         const all_sessions_ids = (await accountSectionModels.find_all_sessions_by_account_id(found_account.id)).map((s) => s.id);
@@ -126,7 +125,7 @@ class AccountRouteServiceClass {
         await accountSectionModels.delete_one_session_by_id(targetSessionIdToDelete);
         return true;
     };
-    delete_account = async (account_id: DbCuidType): Promise<boolean> => {
+    delete_account = async (account_id: string): Promise<boolean> => {
         const found_account = await accountSectionModels.Get_account_by_its_id_throw_error(account_id);
         const found_profile = await accountSectionModels.find_profile_by_account_id_with_data_about_cover_and_avatar(found_account.id);
         if (found_profile.cover) {

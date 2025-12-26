@@ -1,7 +1,7 @@
 import { getSessionMetaFromClientDto } from "#/utilities/dto-factory-utils/get-session-meta.js";
-import { vmFactory } from "#/utilities/validator-middleware-factory.js";
+import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { authenticationSectionSchemas, type AuthSectionReqDtos } from "#/shared/validators-shared/app-validator-for-all.routes.js";
+import { authenticationSectionSchemas, type AuthSectionReqDtos } from "#/shared/validators/app-validator-for-all.routes.js";
 
 /** Namespace for all validation types for Comments logic */
 export namespace AuthenticationSectionRequestTypes {
@@ -14,33 +14,42 @@ export namespace AuthenticationSectionRequestTypes {
 }
 
 export const authenticationSectionRequestValidatorMiddlewares = {
-    registration: vmFactory<AuthenticationSectionRequestTypes.registration>(authenticationSectionSchemas.registration, async (req) => {
-        return {
-            ...getSessionMetaFromClientDto(req),
-            ...req.body,
-        };
-    }),
+    registration: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.registration>(
+        authenticationSectionSchemas.registration,
+        async (req) => {
+            return {
+                ...getSessionMetaFromClientDto(req),
+                ...req.body,
+            };
+        },
+    ),
 
-    check_session: vmFactory<AuthenticationSectionRequestTypes.check_session>(authenticationSectionSchemas.check_session),
+    check_session: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.check_session>(authenticationSectionSchemas.check_session),
 
-    logout: vmFactory<AuthenticationSectionRequestTypes.logout>(authenticationSectionSchemas.logout),
+    logout: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.logout>(authenticationSectionSchemas.logout),
 
-    check_username_availability: vmFactory<AuthenticationSectionRequestTypes.check_username_availability>(
+    check_username_availability: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.check_username_availability>(
         authenticationSectionSchemas.check_username_availability,
         async (req) => req.params.username,
     ),
 
-    login_by_email: vmFactory<AuthenticationSectionRequestTypes.login_by_email>(authenticationSectionSchemas.login_by_email, async (req) => {
-        return {
-            ...getSessionMetaFromClientDto(req),
-            ...req.body,
-        };
-    }),
+    login_by_email: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.login_by_email>(
+        authenticationSectionSchemas.login_by_email,
+        async (req) => {
+            return {
+                ...getSessionMetaFromClientDto(req),
+                ...req.body,
+            };
+        },
+    ),
 
-    login_by_username: vmFactory<AuthenticationSectionRequestTypes.login_by_username>(authenticationSectionSchemas.login_by_username, async (req) => {
-        return {
-            ...getSessionMetaFromClientDto(req),
-            ...req.body,
-        };
-    }),
+    login_by_username: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.login_by_username>(
+        authenticationSectionSchemas.login_by_username,
+        async (req) => {
+            return {
+                ...getSessionMetaFromClientDto(req),
+                ...req.body,
+            };
+        },
+    ),
 };

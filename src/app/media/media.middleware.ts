@@ -1,4 +1,4 @@
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import { BadRequestException, PayloadTooLargeException } from "#/errors/client-side-exceptions.js";
 import { PAYLOAD_MAX_SIZE, maxAvatarPayloadInMB } from "#/configs/application-rules-config.js";
 /** Middleware for checking file size */

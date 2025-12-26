@@ -1,7 +1,7 @@
 import { BadRequestException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import type { RequestTypeWithDtoForAuthSession } from "#/types/auth-middleware-shape.js";
 import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto-factory-utils/get-session-meta.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import { getSessionTokenFromHeadersDto } from "#/utilities/dto-factory-utils/get-session-token.js";
 import type { LoginSession } from "[orm]/client.js";
 import { isDeepStrictEqual } from "node:util";

@@ -1,14 +1,11 @@
 import { invalidCredentialsErrorMessage } from "#/constants/frequent-errors.js";
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import type { TokenSelector, DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { Argon2idHashResultType } from "#/utilities/cryptography-services/hash-passwords.service.js";
-import { type CreateSessionTokenType } from "#/utilities/cryptography-services/hash-token-sessions.service.js";
 import type { AccountPassword, LoginSession, UserAccount } from "[orm]/client.js";
-import type { SessionMetaFromIpAndUserAgentType } from "./authentication.service.js";
 
 class AuthenticationRouteModelClass {
-    getPasswordDataFromAccountId = async (account_id: DbCuidType): Promise<AccountPassword> => {
+    getPasswordDataFromAccountId = async (account_id: string): Promise<AccountPassword> => {
         const found_password = await prisma.accountPassword.findUnique({
             where: {
                 for_account_id: account_id,
@@ -31,7 +28,7 @@ class AuthenticationRouteModelClass {
         }
         return account;
     };
-    findSessionByItsSelector = async (selector: TokenSelector): Promise<LoginSession> => {
+    findSessionByItsSelector = async (selector: string): Promise<LoginSession> => {
         const session = await prisma.loginSession.findUnique({
             where: { selector: selector },
         });
@@ -41,13 +38,13 @@ class AuthenticationRouteModelClass {
         return session;
     };
 
-    delete_one_session_by_its_selector = async (selector: TokenSelector) => {
+    delete_one_session_by_its_selector = async (selector: string) => {
         return await prisma.loginSession.delete({
             where: { selector },
         });
     };
 
-    findSessionByItsId = async (session_id: DbCuidType): Promise<LoginSession> => {
+    findSessionByItsId = async (session_id: string): Promise<LoginSession> => {
         const session = await prisma.loginSession.findUnique({
             where: { id: session_id },
         });
@@ -84,7 +81,7 @@ class AuthenticationRouteModelClass {
         return new_session;
     };
 
-    delete_1_session_by_its_selector = async (selector: TokenSelector) => {
+    delete_1_session_by_its_selector = async (selector: string) => {
         return await prisma.loginSession.delete({
             where: {
                 selector: selector,
@@ -127,7 +124,7 @@ class AuthenticationRouteModelClass {
         return account;
     };
 
-    get_count_of_sessions_by_account_id = async (by_account_id: DbCuidType) => {
+    get_count_of_sessions_by_account_id = async (by_account_id: string) => {
         return await prisma.loginSession.count({
             where: {
                 by_account_id,

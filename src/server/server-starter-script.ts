@@ -10,16 +10,14 @@ import { arch, platform } from "node:os";
 import { expressMainApplication } from "./server-skeleton.js";
 export async function startMainServerScript(): Promise<void> {
     try {
-        const instance = await startListeningTheServer(expressMainApplication, envMainConfig.server);
+        const instance = await startListeningTheServer(expressMainApplication, envMainConfig.server.host, envMainConfig.server.port);
         const { port, address, family } = instance.address() as AddressInfo;
 
         const time = format(new Date(), "HH:mm:ss dd.MM.yyyy");
         const url = `http://${envMainConfig.server.host}:${port}`;
         const altUrl = `http://${address}:${port}`;
-
         Logger.blue(`${Service_Setting.name}. Launched at ${time}`);
         Logger.success(`${family}: ${chalk.magenta(url)} / ${altUrl} ${chalk.magenta(envMainConfig.NODE_ENVIRONMENT)}`);
-
         Logger.slate(
             "Node.js: " + chalk.bold("v" + process.versions.node) + ". Arch: " + chalk.bold(arch()) + ". Platform: " + chalk.bold(platform()),
         );

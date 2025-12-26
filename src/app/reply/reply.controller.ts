@@ -3,7 +3,7 @@ import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { ReplyForCommentSectionRequestTypes } from "#/app/reply/reply.pipes.js";
 import { replyForCommentSectionService } from "#/app/reply/reply.service.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import type { ResponseTypesFor_ReplyToComment_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 class ReplyToCommentRouteControllerClass {
     /** Edit the comment by profile */

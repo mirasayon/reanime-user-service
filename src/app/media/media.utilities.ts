@@ -1,14 +1,12 @@
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import { mediaRouteModel } from "#/app/media/media.model.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import { extname } from "node:path";
 import { AVATAR_IMAGE_FILE_HEIGHT_PIXELS, AVATAR_IMAGE_FILE_WIDTH_PIXELS } from "#/constants/media-module-config.js";
 import sharp from "sharp";
 import { AVATAR_IMAGE_FILE_ALLOWED_MIME_TYPES } from "#/constants/media-module-config.js";
 import { createReadStream, statSync, existsSync } from "node:fs";
 import { unlink, writeFile } from "node:fs/promises";
-import { mediaHashService } from "#/utilities/cryptography-services/media-filename-hashing.service.js";
-import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 
 /** Removes a file if it exists. */
 async function removeFileIfExists(path: string): Promise<void> {
@@ -31,7 +29,7 @@ export async function editForProdTheImageSharp(reqBuffer: Buffer<ArrayBufferLike
     await writeFile(prodFilePath, editedImageFile);
     return editedImageFile.length;
 }
-export async function destroyFilesAfterTrigger(trigger: boolean, profile_id: DbCuidType, prodPath: string): Promise<boolean> {
+export async function destroyFilesAfterTrigger(trigger: boolean, profile_id: string, prodPath: string): Promise<boolean> {
     if (!trigger) {
         return false;
     }

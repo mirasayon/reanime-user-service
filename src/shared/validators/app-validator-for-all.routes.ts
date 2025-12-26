@@ -1,6 +1,6 @@
-import { profileNicknameValidatorSchema } from "./validator-utils-shared/profile_name.schema.js";
-import { zodUtilSchemas } from "./validator-utils-shared/common-validator-utils.js";
-import { accountUsernameZodSchema } from "./validator-utils-shared/username.validator.js";
+import { profileNicknameValidatorSchema } from "./profile_name.schema.js";
+import { zodUtilSchemas } from "./common-validator-utils.js";
+import { accountUsernameZodSchema } from "./username.validator.js";
 import { strictObject, type z } from "zod";
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------
 export const accountSectionSchemas = {

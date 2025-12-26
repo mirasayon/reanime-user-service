@@ -5,6 +5,7 @@ import type { CommentForAnime } from "[orm]/client.js";
 import { commentRouteModel } from "#/app/comment-for-anime/comment-for-anime.model.js";
 import { voteNotFoundErrorMessage } from "#/constants/frequent-errors.js";
 import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
+import { profileRouteModel } from "../profile/profile.model.js";
 
 /** Service Class with all methods for comments */
 export const commentRouteService = new (class Comment_Service {
@@ -40,7 +41,7 @@ export const commentRouteService = new (class Comment_Service {
     }): Promise<CommentForAnime[]> => {
         const {
             profile: { id: by_profile_id },
-        } = await commentRouteModel.inheritedModels.find_profile_by_username(by_username);
+        } = await profileRouteModel.find_profile_by_username(by_username);
         const comments = await commentRouteModel.get_all_comments_for_public_profile({ by_profile_id, limit, page });
         return comments;
     };

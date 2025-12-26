@@ -1,6 +1,6 @@
-import { vmFactory } from "#/utilities/validator-middleware-factory.js";
+import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { mediaRouteValidatorSchemas, type mediaRouteValidatorDtos } from "#/shared/validators-shared/app-validator-for-all.routes.js";
+import { mediaRouteValidatorSchemas, type mediaRouteValidatorDtos } from "#/shared/validators/app-validator-for-all.routes.js";
 
 export namespace MediaRoutePipeDtos {
     export type avatar_view = RequestDtoTypeFactory<mediaRouteValidatorDtos.avatar_view, { username: string }>;
@@ -10,8 +10,11 @@ export namespace MediaRoutePipeDtos {
 }
 
 export const mediaRoutePipesMiddlewares = new (class MediaRoutePipesMiddlewares {
-    set_avatar = vmFactory<MediaRoutePipeDtos.set_avatar>(mediaRouteValidatorSchemas.set_avatar);
-    delete_avatar = vmFactory<MediaRoutePipeDtos.delete_avatar>(mediaRouteValidatorSchemas.delete_avatar);
-    update_avatar = vmFactory<MediaRoutePipeDtos.update_avatar>(mediaRouteValidatorSchemas.update_avatar);
-    avatar_view = vmFactory<MediaRoutePipeDtos.avatar_view>(mediaRouteValidatorSchemas.avatar_view, async (req) => req.params.username);
+    set_avatar = validatorMiddlewareFactory<MediaRoutePipeDtos.set_avatar>(mediaRouteValidatorSchemas.set_avatar);
+    delete_avatar = validatorMiddlewareFactory<MediaRoutePipeDtos.delete_avatar>(mediaRouteValidatorSchemas.delete_avatar);
+    update_avatar = validatorMiddlewareFactory<MediaRoutePipeDtos.update_avatar>(mediaRouteValidatorSchemas.update_avatar);
+    avatar_view = validatorMiddlewareFactory<MediaRoutePipeDtos.avatar_view>(
+        mediaRouteValidatorSchemas.avatar_view,
+        async (req) => req.params.username,
+    );
 })();

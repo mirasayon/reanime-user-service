@@ -1,6 +1,6 @@
-import { vmFactory } from "#/utilities/validator-middleware-factory.js";
+import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { profileRouteValidatorSchemas, type profileRouteValidatorDtos } from "#/shared/validators-shared/app-validator-for-all.routes.js";
+import { profileRouteValidatorSchemas, type profileRouteValidatorDtos } from "#/shared/validators/app-validator-for-all.routes.js";
 export namespace ProfileSectionRequestTypes {
     export type update_name = RequestDtoTypeFactory<profileRouteValidatorDtos.update_name, { nickname: string }>;
     export type update_bio = RequestDtoTypeFactory<profileRouteValidatorDtos.update_bio>;
@@ -9,11 +9,17 @@ export namespace ProfileSectionRequestTypes {
 }
 
 export const profileRequestValidatorMiddlewares = {
-    other_profiles: vmFactory<ProfileSectionRequestTypes.other_profiles>(
+    other_profiles: validatorMiddlewareFactory<ProfileSectionRequestTypes.other_profiles>(
         profileRouteValidatorSchemas.other_profiles,
         async (req) => req.params.username,
     ),
-    my_profile: vmFactory<ProfileSectionRequestTypes.my_profile>(profileRouteValidatorSchemas.my_profile),
-    update_nickname: vmFactory<ProfileSectionRequestTypes.update_name>(profileRouteValidatorSchemas.update_name, async (req) => req.params.nickname),
-    update_bio: vmFactory<ProfileSectionRequestTypes.update_bio>(profileRouteValidatorSchemas.update_bio, async (req) => req.body.bio),
+    my_profile: validatorMiddlewareFactory<ProfileSectionRequestTypes.my_profile>(profileRouteValidatorSchemas.my_profile),
+    update_nickname: validatorMiddlewareFactory<ProfileSectionRequestTypes.update_name>(
+        profileRouteValidatorSchemas.update_name,
+        async (req) => req.params.nickname,
+    ),
+    update_bio: validatorMiddlewareFactory<ProfileSectionRequestTypes.update_bio>(
+        profileRouteValidatorSchemas.update_bio,
+        async (req) => req.body.bio,
+    ),
 };

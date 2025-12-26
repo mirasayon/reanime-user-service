@@ -2,7 +2,7 @@ import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { FavoriteAnimesSectionRequestTypes } from "#/app/vote-to-anime/vote-to-anime.pipes.js";
 import { voteToAnimeRouteService } from "#/app/vote-to-anime/vote-to-anime.service.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import type { ResponseTypesFor_VoteToAnime_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 class VoteToAnimeRouteControllerClass {
     explore_likes = async (req: FavoriteAnimesSectionRequestTypes.explore_likes, res: ExpressJS.Response) => {

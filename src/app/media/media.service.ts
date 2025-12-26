@@ -1,6 +1,6 @@
 import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import { mediaRouteModel, type DataTypeForUploadOrUpdateAvatar } from "#/app/media/media.model.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import { profileRouteModel } from "#/app/profile/profile.model.js";
 import { dirname, join } from "node:path";
 import { AVATAR_IMAGE_FILE_HEIGHT_PIXELS, AVATAR_IMAGE_FILE_WIDTH_PIXELS } from "#/constants/media-module-config.js";
@@ -11,7 +11,6 @@ import { existsSync } from "node:fs";
 import { mkdir, readdir, rm, unlink } from "node:fs/promises";
 import { mediaHashService } from "#/utilities/cryptography-services/media-filename-hashing.service.js";
 import { editForProdTheImageSharp, destroyFilesAfterTrigger, serveMediaFile } from "./media.utilities.js";
-import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { ProfileAvatarPicture } from "#/databases/orm/client.js";
 import { timingSafeEqual } from "node:crypto";
 export type MediaPathPairAndFullPath = {
@@ -133,7 +132,7 @@ class MediaRouteServiceClass {
             fullPath: avatarPath,
         };
     };
-    private avatarSetToFS = async (file: ExpressJSMulterFileType, profile_id: DbCuidType): Promise<DataTypeForUploadOrUpdateAvatar> => {
+    private avatarSetToFS = async (file: ExpressJSMulterFileType, profile_id: string): Promise<DataTypeForUploadOrUpdateAvatar> => {
         const pathPair = await this.genAvatarPath();
         return await this.fromTempToProdProcess(pathPair, file, profile_id);
     };
@@ -141,7 +140,7 @@ class MediaRouteServiceClass {
     private fromTempToProdProcess = async (
         pathPair: MediaPathPairAndFullPath,
         file: ExpressJSMulterFileType,
-        profile_id: DbCuidType,
+        profile_id: string,
     ): Promise<DataTypeForUploadOrUpdateAvatar> => {
         let errored = false;
         try {
@@ -175,7 +174,7 @@ class MediaRouteServiceClass {
     private avatarUpdateToFS = async (
         oldAvatarPath: string,
         file: ExpressJSMulterFileType,
-        profile_id: DbCuidType,
+        profile_id: string,
     ): Promise<DataTypeForUploadOrUpdateAvatar> => {
         await this.deleteAvatarFile(oldAvatarPath + ".webp");
         const newAvatarPath = await this.genAvatarPath();

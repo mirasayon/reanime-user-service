@@ -1,14 +1,10 @@
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
-import type { ProfileAvatarPicture, CommentForAnime, VoteToComment, UserProfile } from "[orm]/client.js";
-import { profileRouteModel } from "#/app/profile/profile.model.js";
+import type { CommentForAnime } from "[orm]/client.js";
 import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 
 export const commentRouteModel = new (class Comment_Model {
-    /** ! Наследование моделей */
-    inheritedModels = profileRouteModel;
-    get_comment_count_on_1_anime = async (by_profile_id: DbCuidType, anime_id: number) => {
+    get_comment_count_on_1_anime = async (by_profile_id: string, anime_id: number) => {
         return await prisma.commentForAnime.count({
             where: { by_profile_id, external_anime_id: anime_id },
         });
@@ -37,7 +33,7 @@ export const commentRouteModel = new (class Comment_Model {
         return found_comment;
     };
 
-    create_1_comment = async (by_profile_id: DbCuidType, content: string, external_anime_id: number) => {
+    create_1_comment = async (by_profile_id: string, content: string, external_anime_id: number) => {
         return prisma.commentForAnime.create({
             data: {
                 external_anime_id,
@@ -118,7 +114,7 @@ export const commentRouteModel = new (class Comment_Model {
         return all;
     };
 
-    find_1_comment_by_its_id = async (comment_id: DbCuidType) => {
+    find_1_comment_by_its_id = async (comment_id: string) => {
         const found_comment = await prisma.commentForAnime.findUnique({
             where: {
                 id: comment_id,
@@ -131,7 +127,7 @@ export const commentRouteModel = new (class Comment_Model {
         return found_comment;
     };
 
-    find_1_vote_by_comment_id_and_profile_id = async (to_comment_id: DbCuidType, by_profile_id: DbCuidType) => {
+    find_1_vote_by_comment_id_and_profile_id = async (to_comment_id: string, by_profile_id: string) => {
         return await prisma.voteToComment.findUnique({
             where: {
                 by_profile_id_to_comment_id: {
@@ -142,7 +138,7 @@ export const commentRouteModel = new (class Comment_Model {
         });
     };
 
-    create_1_vote_to_comment = async (to_comment_id: DbCuidType, by_profile_id: DbCuidType, value: 1 | -1) => {
+    create_1_vote_to_comment = async (to_comment_id: string, by_profile_id: string, value: 1 | -1) => {
         return await prisma.voteToComment.create({
             data: {
                 value,
@@ -159,7 +155,7 @@ export const commentRouteModel = new (class Comment_Model {
             },
         });
     };
-    update_1_vote_to_comment = async (old_reply_id: DbCuidType, value: 1 | -1) => {
+    update_1_vote_to_comment = async (old_reply_id: string, value: 1 | -1) => {
         return await prisma.voteToComment.update({
             where: {
                 id: old_reply_id,
@@ -169,7 +165,7 @@ export const commentRouteModel = new (class Comment_Model {
             },
         });
     };
-    delete_1_comment = async (comment_id: DbCuidType) => {
+    delete_1_comment = async (comment_id: string) => {
         return prisma.commentForAnime.delete({
             where: {
                 id: comment_id,
@@ -177,7 +173,7 @@ export const commentRouteModel = new (class Comment_Model {
         });
     };
 
-    update_1_comment_by_its_id = async (reply_id: DbCuidType, new_content: string) => {
+    update_1_comment_by_its_id = async (reply_id: string, new_content: string) => {
         return await prisma.commentForAnime.update({
             where: {
                 id: reply_id,

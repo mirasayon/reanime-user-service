@@ -1,6 +1,5 @@
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { ProfileAvatarPicture } from "[orm]/client.js";
 export type DataTypeForUploadOrUpdateAvatar = Omit<ProfileAvatarPicture, "id" | "created_at" | "updated_at">;
 class MediaRouteModelClass {
@@ -28,7 +27,7 @@ class MediaRouteModelClass {
         });
     };
 
-    find_avatar_by_profile_id = async (profile_id: DbCuidType): Promise<ProfileAvatarPicture> => {
+    find_avatar_by_profile_id = async (profile_id: string): Promise<ProfileAvatarPicture> => {
         const found_avatar = await prisma.profileAvatarPicture.findUnique({
             where: {
                 by_profile_id: profile_id,
@@ -39,7 +38,7 @@ class MediaRouteModelClass {
         }
         return found_avatar;
     };
-    delete_avatar_from_profile = async (profile_id: DbCuidType): Promise<ProfileAvatarPicture> => {
+    delete_avatar_from_profile = async (profile_id: string): Promise<ProfileAvatarPicture> => {
         return await prisma.profileAvatarPicture.delete({
             where: {
                 by_profile_id: profile_id,
@@ -47,14 +46,14 @@ class MediaRouteModelClass {
         });
     };
 
-    delete_avatar_by_id = async (id: DbCuidType): Promise<ProfileAvatarPicture> => {
+    delete_avatar_by_id = async (id: string): Promise<ProfileAvatarPicture> => {
         return await prisma.profileAvatarPicture.delete({
             where: {
                 id: id,
             },
         });
     };
-    delete_avatar_from_profile_if_exists = async (profile_id: DbCuidType): Promise<void> => {
+    delete_avatar_from_profile_if_exists = async (profile_id: string): Promise<void> => {
         const found_avatar = await prisma.profileAvatarPicture.findUnique({
             where: {
                 by_profile_id: profile_id,

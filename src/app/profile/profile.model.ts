@@ -2,10 +2,9 @@ import { usernameNotFoundErrorMessage } from "#/constants/frequent-errors.js";
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
-import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
 class ProfileRouteModelClass {
-    find_profile_by_its_id = async (profile_id: DbCuidType) => {
+    find_profile_by_its_id = async (profile_id: string) => {
         const found_profile = await prisma.userProfile.findUnique({
             where: {
                 id: profile_id,
@@ -16,7 +15,7 @@ class ProfileRouteModelClass {
         }
         return found_profile;
     };
-    find_profile_by_its_id_with_avatar_data = async (profile_id: DbCuidType) => {
+    find_profile_by_its_id_with_avatar_data = async (profile_id: string) => {
         const found_profile = await prisma.userProfile.findUnique({
             where: {
                 id: profile_id,
@@ -29,7 +28,7 @@ class ProfileRouteModelClass {
         return found_profile;
     };
 
-    findAvatarByProfileId = async (profile_id: DbCuidType) => {
+    findAvatarByProfileId = async (profile_id: string) => {
         const found_profile = await prisma.profileAvatarPicture.findUnique({
             where: {
                 by_profile_id: profile_id,
@@ -40,7 +39,7 @@ class ProfileRouteModelClass {
         }
         return found_profile;
     };
-    find_profile_by_username = async (username: DbCuidType): Promise<{ account: UserAccount; profile: UserProfile }> => {
+    find_profile_by_username = async (username: string): Promise<{ account: UserAccount; profile: UserProfile }> => {
         const account = await prisma.userAccount.findUnique({
             where: { username },
         });
@@ -60,7 +59,7 @@ class ProfileRouteModelClass {
     };
 
     find_profile_by_username_AND_give_avatar_data = async (
-        username: DbCuidType,
+        username: string,
     ): Promise<{ account: UserAccount; profile: UserProfile; avatar: ProfileAvatarPicture | null }> => {
         const account = await prisma.userAccount.findUnique({
             where: { username },
@@ -90,7 +89,7 @@ class ProfileRouteModelClass {
     };
 
     find_by_account_id_AND_return_account_and_profile = async (
-        account_id: DbCuidType,
+        account_id: string,
     ): Promise<{ account: UserAccount; profile: UserProfile & { avatar: ProfileAvatarPicture | null } }> => {
         const account = await prisma.userAccount.findUnique({
             where: { id: account_id },
@@ -112,7 +111,7 @@ class ProfileRouteModelClass {
         }
         return { account, profile };
     };
-    update_bio_by_id = async (profile_id: DbCuidType, bio: string | null) => {
+    update_bio_by_id = async (profile_id: string, bio: string | null) => {
         return await prisma.userProfile.update({
             where: {
                 id: profile_id,
@@ -120,7 +119,7 @@ class ProfileRouteModelClass {
             data: { bio },
         });
     };
-    update_nickname_by_id = async (profile_id: DbCuidType, nickname: string | null) => {
+    update_nickname_by_id = async (profile_id: string, nickname: string | null) => {
         return await prisma.userProfile.update({
             where: {
                 id: profile_id,

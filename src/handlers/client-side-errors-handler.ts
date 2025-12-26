@@ -1,5 +1,5 @@
 import { MulterError } from "multer";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import {
     BadRequestException,

@@ -1,4 +1,4 @@
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import { type ProfileSectionRequestTypes } from "#/app/profile/profile.pipes.js";

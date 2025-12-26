@@ -1,5 +1,5 @@
 import consola from "consola";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import {
     BadGatewayException,
     ExpectedInternalServerErrorException,

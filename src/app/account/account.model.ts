@@ -1,12 +1,11 @@
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
-import type { iAccountEmail, iAccountUsername, DbCuidType, TokenSelector } from "#/shared/types/informative-input-types-shared.js";
 import type { Argon2idHashResultType } from "#/utilities/cryptography-services/hash-passwords.service.js";
 import type { AccountPassword, LoginSession, ProfileAvatarPicture, ProfileCoverPicture, UserAccount, UserProfile } from "[orm]/client.js";
 export type ProfileWithCoverAndAvatarData = UserProfile & { cover: ProfileCoverPicture | null } & { avatar: ProfileAvatarPicture | null };
 class AccountSectionModelsClass {
-    Get_account_by_its_id_throw_error = async (account_id: DbCuidType): Promise<UserAccount> => {
+    Get_account_by_its_id_throw_error = async (account_id: string): Promise<UserAccount> => {
         const found_account = await prisma.userAccount.findUnique({
             where: {
                 id: account_id,
@@ -19,7 +18,7 @@ class AccountSectionModelsClass {
         return found_account;
     };
 
-    getPasswordDataFromAccountId = async (account_id: DbCuidType): Promise<AccountPassword> => {
+    getPasswordDataFromAccountId = async (account_id: string): Promise<AccountPassword> => {
         const found_account = await prisma.accountPassword.findUnique({
             where: {
                 for_account_id: account_id,
@@ -31,7 +30,7 @@ class AccountSectionModelsClass {
 
         return found_account;
     };
-    Get_account_by_email_throw_error = async (account_email: iAccountEmail) => {
+    Get_account_by_email_throw_error = async (account_email: string) => {
         const found_account = await prisma.userAccount.findUnique({
             where: {
                 email: account_email,
@@ -42,7 +41,7 @@ class AccountSectionModelsClass {
         }
         return found_account;
     };
-    Get_account_by_email_No_Throw_Error = async (account_email: iAccountEmail) => {
+    Get_account_by_email_No_Throw_Error = async (account_email: string) => {
         const found_account = await prisma.userAccount.findUnique({
             where: {
                 email: account_email,
@@ -50,7 +49,7 @@ class AccountSectionModelsClass {
         });
         return found_account;
     };
-    get_account_by_its_username_no_throw_error = async (username: iAccountUsername) => {
+    get_account_by_its_username_no_throw_error = async (username: string) => {
         const found_user = await prisma.userAccount.findUnique({
             where: {
                 username,
@@ -62,7 +61,7 @@ class AccountSectionModelsClass {
         return found_user;
     };
 
-    get_account_by_its_username_Throw_error = async (username: iAccountUsername) => {
+    get_account_by_its_username_Throw_error = async (username: string) => {
         const found_user = await prisma.userAccount.findUnique({
             where: {
                 username,
@@ -74,7 +73,7 @@ class AccountSectionModelsClass {
         return found_user;
     };
 
-    update_email_for_one = async (account_id: DbCuidType, new_email: iAccountEmail) => {
+    update_email_for_one = async (account_id: string, new_email: string) => {
         return await prisma.userAccount.update({
             where: {
                 id: account_id,
@@ -91,7 +90,7 @@ class AccountSectionModelsClass {
         password_id,
     }: {
         hashResult: Argon2idHashResultType;
-        account_id: DbCuidType;
+        account_id: string;
         password_id: string;
     }) => {
         return await prisma.accountPassword.update({
@@ -105,7 +104,7 @@ class AccountSectionModelsClass {
         });
     };
 
-    update_username_for_account = async (account_id: DbCuidType, username: iAccountEmail) => {
+    update_username_for_account = async (account_id: string, username: string) => {
         return await prisma.userAccount.update({
             where: {
                 id: account_id,
@@ -117,14 +116,14 @@ class AccountSectionModelsClass {
     };
 
     /** SESSION */
-    find_all_sessions_by_account_id = async (account_id: DbCuidType) => {
+    find_all_sessions_by_account_id = async (account_id: string) => {
         return await prisma.loginSession.findMany({
             where: {
                 by_account_id: account_id,
             },
         });
     };
-    find_one_session_by_its_selector = async (selector: TokenSelector): Promise<LoginSession> => {
+    find_one_session_by_its_selector = async (selector: string): Promise<LoginSession> => {
         const found_session = await prisma.loginSession.findUnique({
             where: {
                 selector,
@@ -137,7 +136,7 @@ class AccountSectionModelsClass {
         return found_session;
     };
 
-    delete_one_session_by_its_token = async (selector: TokenSelector) => {
+    delete_one_session_by_its_token = async (selector: string) => {
         return await prisma.loginSession.delete({
             where: {
                 selector,
@@ -145,7 +144,7 @@ class AccountSectionModelsClass {
         });
     };
 
-    find_profile_by_account_id = async (account_id: DbCuidType): Promise<UserProfile> => {
+    find_profile_by_account_id = async (account_id: string): Promise<UserProfile> => {
         const found_profile = await prisma.userProfile.findUnique({
             where: { by_account_id: account_id },
         });
@@ -158,7 +157,7 @@ class AccountSectionModelsClass {
         return found_profile;
     };
 
-    find_profile_by_account_id_with_data_about_cover_and_avatar = async (account_id: DbCuidType): Promise<ProfileWithCoverAndAvatarData> => {
+    find_profile_by_account_id_with_data_about_cover_and_avatar = async (account_id: string): Promise<ProfileWithCoverAndAvatarData> => {
         const found_profile = await prisma.userProfile.findUnique({
             where: { by_account_id: account_id },
             include: { cover: true, avatar: true },
@@ -171,7 +170,7 @@ class AccountSectionModelsClass {
         }
         return found_profile;
     };
-    delete_account_by_its_id = async (account_id: DbCuidType) => {
+    delete_account_by_its_id = async (account_id: string) => {
         return await prisma.userAccount.delete({
             where: {
                 id: account_id,

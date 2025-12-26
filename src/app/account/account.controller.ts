@@ -1,6 +1,6 @@
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import type { accountSectionReqFullDtos } from "#/app/account/account.pipes.js";
 import { accountRouteService } from "#/app/account/account.service.js";
 import type { ResponseTypesFor_Account_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";

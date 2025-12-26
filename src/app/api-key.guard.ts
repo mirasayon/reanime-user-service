@@ -1,7 +1,7 @@
 import { envMainConfig } from "#/configs/environment-variables-config.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import { ExpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import { timingSafeEqual } from "node:crypto";
 const expectedApiKeyValue = envMainConfig.api_key_to_this_service;
 /** Middleware for API key validation. Throws 404 if not valid */

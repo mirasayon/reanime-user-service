@@ -1,9 +1,8 @@
 import { prisma } from "#/databases/provider/database-connector.js";
-import type { DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import type { VoteToSomethingType } from "#/types/utility-types-for-db-models.js";
 
 export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
-    get_all_likes_by_profile_id = async (by_profile_id: DbCuidType) => {
+    get_all_likes_by_profile_id = async (by_profile_id: string) => {
         return await prisma.voteToAnime.findMany({
             where: {
                 by_profile_id,
@@ -11,7 +10,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
             },
         });
     };
-    get_all_dislikes_by_profile_id = async (by_profile_id: DbCuidType) => {
+    get_all_dislikes_by_profile_id = async (by_profile_id: string) => {
         return await prisma.voteToAnime.findMany({
             where: {
                 by_profile_id,
@@ -20,7 +19,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
         });
     };
 
-    get_the_vote_from_anime_id_and_profile_id = async (by_profile_id: DbCuidType, external_anime_id: number) => {
+    get_the_vote_from_anime_id_and_profile_id = async (by_profile_id: string, external_anime_id: number) => {
         return await prisma.voteToAnime.findUnique({
             where: {
                 by_profile_id_external_anime_id: {
@@ -30,7 +29,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
             },
         });
     };
-    update_vote_by_its_id = async (vote_id: DbCuidType, value: VoteToSomethingType) => {
+    update_vote_by_its_id = async (vote_id: string, value: VoteToSomethingType) => {
         return await prisma.voteToAnime.update({
             where: {
                 id: vote_id,
@@ -40,7 +39,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
             },
         });
     };
-    create_like_by_profile_id = async (by_profile_id: DbCuidType, external_anime_id: number) => {
+    create_like_by_profile_id = async (by_profile_id: string, external_anime_id: number) => {
         return await prisma.voteToAnime.create({
             data: {
                 external_anime_id,
@@ -49,7 +48,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
             },
         });
     };
-    create_dislike_by_profile_id = async (by_profile_id: DbCuidType, external_anime_id: number) => {
+    create_dislike_by_profile_id = async (by_profile_id: string, external_anime_id: number) => {
         return await prisma.voteToAnime.create({
             data: {
                 external_anime_id,
@@ -59,7 +58,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
         });
     };
 
-    delete_like_by_profile_id = async (by_profile_id: DbCuidType, external_anime_id: number) => {
+    delete_like_by_profile_id = async (by_profile_id: string, external_anime_id: number) => {
         return await prisma.voteToAnime.delete({
             where: {
                 by_profile_id_external_anime_id: {
@@ -70,7 +69,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
             },
         });
     };
-    delete_dislike_by_profile_id = async (by_profile_id: DbCuidType, external_anime_id: number) => {
+    delete_dislike_by_profile_id = async (by_profile_id: string, external_anime_id: number) => {
         return await prisma.voteToAnime.delete({
             where: {
                 by_profile_id_external_anime_id: {

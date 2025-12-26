@@ -1,6 +1,6 @@
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import type { ResponseTypesFor_Ping_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 
 class PingSectionControllerClass {
     get = (req: ExpressJS.Request, res: ExpressJS.Response) => {

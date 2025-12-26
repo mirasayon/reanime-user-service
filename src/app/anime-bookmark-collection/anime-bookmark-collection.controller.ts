@@ -2,7 +2,7 @@ import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { MarkedAnimeCollectionRequestTypes } from "#/app/anime-bookmark-collection/anime-bookmark-collection.pipes.js";
 import { MarkedAnimeCollection_Service as service } from "#/app/anime-bookmark-collection/anime-bookmark-collection.service.js";
-import type { default as ExpressJS } from "express";
+import type ExpressJS from "express";
 import type { ResponseTypesFor_AnimeBookmark_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection_Controller {
     get_all_list = async (req: MarkedAnimeCollectionRequestTypes.get_all_list, res: ExpressJS.Response) => {

@@ -1,7 +1,6 @@
 import { SAME_TIME_SESSIONS_LIMIT } from "#/configs/application-rules-config.js";
 import { prisma } from "#/databases/provider/database-connector.js";
 import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import type { TokenSelector, DbCuidType } from "#/shared/types/informative-input-types-shared.js";
 import { passwordHashingService } from "#/utilities/cryptography-services/hash-passwords.service.js";
 import { sessionTokenHashService, type TokenStringRaw } from "#/utilities/cryptography-services/hash-token-sessions.service.js";
 import type { AccountPassword, ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
@@ -12,7 +11,7 @@ import maxmind, { type CountryResponse } from "maxmind";
 import { pathsMainConfig } from "#/configs/file-system-path-config.js";
 import { UAParser } from "ua-parser-js";
 class AuthenticationRouteServiceClass {
-    logout = async (session_selector: TokenSelector, account_id: DbCuidType): Promise<boolean> => {
+    logout = async (session_selector: string, account_id: string): Promise<boolean> => {
         const found_session = await authenticationRouteModels.findSessionByItsSelector(session_selector);
         if (found_session.by_account_id !== account_id) {
             throw new UnauthorizedException();
