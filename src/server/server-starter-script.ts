@@ -6,7 +6,7 @@ import consola from "consola";
 import { format } from "date-fns";
 import { chalk, Logger } from "log-it-colored";
 import type { AddressInfo } from "node:net";
-import { arch, platform } from "os";
+import { arch, platform } from "node:os";
 import { expressMainApplication } from "./server-skeleton.js";
 export async function startMainServerScript(): Promise<void> {
     try {

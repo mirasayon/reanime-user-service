@@ -5,12 +5,9 @@ const _filename_ = fileURLToPath(import.meta.url);
 const _dirname_ = dirname(_filename_);
 /** Configuration of all paths of necessary folders/files */
 class PathsMainConfig {
-    /** Root path string of the Project. The directive where `package.json` is located */
+    /** Root path of the project */
     root: string = ensuredJoinSync(_dirname_, "..", "..");
-    /** For user images
-     *
-     * `./resources/storage`
-     */
+    /** `./resources/storage` folder path */
     storage: string = ensuredJoinSync(this.root, "resources", "storage");
     /** Static folder path */
     static: string = ensuredJoinSync(this.root, "resources", "static");
@@ -19,7 +16,7 @@ class PathsMainConfig {
 
     // resources\ip-address-static-base\GeoLite2-Country.mmdb
     maxmindDbPath: string = validatorJoinPath(this.root, "resources", "ip-address-static-base", "GeoLite2-Country.mmdb");
+    /** (pathsMainConfig.storage, "avatars" ); */
+    fsPathForAvatar: string = ensuredJoinSync(this.storage, "avatars");
 }
 export const pathsMainConfig = new PathsMainConfig();
-/** ensuredJoinSync(pathsMainConfig.storage, "avatars" ); */
-export const fsPathForAvatar = ensuredJoinSync(pathsMainConfig.storage, "avatars");

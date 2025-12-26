@@ -4,7 +4,7 @@ import type { default as ExpressJS } from "express";
 import { profileRouteModel } from "#/app/profile/profile.model.js";
 import { dirname, join } from "node:path";
 import { AVATAR_IMAGE_FILE_HEIGHT_PIXELS, AVATAR_IMAGE_FILE_WIDTH_PIXELS } from "#/constants/media-module-config.js";
-import { fsPathForAvatar } from "#/configs/file-system-path-config.js";
+import { pathsMainConfig } from "#/configs/file-system-path-config.js";
 import consola from "consola";
 import type { ExpressJSMulterFileType } from "#/types/util-expressjs-types.js";
 import { existsSync } from "node:fs";
@@ -91,12 +91,12 @@ class MediaRouteServiceClass {
         if (!avatar) {
             return res.redirect("/default-avatar/m.jpg");
         }
-        const filePath = join(fsPathForAvatar, avatar.path_dirname, avatar.path_filename + ".webp");
+        const filePath = join(pathsMainConfig.fsPathForAvatar, avatar.path_dirname, avatar.path_filename + ".webp");
         return await serveMediaFile(req, res, filePath);
     };
 
     private deleteAvatarFile = async (relPath: string): Promise<boolean> => {
-        const fullPath = join(fsPathForAvatar, relPath);
+        const fullPath = join(pathsMainConfig.fsPathForAvatar, relPath);
         const dirnamePath = dirname(fullPath);
         if (existsSync(fullPath)) {
             const dirInfo = await readdir(dirnamePath);
@@ -119,7 +119,7 @@ class MediaRouteServiceClass {
     };
     private genAvatarPath = async (): Promise<MediaPathPairAndFullPath> => {
         const { dirName, fileName } = mediaHashService.genFilenamePairForProduction();
-        const avatarPath = await this.makeDirnameEnsured(fsPathForAvatar, dirName, `${fileName}.webp`);
+        const avatarPath = await this.makeDirnameEnsured(pathsMainConfig.fsPathForAvatar, dirName, `${fileName}.webp`);
         if (existsSync(avatarPath)) {
             consola.warn(
                 "Просто уведомление о том, что аватар с таким идентификатором профиля уже существует - " + avatarPath,

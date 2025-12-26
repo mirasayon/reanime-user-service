@@ -4,13 +4,7 @@ import { ExpectedInternalServerErrorException } from "#/errors/server-side-excep
 import type { default as ExpressJS } from "express";
 import { timingSafeEqual } from "node:crypto";
 const expectedApiKeyValue = envMainConfig.api_key_to_this_service;
-/**
- * Промежуточный обработчик запросов для всех маршрутов, проверяющий наличие ключа API в заголовке запроса.
- *
- * Для всех маршрутов, проверяющее наличие ключа API для доступа к сервисам.
- *
- * При отсутствии ключа API в заголовке запроса, он вернет статус 418
- */
+/** Middleware for API key validation. Throws 404 if not valid */
 export function apiKeyToServiceGuard(request: ExpressJS.Request, _res: ExpressJS.Response, next: ExpressJS.NextFunction) {
     const headerVal = request.headers["x-reanime-user-service-key"];
     if (!headerVal || typeof headerVal !== "string" || headerVal.length === 0) {
