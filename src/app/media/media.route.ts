@@ -3,7 +3,7 @@ import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js"
 import { mediaSectionController as c } from "#/app/media/media.controller.js";
 import { mediaRoutePipesMiddlewares as pm } from "#/app/media/media.pipes.js";
 import multer from "multer";
-import { mediaFileValidatorValidatorMiddleware, requestContentLengthValidatorMiddleware } from "./media.middleware.js";
+import { mediaFileStrictValidatorMiddleware, requestContentLengthValidatorMiddleware } from "./media.middleware.js";
 export const mediaSectionRouter = (() => {
     const upload = multer({
         storage: multer.memoryStorage(),
@@ -20,7 +20,7 @@ export const mediaSectionRouter = (() => {
         pm.set_avatar,
         mainAuthenticationMiddleware,
         upload.single("one_image_file"),
-        mediaFileValidatorValidatorMiddleware,
+        mediaFileStrictValidatorMiddleware,
         c.set_avatar,
     );
 
@@ -31,7 +31,7 @@ export const mediaSectionRouter = (() => {
         pm.update_avatar,
         mainAuthenticationMiddleware,
         upload.single("one_image_file"),
-        mediaFileValidatorValidatorMiddleware,
+        mediaFileStrictValidatorMiddleware,
         c.update_avatar,
     );
 

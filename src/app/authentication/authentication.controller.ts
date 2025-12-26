@@ -38,7 +38,7 @@ export const Authentication_Controller = new (class Authentication_Controller {
             username: dto.username,
             password: dto.password,
             password_repeat: dto.password_repeat,
-            ip: dto.ip ?? null,
+            ip: dto.ip,
             email: dto.email ?? null,
             agent: dto.agent ?? null,
         });
@@ -48,9 +48,9 @@ export const Authentication_Controller = new (class Authentication_Controller {
     };
 
     check_username_availability = async (req: Authentication_ReqDtos.check_username_availability, reply: ExpressJS.Response) => {
-        const { dto: username } = checkRequestForValidity(req, ["dto"]);
-        const sr = await services.check_username_availability({ username });
-        const data: ResponseTypesForAuthentication.check_username_availability = sr;
+        const username = checkRequestForValidity(req, ["dto"]).dto;
+        const isAvailable = await services.check_username_availability(username);
+        const data: ResponseTypesForAuthentication.check_username_availability = isAvailable;
         const message = "Проверка доступности имени пользователя";
         return goReplyHttp.ok(reply, { data, message });
     };

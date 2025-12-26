@@ -30,3 +30,11 @@ export function ensuredJoinSync<T extends string>(...paths: T[]): T {
     }
     return _path as T;
 }
+
+export function validatorJoinPath<T extends string>(...paths: T[]): T {
+    const _path = join(...paths);
+    if (!existsSync(_path)) {
+        throw new Error(`Path ${_path} does not exist`);
+    }
+    return _path as T;
+}

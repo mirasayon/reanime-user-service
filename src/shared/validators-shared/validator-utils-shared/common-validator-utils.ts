@@ -44,7 +44,7 @@ export const zodUtilSchemas = new (class Utility_ValidatorSchemas {
     })();
     /** IP format */
     ip_address = (() => {
-        return z.string({ error: "Неверный айпи адрес" }).optional();
+        return z.string({ error: "IP-адрес обязателен" });
     })();
 
     /** Just boolean type validator.  */

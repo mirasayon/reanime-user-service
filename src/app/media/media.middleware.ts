@@ -1,10 +1,7 @@
 import type { default as ExpressJS } from "express";
 import { BadRequestException, PayloadTooLargeException } from "#/errors/client-side-exceptions.js";
 import { PAYLOAD_MAX_SIZE, maxAvatarPayloadInMB } from "#/configs/application-rules-config.js";
-
-/**
- * Промежуточный обработчик запросов для проверки размера файла для загрузки
- */
+/** Middleware for checking file size */
 export function requestContentLengthValidatorMiddleware(req: ExpressJS.Request, _res: ExpressJS.Response, next: ExpressJS.NextFunction) {
     const contentLength = req.headers["content-length"];
     if (!contentLength) {
@@ -23,8 +20,18 @@ export function requestContentLengthValidatorMiddleware(req: ExpressJS.Request, 
     return next();
 }
 
-export function mediaFileValidatorValidatorMiddleware(req: ExpressJS.Request, _res: ExpressJS.Response, next: ExpressJS.NextFunction) {
-    const mimetype = req.file?.mimetype;
+export function mediaFileStrictValidatorMiddleware(req: ExpressJS.Request, _res: ExpressJS.Response, next: ExpressJS.NextFunction) {
+    const file = req.file;
+    if (!file) {
+        throw new BadRequestException(["Нету файла для загрузки"]);
+    }
+    if (!hasBaseName(file.originalname)) {
+        throw new BadRequestException(["Нету имени файла. Проверьте правильность файла для загрузки"]);
+    }
+    if (!file.size || typeof file.size !== "number" || file.size === 0) {
+        throw new BadRequestException(["Нету размера файла. Проверьте правильность файла для загрузки"]);
+    }
+    const mimetype = file.mimetype;
     if (!mimetype || typeof mimetype !== "string") {
         throw new BadRequestException(["Нету MIME-типа файла"]);
     }
@@ -36,4 +43,17 @@ export function mediaFileValidatorValidatorMiddleware(req: ExpressJS.Request, _r
         throw new BadRequestException(["Нету расширения загружаемого файла"]);
     }
     return next();
+}
+
+/** check base name of a file. `true` if valid, `false` otherwise. */
+function hasBaseName(filename: string): boolean {
+    if (!filename) {
+        return false;
+    }
+    const baseName = filename.trim();
+    if (baseName.length === 0) {
+        return false;
+    }
+    const idx = baseName.lastIndexOf(".");
+    return idx > 0;
 }

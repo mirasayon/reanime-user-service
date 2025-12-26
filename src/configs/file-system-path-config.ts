@@ -1,4 +1,4 @@
-import { ensuredJoinSync } from "#/utilities/ensured-path-join-util.js";
+import { ensuredJoinSync, validatorJoinPath } from "#/utilities/ensured-path-join-util.js";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 const _filename_ = fileURLToPath(import.meta.url);
@@ -16,6 +16,9 @@ class PathsMainConfig {
     static: string = ensuredJoinSync(this.root, "resources", "static");
     /** The folder where all the scripts are located. `$project/dist` for js files */
     src: string = ensuredJoinSync(_dirname_, "..");
+
+    // resources\ip-address-static-base\GeoLite2-Country.mmdb
+    maxmindDbPath: string = validatorJoinPath(this.root, "resources", "ip-address-static-base", "GeoLite2-Country.mmdb");
 }
 export const pathsMainConfig = new PathsMainConfig();
 /** ensuredJoinSync(pathsMainConfig.storage, "avatars" ); */

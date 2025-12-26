@@ -1,7 +1,7 @@
 import { prisma } from "#/databases/provider/database-connector.js";
 import { NotFoundException } from "#/errors/client-side-exceptions.js";
 import type { DbCuidType } from "#/shared/types-shared/informative-input-types-shared.js";
-import type { ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
+import type { ProfileAvatarPicture } from "[orm]/client.js";
 export type DataTypeForUploadOrUpdateAvatar = Omit<ProfileAvatarPicture, "id" | "created_at" | "updated_at">;
 class MediaRouteModelClass {
     update_avatar_by_id = async (avatarData: DataTypeForUploadOrUpdateAvatar): Promise<ProfileAvatarPicture> => {

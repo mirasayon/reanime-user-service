@@ -4,7 +4,6 @@ import type { z } from "zod";
 
 export const mediaRouteValidatorSchemas = new (class Profile_ValidatorSchemas {
     avatar_view = account_username;
-
     set_avatar = zodUtilSchemas.void;
     update_avatar = zodUtilSchemas.void;
     delete_avatar = zodUtilSchemas.void;

@@ -12,7 +12,7 @@ import { Reply_Router } from "#/app/reply/reply.route.js";
 import { secureHttpGuard } from "./secure-http.guard.js";
 import { mediaSectionRouter } from "./media/media.route.js";
 /** Entry Point Router */
-export const mainServicesRouter = (() => {
+export const apiRouterLayout = (() => {
     const router = createConfiguredRouter();
     router.use(apiKeyToServiceGuard);
     router.use(secureHttpGuard);

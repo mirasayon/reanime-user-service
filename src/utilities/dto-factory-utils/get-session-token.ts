@@ -3,8 +3,13 @@ import type { TokenStringRaw } from "../cryptography-services/hash-token-session
 const MAX_TOKEN_LENGTH = 1024;
 // Этот Regex допускает base64url/hex-like символы и обязательную точку между частями.
 const TOKEN_RE = /^[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+$/;
+type SessionTokenFullInfoType = {
+    fullTokenString: TokenStringRaw;
+    selector: string;
+    validator: string;
+};
 /** Возвращает токен сеанса из заголовков запроса */
-export function getSessionTokenFromHeadersDto(requestHeaders: IncomingHttpHeaders): TokenStringRaw | null {
+export function getSessionTokenFromHeadersDto(requestHeaders: IncomingHttpHeaders): SessionTokenFullInfoType | null {
     const header = requestHeaders["authorization"];
 
     if (!header || typeof header !== "string") {
@@ -27,8 +32,18 @@ export function getSessionTokenFromHeadersDto(requestHeaders: IncomingHttpHeader
     if (!token.includes(".")) {
         return null;
     }
+
+    const parts = token.split(".");
+    if (parts.length !== 2) {
+        return null;
+    }
+
     if (TOKEN_RE.test(token)) {
-        return token as TokenStringRaw;
+        return {
+            fullTokenString: token as TokenStringRaw,
+            selector: token.split(".")[0]!,
+            validator: token.split(".")[1]!,
+        } satisfies SessionTokenFullInfoType;
     }
     return null;
 }

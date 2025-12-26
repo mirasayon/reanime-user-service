@@ -1,4 +1,5 @@
-import { mainServicesRouter } from "#/app/app-layout.routes.js";
+import { apiRouterLayout } from "#/app/app-layout.routes.js";
+import { requireClientIpMiddleware } from "#/app/require-client-ip.guard.js";
 import { envMainConfig } from "#/configs/environment-variables-config.js";
 import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#/handlers/client-side-errors-handler.js";
 import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerLastMiddleware } from "#/handlers/server-side-errors-handler.js";
@@ -13,14 +14,14 @@ import morgan from "morgan";
 export const expressMainApplication = (() => {
     const app = expressJs();
     app.disable("x-powered-by");
-    app.set("trust proxy", 1);
+    app.set("trust proxy", true);
     app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
     app.use(compression());
     app.use(cors({}));
 
     app.use(mainStaticServerMiddleware);
     app.use(jsonBodyParserMiddleware);
-
+    app.use(requireClientIpMiddleware);
     /** Logger Middlewares */
     app.use(morgan("tiny"));
     if (envMainConfig.is_dev) {
@@ -28,7 +29,7 @@ export const expressMainApplication = (() => {
     }
 
     // Entry Point Router (Main API)
-    app.use("/v1", mainServicesRouter);
+    app.use("/v1", apiRouterLayout);
 
     // Error handlers
     app.use(notFoundRouteErrorMiddleware);

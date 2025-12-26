@@ -5,6 +5,7 @@ import type { TokenSelector, DbCuidType } from "#/shared/types-shared/informativ
 import type { Argon2idHashResultType } from "#/utilities/cryptography-services/hash-passwords.service.js";
 import { type CreateSessionTokenType } from "#/utilities/cryptography-services/hash-token-sessions.service.js";
 import type { AccountPassword, LoginSession, UserAccount } from "[orm]/client.js";
+import type { SessionMetaFromIpAndUserAgentType } from "./authentication.service.js";
 
 class AuthenticationRouteModelClass {
     getPasswordDataFromAccountId = async (account_id: DbCuidType): Promise<AccountPassword> => {
@@ -56,27 +57,28 @@ class AuthenticationRouteModelClass {
         return session;
     };
 
-    create_user_session = async ({
-        new_account_id,
-        ip_address,
-        user_agent,
-        token,
-    }: {
-        new_account_id: DbCuidType;
-        ip_address: string | null;
-        user_agent: string | null;
-        token: CreateSessionTokenType;
-    }) => {
+    create_user_session = async (
+        data: Omit<LoginSession, "id" | "updated_at" | "last_used_at" | "validator_version" | "device_hash" | "location_updated_at">,
+    ) => {
         const new_session = await prisma.loginSession.create({
             data: {
-                by_account_id: new_account_id,
-                expires_at: token.expires_at,
-                selector: token.selector,
-                hashed_validator: token.hashed_validator,
-                created_at: token.created_at,
-                last_used_at: token.created_at,
-                ip_address: ip_address,
-                user_agent: user_agent,
+                by_account_id: data.by_account_id,
+                expires_at: data.expires_at,
+                selector: data.selector,
+                hashed_validator: data.hashed_validator,
+                created_at: data.created_at,
+                last_used_at: data.created_at,
+                ip_address: data.ip_address,
+                user_agent: data.user_agent,
+                browser: data.browser,
+                browser_version: data.browser_version,
+                device_type: data.device_type,
+                device_model: data.device_model,
+                os: data.os,
+                os_version: data.os_version,
+                ip_country: data.ip_country,
+                ip_region: data.ip_region,
+                ip_city: data.ip_city,
             },
         });
         return new_session;
