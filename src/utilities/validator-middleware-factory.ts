@@ -2,20 +2,20 @@ import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import type { DtoTypeForAuthSession } from "#/types/auth-middleware-shape.js";
 import type { z, ZodType } from "zod";
 import type { default as ExpressJS } from "express";
-/** Функция-фабрика для создания промежуточного обработчика запроса валидатором */
+/** Factory function for creating an validator middleware for requests */
 export function vmFactory<
     RequestType extends ExpressJS.Request & {
-        dto?: z.infer<Zod_x_Schema_type>;
+        dto?: z.infer<ZodXSchemaType>;
         sessionDto?: DtoTypeForAuthSession;
     },
-    Zod_x_Schema_type extends ZodType = ZodType,
+    ZodXSchemaType extends ZodType = ZodType,
     A extends any = any,
->(schema: Zod_x_Schema_type, get_req_body?: (req: RequestType) => Promise<A>) {
+>(schema: ZodXSchemaType, getReqBody?: (req: RequestType) => Promise<A>) {
     return async (req: RequestType, res: ExpressJS.Response, next: ExpressJS.NextFunction) => {
         /**  If schema itself is for undefined. Then body also must be undefined */
         let rawData = undefined;
-        if (get_req_body) {
-            rawData = await get_req_body(req);
+        if (getReqBody) {
+            rawData = await getReqBody(req);
         }
         const parsed = await schema.safeParseAsync(rawData);
         if (parsed.success) {

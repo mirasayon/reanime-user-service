@@ -1,6 +1,6 @@
 import { vmFactory } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { accountSectionSchemas, type accountSectionReqDtos } from "#/shared/validators-shared/account.validator.routes.js";
+import { accountSectionSchemas, type accountSectionReqDtos } from "#/shared/validators-shared/app-validator-for-all.routes.js";
 
 export namespace accountSectionReqFullDtos {
     export type explore_me = RequestDtoTypeFactory<accountSectionReqDtos.explore_me>;

@@ -1,7 +1,7 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
 import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
 import { Profile_Controller as c } from "#/app/profile/profile.controller.js";
-import { Profile_ReqPipes as vm } from "#/app/profile/profile.pipes.js";
+import { profileRequestValidatorMiddlewares as vm } from "#/app/profile/profile.pipes.js";
 import multer from "multer";
 
 export const Profile_Router = (() => {

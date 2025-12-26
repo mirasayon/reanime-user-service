@@ -1,7 +1,7 @@
 import { checkIfAccountAlreadyLoggedMiddleware, mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
 import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
 import { Authentication_Controller as c } from "#/app/authentication/authentication.controller.js";
-import { Authentication_ReqPipes as vm } from "#/app/authentication/authentication.pipes.js";
+import { authenticationSectionRequestValidatorMiddlewares as vm } from "#/app/authentication/authentication.pipes.js";
 
 export const Authentication_Router = (() => {
     const r = createConfiguredRouter();
