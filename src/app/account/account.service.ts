@@ -26,9 +26,7 @@ class AccountRouteServiceClass {
         current_email: iAccountEmail;
         new_email: iAccountEmail;
         by_account_id: DbCuidType;
-    }): Promise<{
-        updated_account: UserAccount;
-    }> => {
+    }): Promise<boolean> => {
         const found_user = await accountSectionModels.Get_account_by_email_throw_error(current_email);
         if (found_user.email === new_email) {
             throw new BadRequestException(["Новый адрес электронной почты совпадает со старым. Пожалуйста, введите другую почту"]);
@@ -41,7 +39,7 @@ class AccountRouteServiceClass {
             throw new ConflictException([emailIsUsedErrorMessage]);
         }
         const updated_account = await accountSectionModels.update_email_for_one(found_user.id, new_email);
-        return { updated_account };
+        return !!updated_account;
     };
     set_email = async ({ email, account_id }: { email: iAccountEmail; account_id: DbCuidType }): Promise<boolean> => {
         const account_by_id = await accountSectionModels.Get_account_by_its_id_throw_error(account_id);

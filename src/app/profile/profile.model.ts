@@ -67,7 +67,7 @@ class ProfileRouteModelClass {
         });
 
         if (!account) {
-            throw new NotFoundException(["Аккаунт с таким айди не найден"]);
+            throw new NotFoundException();
         }
         const profile = await prisma.userProfile.findUnique({
             where: {

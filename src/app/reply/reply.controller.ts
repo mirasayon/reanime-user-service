@@ -1,39 +1,39 @@
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { ResponseTypesFor_ReplyToComment_Section } from "#/shared/response-patterns-shared/reply-to-comment.response-types.routes.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import type { Reply_ReqDtos as REQDTO } from "#/app/reply/reply.pipes.js";
-import { Reply_Service as service } from "#/app/reply/reply.service.js";
+import type { Reply_ReqDtos } from "#/app/reply/reply.pipes.js";
+import { replyForCommentSectionService } from "#/app/reply/reply.service.js";
 import type { default as ExpressJS } from "express";
+import type { ResponseTypesFor_ReplyToComment_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 class ReplyToCommentRouteControllerClass {
     /** Edit the comment by profile */
-    edit_reply = async (req: REQDTO.edit_reply, res: ExpressJS.Response) => {
+    edit_reply = async (req: Reply_ReqDtos.edit_reply, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const is_updated_reply = await service.edit_reply({ ...dto, profile_id: sessionDto.profile_id });
+        const is_updated_reply = await replyForCommentSectionService.edit_reply({ ...dto, profile_id: sessionDto.profile_id });
         const data: ResponseTypesFor_ReplyToComment_Section.edit_reply = is_updated_reply;
         const message = "Ответ успешно обновлен";
         return goReplyHttp.accepted(res, { data, message });
     };
     /** Gives the list of comments from specified anime ID */
-    get_1_reply_by_its_id = async (req: REQDTO.get_1_reply_by_its_id, res: ExpressJS.Response) => {
+    get_1_reply_by_its_id = async (req: Reply_ReqDtos.get_1_reply_by_its_id, res: ExpressJS.Response) => {
         const Req = checkRequestForValidity(req, ["dto"]);
-        const sr = await service.get_1_reply_by_its_id(Req.dto);
+        const sr = await replyForCommentSectionService.get_1_reply_by_its_id(Req.dto);
         const data: ResponseTypesFor_ReplyToComment_Section.get_1_reply_by_its_id = sr;
         const message = "Ответ успешно получен по его айди";
         return goReplyHttp.ok(res, { data, message });
     };
     /** Gives the list of comments from specified anime ID */
-    get_replies_by_comment_id = async (req: REQDTO.get_replies_by_comment_id, res: ExpressJS.Response) => {
+    get_replies_by_comment_id = async (req: Reply_ReqDtos.get_replies_by_comment_id, res: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
-        const { replies } = await service.get_all_replies_by_comment_id(dto);
+        const { replies } = await replyForCommentSectionService.get_all_replies_by_comment_id(dto);
         const message = "Все ответы на комментарий";
         const data: ResponseTypesFor_ReplyToComment_Section.get_replies_by_comment_id = replies;
         return goReplyHttp.ok(res, { data, message });
     };
     /** Vote for the comment. Accepts "like" or "dislike" */
-    add_like = async (req: REQDTO.add_like, res: ExpressJS.Response) => {
+    add_like = async (req: Reply_ReqDtos.add_like, res: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const sr = await service.add_like({
+        const sr = await replyForCommentSectionService.add_like({
             reply_id: dto,
             profile_id: sessionDto.profile_id,
         });
@@ -42,10 +42,10 @@ class ReplyToCommentRouteControllerClass {
         return goReplyHttp.created(res, { data, message });
     };
 
-    add_dislike = async (req: REQDTO.add_dislike, res: ExpressJS.Response) => {
+    add_dislike = async (req: Reply_ReqDtos.add_dislike, res: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
 
-        const is_added_dislike = await service.add_dislike({
+        const is_added_dislike = await replyForCommentSectionService.add_dislike({
             reply_id: dto,
             profile_id: sessionDto.profile_id,
         });
@@ -55,9 +55,9 @@ class ReplyToCommentRouteControllerClass {
     };
 
     /** Vote for the comment. Accepts "like" or "dislike" */
-    delete_like = async (req: REQDTO.add_like, res: ExpressJS.Response) => {
+    delete_like = async (req: Reply_ReqDtos.add_like, res: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const is_deleted_vote = await service.delete_like({
+        const is_deleted_vote = await replyForCommentSectionService.delete_like({
             reply_id: dto,
             profile_id: sessionDto.profile_id,
         });
@@ -66,9 +66,9 @@ class ReplyToCommentRouteControllerClass {
         return goReplyHttp.accepted(res, { data, message });
     };
 
-    delete_dislike = async (req: REQDTO.add_dislike, res: ExpressJS.Response) => {
+    delete_dislike = async (req: Reply_ReqDtos.add_dislike, res: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const is_deleted_dislike = await service.delete_dislike({
+        const is_deleted_dislike = await replyForCommentSectionService.delete_dislike({
             reply_id: dto,
             profile_id: sessionDto.profile_id,
         });
@@ -78,14 +78,14 @@ class ReplyToCommentRouteControllerClass {
     };
 
     /** Reports the comment  by profile */
-    report = async (req: REQDTO.report_reply, reply: ExpressJS.Response) => {
+    report = async (req: Reply_ReqDtos.report_reply, reply: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         throw new NotImplementedException("report reply controller");
     };
     /** Reply to the comment by profile */
-    create_reply = async (req: REQDTO.create_reply, reply: ExpressJS.Response) => {
+    create_reply = async (req: Reply_ReqDtos.create_reply, reply: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const is_created_reply = await service.create_reply({
+        const is_created_reply = await replyForCommentSectionService.create_reply({
             content: dto.content,
             reply_to_id: dto.comment_id,
             profile_id: sessionDto.profile_id,
@@ -99,9 +99,9 @@ class ReplyToCommentRouteControllerClass {
         });
     };
 
-    delete_reply = async (req: REQDTO.delete_reply, reply: ExpressJS.Response) => {
+    delete_reply = async (req: Reply_ReqDtos.delete_reply, reply: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const is_deleted_reply = await service.delete_reply({
+        const is_deleted_reply = await replyForCommentSectionService.delete_reply({
             reply_id: dto,
             profile_id: sessionDto.profile_id,
         });

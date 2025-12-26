@@ -42,7 +42,6 @@ export namespace ResponseTypesForAdministratorSection {
         avatar: {
             path_dirname: string;
             path_filename: string;
-            mime_type: string;
         } | null;
     }[];
 }
@@ -168,13 +167,12 @@ export namespace ResponseTypesFor_UserProfile_Section {
         created_at: Date;
         bio: string | null;
         nickname: string | null;
-        date_of_birth: Date | null;
+        date_of_birth: Date | null | number;
         gender: "MALE" | "FEMALE" | "OTHER" | "UNSPECIFIED";
         other_gender: string | null;
         avatar: {
             path_dirname: string;
             path_filename: string;
-            mime_type: string;
         } | null;
     };
     export type update_nickname = boolean;

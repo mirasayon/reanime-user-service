@@ -1,9 +1,9 @@
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { ResponseTypesFor_VoteToAnime_Section } from "#/shared/response-patterns-shared/vote-to-anime.response-types.routes.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { Favorite_Animes_ReqDto } from "#/app/vote-to-anime/vote-to-anime.pipes.js";
 import { voteToAnimeRouteService } from "#/app/vote-to-anime/vote-to-anime.service.js";
 import type { default as ExpressJS } from "express";
+import type { ResponseTypesFor_VoteToAnime_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 class VoteToAnimeRouteControllerClass {
     explore_likes = async (req: Favorite_Animes_ReqDto.explore_likes, res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);

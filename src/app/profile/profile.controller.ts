@@ -1,16 +1,37 @@
 import type { default as ExpressJS } from "express";
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { ResponseTypesFor_UserProfile_Section } from "#/shared/response-patterns-shared/user-profile.response-types.routes.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import { type Profile_ReqDtos } from "#/app/profile/profile.pipes.js";
 import { profileRouteService } from "#/app/profile/profile.service.js";
+import type { ResponseTypesFor_UserProfile_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 
 class Profile_ControllerClass {
     /** Просмотр других профилей пользователя */
     other_profiles = async (req: Profile_ReqDtos.other_profiles, res: ExpressJS.Response) => {
-        const { dto: username } = checkRequestForValidity(req, ["dto"]);
+        const username = checkRequestForValidity(req, ["dto"]).dto;
         const sr = await profileRouteService.other_profiles(username);
-        const data: ResponseTypesFor_UserProfile_Section.view_other_profiles = sr;
+        const data: ResponseTypesFor_UserProfile_Section.view_other_profiles = {
+            email: sr.account.email ? (sr.account.email_visibility === "SHOW" ? sr.account.email : null) : null,
+            username: sr.account.username,
+            other_gender: sr.profile.other_gender ? (sr.profile.gender_visibility === "PUBLIC" ? sr.profile.other_gender : null) : null,
+            created_at: sr.account.created_at,
+            bio: sr.profile.bio ? sr.profile.bio : null,
+            nickname: sr.profile.nickname,
+            avatar: sr.avatar
+                ? {
+                      path_dirname: sr.avatar.path_dirname,
+                      path_filename: sr.avatar.path_filename,
+                  }
+                : null,
+            gender: sr.profile.gender_visibility === "PUBLIC" ? sr.profile.gender : "UNSPECIFIED",
+            date_of_birth: sr.profile.date_of_birth
+                ? sr.profile.birthdate_visibility === "FULL"
+                    ? sr.profile.date_of_birth
+                    : sr.profile.birthdate_visibility === "YEAR_ONLY"
+                      ? sr.profile.date_of_birth.getFullYear()
+                      : sr.profile.date_of_birth
+                : null,
+        };
         const message = "Информация профиля другого пользователя успешно получена";
         return goReplyHttp.ok(res, { data, message });
     };

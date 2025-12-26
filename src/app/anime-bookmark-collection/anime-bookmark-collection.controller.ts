@@ -1,11 +1,11 @@
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { ResponseTypesFor_AnimeBookmark_Section } from "#/shared/response-patterns-shared/anime-bookmark.response-types.routes.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import type { MarkedAnimeCollection_ReqDtos as RTDO } from "#/app/anime-bookmark-collection/anime-bookmark-collection.pipes.js";
+import type { MarkedAnimeCollection_ReqDtos } from "#/app/anime-bookmark-collection/anime-bookmark-collection.pipes.js";
 import { MarkedAnimeCollection_Service as service } from "#/app/anime-bookmark-collection/anime-bookmark-collection.service.js";
 import type { default as ExpressJS } from "express";
+import type { ResponseTypesFor_AnimeBookmark_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection_Controller {
-    get_all_list = async (req: RTDO.get_all_list, res: ExpressJS.Response) => {
+    get_all_list = async (req: MarkedAnimeCollection_ReqDtos.get_all_list, res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const { collection } = await service.get_all_list(sessionDto.profile_id);
         const data: ResponseTypesFor_AnimeBookmark_Section.get_all_list = collection;
@@ -13,35 +13,35 @@ export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection
         return goReplyHttp.ok(res, { data, message });
     };
 
-    get_for_anime = async (req: RTDO.get_for_anime, res: ExpressJS.Response) => {
+    get_for_anime = async (req: MarkedAnimeCollection_ReqDtos.get_for_anime, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const sr = await service.get_for_anime(sessionDto.profile_id, dto);
         const data: ResponseTypesFor_AnimeBookmark_Section.get_for_anime = sr;
         const message = "Об аниме";
         return goReplyHttp.ok(res, { data, message });
     };
-    get_list_of_completed = async (req: RTDO.get_list_of_completed, res: ExpressJS.Response) => {
+    get_list_of_completed = async (req: MarkedAnimeCollection_ReqDtos.get_list_of_completed, res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const { collection } = await service.get_list_of_completed(sessionDto.profile_id);
         const data: ResponseTypesFor_AnimeBookmark_Section.get_list_of_completed = collection;
         const message = "Список завершенных аниме";
         return goReplyHttp.ok(res, { data, message });
     };
-    get_list_of_planned = async (req: RTDO.get_list_of_planned, res: ExpressJS.Response) => {
+    get_list_of_planned = async (req: MarkedAnimeCollection_ReqDtos.get_list_of_planned, res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const { collection } = await service.get_list_of_planned(sessionDto.profile_id);
         const data: ResponseTypesFor_AnimeBookmark_Section.get_list_of_planned = collection;
         const message = "Список запланированных аниме";
         return goReplyHttp.ok(res, { data, message });
     };
-    get_list_of_abandoned = async (req: RTDO.get_list_of_abandoned, res: ExpressJS.Response) => {
+    get_list_of_abandoned = async (req: MarkedAnimeCollection_ReqDtos.get_list_of_abandoned, res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const { collection } = await service.get_list_of_abandoned(sessionDto.profile_id);
         const data: ResponseTypesFor_AnimeBookmark_Section.get_list_of_abandoned = collection;
         const message = "Список заброшенных аниме";
         return goReplyHttp.ok(res, { data, message });
     };
-    get_list_of_watching = async (req: RTDO.get_list_of_watching, res: ExpressJS.Response) => {
+    get_list_of_watching = async (req: MarkedAnimeCollection_ReqDtos.get_list_of_watching, res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const collection = await service.get_list_of_watching(sessionDto.profile_id);
         const data: ResponseTypesFor_AnimeBookmark_Section.get_list_of_watching = collection;
@@ -51,7 +51,7 @@ export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection
 
     /** CREATE   */
 
-    create_abandoned = async (req: RTDO.create_abandoned, res: ExpressJS.Response) => {
+    create_abandoned = async (req: MarkedAnimeCollection_ReqDtos.create_abandoned, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const created_abandoned_anime = await service.create_abandoned(sessionDto.profile_id, dto);
         const data: ResponseTypesFor_AnimeBookmark_Section.create_abandoned = created_abandoned_anime;
@@ -59,7 +59,7 @@ export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection
         return goReplyHttp.accepted(res, { data, message });
     };
 
-    create_planned = async (req: RTDO.create_planned, res: ExpressJS.Response) => {
+    create_planned = async (req: MarkedAnimeCollection_ReqDtos.create_planned, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const created_planned_to_watch_anime = await service.create_planned(sessionDto.profile_id, dto);
         const data: ResponseTypesFor_AnimeBookmark_Section.create_planned = created_planned_to_watch_anime;
@@ -67,7 +67,7 @@ export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection
         return goReplyHttp.accepted(res, { data, message });
     };
 
-    create_completed = async (req: RTDO.create_completed, res: ExpressJS.Response) => {
+    create_completed = async (req: MarkedAnimeCollection_ReqDtos.create_completed, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const created_planned_to_watch_anime = await service.create_planned(sessionDto.profile_id, dto);
         const data: ResponseTypesFor_AnimeBookmark_Section.create_completed = created_planned_to_watch_anime;
@@ -75,7 +75,7 @@ export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection
         return goReplyHttp.accepted(res, { data, message });
     };
 
-    create_watching = async (req: RTDO.create_watching, res: ExpressJS.Response) => {
+    create_watching = async (req: MarkedAnimeCollection_ReqDtos.create_watching, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const created_watching_anime = await service.create_watching(sessionDto.profile_id, dto);
         const data: ResponseTypesFor_AnimeBookmark_Section.create_watching = created_watching_anime;
@@ -83,28 +83,28 @@ export const MarkedAnimeCollection_Controller = new (class MarkedAnimeCollection
         return goReplyHttp.accepted(res, { data, message });
     };
     /** DELETE */
-    delete_completed = async (req: RTDO.delete_completed, res: ExpressJS.Response) => {
+    delete_completed = async (req: MarkedAnimeCollection_ReqDtos.delete_completed, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const deleted_completed_anime = await service.delete_completed(sessionDto.profile_id, dto);
         const data: ResponseTypesFor_AnimeBookmark_Section.delete_completed = deleted_completed_anime;
         const message = "Успешно удалён из списка завершённых аниме";
         return goReplyHttp.accepted(res, { data, message });
     };
-    delete_planned = async (req: RTDO.delete_planned, res: ExpressJS.Response) => {
+    delete_planned = async (req: MarkedAnimeCollection_ReqDtos.delete_planned, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const deleted_plan_to_watch_anime = await service.delete_planned(sessionDto.profile_id, dto);
         const data: ResponseTypesFor_AnimeBookmark_Section.delete_planned = deleted_plan_to_watch_anime;
         const message = "Успешно удалён из списка запланированных аниме";
         return goReplyHttp.accepted(res, { data, message });
     };
-    delete_abandoned = async (req: RTDO.delete_abandoned, res: ExpressJS.Response) => {
+    delete_abandoned = async (req: MarkedAnimeCollection_ReqDtos.delete_abandoned, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const deleted_abandoned_anime = await service.delete_abandoned(sessionDto.profile_id, dto);
         const data: ResponseTypesFor_AnimeBookmark_Section.delete_abandoned = deleted_abandoned_anime;
         const message = "Успешно удалён из списка заброшенных аниме";
         return goReplyHttp.accepted(res, { data, message });
     };
-    delete_watching = async (req: RTDO.delete_watching, res: ExpressJS.Response) => {
+    delete_watching = async (req: MarkedAnimeCollection_ReqDtos.delete_watching, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const deleted_watching_anime = await service.delete_watching(sessionDto.profile_id, dto);
         const data: ResponseTypesFor_AnimeBookmark_Section.delete_watching = deleted_watching_anime;

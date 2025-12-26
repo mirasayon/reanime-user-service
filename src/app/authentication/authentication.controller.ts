@@ -1,9 +1,9 @@
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { ResponseTypesForAuthentication } from "#/shared/response-patterns-shared/authentication.response-types.routes.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { default as ExpressJS } from "express";
 import type { Authentication_ReqDtos } from "#/app/authentication/authentication.pipes.js";
 import { authenticationRouteService as services } from "#/app/authentication/authentication.service.js";
+import type { ResponseTypesForAuthentication } from "#/shared/types/user-service-response-types-for-all.routes.js";
 
 export const Authentication_Controller = new (class Authentication_Controller {
     login_by_email = async (req: Authentication_ReqDtos.login_by_email, reply: ExpressJS.Response) => {

@@ -1,10 +1,10 @@
 import { MAX_COMMENT_ON_ANIME_LIMIT } from "#/configs/application-rules-config.js";
 import { ConflictException, ForbiddenException, NotFoundException } from "#/errors/client-side-exceptions.js";
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
-import type { CommentForAnime, VoteToComment } from "[orm]/client.js";
+import type { CommentForAnime } from "[orm]/client.js";
 import { commentRouteModel } from "#/app/comment-for-anime/comment-for-anime.model.js";
 import { voteNotFoundErrorMessage } from "#/constants/frequent-errors.js";
-import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/response-patterns-shared/comment.response-types.routes.js";
+import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 
 /** Service Class with all methods for comments */
 export const commentRouteService = new (class Comment_Service {

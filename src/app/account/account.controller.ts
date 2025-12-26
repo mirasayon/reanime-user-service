@@ -1,9 +1,9 @@
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { ResponseTypesFor_Account_Section } from "#/shared/response-patterns-shared/account.response-types.routes.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { default as ExpressJS } from "express";
 import type { accountSectionReqFullDtos } from "#/app/account/account.pipes.js";
 import { accountRouteService } from "#/app/account/account.service.js";
+import type { ResponseTypesFor_Account_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 
 class AccountRouteControllerClass {
     explore_me = async (req: accountSectionReqFullDtos.explore_me, res: ExpressJS.Response) => {
@@ -15,9 +15,9 @@ class AccountRouteControllerClass {
     };
     update_email = async (req: accountSectionReqFullDtos.update_email, res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["sessionDto", "dto"]);
-        const { updated_account } = await accountRouteService.update_email({ ...dto, by_account_id: sessionDto.account_id });
+        const is_updated_email = await accountRouteService.update_email({ ...dto, by_account_id: sessionDto.account_id });
         const message = "Электронная почта успешно обновлена";
-        const data: ResponseTypesFor_Account_Section.update_email = updated_account;
+        const data: ResponseTypesFor_Account_Section.update_email = is_updated_email;
         return goReplyHttp.ok(res, { data, message });
     };
 

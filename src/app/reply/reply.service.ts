@@ -6,7 +6,7 @@ import { Reply_Model as model } from "#/app/reply/reply.model.js";
 import { voteNotFoundErrorMessage } from "#/constants/frequent-errors.js";
 
 /** Service Class with all methods for Replies */
-export const Reply_Service = new (class Reply_Service {
+export const replyForCommentSectionService = new (class Reply_Service {
     get_1_reply_by_its_id = async (reply_id: string) => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
         return found_reply;

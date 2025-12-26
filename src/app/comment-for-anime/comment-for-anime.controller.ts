@@ -1,10 +1,10 @@
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/response-patterns-shared/comment.response-types.routes.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type { default as ExpressJS } from "express";
 import type { Comment_ReqDtos } from "#/app/comment-for-anime/comment-for-anime.pipes.js";
 import { commentRouteService } from "#/app/comment-for-anime/comment-for-anime.service.js";
+import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/types/user-service-response-types-for-all.routes.js";
 
 class CommentToAnimeRouteControllerClass {
     /** Controller for create one comment by profile */
