@@ -1,7 +1,6 @@
 import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import type { ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
-import { profileRouteModel } from "#/app/user-profile/profile.model.js";
-import type ExpressJS from "express";
+import { profileRouteModel } from "#/app/user-profile/user-profile.model.js";
 /** Service Class with all methods for comments */
 class Profile_Service_Class {
     edit_bio = async (new_bio: string, profile_id: string): Promise<boolean> => {

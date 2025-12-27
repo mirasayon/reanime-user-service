@@ -17,7 +17,7 @@ export const expressMainApplication = (() => {
     app.set("trust proxy", true);
     app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
     app.use(compression());
-    app.use(cors({}));
+    app.use(cors());
 
     app.use(mainStaticServerMiddleware);
     app.use(jsonBodyParserMiddleware);

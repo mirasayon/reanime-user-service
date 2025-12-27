@@ -5,7 +5,7 @@ import { passwordHashingService } from "#/utilities/cryptography-services/hash-p
 import { sessionTokenHashService, type TokenStringRaw } from "#/utilities/cryptography-services/hash-token-sessions.service.js";
 import type { AccountPassword, ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
 import { authenticationRouteModels } from "#/app/authentication/authentication.model.js";
-import { profileRouteModel } from "#/app/profile/profile.model.js";
+import { profileRouteModel } from "#/app/user-profile/user-profile.model.js";
 import { invalidCredentialsErrorMessage, maxSessionsLimitReachedErrorMessage } from "#/constants/frequent-errors.js";
 import maxmind, { type CountryResponse } from "maxmind";
 import { pathsMainConfig } from "#/configs/file-system-path-config.js";

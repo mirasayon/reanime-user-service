@@ -3,7 +3,7 @@ import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
 import type ExpressJS from "express";
 import type { CommentToAnimeSectionRequestTypes } from "#/app/comment-for-anime/comment-for-anime.pipes.js";
-import { commentRouteService } from "#/app/comment-for-anime/comment-for-anime.service.js";
+import { commentToAnimeSectionService } from "#/app/comment-for-anime/comment-for-anime.service.js";
 import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 
 class CommentToAnimeRouteControllerClass {
@@ -11,7 +11,7 @@ class CommentToAnimeRouteControllerClass {
     create_comment = async (req: CommentToAnimeSectionRequestTypes.create, res: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
 
-        const created_comment = await commentRouteService.create_comment({
+        const created_comment = await commentToAnimeSectionService.create_comment({
             anime_id: dto.anime_id,
             content: dto.content,
             by_profile_id: sessionDto.profile_id,
@@ -26,7 +26,7 @@ class CommentToAnimeRouteControllerClass {
     update_comment = async (req: CommentToAnimeSectionRequestTypes.update, res: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
 
-        const updated_comment = await commentRouteService.update_comment({
+        const updated_comment = await commentToAnimeSectionService.update_comment({
             comment_id: dto.comment_id,
             new_content: dto.new_content,
             profile_id: sessionDto.profile_id,
@@ -40,7 +40,7 @@ class CommentToAnimeRouteControllerClass {
     get_all_for_anime = async (req: CommentToAnimeSectionRequestTypes.get_all_for_anime, res: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
 
-        const data: ResponseTypesFor_CommentForAnime_Section.get_all_for_anime = await commentRouteService.get_all_comments_by_animeId(dto);
+        const data: ResponseTypesFor_CommentForAnime_Section.get_all_for_anime = await commentToAnimeSectionService.get_all_comments_by_animeId(dto);
         const message = "Все комментарии к этому аниме";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -50,7 +50,7 @@ class CommentToAnimeRouteControllerClass {
      */
     all_for_public_profile = async (req: CommentToAnimeSectionRequestTypes.all_for_public_profile, res: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
-        const sr = await commentRouteService.all_for_public_profile({ by_username: dto.username, limit: dto.limit, page: dto.page });
+        const sr = await commentToAnimeSectionService.all_for_public_profile({ by_username: dto.username, limit: dto.limit, page: dto.page });
 
         const data: ResponseTypesFor_CommentForAnime_Section.all_for_public_profile = sr;
         const message = "Все комментарии этого публичного профиля";
@@ -58,7 +58,7 @@ class CommentToAnimeRouteControllerClass {
     };
     all_my_comments = async (req: CommentToAnimeSectionRequestTypes.all_my_comments, res: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const sr = await commentRouteService.all_my_comments({ by_profile_id: sessionDto.profile_id, limit: dto.limit, page: dto.page });
+        const sr = await commentToAnimeSectionService.all_my_comments({ by_profile_id: sessionDto.profile_id, limit: dto.limit, page: dto.page });
 
         const data: ResponseTypesFor_CommentForAnime_Section.all_my_comments = sr;
         const message = "Все ваши комментарии";
@@ -68,7 +68,7 @@ class CommentToAnimeRouteControllerClass {
     /** Vote for the comment. Accepts "like" or "dislike" */
     add_like = async (req: CommentToAnimeSectionRequestTypes.vote_like, res: ExpressJS.Response) => {
         const { sessionDto, dto: comment_id } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const sr = await commentRouteService.add_like({
+        const sr = await commentToAnimeSectionService.add_like({
             comment_id,
             profile_id: sessionDto.profile_id,
         });
@@ -80,7 +80,7 @@ class CommentToAnimeRouteControllerClass {
     /** Deletes Like */
     delete_like = async (req: CommentToAnimeSectionRequestTypes.vote_like, res: ExpressJS.Response) => {
         const { sessionDto, dto: comment_id } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const deleted_vote = await commentRouteService.delete_like({
+        const deleted_vote = await commentToAnimeSectionService.delete_like({
             comment_id,
             profile_id: sessionDto.profile_id,
         });
@@ -92,7 +92,7 @@ class CommentToAnimeRouteControllerClass {
 
     add_dislike = async (req: CommentToAnimeSectionRequestTypes.vote_dislike, res: ExpressJS.Response) => {
         const { dto: comment_id, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const sr = await commentRouteService.add_dislike({
+        const sr = await commentToAnimeSectionService.add_dislike({
             comment_id,
             profile_id: sessionDto.profile_id,
         });
@@ -105,7 +105,7 @@ class CommentToAnimeRouteControllerClass {
     /** Deletes Dislike */
     delete_dislike = async (req: CommentToAnimeSectionRequestTypes.vote_dislike, res: ExpressJS.Response) => {
         const { sessionDto, dto: comment_id } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const deleted_vote = await commentRouteService.delete_dislike({
+        const deleted_vote = await commentToAnimeSectionService.delete_dislike({
             comment_id,
             profile_id: sessionDto.profile_id,
         });
@@ -122,7 +122,7 @@ class CommentToAnimeRouteControllerClass {
     /** Delete a comment */
     delete_comment = async (req: CommentToAnimeSectionRequestTypes.delete_comment, reply: ExpressJS.Response) => {
         const { sessionDto, dto: comment_id } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const deleted_comment = await commentRouteService.delete_comment({
+        const deleted_comment = await commentToAnimeSectionService.delete_comment({
             comment_id,
             profile_id: sessionDto.profile_id,
         });

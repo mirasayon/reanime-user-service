@@ -5,10 +5,10 @@ import type { CommentForAnime } from "[orm]/client.js";
 import { commentRouteModel } from "#/app/comment-for-anime/comment-for-anime.model.js";
 import { voteNotFoundErrorMessage } from "#/constants/frequent-errors.js";
 import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/user-service-response-types-for-all.routes.js";
-import { profileRouteModel } from "../profile/profile.model.js";
+import { profileRouteModel } from "#/app/user-profile/user-profile.model.js";
 
 /** Service Class with all methods for comments */
-export const commentRouteService = new (class Comment_Service {
+class CommentToAnimeSectionService {
     /** Creates new Comment record and chains to new created comment record in the DB*/
     create_comment = async ({ anime_id, content, by_profile_id }: { anime_id: number; content: string; by_profile_id: string }): Promise<boolean> => {
         const max = await commentRouteModel.get_comment_count_on_1_anime(by_profile_id, anime_id);
@@ -131,4 +131,5 @@ export const commentRouteService = new (class Comment_Service {
         const updated_comment = await commentRouteModel.update_1_comment_by_its_id(found_one.id, args.new_content);
         return !!updated_comment;
     };
-})();
+}
+export const commentToAnimeSectionService = new CommentToAnimeSectionService();

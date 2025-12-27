@@ -7,24 +7,24 @@ import { commentForAnimeSectionRouter } from "#/app/comment-for-anime/comment-fo
 import { voteToAnimeSectionRouter } from "#/app/vote-to-anime/vote-to-anime.route.js";
 import { animeBookmarkSectionRouter } from "#/app/anime-bookmark-collection/anime-bookmark-collection.route.js";
 import { pingSectionRouter } from "#/app/ping/ping.route.js";
-import { profileSectionRouter } from "#/app/user-profile/profile.route.js";
+import { profileSectionRouter } from "#/app/user-profile/user-profile.route.js";
 import { replyToCommentSectionRouter } from "#/app/reply-to-comment/reply-to-comment.route.js";
 import { secureHttpGuardMiddleware } from "./secure-http.guard.js";
-import { mediaSectionRouter } from "./media/media.route.js";
+import { mediaSectionRouter } from "#/app/media/media.route.js";
 /** Entry Point Router */
 export const appLayoutRouter = (() => {
     const router = createConfiguredRouter();
     router.use(apiKeyToServiceGuard);
     router.use(secureHttpGuardMiddleware);
     router.use("/authentication", authenticationSectionRouter);
-    router.use("/administrator", administratorSectionRouter);
-    router.use("/comment", commentForAnimeSectionRouter);
-    router.use("/reply_to_comment", replyToCommentSectionRouter);
-    router.use("/profile", profileSectionRouter);
+    router.use("/administration", administratorSectionRouter);
+    router.use("/comment-to-anime", commentForAnimeSectionRouter);
+    router.use("/reply-to-comment", replyToCommentSectionRouter);
+    router.use("/user-profile", profileSectionRouter);
     router.use("/media", mediaSectionRouter);
-    router.use("/account", accountSectionRouter);
-    router.use("/anime/marked_collection", animeBookmarkSectionRouter);
-    router.use("/favorite_animes", voteToAnimeSectionRouter);
+    router.use("/user-account", accountSectionRouter);
+    router.use("/anime/anime-bookmark-collection", animeBookmarkSectionRouter);
+    router.use("/vote-to-anime", voteToAnimeSectionRouter);
     router.use("/ping", pingSectionRouter);
     return router;
 })();

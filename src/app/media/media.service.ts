@@ -1,7 +1,7 @@
 import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import { mediaRouteModel, type DataTypeForUploadOrUpdateAvatar } from "#/app/media/media.model.js";
 import type ExpressJS from "express";
-import { profileRouteModel } from "#/app/profile/profile.model.js";
+import { profileRouteModel } from "#/app/user-profile/user-profile.model.js";
 import { dirname, join } from "node:path";
 import { AVATAR_IMAGE_FILE_HEIGHT_PIXELS, AVATAR_IMAGE_FILE_WIDTH_PIXELS } from "#/constants/media-module-config.js";
 import { pathsMainConfig } from "#/configs/file-system-path-config.js";
