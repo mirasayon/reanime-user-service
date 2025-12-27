@@ -1,7 +1,7 @@
 import { UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import { AccountTypeEnum } from "[orm]/client.js";
-import { accountSectionModels } from "#/app/account/account.model.js";
-import { administratorSectionModel } from "./admin.model.js";
+import { accountSectionModels } from "#/app/user-account/user-account.model.js";
+import { administratorSectionModel } from "./administrator.model.js";
 import type { ResponseTypesForAdministratorSection } from "#/shared/user-service-response-types-for-all.routes.js";
 class AdminSectionService {
     get_all_users = async (account_id: string): Promise<ResponseTypesForAdministratorSection.get_all_users> => {

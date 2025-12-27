@@ -11,15 +11,12 @@ export namespace ProfileSectionRequestTypes {
 export const profileRequestValidatorMiddlewares = {
     other_profiles: validatorMiddlewareFactory<ProfileSectionRequestTypes.other_profiles>(
         profileRouteValidatorSchemas.other_profiles,
-        async (req) => req.params.username,
+        (req) => req.params.username,
     ),
     my_profile: validatorMiddlewareFactory<ProfileSectionRequestTypes.my_profile>(profileRouteValidatorSchemas.my_profile),
     update_nickname: validatorMiddlewareFactory<ProfileSectionRequestTypes.update_name>(
         profileRouteValidatorSchemas.update_name,
-        async (req) => req.params.nickname,
+        (req) => req.params.nickname,
     ),
-    update_bio: validatorMiddlewareFactory<ProfileSectionRequestTypes.update_bio>(
-        profileRouteValidatorSchemas.update_bio,
-        async (req) => req.body.bio,
-    ),
+    update_bio: validatorMiddlewareFactory<ProfileSectionRequestTypes.update_bio>(profileRouteValidatorSchemas.update_bio, (req) => req.body.bio),
 };

@@ -1,7 +1,7 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
 import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
-import { accountRouteController as c } from "#/app/account/account.controller.js";
-import { accountSectionReqPipes as rp } from "#/app/account/account.pipes.js";
+import { accountRouteController as c } from "#/app/user-account/user-account.controller.js";
+import { accountSectionValidatorMiddlewares as rp } from "#/app/user-account/user-account.pipes.js";
 
 export const accountSectionRouter = (() => {
     const r = createConfiguredRouter();

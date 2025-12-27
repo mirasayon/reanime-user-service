@@ -8,7 +8,7 @@ import {
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import { passwordHashingService } from "#/utilities/cryptography-services/hash-passwords.service.js";
 import type { LoginSession, UserAccount } from "[orm]/client.js";
-import { accountSectionModels } from "#/app/account/account.model.js";
+import { accountSectionModels } from "#/app/user-account/user-account.model.js";
 import { mediaSectionService } from "#/app/media/media.service.js";
 import { emailIsUsedErrorMessage } from "#/constants/frequent-errors.js";
 /** UserAccount Service */

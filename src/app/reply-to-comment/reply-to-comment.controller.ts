@@ -1,8 +1,8 @@
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import type { ReplyForCommentSectionRequestTypes } from "#/app/reply/reply.pipes.js";
-import { replyForCommentSectionService } from "#/app/reply/reply.service.js";
+import type { ReplyForCommentSectionRequestTypes } from "#/app/reply-to-comment/reply-to-comment.pipes.js";
+import { replyForCommentSectionService } from "#/app/reply-to-comment/reply-to-comment.service.js";
 import type ExpressJS from "express";
 import type { ResponseTypesFor_ReplyToComment_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 class ReplyToCommentRouteControllerClass {

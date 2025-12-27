@@ -18,7 +18,7 @@ export namespace CommentToAnimeSectionRequestTypes {
 }
 
 export const Comment_ReqPipes = new (class Comment_ReqPipes {
-    create = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.create>(commentToAnimeSectionValidatorSchemas.create, async (req) => {
+    create = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.create>(commentToAnimeSectionValidatorSchemas.create, (req) => {
         return {
             ...req.body,
             anime_id: req.params.anime_id,
@@ -28,30 +28,27 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
     /** GET Request  */
     get_all_for_anime = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.get_all_for_anime>(
         commentToAnimeSectionValidatorSchemas.get_all_for_anime,
-        async (req) => {
+        (req) => {
             const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
             const { anime_id } = req.params;
             return { page, limit, anime_id };
         },
     );
 
-    update = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.update>(commentToAnimeSectionValidatorSchemas.update, async (req) => {
+    update = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.update>(commentToAnimeSectionValidatorSchemas.update, (req) => {
         return { comment_id: req.params.comment_id, ...req.body };
     });
 
     delete_comment = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.delete_comment>(
         commentToAnimeSectionValidatorSchemas.delete_comment,
-        async (req) => req.params.comment_id,
+        (req) => req.params.comment_id,
     );
 
-    report = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.report>(
-        commentToAnimeSectionValidatorSchemas.report,
-        async (req) => req.body,
-    );
+    report = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.report>(commentToAnimeSectionValidatorSchemas.report, (req) => req.body);
     /** new 2025.11.15 */
     all_my_comments = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.all_my_comments>(
         commentToAnimeSectionValidatorSchemas.all_my_comments,
-        async (req) => {
+        (req) => {
             const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
             return {
                 limit: limit,
@@ -62,7 +59,7 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
     /** new 2025.11.15 */
     all_for_public_profile = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.all_for_public_profile>(
         commentToAnimeSectionValidatorSchemas.all_for_public_profile,
-        async (req) => {
+        (req) => {
             const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
             return {
                 limit: limit,
@@ -74,19 +71,19 @@ export const Comment_ReqPipes = new (class Comment_ReqPipes {
 
     add_like = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.vote_like>(
         commentToAnimeSectionValidatorSchemas.add_like,
-        async (req) => req.params.comment_id,
+        (req) => req.params.comment_id,
     );
     add_dislike = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.vote_dislike>(
         commentToAnimeSectionValidatorSchemas.add_dislike,
-        async (req) => req.params.comment_id,
+        (req) => req.params.comment_id,
     );
 
     delete_like = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.delete_like>(
         commentToAnimeSectionValidatorSchemas.delete_like,
-        async (req) => req.params.comment_id,
+        (req) => req.params.comment_id,
     );
     delete_dislike = validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes.delete_dislike>(
         commentToAnimeSectionValidatorSchemas.delete_dislike,
-        async (req) => req.params.comment_id,
+        (req) => req.params.comment_id,
     );
 })();

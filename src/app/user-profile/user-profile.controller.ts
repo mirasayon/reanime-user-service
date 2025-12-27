@@ -1,8 +1,8 @@
 import type ExpressJS from "express";
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import { type ProfileSectionRequestTypes } from "#/app/profile/profile.pipes.js";
-import { profileRouteService } from "#/app/profile/profile.service.js";
+import { type ProfileSectionRequestTypes } from "#/app/user-profile/profile.pipes.js";
+import { profileRouteService } from "#/app/user-profile/profile.service.js";
 import type { ResponseTypesFor_UserProfile_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 
 class ProfileSectionController {

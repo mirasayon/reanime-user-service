@@ -3,7 +3,7 @@ import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js"
 import { commentToAnimeRouteController as c } from "#/app/comment-for-anime/comment-for-anime.controller.js";
 import { Comment_ReqPipes as rp } from "#/app/comment-for-anime/comment-for-anime.pipes.js";
 
-export const Comment_Router = (() => {
+export const commentForAnimeSectionRouter = (() => {
     const r = createConfiguredRouter();
 
     // Get comments by anime ID with pagination

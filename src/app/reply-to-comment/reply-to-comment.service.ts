@@ -2,7 +2,7 @@ import { REPLIES_LIMIT_TO_ONE_COMMENT } from "#/configs/application-rules-config
 import { ConflictException, ForbiddenException, NotFoundException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
 import { NotImplementedException } from "#/errors/server-side-exceptions.js";
 import type { ReplyForComment } from "[orm]/client.js";
-import { Reply_Model as model } from "#/app/reply/reply.model.js";
+import { Reply_Model as model } from "#/app/reply-to-comment/reply-to-comment.model.js";
 import { voteNotFoundErrorMessage } from "#/constants/frequent-errors.js";
 
 /** Service Class with all methods for Replies */

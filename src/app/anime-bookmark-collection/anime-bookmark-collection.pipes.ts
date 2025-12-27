@@ -25,7 +25,7 @@ export const animeBookmarkSectionReqPipes = new (class MarkedAnimeCollection_Req
     get_all_list = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.get_all_list>(animeMarkedCollection_schemas.get_all_list);
     get_for_anime = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.get_for_anime>(
         animeMarkedCollection_schemas.explore_for_anime,
-        async (req) => req.params.anime_id,
+        (req) => req.params.anime_id,
     );
 
     get_list_of_completed = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.get_list_of_completed>(
@@ -43,35 +43,35 @@ export const animeBookmarkSectionReqPipes = new (class MarkedAnimeCollection_Req
 
     create_watching = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.create_watching>(
         animeMarkedCollection_schemas.create_watching,
-        async (req) => req.params.anime_id,
+        (req) => req.params.anime_id,
     );
     create_abandoned = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.create_abandoned>(
         animeMarkedCollection_schemas.create_abandoned,
-        async (req) => req.params.anime_id,
+        (req) => req.params.anime_id,
     );
     create_planned = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.create_planned>(
         animeMarkedCollection_schemas.create_planned,
-        async (req) => req.params.anime_id,
+        (req) => req.params.anime_id,
     );
     create_completed = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.create_completed>(
         animeMarkedCollection_schemas.create_completed,
-        async (req) => req.params.anime_id,
+        (req) => req.params.anime_id,
     );
 
     delete_completed = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.delete_completed>(
         animeMarkedCollection_schemas.delete_completed,
-        async (req) => req.params.anime_id,
+        (req) => req.params.anime_id,
     );
     delete_planned = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.delete_planned>(
         animeMarkedCollection_schemas.delete_planned,
-        async (req) => req.params.anime_id,
+        (req) => req.params.anime_id,
     );
     delete_abandoned = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.delete_abandoned>(
         animeMarkedCollection_schemas.delete_abandoned,
-        async (req) => req.params.anime_id,
+        (req) => req.params.anime_id,
     );
     delete_watching = validatorMiddlewareFactory<AnimeBookmarkSectionRequestTypes.delete_watching>(
         animeMarkedCollection_schemas.delete_watching,
-        async (req) => req.params.anime_id,
+        (req) => req.params.anime_id,
     );
 })();

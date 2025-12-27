@@ -24,15 +24,15 @@ export namespace ReplyForCommentSectionRequestTypes {
 export const replyForCommentSectionValidatorMiddlewares = {
     create_reply: validatorMiddlewareFactory<ReplyForCommentSectionRequestTypes.create_reply>(
         replyForCommentSectionZodSchemas.create_reply,
-        async (req) => req.body,
+        (req) => req.body,
     ),
     get_1_reply_by_its_id: validatorMiddlewareFactory<ReplyForCommentSectionRequestTypes.get_1_reply_by_its_id>(
         replyForCommentSectionZodSchemas.get_1_reply_by_its_id,
-        async (req) => req.params.reply_id,
+        (req) => req.params.reply_id,
     ),
     get_replies_by_comment_id: validatorMiddlewareFactory<ReplyForCommentSectionRequestTypes.get_replies_by_comment_id>(
         replyForCommentSectionZodSchemas.get_replies_by_comment_id,
-        async (req) => {
+        (req) => {
             return {
                 ...req.params,
                 ...req.query,
@@ -41,17 +41,17 @@ export const replyForCommentSectionValidatorMiddlewares = {
     ),
     edit_reply: validatorMiddlewareFactory<ReplyForCommentSectionRequestTypes.edit_reply>(
         replyForCommentSectionZodSchemas.update_reply,
-        async (req) => req.body,
+        (req) => req.body,
     ),
 
     delete_reply: validatorMiddlewareFactory<ReplyForCommentSectionRequestTypes.delete_reply>(
         replyForCommentSectionZodSchemas.delete_reply,
-        async (req) => req.params.reply_id,
+        (req) => req.params.reply_id,
     ),
 
     report_reply: validatorMiddlewareFactory<ReplyForCommentSectionRequestTypes.report_reply>(
         replyForCommentSectionZodSchemas.report_reply,
-        async (req) => {
+        (req) => {
             return {
                 reply_id: req.params.reply_id,
                 type: req.params.type,
@@ -62,19 +62,19 @@ export const replyForCommentSectionValidatorMiddlewares = {
 
     add_like: validatorMiddlewareFactory<ReplyForCommentSectionRequestTypes.add_like>(
         replyForCommentSectionZodSchemas.add_like,
-        async (req) => req.params.reply_id,
+        (req) => req.params.reply_id,
     ),
     add_dislike: validatorMiddlewareFactory<ReplyForCommentSectionRequestTypes.add_dislike>(
         replyForCommentSectionZodSchemas.add_dislike,
-        async (req) => req.params.reply_id,
+        (req) => req.params.reply_id,
     ),
 
     delete_like: validatorMiddlewareFactory<ReplyForCommentSectionRequestTypes.add_like>(
         replyForCommentSectionZodSchemas.delete_like,
-        async (req) => req.params.reply_id,
+        (req) => req.params.reply_id,
     ),
     delete_dislike: validatorMiddlewareFactory<ReplyForCommentSectionRequestTypes.add_dislike>(
         replyForCommentSectionZodSchemas.delete_dislike,
-        async (req) => req.params.reply_id,
+        (req) => req.params.reply_id,
     ),
 };

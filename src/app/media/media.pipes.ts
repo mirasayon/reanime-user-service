@@ -13,8 +13,5 @@ export const mediaRoutePipesMiddlewares = new (class MediaRoutePipesMiddlewares 
     set_avatar = validatorMiddlewareFactory<MediaRoutePipeDtos.set_avatar>(mediaRouteValidatorSchemas.set_avatar);
     delete_avatar = validatorMiddlewareFactory<MediaRoutePipeDtos.delete_avatar>(mediaRouteValidatorSchemas.delete_avatar);
     update_avatar = validatorMiddlewareFactory<MediaRoutePipeDtos.update_avatar>(mediaRouteValidatorSchemas.update_avatar);
-    avatar_view = validatorMiddlewareFactory<MediaRoutePipeDtos.avatar_view>(
-        mediaRouteValidatorSchemas.avatar_view,
-        async (req) => req.params.username,
-    );
+    avatar_view = validatorMiddlewareFactory<MediaRoutePipeDtos.avatar_view>(mediaRouteValidatorSchemas.avatar_view, (req) => req.params.username);
 })();

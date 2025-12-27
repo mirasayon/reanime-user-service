@@ -1,7 +1,7 @@
 import { envMainConfig } from "#/configs/environment-variables-config.js";
 import type ExpressJS from "express";
 import { UseSecureHTTPException } from "#/errors/client-side-exceptions.js";
-export function secureHttpGuard(req: ExpressJS.Request, res: ExpressJS.Response, next: ExpressJS.NextFunction) {
+export function secureHttpGuardMiddleware(req: ExpressJS.Request, res: ExpressJS.Response, next: ExpressJS.NextFunction) {
     if (envMainConfig.is_prod) {
         if (!(req.secure || req.get("x-forwarded-proto") === "https")) {
             throw new UseSecureHTTPException();

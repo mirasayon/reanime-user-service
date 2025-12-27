@@ -3,7 +3,7 @@ import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js"
 import { authenticationSectionController as c } from "#/app/authentication/authentication.controller.js";
 import { authenticationSectionRequestValidatorMiddlewares as vm } from "#/app/authentication/authentication.pipes.js";
 
-export const Authentication_Router = (() => {
+export const authenticationSectionRouter = (() => {
     const r = createConfiguredRouter();
     r.post("/registration", vm.registration, checkIfAccountAlreadyLoggedMiddleware, c.registration);
 

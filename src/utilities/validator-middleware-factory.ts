@@ -10,12 +10,12 @@ export function validatorMiddlewareFactory<
     },
     ZodXSchemaType extends ZodType = ZodType,
     A extends any = any,
->(schema: ZodXSchemaType, getReqBody?: (req: RequestType) => Promise<A>) {
+>(schema: ZodXSchemaType, getReqBody?: (req: RequestType) => A) {
     return async (req: RequestType, res: ExpressJS.Response, next: ExpressJS.NextFunction) => {
         /**  If schema itself is for undefined. Then body also must be undefined */
         let rawData = undefined;
         if (getReqBody) {
-            rawData = await getReqBody(req);
+            rawData = getReqBody(req);
         }
         const parsed = await schema.safeParseAsync(rawData);
         if (parsed.success) {

@@ -14,15 +14,12 @@ export namespace AuthenticationSectionRequestTypes {
 }
 
 export const authenticationSectionRequestValidatorMiddlewares = {
-    registration: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.registration>(
-        authenticationSectionSchemas.registration,
-        async (req) => {
-            return {
-                ...getSessionMetaFromClientDto(req),
-                ...req.body,
-            };
-        },
-    ),
+    registration: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.registration>(authenticationSectionSchemas.registration, (req) => {
+        return {
+            ...getSessionMetaFromClientDto(req),
+            ...req.body,
+        };
+    }),
 
     check_session: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.check_session>(authenticationSectionSchemas.check_session),
 
@@ -30,12 +27,12 @@ export const authenticationSectionRequestValidatorMiddlewares = {
 
     check_username_availability: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.check_username_availability>(
         authenticationSectionSchemas.check_username_availability,
-        async (req) => req.params.username,
+        (req) => req.params.username,
     ),
 
     login_by_email: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.login_by_email>(
         authenticationSectionSchemas.login_by_email,
-        async (req) => {
+        (req) => {
             return {
                 ...getSessionMetaFromClientDto(req),
                 ...req.body,
@@ -45,7 +42,7 @@ export const authenticationSectionRequestValidatorMiddlewares = {
 
     login_by_username: validatorMiddlewareFactory<AuthenticationSectionRequestTypes.login_by_username>(
         authenticationSectionSchemas.login_by_username,
-        async (req) => {
+        (req) => {
             return {
                 ...getSessionMetaFromClientDto(req),
                 ...req.body,

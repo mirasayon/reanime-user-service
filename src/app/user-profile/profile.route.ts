@@ -1,10 +1,10 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
 import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
-import { profileSectionController as c } from "#/app/profile/profile.controller.js";
-import { profileRequestValidatorMiddlewares as vm } from "#/app/profile/profile.pipes.js";
+import { profileSectionController as c } from "#/app/user-profile/user-profile.controller.js";
+import { profileRequestValidatorMiddlewares as vm } from "#/app/user-profile/profile.pipes.js";
 import multer from "multer";
 
-export const Profile_Router = (() => {
+export const profileSectionRouter = (() => {
     const upload = multer({
         storage: multer.memoryStorage(),
         limits: {

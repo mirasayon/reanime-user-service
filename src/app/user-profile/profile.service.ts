@@ -1,6 +1,6 @@
-import { BadRequestException, NotFoundException } from "#/errors/client-side-exceptions.js";
+import { BadRequestException } from "#/errors/client-side-exceptions.js";
 import type { ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
-import { profileRouteModel } from "#/app/profile/profile.model.js";
+import { profileRouteModel } from "#/app/user-profile/profile.model.js";
 import type ExpressJS from "express";
 /** Service Class with all methods for comments */
 class Profile_Service_Class {

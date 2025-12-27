@@ -1,4 +1,4 @@
-import { apiRouterLayout } from "#/app/app-layout.routes.js";
+import { appLayoutRouter } from "#/app/app-layout.routes.js";
 import { requireClientIpMiddleware } from "#/app/require-client-ip.guard.js";
 import { envMainConfig } from "#/configs/environment-variables-config.js";
 import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#/handlers/client-side-errors-handler.js";
@@ -29,7 +29,7 @@ export const expressMainApplication = (() => {
     }
 
     // Entry Point Router (Main API)
-    app.use("/v1", apiRouterLayout);
+    app.use("/v1", appLayoutRouter);
 
     // Error handlers
     app.use(notFoundRouteErrorMiddleware);

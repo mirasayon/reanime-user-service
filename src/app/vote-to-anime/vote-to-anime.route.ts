@@ -1,8 +1,8 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
 import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
 import { voteToAnimeRouteController as c } from "#/app/vote-to-anime/vote-to-anime.controller.js";
-import { Favorite_Animes_ReqPipes as v } from "#/app/vote-to-anime/vote-to-anime.pipes.js";
-export const FavoriteAnimes_Router = (() => {
+import { voteToAnimesSectionRequestValidatorMiddlewares as v } from "#/app/vote-to-anime/vote-to-anime.pipes.js";
+export const voteToAnimeSectionRouter = (() => {
     const r = createConfiguredRouter();
     r.get("/get/list/likes", v.explore_likes, mainAuthenticationMiddleware, c.explore_likes);
     r.get("/get/list/dislikes", v.explore_dislikes, mainAuthenticationMiddleware, c.explore_dislikes);

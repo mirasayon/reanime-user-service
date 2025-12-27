@@ -1,9 +1,9 @@
 import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
 import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
-import { replyToCommentRouteController as c } from "#/app/reply/reply.controller.js";
-import { replyForCommentSectionValidatorMiddlewares as vm } from "#/app/reply/reply.pipes.js";
+import { replyToCommentRouteController as c } from "#/app/reply-to-comment/reply-to-comment.controller.js";
+import { replyForCommentSectionValidatorMiddlewares as vm } from "#/app/reply-to-comment/reply-to-comment.pipes.js";
 
-export const Reply_Router = (() => {
+export const replyToCommentSectionRouter = (() => {
     const r = createConfiguredRouter();
     r.get("/get/one/:reply_id", vm.get_1_reply_by_its_id, c.get_1_reply_by_its_id);
     r.get("/get/all/:comment_id", vm.get_replies_by_comment_id, c.get_replies_by_comment_id);
