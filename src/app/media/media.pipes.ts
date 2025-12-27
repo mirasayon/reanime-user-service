@@ -1,6 +1,6 @@
 import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { mediaRouteValidatorSchemas, type mediaRouteValidatorDtos } from "#/shared/validators/request-validator-for-all.routes.js";
+import { mediaRouteValidatorSchemas, type mediaRouteValidatorDtos } from "#/shared/request-validator-for-all.routes.js";
 
 export namespace MediaRoutePipeDtos {
     export type avatar_view = RequestDtoTypeFactory<mediaRouteValidatorDtos.avatar_view, { username: string }>;

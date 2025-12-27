@@ -1,17 +1,17 @@
 import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { accountSectionSchemas, type accountSectionReqDtos } from "#/shared/validators/request-validator-for-all.routes.js";
+import { accountSectionSchemas, type AccountSectionReqDtos } from "#/shared/request-validator-for-all.routes.js";
 
 export namespace accountSectionReqFullDtos {
-    export type explore_me = RequestDtoTypeFactory<accountSectionReqDtos.explore_me>;
-    export type update_email = RequestDtoTypeFactory<accountSectionReqDtos.update_email>;
-    export type set_email = RequestDtoTypeFactory<accountSectionReqDtos.set_email>;
-    export type update_password = RequestDtoTypeFactory<accountSectionReqDtos.update_password>;
-    export type update_username = RequestDtoTypeFactory<accountSectionReqDtos.update_username>;
-    export type get_sessions = RequestDtoTypeFactory<accountSectionReqDtos.get_sessions>;
-    export type terminate_other_sessions = RequestDtoTypeFactory<accountSectionReqDtos.terminate_other_sessions>;
-    export type terminate_specific_session = RequestDtoTypeFactory<accountSectionReqDtos.terminate_specific_session, { session_id: string }>;
-    export type delete_account = RequestDtoTypeFactory<accountSectionReqDtos.delete_account>;
+    export type explore_me = RequestDtoTypeFactory<AccountSectionReqDtos.explore_me>;
+    export type update_email = RequestDtoTypeFactory<AccountSectionReqDtos.update_email>;
+    export type set_email = RequestDtoTypeFactory<AccountSectionReqDtos.set_email>;
+    export type update_password = RequestDtoTypeFactory<AccountSectionReqDtos.update_password>;
+    export type update_username = RequestDtoTypeFactory<AccountSectionReqDtos.update_username>;
+    export type get_sessions = RequestDtoTypeFactory<AccountSectionReqDtos.get_sessions>;
+    export type terminate_other_sessions = RequestDtoTypeFactory<AccountSectionReqDtos.terminate_other_sessions>;
+    export type terminate_specific_session = RequestDtoTypeFactory<AccountSectionReqDtos.terminate_specific_session, { session_id: string }>;
+    export type delete_account = RequestDtoTypeFactory<AccountSectionReqDtos.delete_account>;
 }
 export const accountSectionReqPipes = new (class Account_ReqPipes {
     explore_me = validatorMiddlewareFactory<accountSectionReqFullDtos.explore_me>(accountSectionSchemas.explore_me);

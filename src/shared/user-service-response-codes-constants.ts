@@ -1,4 +1,4 @@
-export const responseHTTPCodes = {
+export const userServiceHttpResponseConventionalCodes = {
     OK: "OK",
     CREATED: "CREATED",
     ACCEPTED: "ACCEPTED",
@@ -17,9 +17,10 @@ export const responseHTTPCodes = {
     SERVICE_UNAVAILABLE: "SERVICE_UNAVAILABLE",
     I_AM_A_TEAPOT: "I_AM_A_TEAPOT",
 } as const;
-export type responseHTTPCodes = (typeof responseHTTPCodes)[keyof typeof responseHTTPCodes];
+export type UserServiceHttpResponseConventionalCodeType =
+    (typeof userServiceHttpResponseConventionalCodes)[keyof typeof userServiceHttpResponseConventionalCodes];
 
-export const ResponseHTTPStatusCodes = {
+export const userServiceHttpResponseStatusCodes = {
     OK: 200,
     CREATED: 201,
     ACCEPTED: 202,
@@ -41,18 +42,18 @@ export const ResponseHTTPStatusCodes = {
     I_AM_A_TEAPOT: 418,
 } as const;
 
-export type I_UserServiceResponseStatusCodes = (typeof ResponseHTTPStatusCodes)[keyof typeof ResponseHTTPStatusCodes];
+export type UserServiceHttpResponseStatusCodeType = (typeof userServiceHttpResponseStatusCodes)[keyof typeof userServiceHttpResponseStatusCodes];
 
 /** Тип, представляющий стандартную структуру JSON-ответа.
  * @typeParam Data - Тип данных, включённые в поле `{data}` */
-export interface HTTPResponseBodyPattern<Data> {
+export interface UserServiceHttpResponseBodyPatternType<Data> {
     data: Data | null;
     errors: string[];
     /** `true` если запрос успешный, `false` если нет */
     ok: boolean;
     message: string;
-    response_code: responseHTTPCodes;
-    status_code: I_UserServiceResponseStatusCodes;
+    response_code: UserServiceHttpResponseConventionalCodeType;
+    status_code: UserServiceHttpResponseStatusCodeType;
 }
 
 export type BodyOptionalMessage = { message?: string };

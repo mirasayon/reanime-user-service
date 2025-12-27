@@ -1,30 +1,27 @@
-import { profileNicknameValidatorSchema } from "./nickname-validator-schema.js";
-
-import { accountUsernameZodSchema } from "./username-validator-schema.js";
 import { strictObject, type z as Z } from "zod";
-import { zodUtilSchemas } from "./util-validators-for-requests.js";
+import { zodRequiredSchemaBase } from "./zod-required-schema-base.js";
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------
 export const accountSectionSchemas = {
-    explore_me: zodUtilSchemas.void,
-    set_email: zodUtilSchemas.email,
+    explore_me: zodRequiredSchemaBase.void,
+    set_email: zodRequiredSchemaBase.email,
     update_email: strictObject({
-        new_email: zodUtilSchemas.email,
-        current_email: zodUtilSchemas.email,
+        new_email: zodRequiredSchemaBase.email,
+        current_email: zodRequiredSchemaBase.email,
     }),
     update_password: strictObject({
-        new_password: zodUtilSchemas.account_password,
-        repeat_new_password: zodUtilSchemas.account_password,
-        current_password: zodUtilSchemas.account_password,
+        new_password: zodRequiredSchemaBase.account_password,
+        repeat_new_password: zodRequiredSchemaBase.account_password,
+        current_password: zodRequiredSchemaBase.account_password,
     }),
-    update_username: accountUsernameZodSchema,
-    get_sessions: zodUtilSchemas.void,
-    terminate_other_sessions: zodUtilSchemas.void,
-    terminate_specific_session: zodUtilSchemas.cuid("Айди сессии"),
-    delete_account: zodUtilSchemas.void,
+    update_username: zodRequiredSchemaBase.accountUsernameValidatorSchema,
+    get_sessions: zodRequiredSchemaBase.void,
+    terminate_other_sessions: zodRequiredSchemaBase.void,
+    terminate_specific_session: zodRequiredSchemaBase.cuid("Айди сессии"),
+    delete_account: zodRequiredSchemaBase.void,
 };
 /** Request Validator DTO Types */
-export namespace accountSectionReqDtos {
+export namespace AccountSectionReqDtos {
     export type explore_me = Z.infer<(typeof accountSectionSchemas)["explore_me"]>;
     export type update_email = Z.infer<(typeof accountSectionSchemas)["update_email"]>;
     export type set_email = Z.infer<(typeof accountSectionSchemas)["set_email"]>;
@@ -37,49 +34,49 @@ export namespace accountSectionReqDtos {
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 export const administratorSectionValidatorSchemas = {
-    get_all_users: zodUtilSchemas.void,
+    get_all_users: zodRequiredSchemaBase.void,
 };
 
 /** Request Validator DTO Types */
-export namespace AdminSectionReqDtos {
+export namespace AdministratorSectionReqDtos {
     export type get_all_users = Z.infer<(typeof administratorSectionValidatorSchemas)["get_all_users"]>;
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export const authenticationSectionSchemas = {
-    logout: zodUtilSchemas.void,
+    logout: zodRequiredSchemaBase.void,
     registration: strictObject({
-        nickname: profileNicknameValidatorSchema,
-        username: accountUsernameZodSchema,
-        ip: zodUtilSchemas.ip_address,
-        email: zodUtilSchemas.email.optional(),
-        agent: zodUtilSchemas.user_agent,
-        password: zodUtilSchemas.account_password,
-        password_repeat: zodUtilSchemas.account_password,
+        nickname: zodRequiredSchemaBase.profileNickname,
+        username: zodRequiredSchemaBase.accountUsernameValidatorSchema,
+        ip: zodRequiredSchemaBase.ipAddress,
+        email: zodRequiredSchemaBase.email.optional(),
+        agent: zodRequiredSchemaBase.userAgent,
+        password: zodRequiredSchemaBase.account_password,
+        password_repeat: zodRequiredSchemaBase.account_password,
     }),
 
     /** Check the current session */
-    check_session: zodUtilSchemas.void,
+    check_session: zodRequiredSchemaBase.void,
     login_by_username: strictObject({
-        username: accountUsernameZodSchema,
-        ip: zodUtilSchemas.ip_address,
-        agent: zodUtilSchemas.user_agent,
-        password: zodUtilSchemas.account_password,
+        username: zodRequiredSchemaBase.accountUsernameValidatorSchema,
+        ip: zodRequiredSchemaBase.ipAddress,
+        agent: zodRequiredSchemaBase.userAgent,
+        password: zodRequiredSchemaBase.account_password,
     }),
     /** For checking username for availability */
-    check_username_availability: accountUsernameZodSchema,
+    check_username_availability: zodRequiredSchemaBase.accountUsernameValidatorSchema,
 
     login_by_email: strictObject({
-        email: zodUtilSchemas.email,
-        ip: zodUtilSchemas.ip_address,
-        agent: zodUtilSchemas.user_agent,
-        password: zodUtilSchemas.account_password,
+        email: zodRequiredSchemaBase.email,
+        ip: zodRequiredSchemaBase.ipAddress,
+        agent: zodRequiredSchemaBase.userAgent,
+        password: zodRequiredSchemaBase.account_password,
     }),
 };
 
 /** Request Validator DTO Types */
-export namespace AuthSectionReqDtos {
+export namespace AuthenticationSectionReqDtos {
     export type logout = Z.infer<(typeof authenticationSectionSchemas)["logout"]>;
     export type registration = Z.infer<(typeof authenticationSectionSchemas)["registration"]>;
     export type check_session = Z.infer<(typeof authenticationSectionSchemas)["check_session"]>;
@@ -92,37 +89,37 @@ export namespace AuthSectionReqDtos {
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export const replyForCommentSectionZodSchemas = {
-    get_1_reply_by_its_id: zodUtilSchemas.reply_id,
+    get_1_reply_by_its_id: zodRequiredSchemaBase.reply_id,
 
     get_replies_by_comment_id: strictObject({
-        page: zodUtilSchemas.page_number,
-        limit: zodUtilSchemas.page_size,
-        comment_id: zodUtilSchemas.comment_id,
+        page: zodRequiredSchemaBase.pageNumber,
+        limit: zodRequiredSchemaBase.pageSize,
+        comment_id: zodRequiredSchemaBase.comment_id,
     }),
     create_reply: strictObject({
-        comment_id: zodUtilSchemas.comment_id,
-        content: zodUtilSchemas.message("Ответ на комментарий"),
+        comment_id: zodRequiredSchemaBase.comment_id,
+        content: zodRequiredSchemaBase.message("Ответ на комментарий"),
     }),
 
     update_reply: strictObject({
-        content: zodUtilSchemas.message("Новый ответ"),
-        reply_id: zodUtilSchemas.reply_id,
+        content: zodRequiredSchemaBase.message("Новый ответ"),
+        reply_id: zodRequiredSchemaBase.reply_id,
     }),
-    delete_reply: zodUtilSchemas.reply_id,
+    delete_reply: zodRequiredSchemaBase.reply_id,
 
     report_reply: strictObject({
-        reply_id: zodUtilSchemas.reply_id,
-        details: zodUtilSchemas.details,
-        type: zodUtilSchemas.report_type,
+        reply_id: zodRequiredSchemaBase.reply_id,
+        details: zodRequiredSchemaBase.details,
+        type: zodRequiredSchemaBase.report_type,
     }),
 
-    add_like: zodUtilSchemas.reply_id,
+    add_like: zodRequiredSchemaBase.reply_id,
 
-    add_dislike: zodUtilSchemas.reply_id,
+    add_dislike: zodRequiredSchemaBase.reply_id,
 
-    delete_like: zodUtilSchemas.reply_id,
+    delete_like: zodRequiredSchemaBase.reply_id,
 
-    delete_dislike: zodUtilSchemas.reply_id,
+    delete_dislike: zodRequiredSchemaBase.reply_id,
 };
 
 /** Request Validator DTO Types */
@@ -143,44 +140,44 @@ export namespace ReplyForCommentReqDtos {
 
 export const commentToAnimeSectionValidatorSchemas = {
     create: strictObject({
-        anime_id: zodUtilSchemas.anime_id,
-        content: zodUtilSchemas.message("Комментарий"),
+        anime_id: zodRequiredSchemaBase.animeId,
+        content: zodRequiredSchemaBase.message("Комментарий"),
     }),
     get_all_for_anime: strictObject({
-        page: zodUtilSchemas.page_number,
-        limit: zodUtilSchemas.page_size,
-        anime_id: zodUtilSchemas.anime_id,
+        page: zodRequiredSchemaBase.pageNumber,
+        limit: zodRequiredSchemaBase.pageSize,
+        anime_id: zodRequiredSchemaBase.animeId,
     }),
     /** new 2025.11.15 */
     all_my_comments: strictObject({
-        page: zodUtilSchemas.page_number,
-        limit: zodUtilSchemas.page_size,
+        page: zodRequiredSchemaBase.pageNumber,
+        limit: zodRequiredSchemaBase.pageSize,
     }),
     /** new 2025.11.15 */
     all_for_public_profile: strictObject({
-        page: zodUtilSchemas.page_number,
-        username: accountUsernameZodSchema,
-        limit: zodUtilSchemas.page_size,
+        page: zodRequiredSchemaBase.pageNumber,
+        username: zodRequiredSchemaBase.accountUsernameValidatorSchema,
+        limit: zodRequiredSchemaBase.pageSize,
     }),
 
     update: strictObject({
-        new_content: zodUtilSchemas.message("Новый комментарий"),
-        comment_id: zodUtilSchemas.comment_id,
+        new_content: zodRequiredSchemaBase.message("Новый комментарий"),
+        comment_id: zodRequiredSchemaBase.comment_id,
     }),
 
-    delete_comment: zodUtilSchemas.comment_id,
+    delete_comment: zodRequiredSchemaBase.comment_id,
 
     report: strictObject({
-        comment_id: zodUtilSchemas.comment_id,
-        details: zodUtilSchemas.details,
-        type: zodUtilSchemas.report_type,
+        comment_id: zodRequiredSchemaBase.comment_id,
+        details: zodRequiredSchemaBase.details,
+        type: zodRequiredSchemaBase.report_type,
     }),
     /** modified 2025.11.24  */
-    add_like: zodUtilSchemas.comment_id,
-    add_dislike: zodUtilSchemas.comment_id,
+    add_like: zodRequiredSchemaBase.comment_id,
+    add_dislike: zodRequiredSchemaBase.comment_id,
 
-    delete_like: zodUtilSchemas.comment_id,
-    delete_dislike: zodUtilSchemas.comment_id,
+    delete_like: zodRequiredSchemaBase.comment_id,
+    delete_dislike: zodRequiredSchemaBase.comment_id,
 };
 /** Request Validator DTO Types */
 export namespace CommentToAnimeSectionReqDtos {
@@ -200,44 +197,44 @@ export namespace CommentToAnimeSectionReqDtos {
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-export const favoriteAnimes_schemas = {
-    explore_likes: zodUtilSchemas.void,
-    explore_dislikes: zodUtilSchemas.void,
-    view_vote_on_anime: zodUtilSchemas.anime_id,
-    add_like_to_anime: zodUtilSchemas.anime_id,
-    delete_like_from_anime: zodUtilSchemas.anime_id,
-    add_dislike_to_anime: zodUtilSchemas.anime_id,
-    delete_dislike_from_anime: zodUtilSchemas.anime_id,
+export const voteToAnimeSectionSchemas = {
+    explore_likes: zodRequiredSchemaBase.void,
+    explore_dislikes: zodRequiredSchemaBase.void,
+    view_vote_on_anime: zodRequiredSchemaBase.animeId,
+    add_like_to_anime: zodRequiredSchemaBase.animeId,
+    delete_like_from_anime: zodRequiredSchemaBase.animeId,
+    add_dislike_to_anime: zodRequiredSchemaBase.animeId,
+    delete_dislike_from_anime: zodRequiredSchemaBase.animeId,
 };
 /** Request Validator DTO Types */
-export namespace FavoriteAnimeReqDtoTypes {
-    export type explore_likes = Z.infer<(typeof favoriteAnimes_schemas)["explore_likes"]>;
-    export type explore_dislikes = Z.infer<(typeof favoriteAnimes_schemas)["explore_dislikes"]>;
-    export type view_vote_on_anime = Z.infer<(typeof favoriteAnimes_schemas)["view_vote_on_anime"]>;
-    export type add_like_to_anime = Z.infer<(typeof favoriteAnimes_schemas)["add_like_to_anime"]>;
-    export type delete_like_from_anime = Z.infer<(typeof favoriteAnimes_schemas)["delete_like_from_anime"]>;
-    export type add_dislike_to_anime = Z.infer<(typeof favoriteAnimes_schemas)["add_dislike_to_anime"]>;
-    export type delete_dislike_from_anime = Z.infer<(typeof favoriteAnimes_schemas)["delete_dislike_from_anime"]>;
+export namespace VoteToAnimeSectionRequestDtoType {
+    export type explore_likes = Z.infer<(typeof voteToAnimeSectionSchemas)["explore_likes"]>;
+    export type explore_dislikes = Z.infer<(typeof voteToAnimeSectionSchemas)["explore_dislikes"]>;
+    export type view_vote_on_anime = Z.infer<(typeof voteToAnimeSectionSchemas)["view_vote_on_anime"]>;
+    export type add_like_to_anime = Z.infer<(typeof voteToAnimeSectionSchemas)["add_like_to_anime"]>;
+    export type delete_like_from_anime = Z.infer<(typeof voteToAnimeSectionSchemas)["delete_like_from_anime"]>;
+    export type add_dislike_to_anime = Z.infer<(typeof voteToAnimeSectionSchemas)["add_dislike_to_anime"]>;
+    export type delete_dislike_from_anime = Z.infer<(typeof voteToAnimeSectionSchemas)["delete_dislike_from_anime"]>;
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 export const animeMarkedCollection_schemas = {
-    get_all_list: zodUtilSchemas.void,
-    explore_for_anime: zodUtilSchemas.anime_id,
-    get_list_of_completed: zodUtilSchemas.void,
-    get_list_of_planned: zodUtilSchemas.void,
-    get_list_of_abandoned: zodUtilSchemas.void,
-    get_list_of_watching: zodUtilSchemas.void,
+    get_all_list: zodRequiredSchemaBase.void,
+    explore_for_anime: zodRequiredSchemaBase.animeId,
+    get_list_of_completed: zodRequiredSchemaBase.void,
+    get_list_of_planned: zodRequiredSchemaBase.void,
+    get_list_of_abandoned: zodRequiredSchemaBase.void,
+    get_list_of_watching: zodRequiredSchemaBase.void,
 
-    create_completed: zodUtilSchemas.anime_id,
-    create_planned: zodUtilSchemas.anime_id,
-    create_abandoned: zodUtilSchemas.anime_id,
-    create_watching: zodUtilSchemas.anime_id,
+    create_completed: zodRequiredSchemaBase.animeId,
+    create_planned: zodRequiredSchemaBase.animeId,
+    create_abandoned: zodRequiredSchemaBase.animeId,
+    create_watching: zodRequiredSchemaBase.animeId,
 
-    delete_completed: zodUtilSchemas.anime_id,
-    delete_planned: zodUtilSchemas.anime_id,
-    delete_abandoned: zodUtilSchemas.anime_id,
-    delete_watching: zodUtilSchemas.anime_id,
+    delete_completed: zodRequiredSchemaBase.animeId,
+    delete_planned: zodRequiredSchemaBase.animeId,
+    delete_abandoned: zodRequiredSchemaBase.animeId,
+    delete_watching: zodRequiredSchemaBase.animeId,
 };
 
 /** Request Validator DTO Types */
@@ -261,10 +258,10 @@ export namespace MarkedAnimeCollectionReqDtoTypes {
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 export const mediaRouteValidatorSchemas = {
-    avatar_view: accountUsernameZodSchema,
-    set_avatar: zodUtilSchemas.void,
-    update_avatar: zodUtilSchemas.void,
-    delete_avatar: zodUtilSchemas.void,
+    avatar_view: zodRequiredSchemaBase.accountUsernameValidatorSchema,
+    set_avatar: zodRequiredSchemaBase.void,
+    update_avatar: zodRequiredSchemaBase.void,
+    delete_avatar: zodRequiredSchemaBase.void,
 };
 
 /** Request Validator DTO Types */
@@ -277,10 +274,10 @@ export namespace mediaRouteValidatorDtos {
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 export const profileRouteValidatorSchemas = {
     /** View other profiles, no auth needed */
-    other_profiles: accountUsernameZodSchema,
-    my_profile: zodUtilSchemas.void,
-    update_bio: zodUtilSchemas.message("О себе"),
-    update_name: profileNicknameValidatorSchema,
+    other_profiles: zodRequiredSchemaBase.accountUsernameValidatorSchema,
+    my_profile: zodRequiredSchemaBase.void,
+    update_bio: zodRequiredSchemaBase.message("О себе"),
+    update_name: zodRequiredSchemaBase.profileNickname,
 };
 
 /** Request Validator DTO Types */

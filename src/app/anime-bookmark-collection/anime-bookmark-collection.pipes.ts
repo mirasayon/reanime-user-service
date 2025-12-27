@@ -1,4 +1,4 @@
-import { animeMarkedCollection_schemas, type MarkedAnimeCollectionReqDtoTypes } from "#/shared/validators/request-validator-for-all.routes.js";
+import { animeMarkedCollection_schemas, type MarkedAnimeCollectionReqDtoTypes } from "#/shared/request-validator-for-all.routes.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
 import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 
