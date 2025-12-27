@@ -1,13 +1,13 @@
 import type ExpressJS from "express";
 import { goReplyHttp } from "#/handlers/all-http-responder.js";
 import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import { type MediaRoutePipeDtos } from "#/app/media/media.pipes.js";
+import { type MediaSectionRequestDtoType } from "#/app/media/media.pipes.js";
 import { mediaSectionService } from "./media.service.js";
 import { noImage_error_responseErrorObj } from "#/constants/frequent-errors.js";
 import type { ResponseTypesFor_Media_Section } from "#/shared/user-service-response-types-for-all.routes.js";
 
 class MediaSectionControllerClass {
-    set_avatar = async (req: MediaRoutePipeDtos.set_avatar, res: ExpressJS.Response) => {
+    set_avatar = async (req: MediaSectionRequestDtoType["set_avatar"], res: ExpressJS.Response) => {
         const { file, sessionDto } = checkRequestForValidity(req, ["file", "sessionDto"]);
         if (!file) {
             throw noImage_error_responseErrorObj;
@@ -18,14 +18,14 @@ class MediaSectionControllerClass {
         return goReplyHttp.accepted(res, { data, message });
     };
 
-    delete_avatar = async (req: MediaRoutePipeDtos.delete_avatar, res: ExpressJS.Response) => {
+    delete_avatar = async (req: MediaSectionRequestDtoType["delete_avatar"], res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const deleted_avatar = await mediaSectionService.delete_avatar(sessionDto.profile_id);
         const data: ResponseTypesFor_Media_Section.delete_avatar = deleted_avatar;
         const message = "Аватарка пользователя успешно удалена";
         return goReplyHttp.accepted(res, { data, message });
     };
-    update_avatar = async (req: MediaRoutePipeDtos.update_avatar, res: ExpressJS.Response) => {
+    update_avatar = async (req: MediaSectionRequestDtoType["update_avatar"], res: ExpressJS.Response) => {
         const { sessionDto, file } = checkRequestForValidity(req, ["sessionDto", "file"]);
         if (!file) {
             throw noImage_error_responseErrorObj;
@@ -36,7 +36,7 @@ class MediaSectionControllerClass {
         const message = "Аватарка успешно обновлена";
         return goReplyHttp.accepted(res, { data, message });
     };
-    avatar_view = async (req: MediaRoutePipeDtos.avatar_view, res: ExpressJS.Response) => {
+    avatar_view = async (req: MediaSectionRequestDtoType["avatar_view"], res: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         return await mediaSectionService.avatar_view(dto, req, res);
     };

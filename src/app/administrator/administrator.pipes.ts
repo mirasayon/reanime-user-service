@@ -1,9 +1,9 @@
 import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { administratorSectionValidatorSchemas, type AdministratorSectionReqDtos } from "#/shared/request-validator-for-all.routes.js";
+import { administratorSectionValidatorSchemas, type AdministratorSectionValidationSchemaType } from "#/shared/request-validator-for-all.routes.js";
 
 export interface AdministratorSectionRequestTypes {
-    get_all_users: RequestDtoTypeFactory<AdministratorSectionReqDtos.get_all_users>;
+    get_all_users: RequestDtoTypeFactory<AdministratorSectionValidationSchemaType["get_all_users"]>;
 }
 
 export const administratorSectionReqPipes = {

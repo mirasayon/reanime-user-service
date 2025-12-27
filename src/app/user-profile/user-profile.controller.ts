@@ -7,7 +7,7 @@ import type { ResponseTypesFor_UserProfile_Section } from "#/shared/user-service
 
 class ProfileSectionController {
     /** Просмотр других профилей пользователя */
-    other_profiles = async (req: ProfileSectionRequestTypes.other_profiles, res: ExpressJS.Response) => {
+    other_profiles = async (req: ProfileSectionRequestTypes["other_profiles"], res: ExpressJS.Response) => {
         const username = checkRequestForValidity(req, ["dto"]).dto;
         const sr = await profileRouteService.other_profiles(username);
         const data: ResponseTypesFor_UserProfile_Section.view_other_profiles = {
@@ -36,7 +36,7 @@ class ProfileSectionController {
         return goReplyHttp.ok(res, { data, message });
     };
     /** Обновление никнейма пользователя */
-    update_nickname = async (req: ProfileSectionRequestTypes.update_name, res: ExpressJS.Response) => {
+    update_nickname = async (req: ProfileSectionRequestTypes["update_name"], res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const updated_profile = await profileRouteService.update_nickname({ new_nickname: dto, profile_id: sessionDto.profile_id });
         const data: ResponseTypesFor_UserProfile_Section.update_nickname = updated_profile;
@@ -44,14 +44,14 @@ class ProfileSectionController {
         return goReplyHttp.accepted(res, { data, message });
     };
 
-    update_bio = async (req: ProfileSectionRequestTypes.update_bio, res: ExpressJS.Response) => {
+    update_bio = async (req: ProfileSectionRequestTypes["update_bio"], res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const sr = await profileRouteService.edit_bio(dto, sessionDto.profile_id);
         const data: ResponseTypesFor_UserProfile_Section.update_bio = sr;
         const message = "Био успешно обновлена";
         return goReplyHttp.accepted(res, { data, message });
     };
-    view_my_profile = async (req: ProfileSectionRequestTypes.my_profile, res: ExpressJS.Response) => {
+    view_my_profile = async (req: ProfileSectionRequestTypes["my_profile"], res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const sr = await profileRouteService.view_my_profile(sessionDto.account_id);
         const data: ResponseTypesFor_UserProfile_Section.view_my_profile = sr;

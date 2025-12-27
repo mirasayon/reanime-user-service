@@ -1,14 +1,14 @@
-import { voteToAnimeSectionSchemas, type VoteToAnimeSectionRequestDtoType } from "#/shared/request-validator-for-all.routes.js";
+import { voteToAnimeSectionSchemas, type VoteToAnimeSectionValidationSchemaType } from "#/shared/request-validator-for-all.routes.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
 import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 export interface VoteToAnimesSectionRequestTypes {
-    explore_likes: RequestDtoTypeFactory<VoteToAnimeSectionRequestDtoType.explore_likes>;
-    explore_dislikes: RequestDtoTypeFactory<VoteToAnimeSectionRequestDtoType.explore_dislikes>;
-    view_vote_on_anime: RequestDtoTypeFactory<VoteToAnimeSectionRequestDtoType.view_vote_on_anime, { anime_id: string }>;
-    add_like_to_anime: RequestDtoTypeFactory<VoteToAnimeSectionRequestDtoType.add_like_to_anime, { anime_id: string }>;
-    delete_like_from_anime: RequestDtoTypeFactory<VoteToAnimeSectionRequestDtoType.delete_like_from_anime, { anime_id: string }>;
-    add_dislike_to_anime: RequestDtoTypeFactory<VoteToAnimeSectionRequestDtoType.add_dislike_to_anime, { anime_id: string }>;
-    delete_dislike_from_anime: RequestDtoTypeFactory<VoteToAnimeSectionRequestDtoType.delete_dislike_from_anime, { anime_id: string }>;
+    explore_likes: RequestDtoTypeFactory<VoteToAnimeSectionValidationSchemaType["explore_likes"]>;
+    explore_dislikes: RequestDtoTypeFactory<VoteToAnimeSectionValidationSchemaType["explore_dislikes"]>;
+    view_vote_on_anime: RequestDtoTypeFactory<VoteToAnimeSectionValidationSchemaType["view_vote_on_anime"], { anime_id: string }>;
+    add_like_to_anime: RequestDtoTypeFactory<VoteToAnimeSectionValidationSchemaType["add_like_to_anime"], { anime_id: string }>;
+    delete_like_from_anime: RequestDtoTypeFactory<VoteToAnimeSectionValidationSchemaType["delete_like_from_anime"], { anime_id: string }>;
+    add_dislike_to_anime: RequestDtoTypeFactory<VoteToAnimeSectionValidationSchemaType["add_dislike_to_anime"], { anime_id: string }>;
+    delete_dislike_from_anime: RequestDtoTypeFactory<VoteToAnimeSectionValidationSchemaType["delete_dislike_from_anime"], { anime_id: string }>;
 }
 
 export const voteToAnimesSectionRequestValidatorMiddlewares = {

@@ -1,17 +1,17 @@
 import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
 import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { accountSectionSchemas, type AccountSectionReqDtos } from "#/shared/request-validator-for-all.routes.js";
+import { accountSectionSchemas, type AccountSectionValidationSchemaType } from "#/shared/request-validator-for-all.routes.js";
 
 export interface AccountSectionRequestWithDtoTypes {
-    explore_me: RequestDtoTypeFactory<AccountSectionReqDtos.explore_me>;
-    update_email: RequestDtoTypeFactory<AccountSectionReqDtos.update_email>;
-    set_email: RequestDtoTypeFactory<AccountSectionReqDtos.set_email>;
-    update_password: RequestDtoTypeFactory<AccountSectionReqDtos.update_password>;
-    update_username: RequestDtoTypeFactory<AccountSectionReqDtos.update_username>;
-    get_sessions: RequestDtoTypeFactory<AccountSectionReqDtos.get_sessions>;
-    terminate_other_sessions: RequestDtoTypeFactory<AccountSectionReqDtos.terminate_other_sessions>;
-    terminate_specific_session: RequestDtoTypeFactory<AccountSectionReqDtos.terminate_specific_session, { session_id: string }>;
-    delete_account: RequestDtoTypeFactory<AccountSectionReqDtos.delete_account>;
+    explore_me: RequestDtoTypeFactory<AccountSectionValidationSchemaType["explore_me"]>;
+    update_email: RequestDtoTypeFactory<AccountSectionValidationSchemaType["update_email"]>;
+    set_email: RequestDtoTypeFactory<AccountSectionValidationSchemaType["set_email"]>;
+    update_password: RequestDtoTypeFactory<AccountSectionValidationSchemaType["update_password"]>;
+    update_username: RequestDtoTypeFactory<AccountSectionValidationSchemaType["update_username"]>;
+    get_sessions: RequestDtoTypeFactory<AccountSectionValidationSchemaType["get_sessions"]>;
+    terminate_other_sessions: RequestDtoTypeFactory<AccountSectionValidationSchemaType["terminate_other_sessions"]>;
+    terminate_specific_session: RequestDtoTypeFactory<AccountSectionValidationSchemaType["terminate_specific_session"], { session_id: string }>;
+    delete_account: RequestDtoTypeFactory<AccountSectionValidationSchemaType["delete_account"]>;
 }
 export const accountSectionValidatorMiddlewares = {
     explore_me: validatorMiddlewareFactory<AccountSectionRequestWithDtoTypes["explore_me"]>(accountSectionSchemas.explore_me),
