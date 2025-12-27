@@ -56,7 +56,7 @@ class CommentToAnimeSectionService {
         page: number;
         limit: number;
         anime_id: number;
-    }): Promise<ResponseTypesFor_CommentForAnime_Section.get_all_for_anime> => {
+    }): Promise<ResponseTypesFor_CommentForAnime_Section["get_all_for_anime"]> => {
         const comments = await commentRouteModel.get_all_comments_for_anime(args);
         return comments;
     };

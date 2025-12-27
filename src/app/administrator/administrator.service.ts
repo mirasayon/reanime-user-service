@@ -4,7 +4,7 @@ import { accountSectionModels } from "#/app/user-account/user-account.model.js";
 import { administratorSectionModel } from "./administrator.model.js";
 import type { ResponseTypesForAdministratorSection } from "#/shared/user-service-response-types-for-all.routes.js";
 class AdminSectionService {
-    get_all_users = async (account_id: string): Promise<ResponseTypesForAdministratorSection.get_all_users> => {
+    get_all_users = async (account_id: string): Promise<ResponseTypesForAdministratorSection["get_all_users"]> => {
         const found_user = await accountSectionModels.Get_account_by_its_id_throw_error(account_id);
         if (found_user.account_type === AccountTypeEnum.ADMIN) {
             const found_all_users = await administratorSectionModel.get_all_accounts_and_its_profiles();
@@ -24,7 +24,7 @@ class AdminSectionService {
                               path_filename: u.avatar.path_filename,
                           }
                         : null,
-                } satisfies ResponseTypesForAdministratorSection.get_all_users[number];
+                } satisfies ResponseTypesForAdministratorSection["get_all_users"][number];
             });
         } else {
             throw new UnauthorizedException();

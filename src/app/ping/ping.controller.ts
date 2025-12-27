@@ -4,7 +4,7 @@ import type ExpressJS from "express";
 
 class PingSectionControllerClass {
     get = (req: ExpressJS.Request, res: ExpressJS.Response) => {
-        const data: ResponseTypesFor_Ping_Section.get = "pong";
+        const data: ResponseTypesFor_Ping_Section["get"] = "pong";
         const message = "OK";
         return goReplyHttp.ok(res, { data, message });
     };

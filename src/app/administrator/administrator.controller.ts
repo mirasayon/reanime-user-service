@@ -10,7 +10,7 @@ class AdministratorSectionControllerClass {
 
         const sr = await adminSectionService.get_all_users(sessionDto.account_id);
         const message = "Информация обо всех пользователях успешно получена.";
-        const data: ResponseTypesForAdministratorSection.get_all_users = sr;
+        const data: ResponseTypesForAdministratorSection["get_all_users"] = sr;
         return goReplyHttp.ok(res, { data, message });
     };
 }

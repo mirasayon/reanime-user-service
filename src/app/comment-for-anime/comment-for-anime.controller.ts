@@ -17,7 +17,7 @@ class CommentToAnimeRouteControllerClass {
             by_profile_id: sessionDto.profile_id,
         });
 
-        const data: ResponseTypesFor_CommentForAnime_Section.create_comment = created_comment;
+        const data: ResponseTypesFor_CommentForAnime_Section["create_comment"] = created_comment;
         const message = "Успешно создан новый комментарий";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -32,7 +32,7 @@ class CommentToAnimeRouteControllerClass {
             profile_id: sessionDto.profile_id,
         });
 
-        const data: ResponseTypesFor_CommentForAnime_Section.update_comment = updated_comment;
+        const data: ResponseTypesFor_CommentForAnime_Section["update_comment"] = updated_comment;
         const message = "Комментарий успешно обновлен";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -40,7 +40,8 @@ class CommentToAnimeRouteControllerClass {
     get_all_for_anime = async (req: CommentToAnimeSectionRequestTypes["get_all_for_anime"], res: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
 
-        const data: ResponseTypesFor_CommentForAnime_Section.get_all_for_anime = await commentToAnimeSectionService.get_all_comments_by_animeId(dto);
+        const data: ResponseTypesFor_CommentForAnime_Section["get_all_for_anime"] =
+            await commentToAnimeSectionService.get_all_comments_by_animeId(dto);
         const message = "Все комментарии к этому аниме";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -52,7 +53,7 @@ class CommentToAnimeRouteControllerClass {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await commentToAnimeSectionService.all_for_public_profile({ by_username: dto.username, limit: dto.limit, page: dto.page });
 
-        const data: ResponseTypesFor_CommentForAnime_Section.all_for_public_profile = sr;
+        const data: ResponseTypesFor_CommentForAnime_Section["all_for_public_profile"] = sr;
         const message = "Все комментарии этого публичного профиля";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -60,7 +61,7 @@ class CommentToAnimeRouteControllerClass {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const sr = await commentToAnimeSectionService.all_my_comments({ by_profile_id: sessionDto.profile_id, limit: dto.limit, page: dto.page });
 
-        const data: ResponseTypesFor_CommentForAnime_Section.all_my_comments = sr;
+        const data: ResponseTypesFor_CommentForAnime_Section["all_my_comments"] = sr;
         const message = "Все ваши комментарии";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -72,7 +73,7 @@ class CommentToAnimeRouteControllerClass {
             comment_id,
             profile_id: sessionDto.profile_id,
         });
-        const data: ResponseTypesFor_CommentForAnime_Section.add_like = sr;
+        const data: ResponseTypesFor_CommentForAnime_Section["add_like"] = sr;
         const message = "Успешно поставлен лайк к комментарию";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -85,7 +86,7 @@ class CommentToAnimeRouteControllerClass {
             profile_id: sessionDto.profile_id,
         });
 
-        const data: ResponseTypesFor_CommentForAnime_Section.delete_like = deleted_vote;
+        const data: ResponseTypesFor_CommentForAnime_Section["delete_like"] = deleted_vote;
         const message = "Успешно удален лайк из комментария";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -97,7 +98,7 @@ class CommentToAnimeRouteControllerClass {
             profile_id: sessionDto.profile_id,
         });
 
-        const data: ResponseTypesFor_CommentForAnime_Section.add_dislike = sr;
+        const data: ResponseTypesFor_CommentForAnime_Section["add_dislike"] = sr;
         const message = "Успешно поставлен дизлайк к комментарию";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -110,7 +111,7 @@ class CommentToAnimeRouteControllerClass {
             profile_id: sessionDto.profile_id,
         });
 
-        const data: ResponseTypesFor_CommentForAnime_Section.delete_dislike = deleted_vote;
+        const data: ResponseTypesFor_CommentForAnime_Section["delete_dislike"] = deleted_vote;
         const message = "Успешно удален дизлайк из комментария";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -126,7 +127,7 @@ class CommentToAnimeRouteControllerClass {
             comment_id,
             profile_id: sessionDto.profile_id,
         });
-        const data: ResponseTypesFor_CommentForAnime_Section.delete_comment = deleted_comment;
+        const data: ResponseTypesFor_CommentForAnime_Section["delete_comment"] = deleted_comment;
         const message = "Комментарий успешно удалён";
         return goReplyHttp.accepted(reply, { data, message });
     };

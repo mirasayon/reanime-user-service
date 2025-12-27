@@ -10,7 +10,7 @@ class ReplyToCommentRouteControllerClass {
     edit_reply = async (req: ReplyForCommentSectionRequestTypes["edit_reply"], res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const is_updated_reply = await replyForCommentSectionService.edit_reply({ ...dto, profile_id: sessionDto.profile_id });
-        const data: ResponseTypesFor_ReplyToComment_Section.edit_reply = is_updated_reply;
+        const data: ResponseTypesFor_ReplyToComment_Section["edit_reply"] = is_updated_reply;
         const message = "Ответ успешно обновлен";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -18,7 +18,7 @@ class ReplyToCommentRouteControllerClass {
     get_1_reply_by_its_id = async (req: ReplyForCommentSectionRequestTypes["get_1_reply_by_its_id"], res: ExpressJS.Response) => {
         const Req = checkRequestForValidity(req, ["dto"]);
         const sr = await replyForCommentSectionService.get_1_reply_by_its_id(Req.dto);
-        const data: ResponseTypesFor_ReplyToComment_Section.get_1_reply_by_its_id = sr;
+        const data: ResponseTypesFor_ReplyToComment_Section["get_1_reply_by_its_id"] = sr;
         const message = "Ответ успешно получен по его айди";
         return goReplyHttp.ok(res, { data, message });
     };
@@ -27,7 +27,7 @@ class ReplyToCommentRouteControllerClass {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         const { replies } = await replyForCommentSectionService.get_all_replies_by_comment_id(dto);
         const message = "Все ответы на комментарий";
-        const data: ResponseTypesFor_ReplyToComment_Section.get_replies_by_comment_id = replies;
+        const data: ResponseTypesFor_ReplyToComment_Section["get_replies_by_comment_id"] = replies;
         return goReplyHttp.ok(res, { data, message });
     };
     /** Vote for the comment. Accepts "like" or "dislike" */
@@ -37,7 +37,7 @@ class ReplyToCommentRouteControllerClass {
             reply_id: dto,
             profile_id: sessionDto.profile_id,
         });
-        const data: ResponseTypesFor_ReplyToComment_Section.add_like = sr;
+        const data: ResponseTypesFor_ReplyToComment_Section["add_like"] = sr;
         const message = "Успешно добавлен лайк к ответу";
         return goReplyHttp.created(res, { data, message });
     };
@@ -49,7 +49,7 @@ class ReplyToCommentRouteControllerClass {
             reply_id: dto,
             profile_id: sessionDto.profile_id,
         });
-        const data: ResponseTypesFor_ReplyToComment_Section.add_dislike = is_added_dislike;
+        const data: ResponseTypesFor_ReplyToComment_Section["add_dislike"] = is_added_dislike;
         const message = "Успешно добавлено дизлайк на ответ";
         return goReplyHttp.created(res, { data, message });
     };
@@ -61,7 +61,7 @@ class ReplyToCommentRouteControllerClass {
             reply_id: dto,
             profile_id: sessionDto.profile_id,
         });
-        const data: ResponseTypesFor_ReplyToComment_Section.delete_like = is_deleted_vote;
+        const data: ResponseTypesFor_ReplyToComment_Section["delete_like"] = is_deleted_vote;
         const message = "Лайк с ответа успешно удалён";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -72,7 +72,7 @@ class ReplyToCommentRouteControllerClass {
             reply_id: dto,
             profile_id: sessionDto.profile_id,
         });
-        const data: ResponseTypesFor_ReplyToComment_Section.delete_dislike = is_deleted_dislike;
+        const data: ResponseTypesFor_ReplyToComment_Section["delete_dislike"] = is_deleted_dislike;
         const message = "Дизлайк с ответа успешно удалён";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -91,7 +91,7 @@ class ReplyToCommentRouteControllerClass {
             profile_id: sessionDto.profile_id,
         });
 
-        const data: ResponseTypesFor_ReplyToComment_Section.create_reply = is_created_reply;
+        const data: ResponseTypesFor_ReplyToComment_Section["create_reply"] = is_created_reply;
         const message = "Успешно создан ответ на этот комментарий";
         return goReplyHttp.accepted(reply, {
             data,
@@ -105,7 +105,7 @@ class ReplyToCommentRouteControllerClass {
             reply_id: dto,
             profile_id: sessionDto.profile_id,
         });
-        const data: ResponseTypesFor_ReplyToComment_Section.delete_reply = is_deleted_reply;
+        const data: ResponseTypesFor_ReplyToComment_Section["delete_reply"] = is_deleted_reply;
         const message = "Ответ успешно удалён";
         return goReplyHttp.accepted(reply, { data, message });
     };

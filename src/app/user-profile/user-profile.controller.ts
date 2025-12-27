@@ -10,7 +10,7 @@ class ProfileSectionController {
     other_profiles = async (req: ProfileSectionRequestTypes["other_profiles"], res: ExpressJS.Response) => {
         const username = checkRequestForValidity(req, ["dto"]).dto;
         const sr = await profileRouteService.other_profiles(username);
-        const data: ResponseTypesFor_UserProfile_Section.view_other_profiles = {
+        const data: ResponseTypesFor_UserProfile_Section["view_other_profiles"] = {
             email: sr.account.email ? (sr.account.email_visibility === "SHOW" ? sr.account.email : null) : null,
             username: sr.account.username,
             other_gender: sr.profile.other_gender ? (sr.profile.gender_visibility === "PUBLIC" ? sr.profile.other_gender : null) : null,
@@ -39,7 +39,7 @@ class ProfileSectionController {
     update_nickname = async (req: ProfileSectionRequestTypes["update_name"], res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const updated_profile = await profileRouteService.update_nickname({ new_nickname: dto, profile_id: sessionDto.profile_id });
-        const data: ResponseTypesFor_UserProfile_Section.update_nickname = updated_profile;
+        const data: ResponseTypesFor_UserProfile_Section["update_nickname"] = updated_profile;
         const message = "Ник успешно обновлен";
         return goReplyHttp.accepted(res, { data, message });
     };
@@ -47,14 +47,14 @@ class ProfileSectionController {
     update_bio = async (req: ProfileSectionRequestTypes["update_bio"], res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
         const sr = await profileRouteService.edit_bio(dto, sessionDto.profile_id);
-        const data: ResponseTypesFor_UserProfile_Section.update_bio = sr;
+        const data: ResponseTypesFor_UserProfile_Section["update_bio"] = sr;
         const message = "Био успешно обновлена";
         return goReplyHttp.accepted(res, { data, message });
     };
     view_my_profile = async (req: ProfileSectionRequestTypes["my_profile"], res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const sr = await profileRouteService.view_my_profile(sessionDto.account_id);
-        const data: ResponseTypesFor_UserProfile_Section.view_my_profile = sr;
+        const data: ResponseTypesFor_UserProfile_Section["view_my_profile"] = sr;
         const message = "Информация о текущем профиле пользователя успешно получена";
         return goReplyHttp.ok(res, { data, message });
     };

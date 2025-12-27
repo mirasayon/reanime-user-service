@@ -14,7 +14,7 @@ class AuthenticationSectionController {
             password: dto.password,
             email: dto.email,
         });
-        const data: ResponseTypesForAuthentication.login_via_email = sr;
+        const data: ResponseTypesForAuthentication["login_via_email"] = sr;
         const message = "Пользователь успешно вошел в систему через почту";
         return goReplyHttp.accepted(reply, { data, message });
     };
@@ -27,7 +27,7 @@ class AuthenticationSectionController {
             password: dto.password,
             username: dto.username,
         });
-        const data: ResponseTypesForAuthentication.login_via_username = sr;
+        const data: ResponseTypesForAuthentication["login_via_username"] = sr;
         const message = "Пользователь успешно вошел в систему через юзернейм";
         return goReplyHttp.accepted(reply, { data, message });
     };
@@ -42,7 +42,7 @@ class AuthenticationSectionController {
             email: dto.email ?? null,
             agent: dto.agent ?? null,
         });
-        const data: ResponseTypesForAuthentication.registration = token;
+        const data: ResponseTypesForAuthentication["registration"] = token;
         const message = "Пользователь успешно зарегистрирован и вошёл в систему";
         return goReplyHttp.accepted(reply, { data, message });
     };
@@ -50,14 +50,14 @@ class AuthenticationSectionController {
     check_username_availability = async (req: AuthenticationSectionRequestTypes["check_username_availability"], reply: ExpressJS.Response) => {
         const username = checkRequestForValidity(req, ["dto"]).dto;
         const isAvailable = await authenticationRouteService.check_username_availability(username);
-        const data: ResponseTypesForAuthentication.check_username_availability = isAvailable;
+        const data: ResponseTypesForAuthentication["check_username_availability"] = isAvailable;
         const message = "Проверка доступности имени пользователя";
         return goReplyHttp.ok(reply, { data, message });
     };
     check_session = async (req: AuthenticationSectionRequestTypes["check_session"], reply: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
         const { account, avatar, profile } = await authenticationRouteService.check_session(sessionDto.account_id);
-        const data: ResponseTypesForAuthentication.check_session = {
+        const data: ResponseTypesForAuthentication["check_session"] = {
             id: account.id,
             profile_id: profile.id,
             avatar_url: avatar ? avatar.path_dirname + "/" + avatar.path_filename : null,
@@ -72,7 +72,7 @@ class AuthenticationSectionController {
     logout = async (req: AuthenticationSectionRequestTypes["logout"], res: ExpressJS.Response) => {
         const { account_id, selector } = checkRequestForValidity(req, ["sessionDto"]).sessionDto;
         const is_session_deleted = await authenticationRouteService.logout(selector, account_id);
-        const data: ResponseTypesForAuthentication.logout = is_session_deleted;
+        const data: ResponseTypesForAuthentication["logout"] = is_session_deleted;
         const message = "Этот сеанс успешно удален (выход из системы)";
         return goReplyHttp.accepted(res, { message, data });
     };

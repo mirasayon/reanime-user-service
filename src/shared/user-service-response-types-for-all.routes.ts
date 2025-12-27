@@ -1,16 +1,16 @@
 /** Response types for account section */
-export namespace ResponseTypesFor_Account_Section {
-    export type explore_me = {
+export interface ResponseTypesFor_Account_Section {
+    explore_me: {
         email: string | null;
         username: string;
         created_at: Date;
         account_type: "COMMON" | "BANNED" | "ADMIN" | "DEVELOPER" | "TESTER";
     };
-    export type update_email = boolean;
-    export type set_email = boolean;
-    export type update_password = boolean;
-    export type update_username = boolean;
-    export type get_sessions = {
+    update_email: boolean;
+    set_email: boolean;
+    update_password: boolean;
+    update_username: boolean;
+    get_sessions: {
         id: string;
         created_at: Date;
         expires_at: Date;
@@ -26,13 +26,13 @@ export namespace ResponseTypesFor_Account_Section {
         browser: string | null;
         browser_version: string | null;
     }[];
-    export type delete_all_other_sessions = number;
-    export type terminate_specific_session = boolean;
-    export type delete_account = boolean;
+    delete_all_other_sessions: number;
+    terminate_specific_session: boolean;
+    delete_account: boolean;
 }
 /** Response types for administrator section */
-export namespace ResponseTypesForAdministratorSection {
-    export type get_all_users = {
+export interface ResponseTypesForAdministratorSection {
+    get_all_users: {
         id: string;
         email: string | null;
         username: string;
@@ -48,43 +48,43 @@ export namespace ResponseTypesForAdministratorSection {
     }[];
 }
 
-type AnimeBookmark = {
+interface AnimeBookmark {
     id: string;
     created_at: Date;
     updated_at: Date;
     by_profile_id: string;
     external_anime_id: number;
     status: "WATCHING" | "ABANDONED" | "PLANNED" | "COMPLETED";
-};
+}
 /** Типы ответов для маршрута коллекции аниме */
-export namespace ResponseTypesFor_AnimeBookmark_Section {
-    export type get_all_list = AnimeBookmark[];
-    export type get_for_anime = AnimeBookmark;
-    export type get_list_of_completed = AnimeBookmark[];
-    export type get_list_of_planned = AnimeBookmark[];
-    export type get_list_of_abandoned = AnimeBookmark[];
-    export type get_list_of_watching = AnimeBookmark[];
-    export type create_watching = boolean;
-    export type create_planned = boolean;
-    export type create_abandoned = boolean;
-    export type create_completed = boolean;
-    export type delete_abandoned = boolean;
-    export type delete_watching = boolean;
-    export type delete_planned = boolean;
-    export type delete_completed = boolean;
+export interface ResponseTypesFor_AnimeBookmark_Section {
+    get_all_list: AnimeBookmark[];
+    get_for_anime: AnimeBookmark;
+    get_list_of_completed: AnimeBookmark[];
+    get_list_of_planned: AnimeBookmark[];
+    get_list_of_abandoned: AnimeBookmark[];
+    get_list_of_watching: AnimeBookmark[];
+    create_watching: boolean;
+    create_planned: boolean;
+    create_abandoned: boolean;
+    create_completed: boolean;
+    delete_abandoned: boolean;
+    delete_watching: boolean;
+    delete_planned: boolean;
+    delete_completed: boolean;
 }
 
 /** Типы ответов для маршрута аутентификации */
-export namespace ResponseTypesForAuthentication {
+export interface ResponseTypesForAuthentication {
     /** Токен сессии */
-    export type login_via_email = string;
+    login_via_email: string;
     /** Токен сессии */
-    export type login_via_username = string;
+    login_via_username: string;
     /** Токен сессии */
-    export type registration = string;
+    registration: string;
     /** `false`- если используется имя пользователя, `true`- если доступно */
-    export type check_username_availability = boolean;
-    export type check_session = {
+    check_username_availability: boolean;
+    check_session: {
         id: string;
         profile_id: string;
         username: string;
@@ -93,13 +93,13 @@ export namespace ResponseTypesForAuthentication {
         avatar_url: string | null;
         selector: string;
     };
-    /** `true` - если успех, `false` = если ошибка */
-    export type logout = boolean;
+    /** `true` - если успех, `false` : если ошибка */
+    logout: boolean;
 }
 
 /** Типы ответов для маршрута комментариев на аниме */
-export namespace ResponseTypesFor_CommentForAnime_Section {
-    export type get_all_for_anime = {
+export interface ResponseTypesFor_CommentForAnime_Section {
+    get_all_for_anime: {
         id: string;
         created_at: Date;
         updated_at: Date;
@@ -122,39 +122,39 @@ export namespace ResponseTypesFor_CommentForAnime_Section {
         is_visible: boolean;
         external_anime_id: number;
     }[];
-    export type create_comment = boolean;
-    export type update_comment = boolean;
-    export type all_for_public_profile = {
+    create_comment: boolean;
+    update_comment: boolean;
+    all_for_public_profile: {
         id: string;
         content: string;
         is_visible: boolean;
         external_anime_id: number;
     }[];
-    export type all_my_comments = {
+    all_my_comments: {
         id: string;
         content: string;
         is_visible: boolean;
         external_anime_id: number;
     }[];
-    export type add_like = boolean;
-    export type delete_like = boolean;
-    export type add_dislike = boolean;
-    export type delete_dislike = boolean;
-    export type delete_comment = boolean;
+    add_like: boolean;
+    delete_like: boolean;
+    add_dislike: boolean;
+    delete_dislike: boolean;
+    delete_comment: boolean;
 }
 
 /** Response types for media section */
-export namespace ResponseTypesFor_Media_Section {
-    export type set_avatar = boolean;
-    export type delete_avatar = boolean;
-    export type update_avatar = boolean;
+export interface ResponseTypesFor_Media_Section {
+    set_avatar: boolean;
+    delete_avatar: boolean;
+    update_avatar: boolean;
 }
 
-export namespace ResponseTypesFor_Ping_Section {
-    export type get = "pong";
+export interface ResponseTypesFor_Ping_Section {
+    get: "pong";
 }
 
-type ReplyForComment = {
+interface ReplyForComment {
     id: string;
     created_at: Date;
     updated_at: Date;
@@ -162,25 +162,25 @@ type ReplyForComment = {
     by_profile_id: string;
     is_visible: boolean;
     to_comment_id: string;
-};
+}
 /** Типы ответов для маршрута ответа на комментарий */
-export namespace ResponseTypesFor_ReplyToComment_Section {
-    export type edit_reply = boolean;
-    export type get_1_reply_by_its_id = ReplyForComment;
-    export type get_replies_by_comment_id = ReplyForComment[];
-    export type add_like = boolean;
-    export type add_dislike = boolean;
-    export type delete_like = boolean;
-    export type delete_dislike = boolean;
-    export type report = boolean;
-    /** `true` - если успех, `false` = если ошибка */
-    export type create_reply = boolean;
-    /** `true` - если успех, `false` = если ошибка */
-    export type delete_reply = boolean;
+export interface ResponseTypesFor_ReplyToComment_Section {
+    edit_reply: boolean;
+    get_1_reply_by_its_id: ReplyForComment;
+    get_replies_by_comment_id: ReplyForComment[];
+    add_like: boolean;
+    add_dislike: boolean;
+    delete_like: boolean;
+    delete_dislike: boolean;
+    report: boolean;
+    /** `true` - если успех, `false` : если ошибка */
+    create_reply: boolean;
+    /** `true` - если успех, `false` : если ошибка */
+    delete_reply: boolean;
 }
 /** Типы ответов для маршрута профиля */
-export namespace ResponseTypesFor_UserProfile_Section {
-    export type view_other_profiles = {
+export interface ResponseTypesFor_UserProfile_Section {
+    view_other_profiles: {
         email: string | null;
         username: string;
         created_at: Date;
@@ -194,9 +194,9 @@ export namespace ResponseTypesFor_UserProfile_Section {
             path_filename: string;
         } | null;
     };
-    export type update_nickname = boolean;
-    export type update_bio = boolean;
-    export type view_my_profile = {
+    update_nickname: boolean;
+    update_bio: boolean;
+    view_my_profile: {
         account_type: "COMMON" | "BANNED" | "ADMIN" | "DEVELOPER" | "TESTER";
         email: string | null;
         username: string;
@@ -204,20 +204,20 @@ export namespace ResponseTypesFor_UserProfile_Section {
         nickname: string | null;
     };
 }
-type VoteToAnime = {
+interface VoteToAnime {
     id: string;
     created_at: Date;
     external_anime_id: number;
     value: number;
-};
+}
 // }
 /** Типы ответов для маршрута лайков/дизлайков на аниме */
-export namespace ResponseTypesFor_VoteToAnime_Section {
-    export type explore_likes = VoteToAnime[];
-    export type explore_dislikes = VoteToAnime[];
-    export type view_vote_on_anime = VoteToAnime | null;
-    export type add_like_to_anime = boolean;
-    export type delete_like_from_anime = boolean;
-    export type add_dislike_to_anime = boolean;
-    export type delete_dislike_from_anime = boolean;
+export interface ResponseTypesFor_VoteToAnime_Section {
+    explore_likes: VoteToAnime[];
+    explore_dislikes: VoteToAnime[];
+    view_vote_on_anime: VoteToAnime | null;
+    add_like_to_anime: boolean;
+    delete_like_from_anime: boolean;
+    add_dislike_to_anime: boolean;
+    delete_dislike_from_anime: boolean;
 }

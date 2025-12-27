@@ -47,7 +47,7 @@ export const commentRouteModel = new (class Comment_Model {
         page: number;
         limit: number;
         anime_id: number;
-    }): Promise<ResponseTypesFor_CommentForAnime_Section.get_all_for_anime> => {
+    }): Promise<ResponseTypesFor_CommentForAnime_Section["get_all_for_anime"]> => {
         const skip = (args.page - 1) * args.limit;
 
         const all = await prisma.commentForAnime.findMany({
@@ -98,7 +98,7 @@ export const commentRouteModel = new (class Comment_Model {
                 is_visible: item.is_visible,
                 external_anime_id: item.external_anime_id,
                 ratings: item.ratings,
-            } satisfies ResponseTypesFor_CommentForAnime_Section.get_all_for_anime[number];
+            } satisfies ResponseTypesFor_CommentForAnime_Section["get_all_for_anime"][number];
         });
     };
 
