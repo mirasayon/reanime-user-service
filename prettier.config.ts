@@ -1,4 +1,4 @@
-import type { Config } from "prettier";
+// import type { Config } from "prettier";
 export default {
     semi: true,
     singleQuote: false,
@@ -9,4 +9,4 @@ export default {
     bracketSpacing: true,
     arrowParens: "always",
     endOfLine: "crlf",
-} satisfies Config;
+};
