@@ -1,4 +1,4 @@
-import { userServiceHttpResponseConventionalCodes } from "#/shared/user-service-response-codes-constants.js";
+import { userServiceHttpResponseConventionalCodes } from "#/shared/user-service-response-types-for-all.routes.js";
 import consola from "consola";
 
 export type ServerSideExceptionClasses =

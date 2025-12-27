@@ -4,7 +4,7 @@ import {
     type UserServiceHttpResponseStatusCodeType,
     type UserServiceHttpResponseConventionalCodeType,
     userServiceHttpResponseStatusCodes,
-} from "#/shared/user-service-response-codes-constants.js";
+} from "#/shared/user-service-response-types-for-all.routes.js";
 
 type AllHTTPResponseBody<T> = {
     res: ExpressJS.Response;

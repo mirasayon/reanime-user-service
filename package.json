@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "node --enable-source-maps --watch --env-file=.env.development ./dist/server/entry-point.js",
         "compiler": "rimraf ./dist && tspc -p ./tsconfig.json --watch",
-        "compile": "rimraf ./dist && tsc && tsc-alias",
+        "compile": "rimraf ./dist && tsc -p ./tsconfig.json && tsc-alias -p ./tsconfig.json",
         "test-common": "node --enable-source-maps --env-file=.env.test ./dist/tests/common.js",
         "dev-test": "node --enable-source-maps --env-file=.env.test --watch ./dist/tests/play.js",
         "start:production": "node --env-file=.env.production ./dist/server/entry-point.js",
@@ -14,7 +14,7 @@
         "db-studio:test": "dotenv -e .env.test -- prisma studio --port 2647",
         "db-studio:dev": "dotenv -e .env.development -- prisma studio --port 3647",
         "db-studio:prod": "dotenv -e .env.production -- prisma studio --port 4647",
-        "inspector": "tsc --watch --noEmit",
+        "inspector": "tsc --watch --noEmit -p ./tsconfig.json",
         "gen_db_client:dev": "dotenv -e .env.development -- prisma generate",
         "gen_db_client:test": "dotenv -e .env.test -- prisma generate",
         "gen_db_client:prod": "dotenv -e .env.production -- prisma generate",
