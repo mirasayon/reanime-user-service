@@ -1,0 +1,21 @@
+import { loadEnvFile } from "node:process";
+import type { PrismaConfig } from "prisma";
+import { mainPrismaPathConfig } from "./paths-config.ts";
+
+loadEnvFile(mainPrismaPathConfig.prodEnvFilePath);
+
+export default {
+  schema: mainPrismaPathConfig.schema,
+  datasource: {
+    url: process.env["DATABASE_SERVER_CONNECTION_URL"],
+  },
+  migrations: {
+    path: mainPrismaPathConfig.migrationsPath,
+  },
+  views: {
+    path: mainPrismaPathConfig.viewsPath,
+  },
+  typedSql: {
+    path: mainPrismaPathConfig.typedSqlPath,
+  },
+} satisfies PrismaConfig;
