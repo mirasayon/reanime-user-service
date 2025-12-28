@@ -8,8 +8,7 @@
         "baseUrl": "./",
         "paths": {
             "#/*": ["./src/*"],
-            "[orm]/*": ["./src/databases/orm/*"],
-            "[T]/*": ["./src/types/*"]
+            "[orm]/*": ["./src/databases/orm/*"]
         },
         "allowJs": false,
         "checkJs": false,
