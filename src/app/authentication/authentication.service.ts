@@ -1,14 +1,14 @@
-import { SAME_TIME_SESSIONS_LIMIT } from "#/configs/application-rules-config.js";
-import { prisma } from "#/databases/provider/database-connector.js";
-import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import { passwordHashingService } from "#/utilities/cryptography-services/hash-passwords.service.js";
-import { sessionTokenHashService, type TokenStringRaw } from "#/utilities/cryptography-services/hash-token-sessions.service.js";
-import type { AccountPassword, ProfileAvatarPicture, UserAccount, UserProfile } from "[orm]/client.js";
-import { authenticationRouteModels } from "#/app/authentication/authentication.model.js";
-import { profileRouteModel } from "#/app/user-profile/user-profile.model.js";
-import { invalidCredentialsErrorMessage, maxSessionsLimitReachedErrorMessage } from "#/constants/frequent-errors.js";
+import { SAME_TIME_SESSIONS_LIMIT } from "#src/configs/application-rules-config.ts";
+import { prisma } from "#src/databases/provider/database-connector.ts";
+import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
+import { passwordHashingService } from "#src/utilities/cryptography-services/hash-passwords.service.ts";
+import { sessionTokenHashService, type TokenStringRaw } from "#src/utilities/cryptography-services/hash-token-sessions.service.ts";
+import type { AccountPassword, ProfileAvatarPicture, UserAccount, UserProfile } from "#orm/client.ts";
+import { authenticationRouteModels } from "#src/app/authentication/authentication.model.ts";
+import { profileRouteModel } from "#src/app/user-profile/user-profile.model.ts";
+import { invalidCredentialsErrorMessage, maxSessionsLimitReachedErrorMessage } from "#src/constants/frequent-errors.ts";
 import maxmind, { type CountryResponse } from "maxmind";
-import { pathsMainConfig } from "#/configs/file-system-path-config.js";
+import { pathsMainConfig } from "#src/configs/file-system-path-config.ts";
 import { UAParser } from "ua-parser-js";
 class AuthenticationRouteServiceClass {
     logout = async (session_selector: string, account_id: string): Promise<boolean> => {
@@ -27,14 +27,14 @@ class AuthenticationRouteServiceClass {
     login_via_username = async (credentials: { username: string; password: string; ip: string; agent: string | null }): Promise<TokenStringRaw> => {
         const account_id = (await authenticationRouteModels.find_1_account_by_username(credentials.username))?.id;
         if (!account_id) {
-            throw new UnauthorizedException([invalidCredentialsErrorMessage]);
+            throw new UnauthorizedException(invalidCredentialsErrorMessage);
         }
         const storedPassword = await authenticationRouteModels.getPasswordDataFromAccountId(account_id);
 
         const is_correct = await passwordHashingService.verifyPasswordWithStored({ password: credentials.password, stored: storedPassword });
 
         if (!is_correct) {
-            throw new UnauthorizedException([invalidCredentialsErrorMessage]);
+            throw new UnauthorizedException(invalidCredentialsErrorMessage);
         }
         await this.rehashPasswordIfNeeded(storedPassword, credentials.password);
         const sessions_count = await authenticationRouteModels.get_count_of_sessions_by_account_id(account_id);
@@ -57,7 +57,7 @@ class AuthenticationRouteServiceClass {
             stored: stored,
         });
         if (!is_correct) {
-            throw new UnauthorizedException([invalidCredentialsErrorMessage]);
+            throw new UnauthorizedException(invalidCredentialsErrorMessage);
         }
         await this.rehashPasswordIfNeeded(stored, credentials.password);
         const sessions_count = await authenticationRouteModels.get_count_of_sessions_by_account_id(account_id);

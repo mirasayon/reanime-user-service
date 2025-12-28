@@ -1,9 +1,9 @@
-import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
+import { goReplyHttp } from "#src/handlers/all-http-responder.ts";
+import { checkRequestForValidity } from "#src/utilities/controller-utility-functions.ts";
 import type ExpressJS from "express";
-import type { AuthenticationSectionRequestTypes } from "#/app/authentication/authentication.pipes.js";
-import { authenticationRouteService } from "#/app/authentication/authentication.service.js";
-import type { ResponseTypesForAuthentication } from "#/shared/user-service-response-types-for-all.routes.js";
+import type { AuthenticationSectionRequestTypes } from "#src/app/authentication/authentication.pipes.ts";
+import { authenticationRouteService } from "#src/app/authentication/authentication.service.ts";
+import type { ResponseTypesForAuthentication } from "#src/shared/user-service-response-types-for-all.routes.ts";
 
 class AuthenticationSectionController {
     login_by_email = async (req: AuthenticationSectionRequestTypes["login_by_email"], reply: ExpressJS.Response) => {

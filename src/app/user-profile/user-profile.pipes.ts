@@ -1,6 +1,6 @@
-import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
-import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { profileRouteValidatorSchemas, type ProfileSectionValidationSchemaType } from "#/shared/request-validator-for-all.routes.js";
+import { validatorMiddlewareFactory } from "#src/utilities/validator-middleware-factory.ts";
+import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
+import { profileRouteValidatorSchemas, type ProfileSectionValidationSchemaType } from "#src/shared/request-validator-for-all.routes.ts";
 export interface ProfileSectionRequestTypes {
     update_name: RequestDtoTypeFactory<ProfileSectionValidationSchemaType["update_name"], { nickname: string }>;
     update_bio: RequestDtoTypeFactory<ProfileSectionValidationSchemaType["update_bio"]>;

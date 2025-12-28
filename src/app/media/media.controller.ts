@@ -1,10 +1,10 @@
 import type ExpressJS from "express";
-import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import { type MediaSectionRequestDtoType } from "#/app/media/media.pipes.js";
-import { mediaSectionService } from "./media.service.js";
-import { noImage_error_responseErrorObj } from "#/constants/frequent-errors.js";
-import type { ResponseTypesFor_Media_Section } from "#/shared/user-service-response-types-for-all.routes.js";
+import { goReplyHttp } from "#src/handlers/all-http-responder.ts";
+import { checkRequestForValidity } from "#src/utilities/controller-utility-functions.ts";
+import { type MediaSectionRequestDtoType } from "#src/app/media/media.pipes.ts";
+import { mediaSectionService } from "./media.service.ts";
+import { noImage_error_responseErrorObj } from "#src/constants/frequent-errors.ts";
+import type { ResponseTypesFor_Media_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
 
 class MediaSectionControllerClass {
     set_avatar = async (req: MediaSectionRequestDtoType["set_avatar"], res: ExpressJS.Response) => {

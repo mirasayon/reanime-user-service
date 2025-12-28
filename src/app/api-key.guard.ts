@@ -1,6 +1,6 @@
-import { envMainConfig } from "#/configs/environment-variables-config.js";
-import { NotFoundException } from "#/errors/client-side-exceptions.js";
-import { ExpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
+import { envMainConfig } from "#src/configs/environment-variables-config.ts";
+import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
+import { ExpectedInternalServerErrorException } from "#src/errors/server-side-exceptions.ts";
 import type ExpressJS from "express";
 import { timingSafeEqual } from "node:crypto";
 const expectedApiKeyValue = envMainConfig.api_key_to_this_service;

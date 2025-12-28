@@ -1,7 +1,7 @@
-import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
-import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
-import { commentToAnimeRouteController as c } from "#/app/comment-for-anime/comment-for-anime.controller.js";
-import { Comment_ReqPipes as rp } from "#/app/comment-for-anime/comment-for-anime.pipes.js";
+import { mainAuthenticationMiddleware } from "#src/middlewares/authentication-middleware.ts";
+import { createConfiguredRouter } from "#src/utilities/express-core-middlewares.ts";
+import { commentToAnimeRouteController as c } from "#src/app/comment-for-anime/comment-for-anime.controller.ts";
+import { Comment_ReqPipes as rp } from "#src/app/comment-for-anime/comment-for-anime.pipes.ts";
 
 export const commentForAnimeSectionRouter = (() => {
     const r = createConfiguredRouter();

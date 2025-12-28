@@ -281,6 +281,6 @@ export interface UserServiceHttpResponseBodyPatternType<Data> {
     status_code: UserServiceHttpResponseStatusCodeType;
 }
 
-export type UserServiceHttpResponseBodyOptionalMessage = { message?: string };
-export type UserServiceHttpResponseBodyOptionalMessageAndErrors = { errors: string[]; message?: string };
-export type UserServiceHttpResponseBodyOptionalMessageAndData<D> = { data: D | undefined; message?: string };
+export type UserServiceHttpResponseBodyOptionalMessage = { message?: string | undefined };
+export type UserServiceHttpResponseBodyOptionalMessageAndErrors = { errors: string[]; message?: string | undefined };
+export type UserServiceHttpResponseBodyOptionalMessageAndData<D> = { data?: D | undefined; message?: string | undefined };

@@ -1,6 +1,6 @@
 import { MulterError } from "multer";
 import type ExpressJS from "express";
-import { goReplyHttp } from "#/handlers/all-http-responder.js";
+import { goReplyHttp } from "#src/handlers/all-http-responder.ts";
 import {
     BadRequestException,
     type ClientSideExceptionClasses,
@@ -11,7 +11,7 @@ import {
     TooManyRequestsException,
     UnauthorizedException,
     UseSecureHTTPException,
-} from "#/errors/client-side-exceptions.js";
+} from "#src/errors/client-side-exceptions.ts";
 export function clientSideErrorMiddleware(
     error: Error | SyntaxError | MulterError | ClientSideExceptionClasses,
     _req: ExpressJS.Request,
@@ -60,7 +60,7 @@ export function clientSideErrorMiddleware(
     }
     if (error instanceof UnauthorizedException) {
         return goReplyHttp.unauthorized(res, {
-            errors: error.errors,
+            message: error.message,
         });
     }
     if (error instanceof UseSecureHTTPException) {

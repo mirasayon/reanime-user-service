@@ -1,10 +1,10 @@
-import { NotImplementedException } from "#/errors/server-side-exceptions.js";
-import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import type { ReplyForCommentSectionRequestTypes } from "#/app/reply-to-comment/reply-to-comment.pipes.js";
-import { replyForCommentSectionService } from "#/app/reply-to-comment/reply-to-comment.service.js";
+import { NotImplementedException } from "#src/errors/server-side-exceptions.ts";
+import { goReplyHttp } from "#src/handlers/all-http-responder.ts";
+import { checkRequestForValidity } from "#src/utilities/controller-utility-functions.ts";
+import type { ReplyForCommentSectionRequestTypes } from "#src/app/reply-to-comment/reply-to-comment.pipes.ts";
+import { replyForCommentSectionService } from "#src/app/reply-to-comment/reply-to-comment.service.ts";
 import type ExpressJS from "express";
-import type { ResponseTypesFor_ReplyToComment_Section } from "#/shared/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesFor_ReplyToComment_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
 class ReplyToCommentRouteControllerClass {
     /** Edit the comment by profile */
     edit_reply = async (req: ReplyForCommentSectionRequestTypes["edit_reply"], res: ExpressJS.Response) => {

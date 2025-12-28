@@ -1,7 +1,7 @@
-import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
-import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
-import { accountRouteController as c } from "#/app/user-account/user-account.controller.js";
-import { accountSectionValidatorMiddlewares as rp } from "#/app/user-account/user-account.pipes.js";
+import { mainAuthenticationMiddleware } from "#src/middlewares/authentication-middleware.ts";
+import { createConfiguredRouter } from "#src/utilities/express-core-middlewares.ts";
+import { accountRouteController as c } from "#src/app/user-account/user-account.controller.ts";
+import { accountSectionValidatorMiddlewares as rp } from "#src/app/user-account/user-account.pipes.ts";
 
 export const accountSectionRouter = (() => {
     const r = createConfiguredRouter();

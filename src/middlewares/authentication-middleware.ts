@@ -1,12 +1,12 @@
-import { BadRequestException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import type { RequestTypeWithDtoForAuthSession } from "#/types/auth-middleware-shape.js";
-import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#/utilities/dto-factory-utils/get-session-meta.js";
+import { BadRequestException, UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
+import type { RequestTypeWithDtoForAuthSession } from "#src/types/auth-middleware-shape.ts";
+import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#src/utilities/dto-factory-utils/get-session-meta.ts";
 import type ExpressJS from "express";
-import { getSessionTokenFromHeadersDto } from "#/utilities/dto-factory-utils/get-session-token.js";
-import type { LoginSession } from "[orm]/client.js";
+import { getSessionTokenFromHeadersDto } from "#src/utilities/dto-factory-utils/get-session-token.ts";
+import type { LoginSession } from "#orm/client.ts";
 import { isDeepStrictEqual } from "node:util";
-import { sessionTokenHashService } from "#/utilities/cryptography-services/hash-token-sessions.service.js";
-import { sessionMetaDoNotMatchErrorMessage } from "#/constants/frequent-errors.js";
+import { sessionTokenHashService } from "#src/utilities/cryptography-services/hash-token-sessions.service.ts";
+import { sessionMetaDoNotMatchErrorMessage } from "#src/constants/frequent-errors.ts";
 
 /** Function for comparing metadatas of request and session */
 function reqAndSessionMetaValidator(session: LoginSession, requestMeta: ExpressJS.Request): void | UnauthorizedException {
@@ -15,7 +15,7 @@ function reqAndSessionMetaValidator(session: LoginSession, requestMeta: ExpressJ
     if (isDeepStrictEqual(session_Meta, request_Meta)) {
         return;
     }
-    throw new UnauthorizedException([sessionMetaDoNotMatchErrorMessage]);
+    throw new UnauthorizedException(sessionMetaDoNotMatchErrorMessage);
 }
 
 /** Function for comparing metadatas of request and session */

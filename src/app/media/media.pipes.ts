@@ -1,6 +1,6 @@
-import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
-import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { mediaRouteValidatorSchemas, type MediaRouteValidationSchemaType } from "#/shared/request-validator-for-all.routes.js";
+import { validatorMiddlewareFactory } from "#src/utilities/validator-middleware-factory.ts";
+import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
+import { mediaRouteValidatorSchemas, type MediaRouteValidationSchemaType } from "#src/shared/request-validator-for-all.routes.ts";
 
 export interface MediaSectionRequestDtoType {
     avatar_view: RequestDtoTypeFactory<MediaRouteValidationSchemaType["avatar_view"], { username: string }>;

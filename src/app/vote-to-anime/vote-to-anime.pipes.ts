@@ -1,6 +1,6 @@
-import { voteToAnimeSectionSchemas, type VoteToAnimeSectionValidationSchemaType } from "#/shared/request-validator-for-all.routes.js";
-import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
+import { voteToAnimeSectionSchemas, type VoteToAnimeSectionValidationSchemaType } from "#src/shared/request-validator-for-all.routes.ts";
+import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
+import { validatorMiddlewareFactory } from "#src/utilities/validator-middleware-factory.ts";
 export interface VoteToAnimesSectionRequestTypes {
     explore_likes: RequestDtoTypeFactory<VoteToAnimeSectionValidationSchemaType["explore_likes"]>;
     explore_dislikes: RequestDtoTypeFactory<VoteToAnimeSectionValidationSchemaType["explore_dislikes"]>;

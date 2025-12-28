@@ -1,5 +1,5 @@
-import { BadRequestException } from "#/errors/client-side-exceptions.js";
-import type { DtoTypeForAuthSession } from "#/types/auth-middleware-shape.js";
+import { BadRequestException } from "#src/errors/client-side-exceptions.ts";
+import type { DtoTypeForAuthSession } from "#src/types/auth-middleware-shape.ts";
 import { z, type ZodType } from "zod";
 import type ExpressJS from "express";
 /** Factory function for creating an validator middleware for requests */

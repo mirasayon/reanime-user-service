@@ -1,8 +1,8 @@
-import { prisma } from "#/databases/provider/database-connector.js";
-import { NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { VoteToReply } from "[orm]/client.js";
+import { prisma } from "#src/databases/provider/database-connector.ts";
+import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
+import type { VoteToReply } from "#orm/client.ts";
 
-export const Reply_Model = new (class Reply_Model {
+class ReplyToCommentSectionModel {
     get_replies_count_on_1_comment = async (by_profile_id: string, to_comment_id: string) => {
         return await prisma.replyForComment.count({
             where: {
@@ -115,4 +115,6 @@ export const Reply_Model = new (class Reply_Model {
             },
         });
     };
-})();
+}
+
+export const replyToCommentSectionModel = new ReplyToCommentSectionModel();

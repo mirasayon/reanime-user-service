@@ -1,11 +1,11 @@
-import { MAX_COMMENT_ON_ANIME_LIMIT } from "#/configs/application-rules-config.js";
-import { ConflictException, ForbiddenException, NotFoundException } from "#/errors/client-side-exceptions.js";
-import { NotImplementedException } from "#/errors/server-side-exceptions.js";
-import type { CommentForAnime } from "[orm]/client.js";
-import { commentRouteModel } from "#/app/comment-for-anime/comment-for-anime.model.js";
-import { voteNotFoundErrorMessage } from "#/constants/frequent-errors.js";
-import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/user-service-response-types-for-all.routes.js";
-import { profileRouteModel } from "#/app/user-profile/user-profile.model.js";
+import { MAX_COMMENT_ON_ANIME_LIMIT } from "#src/configs/application-rules-config.ts";
+import { ConflictException, ForbiddenException, NotFoundException } from "#src/errors/client-side-exceptions.ts";
+import { NotImplementedException } from "#src/errors/server-side-exceptions.ts";
+import type { CommentForAnime } from "#orm/client.ts";
+import { commentRouteModel } from "#src/app/comment-for-anime/comment-for-anime.model.ts";
+import { voteNotFoundErrorMessage } from "#src/constants/frequent-errors.ts";
+import type { ResponseTypesFor_CommentForAnime_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
+import { profileRouteModel } from "#src/app/user-profile/user-profile.model.ts";
 
 /** Service Class with all methods for comments */
 class CommentToAnimeSectionService {

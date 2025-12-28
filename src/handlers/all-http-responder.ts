@@ -1,11 +1,11 @@
 import type ExpressJS from "express";
-import { allHttpResponseHandler } from "./all-http-responder-utils.js";
+import { allHttpResponseHandler } from "./all-http-responder-utils.ts";
 import {
     userServiceHttpResponseConventionalCodes,
     type UserServiceHttpResponseBodyOptionalMessage,
     type UserServiceHttpResponseBodyOptionalMessageAndData,
     type UserServiceHttpResponseBodyOptionalMessageAndErrors,
-} from "#/shared/user-service-response-types-for-all.routes.js";
+} from "#src/shared/user-service-response-types-for-all.routes.ts";
 
 export const goReplyHttp = new (class goReplyHttpServiceClass {
     ok = <T>(res: ExpressJS.Response, { message = "OK", data }: UserServiceHttpResponseBodyOptionalMessageAndData<T>) => {
@@ -24,8 +24,8 @@ export const goReplyHttp = new (class goReplyHttpServiceClass {
         const message = "Use Secure HTTP";
         return allHttpResponseHandler({ res, response_code: userServiceHttpResponseConventionalCodes.USE_SECURE_HTTP, message, ok: false });
     };
-    unauthorized = (res: ExpressJS.Response, { message = "Unauthorized Error", errors }: UserServiceHttpResponseBodyOptionalMessageAndErrors) => {
-        return allHttpResponseHandler({ res, response_code: userServiceHttpResponseConventionalCodes.UNAUTHORIZED, message, errors, ok: false });
+    unauthorized = (res: ExpressJS.Response, { message = "Unauthorized Error" }: UserServiceHttpResponseBodyOptionalMessage) => {
+        return allHttpResponseHandler({ res, response_code: userServiceHttpResponseConventionalCodes.UNAUTHORIZED, message, ok: false });
     };
     forbidden = (res: ExpressJS.Response, { message = "Forbidden Error", errors }: UserServiceHttpResponseBodyOptionalMessageAndErrors) => {
         return allHttpResponseHandler({ res, response_code: userServiceHttpResponseConventionalCodes.FORBIDDEN, message, errors, ok: false });

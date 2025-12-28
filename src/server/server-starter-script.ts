@@ -1,13 +1,13 @@
-import { envMainConfig } from "#/configs/environment-variables-config.js";
-import { Service_Setting } from "#/constants/web-server-constants.js";
-import { prisma } from "#/databases/provider/database-connector.js";
-import { startListeningTheServer } from "#/utilities/express-core-middlewares.js";
+import { envMainConfig } from "#src/configs/environment-variables-config.ts";
+import { Service_Setting } from "#src/constants/web-server-constants.ts";
+import { prisma } from "#src/databases/provider/database-connector.ts";
+import { startListeningTheServer } from "#src/utilities/express-core-middlewares.ts";
 import consola from "consola";
 import { format } from "date-fns";
 import { chalk, Logger } from "log-it-colored";
 import type { AddressInfo } from "node:net";
 import { arch, platform } from "node:os";
-import { expressMainApplication } from "./server-skeleton.js";
+import { expressMainApplication } from "./server-skeleton.ts";
 export async function startMainServerScript(): Promise<void> {
     try {
         const instance = await startListeningTheServer(expressMainApplication, envMainConfig.server.host, envMainConfig.server.port);

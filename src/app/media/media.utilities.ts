@@ -1,10 +1,10 @@
-import { NotFoundException } from "#/errors/client-side-exceptions.js";
-import { mediaRouteModel } from "#/app/media/media.model.js";
+import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
+import { mediaRouteModel } from "#src/app/media/media.model.ts";
 import type ExpressJS from "express";
 import { extname } from "node:path";
-import { AVATAR_IMAGE_FILE_HEIGHT_PIXELS, AVATAR_IMAGE_FILE_WIDTH_PIXELS } from "#/constants/media-module-config.js";
+import { AVATAR_IMAGE_FILE_HEIGHT_PIXELS, AVATAR_IMAGE_FILE_WIDTH_PIXELS } from "#src/constants/media-module-config.ts";
 import sharp from "sharp";
-import { AVATAR_IMAGE_FILE_ALLOWED_MIME_TYPES } from "#/constants/media-module-config.js";
+import { AVATAR_IMAGE_FILE_ALLOWED_MIME_TYPES } from "#src/constants/media-module-config.ts";
 import { createReadStream, statSync, existsSync } from "node:fs";
 import { unlink, writeFile } from "node:fs/promises";
 

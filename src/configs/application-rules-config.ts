@@ -1,4 +1,4 @@
-import { envMainConfig } from "./environment-variables-config.js";
+import { envMainConfig } from "./environment-variables-config.ts";
 /** Ограничение на количество сеансов одновременно */
 export const SAME_TIME_SESSIONS_LIMIT = 10 as const;
 /** минут, как часто можно обновлять профиль */

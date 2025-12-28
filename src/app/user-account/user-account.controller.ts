@@ -1,9 +1,9 @@
-import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
+import { goReplyHttp } from "#src/handlers/all-http-responder.ts";
+import { checkRequestForValidity } from "#src/utilities/controller-utility-functions.ts";
 import type ExpressJS from "express";
-import type { AccountSectionRequestWithDtoTypes } from "#/app/user-account/user-account.pipes.js";
-import { accountRouteService } from "#/app/user-account/user-account.service.js";
-import type { ResponseTypesFor_Account_Section } from "#/shared/user-service-response-types-for-all.routes.js";
+import type { AccountSectionRequestWithDtoTypes } from "#src/app/user-account/user-account.pipes.ts";
+import { accountRouteService } from "#src/app/user-account/user-account.service.ts";
+import type { ResponseTypesFor_Account_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
 
 class AccountRouteControllerClass {
     explore_me = async (req: AccountSectionRequestWithDtoTypes["explore_me"], res: ExpressJS.Response) => {

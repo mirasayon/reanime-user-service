@@ -1,9 +1,9 @@
-import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
-import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
-import { mediaSectionController as c } from "#/app/media/media.controller.js";
-import { mediaRoutePipesMiddlewares as pm } from "#/app/media/media.pipes.js";
+import { mainAuthenticationMiddleware } from "#src/middlewares/authentication-middleware.ts";
+import { createConfiguredRouter } from "#src/utilities/express-core-middlewares.ts";
+import { mediaSectionController as c } from "#src/app/media/media.controller.ts";
+import { mediaRoutePipesMiddlewares as pm } from "#src/app/media/media.pipes.ts";
 import multer from "multer";
-import { mediaFileStrictValidatorMiddleware, requestContentLengthValidatorMiddleware } from "./media.middleware.js";
+import { mediaFileStrictValidatorMiddleware, requestContentLengthValidatorMiddleware } from "./media.middleware.ts";
 export const mediaSectionRouter = (() => {
     const upload = multer({
         storage: multer.memoryStorage(),

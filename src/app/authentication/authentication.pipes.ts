@@ -1,7 +1,7 @@
-import { getSessionMetaFromClientDto } from "#/utilities/dto-factory-utils/get-session-meta.js";
-import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
-import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { authenticationSectionSchemas, type AuthenticationSectionValidatorSchemaType } from "#/shared/request-validator-for-all.routes.js";
+import { getSessionMetaFromClientDto } from "#src/utilities/dto-factory-utils/get-session-meta.ts";
+import { validatorMiddlewareFactory } from "#src/utilities/validator-middleware-factory.ts";
+import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
+import { authenticationSectionSchemas, type AuthenticationSectionValidatorSchemaType } from "#src/shared/request-validator-for-all.routes.ts";
 
 /** Namespace for all validation types for Comments logic */
 export interface AuthenticationSectionRequestTypes {

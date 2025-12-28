@@ -7,8 +7,8 @@ import {
     ServiceUnavailableException,
     UnexpectedInternalServerErrorException,
     type ServerSideExceptionClasses,
-} from "../errors/server-side-exceptions.js";
-import { goReplyHttp } from "./all-http-responder.js";
+} from "../errors/server-side-exceptions.ts";
+import { goReplyHttp } from "./all-http-responder.ts";
 /** Unknown Server Side Exception Handler */
 export const unknownServerSideExceptionHandlerLastMiddleware = (
     error: unknown,

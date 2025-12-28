@@ -1,5 +1,5 @@
-import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import type { ResponseTypesFor_Ping_Section } from "#/shared/user-service-response-types-for-all.routes.js";
+import { goReplyHttp } from "#src/handlers/all-http-responder.ts";
+import type { ResponseTypesFor_Ping_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
 import type ExpressJS from "express";
 
 class PingSectionControllerClass {

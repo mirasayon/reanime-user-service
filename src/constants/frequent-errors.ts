@@ -1,5 +1,5 @@
-import { SAME_TIME_SESSIONS_LIMIT } from "#/configs/application-rules-config.js";
-import { BadRequestException } from "#/errors/client-side-exceptions.js";
+import { SAME_TIME_SESSIONS_LIMIT } from "#src/configs/application-rules-config.ts";
+import { BadRequestException } from "#src/errors/client-side-exceptions.ts";
 
 export const voteNotFoundErrorMessage = "Лайк или дизлайк не найден" as const;
 export const profileHasAlreadyLikeAnimeErrorMessage = "Лайк уже оставлен на это аниме";

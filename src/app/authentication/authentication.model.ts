@@ -1,8 +1,8 @@
-import { invalidCredentialsErrorMessage } from "#/constants/frequent-errors.js";
-import { prisma } from "#/databases/provider/database-connector.js";
-import { NotFoundException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import type { Argon2idHashResultType } from "#/utilities/cryptography-services/hash-passwords.service.js";
-import type { AccountPassword, LoginSession, UserAccount } from "[orm]/client.js";
+import { invalidCredentialsErrorMessage } from "#src/constants/frequent-errors.ts";
+import { prisma } from "#src/databases/provider/database-connector.ts";
+import { NotFoundException, UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
+import type { Argon2idHashResultType } from "#src/utilities/cryptography-services/hash-passwords.service.ts";
+import type { AccountPassword, LoginSession, UserAccount } from "#orm/client.ts";
 
 class AuthenticationRouteModelClass {
     getPasswordDataFromAccountId = async (account_id: string): Promise<AccountPassword> => {
@@ -119,7 +119,7 @@ class AuthenticationRouteModelClass {
             },
         });
         if (!account) {
-            throw new UnauthorizedException([invalidCredentialsErrorMessage]);
+            throw new UnauthorizedException(invalidCredentialsErrorMessage);
         }
         return account;
     };

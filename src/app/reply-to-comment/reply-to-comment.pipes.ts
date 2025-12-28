@@ -1,9 +1,9 @@
-import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
-import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
+import { validatorMiddlewareFactory } from "#src/utilities/validator-middleware-factory.ts";
+import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
 import {
     replyForCommentSectionValidatorSchemas,
     type ReplyForCommentSectionValidationSchemaType,
-} from "#/shared/request-validator-for-all.routes.js";
+} from "#src/shared/request-validator-for-all.routes.ts";
 
 export interface ReplyForCommentSectionRequestTypes {
     create_reply: RequestDtoTypeFactory<ReplyForCommentSectionValidationSchemaType["create_reply"]>;

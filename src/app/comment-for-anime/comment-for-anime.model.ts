@@ -1,7 +1,7 @@
-import { prisma } from "#/databases/provider/database-connector.js";
-import { NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { CommentForAnime } from "[orm]/client.js";
-import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/user-service-response-types-for-all.routes.js";
+import { prisma } from "#src/databases/provider/database-connector.ts";
+import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
+import type { CommentForAnime } from "#orm/client.ts";
+import type { ResponseTypesFor_CommentForAnime_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
 
 export const commentRouteModel = new (class Comment_Model {
     get_comment_count_on_1_anime = async (by_profile_id: string, anime_id: number) => {

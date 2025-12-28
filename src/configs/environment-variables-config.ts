@@ -1,5 +1,5 @@
 import { validateEnvironment, builtInSchemas as v } from "safest-env";
-import { frontendUrl } from "../constants/frontend-url-constant.js";
+import { frontendUrl } from "../constants/frontend-url-constant.ts";
 const _env = validateEnvironment({
     PASSWORD_HASH_PEPPER: v.string().min(5),
     SESSION_TOKEN_HMAC_SECRET: v.string().min(5),

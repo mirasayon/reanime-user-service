@@ -1,10 +1,10 @@
-import { envMainConfig } from "#/configs/environment-variables-config.js";
-import { invalidSessionTokenErrorMessage } from "#/constants/frequent-errors.js";
-import type { LoginSession } from "[orm]/client.js";
-import { prisma } from "#/databases/provider/database-connector.js";
-import { UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import { UnexpectedInternalServerErrorException } from "#/errors/server-side-exceptions.js";
-import type { DtoTypeForAuthSession } from "#/types/auth-middleware-shape.js";
+import { envMainConfig } from "#src/configs/environment-variables-config.ts";
+import { invalidSessionTokenErrorMessage } from "#src/constants/frequent-errors.ts";
+import type { LoginSession } from "#orm/client.ts";
+import { prisma } from "#src/databases/provider/database-connector.ts";
+import { UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
+import { UnexpectedInternalServerErrorException } from "#src/errors/server-side-exceptions.ts";
+import type { DtoTypeForAuthSession } from "#src/types/auth-middleware-shape.ts";
 import { timingSafeEqual, createHmac, randomBytes } from "node:crypto";
 
 export type TokenStringRaw = `${string}.${string}`;
@@ -64,22 +64,22 @@ class SessionTokenHashServiceClass {
 
     verifySessionToken = async (validator: string, selector: string): Promise<{ dto: DtoTypeForAuthSession; session: LoginSession }> => {
         if (!validator || !selector) {
-            throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+            throw new UnauthorizedException(invalidSessionTokenErrorMessage);
         }
         const session = await prisma.loginSession.findUnique({ where: { selector } });
         if (!session) {
-            throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+            throw new UnauthorizedException(invalidSessionTokenErrorMessage);
         }
         if (session.expires_at < new Date()) {
             await prisma.loginSession.delete({ where: { selector: selector } });
-            throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+            throw new UnauthorizedException(invalidSessionTokenErrorMessage);
         }
 
         const presentedHash = this.getHmacFromValidatorString(validator);
         const a = Buffer.from(presentedHash, "hex");
         const b = Buffer.from(session.hashed_validator, "hex");
         if (a.length !== b.length) {
-            throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+            throw new UnauthorizedException(invalidSessionTokenErrorMessage);
         }
         if (timingSafeEqual(a, b)) {
             const updated_session = await prisma.loginSession.update({
@@ -115,7 +115,7 @@ class SessionTokenHashServiceClass {
             };
         }
 
-        throw new UnauthorizedException([invalidSessionTokenErrorMessage]);
+        throw new UnauthorizedException(invalidSessionTokenErrorMessage);
     };
 }
 export const sessionTokenHashService = new SessionTokenHashServiceClass();

@@ -1,10 +1,10 @@
-import { appLayoutRouter } from "#/app/app-layout.routes.js";
-import { requireClientIpMiddleware } from "#/app/require-client-ip.guard.js";
-import { envMainConfig } from "#/configs/environment-variables-config.js";
-import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#/handlers/client-side-errors-handler.js";
-import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerLastMiddleware } from "#/handlers/server-side-errors-handler.js";
-import { mainDevServerLogger } from "#/middlewares/development-env-logger-middleware.js";
-import { jsonBodyParserMiddleware, mainStaticServerMiddleware } from "#/utilities/express-core-middlewares.js";
+import { appLayoutRouter } from "#src/app/app-layout.routes.ts";
+import { requireClientIpMiddleware } from "#src/app/require-client-ip.guard.ts";
+import { envMainConfig } from "#src/configs/environment-variables-config.ts";
+import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#src/handlers/client-side-errors-handler.ts";
+import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerLastMiddleware } from "#src/handlers/server-side-errors-handler.ts";
+import { mainDevServerLogger } from "#src/middlewares/development-env-logger-middleware.ts";
+import { jsonBodyParserMiddleware, mainStaticServerMiddleware } from "#src/utilities/express-core-middlewares.ts";
 import compression from "compression";
 import cors from "cors";
 import expressJs from "express";

@@ -1,6 +1,9 @@
-import { animeMarkedCollection_schemas, type MarkedAnimeCollectionSectionValidationSchemaType } from "#/shared/request-validator-for-all.routes.js";
-import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
+import {
+    animeMarkedCollection_schemas,
+    type MarkedAnimeCollectionSectionValidationSchemaType,
+} from "#src/shared/request-validator-for-all.routes.ts";
+import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
+import { validatorMiddlewareFactory } from "#src/utilities/validator-middleware-factory.ts";
 
 export interface AnimeBookmarkSectionRequestTypes {
     get_all_list: RequestDtoTypeFactory<MarkedAnimeCollectionSectionValidationSchemaType["get_all_list"]>;

@@ -1,5 +1,5 @@
-import { envMainConfig } from "#/configs/environment-variables-config.js";
-import { createMainPrismaClient, type PrismaClientType } from "./database-orm-adapter.js";
+import { envMainConfig } from "#src/configs/environment-variables-config.ts";
+import { createMainPrismaClient, type PrismaClientType } from "./database-orm-adapter.ts";
 declare global {
     /** Declared type for singleton Prisma Client  */
     var _prisma_client_global_: PrismaClientType | undefined;

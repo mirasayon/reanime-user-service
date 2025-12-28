@@ -1,10 +1,10 @@
-import { NotImplementedException } from "#/errors/server-side-exceptions.js";
-import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
+import { NotImplementedException } from "#src/errors/server-side-exceptions.ts";
+import { goReplyHttp } from "#src/handlers/all-http-responder.ts";
+import { checkRequestForValidity } from "#src/utilities/controller-utility-functions.ts";
 import type ExpressJS from "express";
-import type { CommentToAnimeSectionRequestTypes } from "#/app/comment-for-anime/comment-for-anime.pipes.js";
-import { commentToAnimeSectionService } from "#/app/comment-for-anime/comment-for-anime.service.js";
-import type { ResponseTypesFor_CommentForAnime_Section } from "#/shared/user-service-response-types-for-all.routes.js";
+import type { CommentToAnimeSectionRequestTypes } from "#src/app/comment-for-anime/comment-for-anime.pipes.ts";
+import { commentToAnimeSectionService } from "#src/app/comment-for-anime/comment-for-anime.service.ts";
+import type { ResponseTypesFor_CommentForAnime_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
 
 class CommentToAnimeRouteControllerClass {
     /** Controller for create one comment by profile */
@@ -40,8 +40,9 @@ class CommentToAnimeRouteControllerClass {
     get_all_for_anime = async (req: CommentToAnimeSectionRequestTypes["get_all_for_anime"], res: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
 
-        const data: ResponseTypesFor_CommentForAnime_Section["get_all_for_anime"] =
-            await commentToAnimeSectionService.get_all_comments_by_animeId(dto);
+        const data: ResponseTypesFor_CommentForAnime_Section["get_all_for_anime"] = await commentToAnimeSectionService.get_all_comments_by_animeId(
+            dto,
+        );
         const message = "Все комментарии к этому аниме";
         return goReplyHttp.ok(res, { data, message });
     };

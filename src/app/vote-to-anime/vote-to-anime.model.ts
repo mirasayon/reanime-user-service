@@ -1,5 +1,5 @@
-import { prisma } from "#/databases/provider/database-connector.js";
-import type { VoteToSomethingType } from "#/types/utility-types-for-db-models.js";
+import { prisma } from "#src/databases/provider/database-connector.ts";
+import type { VoteToSomethingType } from "#src/types/utility-types-for-db-models.ts";
 
 export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
     get_all_likes_by_profile_id = async (by_profile_id: string) => {

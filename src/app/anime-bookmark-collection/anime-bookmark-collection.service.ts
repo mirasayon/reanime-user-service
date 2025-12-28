@@ -1,6 +1,6 @@
-import { AnimeStatusEnum } from "#/databases/orm/enums.js";
-import { ConflictException, NotFoundException } from "#/errors/client-side-exceptions.js";
-import { animeBookmarkSectionModel } from "#/app/anime-bookmark-collection/anime-bookmark-collection.model.js";
+import { AnimeStatusEnum } from "#src/databases/orm/enums.ts";
+import { ConflictException, NotFoundException } from "#src/errors/client-side-exceptions.ts";
+import { animeBookmarkSectionModel } from "#src/app/anime-bookmark-collection/anime-bookmark-collection.model.ts";
 import consola from "consola";
 
 class AnimeBookmarkSectionService {

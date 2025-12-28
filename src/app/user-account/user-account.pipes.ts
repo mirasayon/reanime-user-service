@@ -1,6 +1,6 @@
-import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
-import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { accountSectionSchemas, type AccountSectionValidationSchemaType } from "#/shared/request-validator-for-all.routes.js";
+import { validatorMiddlewareFactory } from "#src/utilities/validator-middleware-factory.ts";
+import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
+import { accountSectionSchemas, type AccountSectionValidationSchemaType } from "#src/shared/request-validator-for-all.routes.ts";
 
 export interface AccountSectionRequestWithDtoTypes {
     explore_me: RequestDtoTypeFactory<AccountSectionValidationSchemaType["explore_me"]>;

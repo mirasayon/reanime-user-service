@@ -1,9 +1,9 @@
 import type ExpressJS from "express";
-import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import { type ProfileSectionRequestTypes } from "#/app/user-profile/user-profile.pipes.js";
-import { profileRouteService } from "#/app/user-profile/user-profile.service.js";
-import type { ResponseTypesFor_UserProfile_Section } from "#/shared/user-service-response-types-for-all.routes.js";
+import { goReplyHttp } from "#src/handlers/all-http-responder.ts";
+import { checkRequestForValidity } from "#src/utilities/controller-utility-functions.ts";
+import { type ProfileSectionRequestTypes } from "#src/app/user-profile/user-profile.pipes.ts";
+import { profileRouteService } from "#src/app/user-profile/user-profile.service.ts";
+import type { ResponseTypesFor_UserProfile_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
 
 class ProfileSectionController {
     /** Просмотр других профилей пользователя */
@@ -28,8 +28,8 @@ class ProfileSectionController {
                 ? sr.profile.birthdate_visibility === "FULL"
                     ? sr.profile.date_of_birth
                     : sr.profile.birthdate_visibility === "YEAR_ONLY"
-                      ? sr.profile.date_of_birth.getFullYear()
-                      : sr.profile.date_of_birth
+                    ? sr.profile.date_of_birth.getFullYear()
+                    : sr.profile.date_of_birth
                 : null,
         };
         const message = "Информация профиля другого пользователя успешно получена";

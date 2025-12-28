@@ -1,9 +1,9 @@
-import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import type { AnimeBookmarkSectionRequestTypes } from "#/app/anime-bookmark-collection/anime-bookmark-collection.pipes.js";
-import { animeBookmarkSectionService } from "#/app/anime-bookmark-collection/anime-bookmark-collection.service.js";
+import { goReplyHttp } from "#src/handlers/all-http-responder.ts";
+import { checkRequestForValidity } from "#src/utilities/controller-utility-functions.ts";
+import type { AnimeBookmarkSectionRequestTypes } from "#src/app/anime-bookmark-collection/anime-bookmark-collection.pipes.ts";
+import { animeBookmarkSectionService } from "#src/app/anime-bookmark-collection/anime-bookmark-collection.service.ts";
 import type ExpressJS from "express";
-import type { ResponseTypesFor_AnimeBookmark_Section } from "#/shared/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesFor_AnimeBookmark_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
 class AnimeBookmarkSectionControllerClass {
     get_all_list = async (req: AnimeBookmarkSectionRequestTypes["get_all_list"], res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);

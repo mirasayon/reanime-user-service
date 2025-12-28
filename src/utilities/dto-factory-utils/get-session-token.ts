@@ -1,5 +1,5 @@
 import type { IncomingHttpHeaders } from "node:http";
-import type { TokenStringRaw } from "../cryptography-services/hash-token-sessions.service.js";
+import type { TokenStringRaw } from "../cryptography-services/hash-token-sessions.service.ts";
 const MAX_TOKEN_LENGTH = 1024;
 // Этот Regex допускает base64url/hex-like символы и обязательную точку между частями.
 const TOKEN_RE = /^[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+$/;

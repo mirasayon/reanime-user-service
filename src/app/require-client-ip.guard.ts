@@ -1,4 +1,4 @@
-import { ForbiddenException } from "#/errors/client-side-exceptions.js";
+import { ForbiddenException } from "#src/errors/client-side-exceptions.ts";
 import type ExpressJS from "express";
 
 /** Middleware for checking client IP */

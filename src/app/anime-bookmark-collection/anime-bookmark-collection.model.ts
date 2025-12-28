@@ -1,6 +1,6 @@
-import { AnimeStatusEnum } from "#/databases/orm/enums.js";
-import { prisma } from "#/databases/provider/database-connector.js";
-import { NotFoundException } from "#/errors/client-side-exceptions.js";
+import { AnimeStatusEnum } from "#src/databases/orm/enums.ts";
+import { prisma } from "#src/databases/provider/database-connector.ts";
+import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
 class AnimeBookmarkSectionModel {
     delete_watching_by_profile_id = async (by_profile_id: string, external_anime_id: number, id: string) => {
         return await prisma.animeBookmark.delete({

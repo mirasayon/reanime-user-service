@@ -1,4 +1,4 @@
-import { userServiceHttpResponseConventionalCodes } from "#/shared/user-service-response-types-for-all.routes.js";
+import { userServiceHttpResponseConventionalCodes } from "#src/shared/user-service-response-types-for-all.routes.ts";
 
 export type ClientSideExceptionClasses =
     | BadRequestException
@@ -12,21 +12,33 @@ export type ClientSideExceptionClasses =
 
 export class BadRequestException {
     public readonly response_code = userServiceHttpResponseConventionalCodes.BAD_REQUEST;
-    constructor(public readonly errors: string[]) {}
+    public readonly errors: string[];
+    constructor(errors: string[]) {
+        this.errors = errors;
+    }
 }
 
 export class TooManyRequestsException {
     public readonly response_code = userServiceHttpResponseConventionalCodes.TOO_MANY_REQUESTS;
-    constructor(public readonly message: string) {}
+    public readonly message: string;
+    constructor(message: string) {
+        this.message = message;
+    }
 }
 
 export class ConflictException {
     public readonly response_code = userServiceHttpResponseConventionalCodes.CONFLICT;
-    constructor(public readonly errors: string[]) {}
+    public readonly errors: string[];
+    constructor(errors: string[]) {
+        this.errors = errors;
+    }
 }
 export class PayloadTooLargeException {
     public readonly response_code = userServiceHttpResponseConventionalCodes.PAYLOAD_TOO_LARGE;
-    constructor(public readonly error: string) {}
+    public readonly message: string;
+    constructor(message: string) {
+        this.message = message;
+    }
 }
 
 export class ImATeapotException {
@@ -35,7 +47,10 @@ export class ImATeapotException {
 
 export class NotFoundException {
     public readonly response_code = userServiceHttpResponseConventionalCodes.NOT_FOUND;
-    constructor(public readonly errors: string[] = []) {}
+    public readonly errors: string[];
+    constructor(errors?: string[] | undefined) {
+        this.errors = errors || [];
+    }
 }
 
 export class UseSecureHTTPException {
@@ -44,10 +59,16 @@ export class UseSecureHTTPException {
 
 export class UnauthorizedException {
     public readonly response_code = userServiceHttpResponseConventionalCodes.UNAUTHORIZED;
-    constructor(public readonly errors: string[] = []) {}
+    public readonly message?: string | undefined;
+    constructor(message?: string) {
+        this.message = message || undefined;
+    }
 }
 
 export class ForbiddenException {
     public readonly response_code = userServiceHttpResponseConventionalCodes.FORBIDDEN;
-    constructor(public readonly errors: string[]) {}
+    public readonly errors: string[];
+    constructor(errors: string[]) {
+        this.errors = errors;
+    }
 }

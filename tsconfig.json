@@ -6,12 +6,9 @@
         "rootDir": "./src",
         "moduleResolution": "NodeNext",
         "baseUrl": "./",
-        "paths": {
-            "#/*": ["./src/*"],
-            "[orm]/*": ["./src/databases/orm/*"]
-        },
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
         "allowJs": false,
-        "checkJs": false,
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
@@ -33,12 +30,7 @@
         "noUncheckedIndexedAccess": true,
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": true,
-        "allowUnreachableCode": false,
-        "plugins": [
-            {
-                "transform": "typescript-transform-paths"
-            }
-        ]
+        "allowUnreachableCode": false
     },
     "include": ["./src"]
 }

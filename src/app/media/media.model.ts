@@ -1,6 +1,6 @@
-import { prisma } from "#/databases/provider/database-connector.js";
-import { NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { ProfileAvatarPicture } from "[orm]/client.js";
+import { prisma } from "#src/databases/provider/database-connector.ts";
+import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
+import type { ProfileAvatarPicture } from "#orm/client.ts";
 export type DataTypeForUploadOrUpdateAvatar = Omit<ProfileAvatarPicture, "id" | "created_at" | "updated_at">;
 class MediaRouteModelClass {
     update_avatar_by_id = async (avatarData: DataTypeForUploadOrUpdateAvatar): Promise<ProfileAvatarPicture> => {

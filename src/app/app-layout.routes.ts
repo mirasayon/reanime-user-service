@@ -1,16 +1,16 @@
-import { apiKeyToServiceGuard } from "#/app/api-key.guard.js";
-import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
-import { accountSectionRouter } from "#/app/user-account/user-account.route.js";
-import { administratorSectionRouter } from "#/app/administrator/administrator.routes.js";
-import { authenticationSectionRouter } from "#/app/authentication/authentication.route.js";
-import { commentForAnimeSectionRouter } from "#/app/comment-for-anime/comment-for-anime.route.js";
-import { voteToAnimeSectionRouter } from "#/app/vote-to-anime/vote-to-anime.route.js";
-import { animeBookmarkSectionRouter } from "#/app/anime-bookmark-collection/anime-bookmark-collection.route.js";
-import { pingSectionRouter } from "#/app/ping/ping.route.js";
-import { profileSectionRouter } from "#/app/user-profile/user-profile.route.js";
-import { replyToCommentSectionRouter } from "#/app/reply-to-comment/reply-to-comment.route.js";
-import { secureHttpGuardMiddleware } from "./secure-http.guard.js";
-import { mediaSectionRouter } from "#/app/media/media.route.js";
+import { apiKeyToServiceGuard } from "#src/app/api-key.guard.ts";
+import { createConfiguredRouter } from "#src/utilities/express-core-middlewares.ts";
+import { accountSectionRouter } from "#src/app/user-account/user-account.route.ts";
+import { administratorSectionRouter } from "#src/app/administrator/administrator.routes.ts";
+import { authenticationSectionRouter } from "#src/app/authentication/authentication.route.ts";
+import { commentForAnimeSectionRouter } from "#src/app/comment-for-anime/comment-for-anime.route.ts";
+import { voteToAnimeSectionRouter } from "#src/app/vote-to-anime/vote-to-anime.route.ts";
+import { animeBookmarkSectionRouter } from "#src/app/anime-bookmark-collection/anime-bookmark-collection.route.ts";
+import { pingSectionRouter } from "#src/app/ping/ping.route.ts";
+import { profileSectionRouter } from "#src/app/user-profile/user-profile.route.ts";
+import { replyToCommentSectionRouter } from "#src/app/reply-to-comment/reply-to-comment.route.ts";
+import { secureHttpGuardMiddleware } from "./secure-http.guard.ts";
+import { mediaSectionRouter } from "#src/app/media/media.route.ts";
 /** Entry Point Router */
 export const appLayoutRouter = (() => {
     const router = createConfiguredRouter();

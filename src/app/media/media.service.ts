@@ -1,17 +1,17 @@
-import { BadRequestException } from "#/errors/client-side-exceptions.js";
-import { mediaRouteModel, type DataTypeForUploadOrUpdateAvatar } from "#/app/media/media.model.js";
+import { BadRequestException } from "#src/errors/client-side-exceptions.ts";
+import { mediaRouteModel, type DataTypeForUploadOrUpdateAvatar } from "#src/app/media/media.model.ts";
 import type ExpressJS from "express";
-import { profileRouteModel } from "#/app/user-profile/user-profile.model.js";
+import { profileRouteModel } from "#src/app/user-profile/user-profile.model.ts";
 import { dirname, join } from "node:path";
-import { AVATAR_IMAGE_FILE_HEIGHT_PIXELS, AVATAR_IMAGE_FILE_WIDTH_PIXELS } from "#/constants/media-module-config.js";
-import { pathsMainConfig } from "#/configs/file-system-path-config.js";
+import { AVATAR_IMAGE_FILE_HEIGHT_PIXELS, AVATAR_IMAGE_FILE_WIDTH_PIXELS } from "#src/constants/media-module-config.ts";
+import { pathsMainConfig } from "#src/configs/file-system-path-config.ts";
 import consola from "consola";
-import type { ExpressJSMulterFileType } from "#/types/util-expressjs-types.js";
+import type { ExpressJSMulterFileType } from "#src/types/util-expressjs-types.ts";
 import { existsSync } from "node:fs";
 import { mkdir, readdir, rm, unlink } from "node:fs/promises";
-import { mediaHashService } from "#/utilities/cryptography-services/media-filename-hashing.service.js";
-import { editForProdTheImageSharp, destroyFilesAfterTrigger, serveMediaFile } from "./media.utilities.js";
-import type { ProfileAvatarPicture } from "#/databases/orm/client.js";
+import { mediaHashService } from "#src/utilities/cryptography-services/media-filename-hashing.service.ts";
+import { editForProdTheImageSharp, destroyFilesAfterTrigger, serveMediaFile } from "./media.utilities.ts";
+import type { ProfileAvatarPicture } from "#src/databases/orm/client.ts";
 import { timingSafeEqual } from "node:crypto";
 export type MediaPathPairAndFullPath = {
     dirName: string;

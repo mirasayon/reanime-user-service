@@ -1,7 +1,10 @@
-import { get_universal_search_query_values_array } from "#/utilities/util-functions.js";
-import { validatorMiddlewareFactory } from "#/utilities/validator-middleware-factory.js";
-import type { RequestDtoTypeFactory } from "#/types/dto-middleware-shape.js";
-import { commentToAnimeSectionValidatorSchemas, type CommentToAnimeSectionValidationSchemaType } from "#/shared/request-validator-for-all.routes.js";
+import { get_universal_search_query_values_array } from "#src/utilities/util-functions.ts";
+import { validatorMiddlewareFactory } from "#src/utilities/validator-middleware-factory.ts";
+import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
+import {
+    commentToAnimeSectionValidatorSchemas,
+    type CommentToAnimeSectionValidationSchemaType,
+} from "#src/shared/request-validator-for-all.routes.ts";
 
 export interface CommentToAnimeSectionRequestTypes {
     create: RequestDtoTypeFactory<CommentToAnimeSectionValidationSchemaType["create"], { anime_id: string }>;

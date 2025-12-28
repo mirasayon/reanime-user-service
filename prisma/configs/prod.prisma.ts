@@ -5,17 +5,17 @@ import { mainPrismaPathConfig } from "./paths-config.ts";
 loadEnvFile(mainPrismaPathConfig.prodEnvFilePath);
 
 export default {
-  schema: mainPrismaPathConfig.schema,
-  datasource: {
-    url: process.env["DATABASE_SERVER_CONNECTION_URL"],
-  },
-  migrations: {
-    path: mainPrismaPathConfig.migrationsPath,
-  },
-  views: {
-    path: mainPrismaPathConfig.viewsPath,
-  },
-  typedSql: {
-    path: mainPrismaPathConfig.typedSqlPath,
-  },
+    schema: mainPrismaPathConfig.schema,
+    datasource: {
+        url: process.env["DATABASE_SERVER_CONNECTION_URL"],
+    },
+    migrations: {
+        path: mainPrismaPathConfig.migrationsPath,
+    },
+    views: {
+        path: mainPrismaPathConfig.viewsPath,
+    },
+    typedSql: {
+        path: mainPrismaPathConfig.typedSqlPath,
+    },
 } satisfies PrismaConfig;

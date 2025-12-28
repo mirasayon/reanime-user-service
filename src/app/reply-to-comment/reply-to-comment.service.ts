@@ -1,9 +1,9 @@
-import { REPLIES_LIMIT_TO_ONE_COMMENT } from "#/configs/application-rules-config.js";
-import { ConflictException, ForbiddenException, NotFoundException, UnauthorizedException } from "#/errors/client-side-exceptions.js";
-import { NotImplementedException } from "#/errors/server-side-exceptions.js";
-import type { ReplyForComment } from "[orm]/client.js";
-import { Reply_Model as model } from "#/app/reply-to-comment/reply-to-comment.model.js";
-import { voteNotFoundErrorMessage } from "#/constants/frequent-errors.js";
+import { REPLIES_LIMIT_TO_ONE_COMMENT } from "#src/configs/application-rules-config.ts";
+import { ConflictException, ForbiddenException, NotFoundException, UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
+import { NotImplementedException } from "#src/errors/server-side-exceptions.ts";
+import type { ReplyForComment } from "#orm/client.ts";
+import { replyToCommentSectionModel as model } from "#src/app/reply-to-comment/reply-to-comment.model.ts";
+import { voteNotFoundErrorMessage } from "#src/constants/frequent-errors.ts";
 
 /** Service Class with all methods for Replies */
 export const replyForCommentSectionService = new (class Reply_Service {
@@ -99,7 +99,7 @@ export const replyForCommentSectionService = new (class Reply_Service {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
 
         if (found_reply.by_profile_id !== profile_id) {
-            throw new UnauthorizedException(["Этот ответ не ваш"]);
+            throw new UnauthorizedException();
         }
         const deleted_reply = await model.delete_1_reply(found_reply.id);
         return !!deleted_reply;
@@ -108,7 +108,7 @@ export const replyForCommentSectionService = new (class Reply_Service {
     edit_reply = async ({ content, reply_id, profile_id }: { content: string; reply_id: string; profile_id: string }): Promise<boolean> => {
         const found_reply = await model.find_1_reply_by_its_id(reply_id);
         if (found_reply.by_profile_id !== profile_id) {
-            throw new ForbiddenException(["Этот ответ не ваш"]);
+            throw new UnauthorizedException();
         }
         const updated_reply = await model.update_1_reply_by_its_id(found_reply.id, content);
         return !!updated_reply;

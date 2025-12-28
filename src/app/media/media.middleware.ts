@@ -1,6 +1,6 @@
 import type ExpressJS from "express";
-import { BadRequestException, PayloadTooLargeException } from "#/errors/client-side-exceptions.js";
-import { PAYLOAD_MAX_SIZE, maxAvatarPayloadInMB } from "#/configs/application-rules-config.js";
+import { BadRequestException, PayloadTooLargeException } from "#src/errors/client-side-exceptions.ts";
+import { PAYLOAD_MAX_SIZE, maxAvatarPayloadInMB } from "#src/configs/application-rules-config.ts";
 /** Middleware for checking file size */
 export function requestContentLengthValidatorMiddleware(req: ExpressJS.Request, _res: ExpressJS.Response, next: ExpressJS.NextFunction) {
     const contentLength = req.headers["content-length"];

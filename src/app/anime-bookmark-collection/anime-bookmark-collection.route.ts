@@ -1,7 +1,7 @@
-import { mainAuthenticationMiddleware } from "#/middlewares/authentication-middleware.js";
-import { createConfiguredRouter } from "#/utilities/express-core-middlewares.js";
-import { animeBookmarkSectionController } from "#/app/anime-bookmark-collection/anime-bookmark-collection.controller.js";
-import { animeBookmarkSectionReqPipes } from "#/app/anime-bookmark-collection/anime-bookmark-collection.pipes.js";
+import { mainAuthenticationMiddleware } from "#src/middlewares/authentication-middleware.ts";
+import { createConfiguredRouter } from "#src/utilities/express-core-middlewares.ts";
+import { animeBookmarkSectionController } from "#src/app/anime-bookmark-collection/anime-bookmark-collection.controller.ts";
+import { animeBookmarkSectionReqPipes } from "#src/app/anime-bookmark-collection/anime-bookmark-collection.pipes.ts";
 export const animeBookmarkSectionRouter = (() => {
     const r = createConfiguredRouter();
 

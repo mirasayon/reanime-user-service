@@ -1,4 +1,4 @@
-import { pathsMainConfig } from "#/configs/file-system-path-config.js";
+import { pathsMainConfig } from "#src/configs/file-system-path-config.ts";
 import type { Application } from "express";
 import expressJs from "express";
 /** Created new ExpressJS.js Router with configured settings  */

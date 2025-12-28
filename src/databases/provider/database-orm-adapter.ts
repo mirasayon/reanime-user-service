@@ -1,7 +1,7 @@
-import { PrismaClient } from "#/databases/orm/client.js";
+import { PrismaClient } from "#src/databases/orm/client.ts";
 import consola from "consola";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { envMainConfig } from "#/configs/environment-variables-config.js";
+import { envMainConfig } from "#src/configs/environment-variables-config.ts";
 
 /** Prisma Client Instance Type */
 export type PrismaClientType = ReturnType<typeof createMainPrismaClient>;

@@ -4,13 +4,13 @@ import {
     ForbiddenException,
     NotFoundException,
     UnauthorizedException,
-} from "#/errors/client-side-exceptions.js";
-import { NotImplementedException } from "#/errors/server-side-exceptions.js";
-import { passwordHashingService } from "#/utilities/cryptography-services/hash-passwords.service.js";
-import type { LoginSession, UserAccount } from "[orm]/client.js";
-import { accountSectionModels } from "#/app/user-account/user-account.model.js";
-import { mediaSectionService } from "#/app/media/media.service.js";
-import { emailIsUsedErrorMessage } from "#/constants/frequent-errors.js";
+} from "#src/errors/client-side-exceptions.ts";
+import { NotImplementedException } from "#src/errors/server-side-exceptions.ts";
+import { passwordHashingService } from "#src/utilities/cryptography-services/hash-passwords.service.ts";
+import type { LoginSession, UserAccount } from "#orm/client.ts";
+import { accountSectionModels } from "#src/app/user-account/user-account.model.ts";
+import { mediaSectionService } from "#src/app/media/media.service.ts";
+import { emailIsUsedErrorMessage } from "#src/constants/frequent-errors.ts";
 /** UserAccount Service */
 class AccountRouteServiceClass {
     explore_me = async (account_id: string): Promise<UserAccount> => {
@@ -76,7 +76,7 @@ class AccountRouteServiceClass {
             password: current_password,
         });
         if (!matches) {
-            throw new UnauthorizedException(["Текущий пароль неверный"]);
+            throw new UnauthorizedException("Текущий пароль неверный");
         }
         const new_password_hash = await passwordHashingService.hashPasswordArgon2id(new_password);
         await accountSectionModels.update_password_hash_account({
@@ -120,7 +120,7 @@ class AccountRouteServiceClass {
         const all_sessions_ids = (await accountSectionModels.find_all_sessions_by_account_id(found_account.id)).map((s) => s.id);
         const isThisSessionOwner = all_sessions_ids.includes(targetSessionIdToDelete);
         if (!isThisSessionOwner) {
-            throw new UnauthorizedException(["Айди сессии неправилен или вы не являетесь собственником этой сессии"]);
+            throw new UnauthorizedException("Айди сессии неправилен или вы не являетесь собственником этой сессии");
         }
         await accountSectionModels.delete_one_session_by_id(targetSessionIdToDelete);
         return true;

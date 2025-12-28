@@ -1,13 +1,13 @@
-import { BadRequestException, ConflictException, NotFoundException } from "#/errors/client-side-exceptions.js";
-import type { VoteToAnime } from "[orm]/client.js";
-import { FavoriteAnimes_Model as model } from "#/app/vote-to-anime/vote-to-anime.model.js";
+import { BadRequestException, ConflictException, NotFoundException } from "#src/errors/client-side-exceptions.ts";
+import type { VoteToAnime } from "#orm/client.ts";
+import { FavoriteAnimes_Model as model } from "#src/app/vote-to-anime/vote-to-anime.model.ts";
 import {
     profileHasAlreadyLikeAnimeErrorMessage,
     profile_has_already_disliked_animeErrorMessage,
     voteNotFoundErrorMessage,
     cannot_delete_like_if_there_is_dislikeErrorMessage,
     cannot_delete_dislike_if_there_is_likeErrorMessage,
-} from "#/constants/frequent-errors.js";
+} from "#src/constants/frequent-errors.ts";
 export const voteToAnimeRouteService = new (class FavoriteAnimes_Services {
     explore_likes = async (profile_id: string) => {
         const likes = await model.get_all_likes_by_profile_id(profile_id);

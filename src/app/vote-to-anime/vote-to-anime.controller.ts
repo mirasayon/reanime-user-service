@@ -1,9 +1,9 @@
-import { goReplyHttp } from "#/handlers/all-http-responder.js";
-import { checkRequestForValidity } from "#/utilities/controller-utility-functions.js";
-import type { VoteToAnimesSectionRequestTypes } from "#/app/vote-to-anime/vote-to-anime.pipes.js";
-import { voteToAnimeRouteService } from "#/app/vote-to-anime/vote-to-anime.service.js";
+import { goReplyHttp } from "#src/handlers/all-http-responder.ts";
+import { checkRequestForValidity } from "#src/utilities/controller-utility-functions.ts";
+import type { VoteToAnimesSectionRequestTypes } from "#src/app/vote-to-anime/vote-to-anime.pipes.ts";
+import { voteToAnimeRouteService } from "#src/app/vote-to-anime/vote-to-anime.service.ts";
 import type ExpressJS from "express";
-import type { ResponseTypesFor_VoteToAnime_Section } from "#/shared/user-service-response-types-for-all.routes.js";
+import type { ResponseTypesFor_VoteToAnime_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
 class VoteToAnimeRouteControllerClass {
     explore_likes = async (req: VoteToAnimesSectionRequestTypes["explore_likes"], res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
