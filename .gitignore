@@ -3,5 +3,4 @@
 /.env.development
 /.env.production
 /prisma/client
-/notebook/draft.md
 /resources/storage

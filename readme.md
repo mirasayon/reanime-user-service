@@ -1,19 +1,29 @@
-## Backend: User Service for reanime.art
+# reanime-user-service
 
-First code: october 19, 2024
+User service for **reanime.art**.
 
-**Tech Stack**
+This service is responsible for authentication, user accounts, and session management.
 
-Express.js v5, Node.js v24, TypeScript ESM, Prisma ORM, PostgreSQL
+## Responsibilities
 
-**How to create base64 random string**
+-   User registration and authentication
+-   Session and token management
+-   User profile data
 
-<https://www.convertsimple.com/random-base64-generator/>
+## Tech stack
 
-**PostgreSQL databases names:**
+-   Node.js
+-   TypeScript
+-   PostgreSQL
+-   Prisma ORM
 
-> For development - `reanime-user-service-for-development`
+## Project status
 
-> For production - `reanime-user-service-for-production`
+This service was originally started as a personal learning project.  
+Early parts of the codebase may not fully follow best practices.
 
-> For testing - `reanime-user-service-for-testing`
+The project is actively maintained, and refactoring and improvements are ongoing.
+
+## License
+
+[MIT](./LICENSE.md)

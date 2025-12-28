@@ -3,27 +3,5 @@
         {
             "path": ".."
         }
-    ],
-    "settings": {
-        "editor.tabCompletion": "on",
-        "diffEditor.codeLens": true,
-        "cSpell.words": [
-            "animes",
-            "cadastro",
-            "cliente",
-            "codereview",
-            "HMAC",
-            "Miralisher",
-            "nodenext",
-            "reanime",
-            "reanimeapp",
-            "reanimeart",
-            "reanimeweb",
-            "tspc",
-            "vmfactory",
-            "дизлайкнули",
-            "лайкнули",
-            "Мирасаён"
-        ]
-    }
+    ]
 }
