@@ -1,6 +1,6 @@
 import { envMainConfig } from "#src/configs/environment-variables-config.ts";
 import { Service_Setting } from "#src/constants/web-server-constants.ts";
-import { prisma } from "#src/databases/provider/database-connector.ts";
+import { prisma } from "#src/provider/database-connector.ts";
 import { startListeningTheServer } from "#src/utilities/express-core-middlewares.ts";
 import consola from "consola";
 import { format } from "date-fns";

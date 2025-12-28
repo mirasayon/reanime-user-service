@@ -3,7 +3,7 @@ import type { RequestTypeWithDtoForAuthSession } from "#src/types/auth-middlewar
 import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#src/utilities/dto-factory-utils/get-session-meta.ts";
 import type ExpressJS from "express";
 import { getSessionTokenFromHeadersDto } from "#src/utilities/dto-factory-utils/get-session-token.ts";
-import type { LoginSession } from "#orm/client.ts";
+import type { LoginSession } from "#orm";
 import { isDeepStrictEqual } from "node:util";
 import { sessionTokenHashService } from "#src/utilities/cryptography-services/hash-token-sessions.service.ts";
 import { sessionMetaDoNotMatchErrorMessage } from "#src/constants/frequent-errors.ts";

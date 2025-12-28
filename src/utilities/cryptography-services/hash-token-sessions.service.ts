@@ -1,7 +1,7 @@
 import { envMainConfig } from "#src/configs/environment-variables-config.ts";
 import { invalidSessionTokenErrorMessage } from "#src/constants/frequent-errors.ts";
-import type { LoginSession } from "#orm/client.ts";
-import { prisma } from "#src/databases/provider/database-connector.ts";
+import type { LoginSession } from "#orm";
+import { prisma } from "#src/provider/database-connector.ts";
 import { UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
 import { UnexpectedInternalServerErrorException } from "#src/errors/server-side-exceptions.ts";
 import type { DtoTypeForAuthSession } from "#src/types/auth-middleware-shape.ts";

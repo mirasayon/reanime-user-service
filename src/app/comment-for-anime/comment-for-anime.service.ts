@@ -1,7 +1,7 @@
 import { MAX_COMMENT_ON_ANIME_LIMIT } from "#src/configs/application-rules-config.ts";
 import { ConflictException, ForbiddenException, NotFoundException } from "#src/errors/client-side-exceptions.ts";
 import { NotImplementedException } from "#src/errors/server-side-exceptions.ts";
-import type { CommentForAnime } from "#orm/client.ts";
+import type { CommentForAnime } from "#orm";
 import { commentRouteModel } from "#src/app/comment-for-anime/comment-for-anime.model.ts";
 import { voteNotFoundErrorMessage } from "#src/constants/frequent-errors.ts";
 import type { ResponseTypesFor_CommentForAnime_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";

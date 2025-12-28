@@ -1,4 +1,4 @@
-import { PrismaClient } from "#src/databases/orm/client.ts";
+import { PrismaClient } from "#orm";
 import consola from "consola";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { envMainConfig } from "#src/configs/environment-variables-config.ts";

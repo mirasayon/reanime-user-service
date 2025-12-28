@@ -1,9 +1,9 @@
 import { SAME_TIME_SESSIONS_LIMIT } from "#src/configs/application-rules-config.ts";
-import { prisma } from "#src/databases/provider/database-connector.ts";
+import { prisma } from "#src/provider/database-connector.ts";
 import { BadRequestException, ConflictException, ForbiddenException, UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
 import { passwordHashingService } from "#src/utilities/cryptography-services/hash-passwords.service.ts";
 import { sessionTokenHashService, type TokenStringRaw } from "#src/utilities/cryptography-services/hash-token-sessions.service.ts";
-import type { AccountPassword, ProfileAvatarPicture, UserAccount, UserProfile } from "#orm/client.ts";
+import type { AccountPassword, ProfileAvatarPicture, UserAccount, UserProfile } from "#orm";
 import { authenticationRouteModels } from "#src/app/authentication/authentication.model.ts";
 import { profileRouteModel } from "#src/app/user-profile/user-profile.model.ts";
 import { invalidCredentialsErrorMessage, maxSessionsLimitReachedErrorMessage } from "#src/constants/frequent-errors.ts";

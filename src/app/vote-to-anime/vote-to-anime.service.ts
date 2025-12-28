@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, NotFoundException } from "#src/errors/client-side-exceptions.ts";
-import type { VoteToAnime } from "#orm/client.ts";
+import type { VoteToAnime } from "#orm";
 import { FavoriteAnimes_Model as model } from "#src/app/vote-to-anime/vote-to-anime.model.ts";
 import {
     profileHasAlreadyLikeAnimeErrorMessage,

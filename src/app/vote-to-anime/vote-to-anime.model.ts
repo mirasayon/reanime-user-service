@@ -1,4 +1,4 @@
-import { prisma } from "#src/databases/provider/database-connector.ts";
+import { prisma } from "#src/provider/database-connector.ts";
 import type { VoteToSomethingType } from "#src/types/utility-types-for-db-models.ts";
 
 export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {

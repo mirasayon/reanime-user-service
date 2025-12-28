@@ -1,6 +1,6 @@
-import { prisma } from "#src/databases/provider/database-connector.ts";
+import { prisma } from "#src/provider/database-connector.ts";
 import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
-import type { VoteToReply } from "#orm/client.ts";
+import type { VoteToReply } from "#orm";
 
 class ReplyToCommentSectionModel {
     get_replies_count_on_1_comment = async (by_profile_id: string, to_comment_id: string) => {

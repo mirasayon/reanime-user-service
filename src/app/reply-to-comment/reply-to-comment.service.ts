@@ -1,7 +1,7 @@
 import { REPLIES_LIMIT_TO_ONE_COMMENT } from "#src/configs/application-rules-config.ts";
 import { ConflictException, ForbiddenException, NotFoundException, UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
 import { NotImplementedException } from "#src/errors/server-side-exceptions.ts";
-import type { ReplyForComment } from "#orm/client.ts";
+import type { ReplyForComment } from "#orm";
 import { replyToCommentSectionModel as model } from "#src/app/reply-to-comment/reply-to-comment.model.ts";
 import { voteNotFoundErrorMessage } from "#src/constants/frequent-errors.ts";
 

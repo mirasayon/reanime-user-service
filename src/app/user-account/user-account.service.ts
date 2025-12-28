@@ -7,7 +7,7 @@ import {
 } from "#src/errors/client-side-exceptions.ts";
 import { NotImplementedException } from "#src/errors/server-side-exceptions.ts";
 import { passwordHashingService } from "#src/utilities/cryptography-services/hash-passwords.service.ts";
-import type { LoginSession, UserAccount } from "#orm/client.ts";
+import type { LoginSession, UserAccount } from "#orm";
 import { accountSectionModels } from "#src/app/user-account/user-account.model.ts";
 import { mediaSectionService } from "#src/app/media/media.service.ts";
 import { emailIsUsedErrorMessage } from "#src/constants/frequent-errors.ts";

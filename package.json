@@ -61,6 +61,6 @@
     },
     "imports": {
         "#src/*": "./src/*",
-        "#orm/*": "./src/databases/orm/*"
+        "#orm": "./prisma/client/client.ts"
     }
 }

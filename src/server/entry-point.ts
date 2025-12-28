@@ -1,5 +1,5 @@
-import { testTheDbForConnection } from "#src/databases/provider/database-orm-adapter.ts";
-import { prisma } from "#src/databases/provider/database-connector.ts";
+import { prisma } from "#src/provider/database-connector.ts";
+import { testTheDbForConnection } from "#src/provider/database-orm-adapter.ts";
 import { startMainServerScript } from "#src/server/server-starter-script.ts";
 console.clear();
 console.time("in");

@@ -1,8 +1,8 @@
-import { prisma } from "#src/databases/provider/database-connector.ts";
+import { prisma } from "#src/provider/database-connector.ts";
 import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
 import { UnexpectedInternalServerErrorException } from "#src/errors/server-side-exceptions.ts";
 import type { Argon2idHashResultType } from "#src/utilities/cryptography-services/hash-passwords.service.ts";
-import type { AccountPassword, LoginSession, ProfileAvatarPicture, ProfileCoverPicture, UserAccount, UserProfile } from "#orm/client.ts";
+import type { AccountPassword, LoginSession, ProfileAvatarPicture, ProfileCoverPicture, UserAccount, UserProfile } from "#orm";
 export type ProfileWithCoverAndAvatarData = UserProfile & { cover: ProfileCoverPicture | null } & { avatar: ProfileAvatarPicture | null };
 class AccountSectionModelsClass {
     Get_account_by_its_id_throw_error = async (account_id: string): Promise<UserAccount> => {

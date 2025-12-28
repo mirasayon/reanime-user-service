@@ -1,5 +1,5 @@
 import { BadRequestException } from "#src/errors/client-side-exceptions.ts";
-import type { ProfileAvatarPicture, UserAccount, UserProfile } from "#orm/client.ts";
+import type { ProfileAvatarPicture, UserAccount, UserProfile } from "#orm";
 import { profileRouteModel } from "#src/app/user-profile/user-profile.model.ts";
 /** Service Class with all methods for comments */
 class Profile_Service_Class {

@@ -1,8 +1,8 @@
 import { usernameNotFoundErrorMessage } from "#src/constants/frequent-errors.ts";
-import { prisma } from "#src/databases/provider/database-connector.ts";
+import { prisma } from "#src/provider/database-connector.ts";
 import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
 import { UnexpectedInternalServerErrorException } from "#src/errors/server-side-exceptions.ts";
-import type { ProfileAvatarPicture, UserAccount, UserProfile } from "#orm/client.ts";
+import type { ProfileAvatarPicture, UserAccount, UserProfile } from "#orm";
 class ProfileRouteModelClass {
     find_profile_by_its_id = async (profile_id: string) => {
         const found_profile = await prisma.userProfile.findUnique({

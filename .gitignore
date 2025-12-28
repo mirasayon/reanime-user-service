@@ -2,9 +2,6 @@
 /.env.test
 /.env.development
 /.env.production
-/dist
-/src/databases/orm
+/prisma/client
 /notebook/draft.md
-/src/tests/play.ts
 /resources/storage
-/user-service-shared-package

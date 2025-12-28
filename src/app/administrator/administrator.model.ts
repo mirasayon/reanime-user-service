@@ -1,6 +1,6 @@
-import { prisma } from "#src/databases/provider/database-connector.ts";
 import { UnexpectedInternalServerErrorException } from "#src/errors/server-side-exceptions.ts";
-import type { ProfileAvatarPicture, UserAccount, UserProfile } from "#orm/client.ts";
+import type { ProfileAvatarPicture, UserAccount, UserProfile } from "#orm";
+import { prisma } from "#src/provider/database-connector.ts";
 class AdministratorSectionModel {
     get_all_accounts_and_its_profiles = async (): Promise<
         {

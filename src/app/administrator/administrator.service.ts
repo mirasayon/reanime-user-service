@@ -1,5 +1,5 @@
 import { UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
-import { AccountTypeEnum } from "#orm/client.ts";
+import { AccountTypeEnum } from "#orm";
 import { accountSectionModels } from "#src/app/user-account/user-account.model.ts";
 import { administratorSectionModel } from "./administrator.model.ts";
 import type { ResponseTypesForAdministratorSection } from "#src/shared/user-service-response-types-for-all.routes.ts";

@@ -11,7 +11,7 @@ import { existsSync } from "node:fs";
 import { mkdir, readdir, rm, unlink } from "node:fs/promises";
 import { mediaHashService } from "#src/utilities/cryptography-services/media-filename-hashing.service.ts";
 import { editForProdTheImageSharp, destroyFilesAfterTrigger, serveMediaFile } from "./media.utilities.ts";
-import type { ProfileAvatarPicture } from "#src/databases/orm/client.ts";
+import type { ProfileAvatarPicture } from "#orm";
 import { timingSafeEqual } from "node:crypto";
 export type MediaPathPairAndFullPath = {
     dirName: string;
