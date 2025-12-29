@@ -1,26 +1,21 @@
 import { envConfig } from "#src/configs/env-variables-config.ts";
-import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
-import { ExpectedInternalServerErrorException } from "#src/errors/server-side-exceptions.ts";
+import { UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
 import type ExpressJS from "express";
 import { timingSafeEqual } from "node:crypto";
-const expectedApiKeyValue = envConfig.internalApiKey;
 /** Middleware for API key validation. Throws 404 if not valid */
 export function apiKeyToServiceGuard(request: ExpressJS.Request, _res: ExpressJS.Response, next: ExpressJS.NextFunction) {
     const headerVal = request.headers["x-reanime-user-service-key"];
     if (!headerVal || typeof headerVal !== "string" || headerVal.length === 0) {
-        throw new NotFoundException();
-    }
-    if (!expectedApiKeyValue) {
-        throw new ExpectedInternalServerErrorException("Сервер неправильно сконфигурирован. Пожалуйста, попробуйте позже");
+        throw new UnauthorizedException(["No API key provided"]);
     }
     const keyFromHeader = Buffer.from(headerVal, "utf8");
-    const keyExpected = Buffer.from(expectedApiKeyValue, "utf8");
+    const keyExpected = Buffer.from(envConfig.internalApiKey, "utf8");
 
     if (keyFromHeader.length !== keyExpected.length) {
-        throw new NotFoundException();
+        throw new UnauthorizedException(["No API key provided"]);
     }
     if (timingSafeEqual(keyFromHeader, keyExpected)) {
         return next();
     }
-    throw new NotFoundException();
+    throw new UnauthorizedException(["No API key provided"]);
 }
