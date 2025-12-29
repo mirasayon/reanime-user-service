@@ -1,4 +1,3 @@
-import { getSessionMetaFromClientDto } from "#src/utilities/dto-factory-utils/get-session-meta.ts";
 import { validatorMiddlewareFactory } from "#src/utilities/controller-utility-functions.ts";
 import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
 import { authenticationSectionSchemas, type AuthenticationSectionValidatorSchemaType } from "#src/shared/request-validator-for-all.routes.ts";
@@ -14,12 +13,10 @@ export interface AuthenticationSectionRequestTypes {
 }
 
 export const authenticationSectionRequestValidatorMiddlewares = {
-    registration: validatorMiddlewareFactory<AuthenticationSectionRequestTypes["registration"]>(authenticationSectionSchemas.registration, (req) => {
-        return {
-            ...getSessionMetaFromClientDto(req),
-            ...req.body,
-        };
-    }),
+    registration: validatorMiddlewareFactory<AuthenticationSectionRequestTypes["registration"]>(
+        authenticationSectionSchemas.registration,
+        (req) => req.body,
+    ),
 
     check_session: validatorMiddlewareFactory<AuthenticationSectionRequestTypes["check_session"]>(authenticationSectionSchemas.check_session),
 
@@ -32,21 +29,11 @@ export const authenticationSectionRequestValidatorMiddlewares = {
 
     login_by_email: validatorMiddlewareFactory<AuthenticationSectionRequestTypes["login_by_email"]>(
         authenticationSectionSchemas.login_by_email,
-        (req) => {
-            return {
-                ...getSessionMetaFromClientDto(req),
-                ...req.body,
-            };
-        },
+        (req) => req.body,
     ),
 
     login_by_username: validatorMiddlewareFactory<AuthenticationSectionRequestTypes["login_by_username"]>(
         authenticationSectionSchemas.login_by_username,
-        (req) => {
-            return {
-                ...getSessionMetaFromClientDto(req),
-                ...req.body,
-            };
-        },
+        (req) => req.body,
     ),
 };

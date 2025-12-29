@@ -60,7 +60,7 @@ export function clientSideErrorMiddleware(
     }
     if (error instanceof UnauthorizedException) {
         return goReplyHttp.unauthorized(res, {
-            message: error.message,
+            errors: error.errors,
         });
     }
     if (error instanceof UseSecureHTTPException) {

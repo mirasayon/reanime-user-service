@@ -119,7 +119,7 @@ class AuthenticationRouteModelClass {
             },
         });
         if (!account) {
-            throw new UnauthorizedException(invalidCredentialsErrorMessage);
+            throw new UnauthorizedException([invalidCredentialsErrorMessage]);
         }
         return account;
     };

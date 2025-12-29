@@ -8,7 +8,7 @@ const expectedApiKeyValue = envConfig.internalApiKey;
 export function apiKeyToServiceGuard(request: ExpressJS.Request, _res: ExpressJS.Response, next: ExpressJS.NextFunction) {
     const headerVal = request.headers["x-reanime-user-service-key"];
     if (!headerVal || typeof headerVal !== "string" || headerVal.length === 0) {
-        throw new NotFoundException([]);
+        throw new NotFoundException();
     }
     if (!expectedApiKeyValue) {
         throw new ExpectedInternalServerErrorException("Сервер неправильно сконфигурирован. Пожалуйста, попробуйте позже");

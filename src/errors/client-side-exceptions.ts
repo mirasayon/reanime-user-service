@@ -59,9 +59,9 @@ export class UseSecureHTTPException {
 
 export class UnauthorizedException {
     public readonly response_code = userServiceHttpResponseConventionalCodes.UNAUTHORIZED;
-    public readonly message?: string | undefined;
-    constructor(message?: string) {
-        this.message = message || undefined;
+    public readonly errors: string[];
+    constructor(errors?: string[]) {
+        this.errors = errors || [];
     }
 }
 

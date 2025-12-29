@@ -15,7 +15,7 @@ function reqAndSessionMetaValidator(session: LoginSession, requestMeta: ExpressJ
     if (isDeepStrictEqual(session_Meta, request_Meta)) {
         return;
     }
-    throw new UnauthorizedException(sessionMetaDoNotMatchErrorMessage);
+    throw new UnauthorizedException([sessionMetaDoNotMatchErrorMessage]);
 }
 
 /** Function for comparing metadatas of request and session */

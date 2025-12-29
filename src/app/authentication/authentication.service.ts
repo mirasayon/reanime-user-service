@@ -27,14 +27,14 @@ class AuthenticationRouteServiceClass {
     login_via_username = async (credentials: { username: string; password: string; ip: string; agent: string | null }): Promise<TokenStringRaw> => {
         const account_id = (await authenticationRouteModels.find_1_account_by_username(credentials.username))?.id;
         if (!account_id) {
-            throw new UnauthorizedException(invalidCredentialsErrorMessage);
+            throw new UnauthorizedException([invalidCredentialsErrorMessage]);
         }
         const storedPassword = await authenticationRouteModels.getPasswordDataFromAccountId(account_id);
 
         const is_correct = await passwordHashingService.verifyPasswordWithStored({ password: credentials.password, stored: storedPassword });
 
         if (!is_correct) {
-            throw new UnauthorizedException(invalidCredentialsErrorMessage);
+            throw new UnauthorizedException([invalidCredentialsErrorMessage]);
         }
         await this.rehashPasswordIfNeeded(storedPassword, credentials.password);
         const sessions_count = await authenticationRouteModels.get_count_of_sessions_by_account_id(account_id);
@@ -57,7 +57,7 @@ class AuthenticationRouteServiceClass {
             stored: stored,
         });
         if (!is_correct) {
-            throw new UnauthorizedException(invalidCredentialsErrorMessage);
+            throw new UnauthorizedException([invalidCredentialsErrorMessage]);
         }
         await this.rehashPasswordIfNeeded(stored, credentials.password);
         const sessions_count = await authenticationRouteModels.get_count_of_sessions_by_account_id(account_id);

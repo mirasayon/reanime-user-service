@@ -76,7 +76,7 @@ class AccountRouteServiceClass {
             password: current_password,
         });
         if (!matches) {
-            throw new UnauthorizedException("Текущий пароль неверный");
+            throw new UnauthorizedException(["Текущий пароль неверный"]);
         }
         const new_password_hash = await passwordHashingService.hashPasswordArgon2id(new_password);
         await accountSectionModels.update_password_hash_account({
@@ -120,7 +120,7 @@ class AccountRouteServiceClass {
         const all_sessions_ids = (await accountSectionModels.find_all_sessions_by_account_id(found_account.id)).map((s) => s.id);
         const isThisSessionOwner = all_sessions_ids.includes(targetSessionIdToDelete);
         if (!isThisSessionOwner) {
-            throw new UnauthorizedException("Айди сессии неправилен или вы не являетесь собственником этой сессии");
+            throw new UnauthorizedException(["Айди сессии неправилен или вы не являетесь собственником этой сессии"]);
         }
         await accountSectionModels.delete_one_session_by_id(targetSessionIdToDelete);
         return true;

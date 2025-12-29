@@ -24,8 +24,8 @@ export const goReplyHttp = new (class goReplyHttpServiceClass {
         const message = "Use Secure HTTP";
         return allHttpResponseHandler({ res, response_code: userServiceHttpResponseConventionalCodes.USE_SECURE_HTTP, message, ok: false });
     };
-    unauthorized = (res: ExpressJS.Response, { message = "Unauthorized Error" }: UserServiceHttpResponseBodyOptionalMessage) => {
-        return allHttpResponseHandler({ res, response_code: userServiceHttpResponseConventionalCodes.UNAUTHORIZED, message, ok: false });
+    unauthorized = (res: ExpressJS.Response, { message = "Unauthorized Error", errors }: UserServiceHttpResponseBodyOptionalMessageAndErrors) => {
+        return allHttpResponseHandler({ res, response_code: userServiceHttpResponseConventionalCodes.UNAUTHORIZED, message, ok: false, errors });
     };
     forbidden = (res: ExpressJS.Response, { message = "Forbidden Error", errors }: UserServiceHttpResponseBodyOptionalMessageAndErrors) => {
         return allHttpResponseHandler({ res, response_code: userServiceHttpResponseConventionalCodes.FORBIDDEN, message, errors, ok: false });
