@@ -1,4 +1,4 @@
-import { envMainConfig } from "#src/configs/environment-variables-config.ts";
+import { envConfig } from "#src/configs/environment-variables-config.ts";
 import { invalidSessionTokenErrorMessage } from "#src/constants/frequent-errors.ts";
 import type { LoginSession } from "#orm";
 import { prisma } from "#src/provider/database-connector.ts";
@@ -17,7 +17,7 @@ export type CreateSessionTokenType = {
 
 class SessionTokenHashServiceClass {
     constructor() {
-        const secret = envMainConfig.sessionTokenHmacSecret;
+        const secret = envConfig.sessionTokenHmacSecret;
         if (!secret) {
             throw new Error("SESSION_HMAC_SECRET not set");
         }

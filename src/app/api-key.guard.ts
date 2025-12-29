@@ -1,9 +1,9 @@
-import { envMainConfig } from "#src/configs/environment-variables-config.ts";
+import { envConfig } from "#src/configs/environment-variables-config.ts";
 import { NotFoundException } from "#src/errors/client-side-exceptions.ts";
 import { ExpectedInternalServerErrorException } from "#src/errors/server-side-exceptions.ts";
 import type ExpressJS from "express";
 import { timingSafeEqual } from "node:crypto";
-const expectedApiKeyValue = envMainConfig.api_key_to_this_service;
+const expectedApiKeyValue = envConfig.apiKeyToThisService;
 /** Middleware for API key validation. Throws 404 if not valid */
 export function apiKeyToServiceGuard(request: ExpressJS.Request, _res: ExpressJS.Response, next: ExpressJS.NextFunction) {
     const headerVal = request.headers["x-reanime-user-service-key"];

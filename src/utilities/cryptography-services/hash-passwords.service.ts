@@ -1,5 +1,5 @@
 // hashing-service.ts
-import { envMainConfig } from "#src/configs/environment-variables-config.ts";
+import { envConfig } from "#src/configs/environment-variables-config.ts";
 import { argon2, randomBytes, timingSafeEqual, type Argon2Parameters } from "node:crypto";
 type Argon2idDefaultsParameters = Omit<Argon2idHashResultType, "hash_base64" | "salt_base64">;
 export type Argon2idHashResultType = {
@@ -52,7 +52,7 @@ class Argon2idHashingService {
      */
     private _pepper: string;
     constructor() {
-        const pepper = envMainConfig.passwordHashPepper;
+        const pepper = envConfig.passwordHashPepper;
         if (!pepper) {
             throw new Error("Hashing passwords pepper required");
         }

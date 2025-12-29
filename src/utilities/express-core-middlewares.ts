@@ -1,4 +1,4 @@
-import { pathsMainConfig } from "#src/configs/file-system-path-config.ts";
+import { pathsConfigs } from "#src/configs/file-system-path-config.ts";
 import type { Application } from "express";
 import expressJs from "express";
 /** Created new ExpressJS.js Router with configured settings  */
@@ -6,7 +6,7 @@ export function createConfiguredRouter(): ReturnType<typeof expressJs.Router> {
     return expressJs.Router({ caseSensitive: true, strict: true });
 }
 /** Static Folder middleware */
-export const mainStaticServerMiddleware = expressJs.static(pathsMainConfig.static, {
+export const mainStaticServerMiddleware = expressJs.static(pathsConfigs.static, {
     etag: false,
     index: false,
     lastModified: false,

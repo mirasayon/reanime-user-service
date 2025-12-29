@@ -24,7 +24,7 @@ export const appLayoutRouter = (() => {
     router.use("/media", mediaSectionRouter);
     router.use("/user-account", accountSectionRouter);
     router.use("/anime/anime-bookmark-collection", animeBookmarkSectionRouter);
-    router.use("/vote-to-anime", voteToAnimeSectionRouter);
+    router.use("/anime/vote-to-anime", voteToAnimeSectionRouter);
     router.use("/ping", pingSectionRouter);
     return router;
 })();

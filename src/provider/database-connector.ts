@@ -1,4 +1,4 @@
-import { envMainConfig } from "#src/configs/environment-variables-config.ts";
+import { envConfig } from "#src/configs/environment-variables-config.ts";
 import { createMainPrismaClient, type PrismaClientType } from "./database-orm-adapter.ts";
 declare global {
     /** Declared type for singleton Prisma Client  */
@@ -7,7 +7,7 @@ declare global {
 /** Global prisma client for all of application */
 const prisma = globalThis._prisma_client_global_ || createMainPrismaClient();
 
-if (!envMainConfig.is_prod) {
+if (!envConfig.isProd) {
     globalThis._prisma_client_global_ = prisma;
 }
 export { prisma };

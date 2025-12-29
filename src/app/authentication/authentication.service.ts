@@ -8,7 +8,7 @@ import { authenticationRouteModels } from "#src/app/authentication/authenticatio
 import { profileRouteModel } from "#src/app/user-profile/user-profile.model.ts";
 import { invalidCredentialsErrorMessage, maxSessionsLimitReachedErrorMessage } from "#src/constants/frequent-errors.ts";
 import maxmind, { type CountryResponse } from "maxmind";
-import { pathsMainConfig } from "#src/configs/file-system-path-config.ts";
+import { pathsConfigs } from "#src/configs/file-system-path-config.ts";
 import { UAParser } from "ua-parser-js";
 class AuthenticationRouteServiceClass {
     logout = async (session_selector: string, account_id: string): Promise<boolean> => {
@@ -192,7 +192,7 @@ function parseUA(uaString: string) {
     };
 }
 
-const maxmindIpDbInit = await maxmind.open<CountryResponse>(pathsMainConfig.maxmindDbPath);
+const maxmindIpDbInit = await maxmind.open<CountryResponse>(pathsConfigs.maxmindCountryDb);
 
 function getCountryByIp(ip: string): string | null {
     const data = maxmindIpDbInit.get(ip);

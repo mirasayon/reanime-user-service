@@ -1,4 +1,4 @@
-import { envMainConfig } from "#src/configs/environment-variables-config.ts";
+import { envConfig } from "#src/configs/environment-variables-config.ts";
 import { Service_Setting } from "#src/constants/web-server-constants.ts";
 import { prisma } from "#src/provider/database-connector.ts";
 import { startListeningTheServer } from "#src/utilities/express-core-middlewares.ts";
@@ -10,14 +10,14 @@ import { arch, platform } from "node:os";
 import { expressMainApplication } from "./server-skeleton.ts";
 export async function startMainServerScript(): Promise<void> {
     try {
-        const instance = await startListeningTheServer(expressMainApplication, envMainConfig.server.host, envMainConfig.server.port);
+        const instance = await startListeningTheServer(expressMainApplication, envConfig.server.host, envConfig.server.port);
         const { port, address, family } = instance.address() as AddressInfo;
 
         const time = format(new Date(), "HH:mm:ss dd.MM.yyyy");
-        const url = `http://${envMainConfig.server.host}:${port}`;
+        const url = `http://${envConfig.server.host}:${port}`;
         const altUrl = `http://${address}:${port}`;
         Logger.blue(`${Service_Setting.name}. Launched at ${time}`);
-        Logger.success(`${family}: ${chalk.magenta(url)} / ${altUrl} ${chalk.magenta(envMainConfig.NODE_ENVIRONMENT)}`);
+        Logger.success(`${family}: ${chalk.magenta(url)} / ${altUrl} ${chalk.magenta(envConfig.mode)}`);
         Logger.slate(
             "Node.js: " + chalk.bold("v" + process.versions.node) + ". Arch: " + chalk.bold(arch()) + ". Platform: " + chalk.bold(platform()),
         );

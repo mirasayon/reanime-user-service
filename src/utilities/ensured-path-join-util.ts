@@ -1,8 +1,8 @@
 import { existsSync, mkdirSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import { join, dirname, extname } from "node:path";
-/** Гарантирует, что имя каталога, указанное в заданном пути, существует. Асинхронная версия
- * @returns объединенная строка пути */
+/** Ensures that the directory name specified by the given path exists. Asynchronous version
+ * @returns the concatenated path string */
 export async function ensuredJoin<T extends string>(...paths: T[]): Promise<T> {
     const _path = join(...paths);
     const isJson = extname(_path).toLowerCase() === ".json";
@@ -16,8 +16,8 @@ export async function ensuredJoin<T extends string>(...paths: T[]): Promise<T> {
     return _path as T;
 }
 
-/** Гарантирует, что имя каталога, указанное в заданном пути, существует. Синхронная версия
- * @returns объединенная строка пути  */
+/** Ensures that the directory name specified by the given path exists. Synchronous version
+ * @returns the concatenated path string */
 export function ensuredJoinSync<T extends string>(...paths: T[]): T {
     const _path = join(...paths);
     const isJson = extname(_path).toLowerCase() === ".json";
