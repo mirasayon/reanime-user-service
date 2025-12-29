@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { stat, rm } from "node:fs/promises";
+import { stat, rm, mkdir } from "node:fs/promises";
 export async function removeFolder(folder: string): Promise<void> {
     if (existsSync(folder)) {
         const pathStat = await stat(folder);
@@ -7,5 +7,6 @@ export async function removeFolder(folder: string): Promise<void> {
             return console.error(`Not a directory: ${folder} — aborting.`);
         }
         await rm(folder, { recursive: true, force: true });
+        await mkdir(folder, { recursive: true });
     }
 }

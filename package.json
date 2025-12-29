@@ -10,54 +10,54 @@
         "studio:test": "prisma studio --port 2647 --config ./prisma/configs/test.prisma.ts",
         "studio:dev": "prisma studio --port 3647 --config ./prisma/configs/dev.prisma.ts",
         "studio:prod": "prisma studio --port 4647 --config ./prisma/configs/prod.prisma.ts",
-        "inspector": "tsc --watch --noEmit -p ./tsconfig.json",
-        "inspect": "tsc --noEmit -p ./tsconfig.json",
-        "prisma-client:dev": "node ./scripts/remove-orm.ts && prisma generate --config ./prisma/configs/dev.prisma.ts",
-        "prisma-client:test": "node ./scripts/remove-orm.ts && prisma generate --config ./prisma/configs/test.prisma.ts",
-        "prisma-client:prod": "node ./scripts/remove-orm.ts && prisma generate --config ./prisma/configs/prod.prisma.ts",
-        "prisma-format": "prisma format --config ./prisma/configs/dev.prisma.ts"
+        "type:watch": "tsc --watch --noEmit -p ./tsconfig.json",
+        "type:check": "tsc --noEmit -p ./tsconfig.json",
+        "prisma:format": "prisma format --config ./prisma/configs/dev.prisma.ts",
+        "prisma:generate": "node ./scripts/remove-prisma-client.ts && prisma generate --schema ./prisma/schemas/main.prisma",
+        "prisma:migrate:dev": "prisma migrate dev --config ./prisma/configs/dev.prisma.ts",
+        "prisma:migrate:deploy": "prisma migrate deploy --config ./prisma/configs/prod.prisma.ts"
     },
     "dependencies": {
+        "express": "^5.2.1",
         "@prisma/adapter-pg": "^7.2.0",
         "@prisma/client": "^7.2.0",
         "sharp": "^0.34.5",
+        "pg": "^8.16.3",
         "ua-parser-js": "^2.0.7",
         "zod": "^4.2.1",
-        "better-psl": "^1.0.1",
         "compression": "^1.8.1",
         "consola": "^3.4.2",
         "cors": "^2.8.5",
         "date-fns": "^4.1.0",
-        "express": "^5.2.1",
+        "multer": "^2.0.2",
         "helmet": "^8.1.0",
-        "log-it-colored": "^0.0.3",
         "maxmind": "^5.0.1",
         "morgan": "^1.10.1",
-        "multer": "^2.0.2",
-        "pg": "^8.16.3",
+        "better-psl": "^1.0.1",
+        "log-it-colored": "^0.0.3",
         "safest-env": "^0.0.1"
     },
     "devDependencies": {
+        "typescript": "^5.9.3",
         "prisma": "^7.2.0",
+        "@types/pg": "^8.16.0",
         "@types/compression": "^1.8.1",
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.6",
         "@types/morgan": "^1.9.10",
         "@types/multer": "^2.0.0",
-        "@types/node": "^25.0.3",
-        "@types/pg": "^8.16.0",
-        "typescript": "^5.9.3"
+        "@types/node": "^25.0.3"
     },
     "author": {
-        "email": "MiraSayon@ya.ru",
+        "email": "mirasayon@ya.ru",
         "name": "Miralisher",
-        "url": "https://MiraSayon.com"
+        "url": "https://mirasayon.com"
     },
     "private": true,
     "license": "MIT",
     "description": "Reanime.art Backend User Service",
     "engines": {
-        "node": ">=24.12.0"
+        "node": ">=24"
     },
     "imports": {
         "#src/*": "./src/*",
