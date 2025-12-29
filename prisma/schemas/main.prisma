@@ -12,125 +12,108 @@ datasource db {
   provider = "postgresql"
 }
 
-/// User account. The central model representing an account in the system.
 model UserAccount {
-  /// Уникальный идентификатор аккаунта (cuid).
   id         String   @id @default(cuid())
-  /// Время создания записи (в часовом поясе базы).
   created_at DateTime @default(now()) @db.Timestamptz
-  /// Время последнего обновления записи (обновляется автоматически).
   updated_at DateTime @updatedAt @db.Timestamptz
-
-  /// Роль / тип учетной записи аккаунта (COMMON, BANNED, ADMIN и т.д.). Используется для контроля прав доступа.
+  /// Account role/type (e.g., COMMON, ADMIN).
   account_type AccountTypeEnum @default(COMMON)
-  /// Электронная почта пользователя. Может быть null — значит пользователь не указал почту.
+  /// User email (nullable).
   email        String?         @unique
-
-  /// Видимость публичного адреса электронной почты для других пользователей.
+  /// Public visibility of the email.
   email_visibility EmailVisibilityEnum @default(HIDE)
-
-  /// Уникальный логин (без символа "@"). Служит для публичного отображения и входа.
+  /// Unique username (no "@").
   username                String            @unique
-  /// Связанная запись с хэшем пароля и параметрами алгоритма. Отдельная модель для безопасности и истории.
+  /// Related password record.
   password_data           AccountPassword?
-  /// Флаг, подтверждён ли аккаунт по почте. Если false — некоторые функции могут быть недоступны.
+  /// Is account activated by email.
   is_activated_with_email Boolean           @default(false)
-  /// Токен/ссылка для активации по email. Если null — активация по почте недоступна.
+  /// Email activation token/link (nullable).
   email_activation_link   String?
-  /// Жалобы, поданные на этот аккаунт другими пользователями.
+  /// Reports filed against this account.
   reports_to_this_account ReportToAccount[]
-  /// Публичный профиль, связанный с этим аккаунтом (имя, био, аватар и т.д.).
+  /// Public profile (bio, avatar, etc.).
   profile                 UserProfile?
-  /// Активные и исторические сессии входа для данного аккаунта.
+  /// Active and historical login sessions.
   login_sessions          LoginSession[]
-
   @@index([account_type])
   @@index([is_activated_with_email])
   @@index([email_activation_link])
 }
 
-/// Пароль аккаунта. Хранит сам хэш, соль и параметры алгоритма (Argon2).
+/// Account password with hash and algorithm parameters.
 model AccountPassword {
-  /// Уникальный идентификатор записи пароля.
   id             String      @id @default(cuid())
-  /// Время создания записи.
   created_at     DateTime    @default(now()) @db.Timestamptz
-  /// Время последнего обновления (например, при смене пароля).
   updated_at     DateTime    @updatedAt @db.Timestamptz
-  /// Связанный аккаунт (отношение). При удалении аккаунта — каскадно удаляется пароль.
+  /// Related account (cascade on delete).
   for_account    UserAccount @relation(fields: [for_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди аккаунта, которому принадлежит этот пароль.
+  /// Owner account id.
   for_account_id String      @unique
-  /// Сам хэш пароля в base64 (результат Argon2 / другого KDF).
+  /// Password hash (base64).
   hash_base64    String
-  /// Используемая соль в base64 (для возможности миграции/верификации).
+  /// Salt (base64).
   salt_base64    String
-
-  // -- Параметры для алгоритма Argon2 --
-  /// Память в байтах, передаваемая в Argon2 (например 65536).
+  /// Argon2 memory (bytes).
   memory                 Int
-  /// Количество проходов/итераций (time cost) для Argon2.
+  /// Argon2 time cost (iterations).
   passes                 Int
-  /// Параллелизм (количество потоков) для Argon2.
+  /// Argon2 parallelism (threads).
   parallelism            Int
-  /// Длина итогового тега/хэша в байтах.
+  /// Output tag/hash length (bytes).
   tag_length             Int
-  /// Флаг, указывающий, нужно ли перехешировать пароль при изменении параметров безопасности.
+  /// Needs rehash when params change.
   needs_rehash           Boolean @default(false)
-  /// Версия/код алгоритма хеширования. 1 = Argon2id (локальная конвенция).
+  /// Hash algorithm version (1 = Argon2id).
   hash_algorithm_version Int     @default(1)
 }
-
-/// Сессии входа (persistent sessions / remember-me tokens).
+/// Persistent login sessions (remember-me).
 model LoginSession {
-  /// Уникальный идентификатор сессии.
   id                  String    @id @default(cuid())
-  /// Время создания сессии.
   created_at          DateTime  @default(now()) @db.Timestamptz
-  /// Время последнего обновления записи сессии.
   updated_at          DateTime  @updatedAt @db.Timestamptz
-  /// Селектор (публичная часть токена), используется для быстрого поиска сессии.
+  /// Public token selector.
   selector            String    @unique
-  /// Хеш приватной части валидатора (HMAC-SHA-512(validator, SESSION_SECRET)). Храним хеш.
+  /// Hash of the private validator.
   hashed_validator    String
-  /// Версия алгоритма валидатора. 1 = HMAC-SHA-512 (локальная конвенция).
+  /// Validator algorithm version.
   validator_version   Int       @default(1)
-  /// Дата и время истечения сессии.
+  /// Expiration datetime.
   expires_at          DateTime  @db.Timestamptz
-  /// Дата последнего использования (для статистики и очистки старых сессий).
+  /// Last used datetime.
   last_used_at        DateTime  @default(now()) @db.Timestamptz
   // Network / location
-  /// IP-адрес, с которого была создана/использовалась сессия (строка для IPv4/IPv6).
+  /// IP address
   ip_address          String
-  /// ISO-код страны или название страны, определённое по IP.
+  /// Country determined by IP (iso/name).
   ip_country          String?
-  /// Регион / штат, определённый по IP.
+  /// Region/state from IP.
   ip_region           String?
-  /// Город, определённый по IP.
+  /// City from IP.
   ip_city             String?
-  /// Время последнего обновления данных геолокации для этой сессии.
+  /// When location was last updated.
   location_updated_at DateTime? @db.Timestamptz
 
-  /// User-Agent заголовка запроса, полезно для анализа устройства.
+  /// Request User-Agent.
   user_agent      String?
-  /// Тип устройства (console | desktop | embedded | mobile | smarttv | tablet | wearable | xr).
+  /// Device type (console|desktop|mobile|...).
   device_type     String?
-  /// Модель устройства (если доступна).
+  /// Device model (if available).
   device_model    String?
-  /// Название операционной системы.
+  /// OS name.
   os              String?
-  /// Версия операционной системы.
+  /// OS version.
   os_version      String?
-  /// Название браузера (если применимо).
+  /// Browser name.
   browser         String?
-  /// Версия браузера.
+  /// Browser version.
   browser_version String?
-  /// Хеш устройства для дедупликации (например hash(userAgent+os+browser+model+IP)).
+  /// Device fingerprint hash.
   device_hash     String?
 
-  /// Аккаунт, которому принадлежит сессия.
+  /// Account owning this session.
   by_account    UserAccount @relation(fields: [by_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди аккаунта владельца сессии.
+  /// Owner account id.
   by_account_id String
 
   @@index([by_account_id])
@@ -140,133 +123,128 @@ model LoginSession {
   @@index([expires_at])
 }
 
-/// Изображение аватарки пользователя: путь, mime и метаданные.
+/// Avatar image metadata.
 model ProfileAvatarPicture {
-  /// Уникальный идентификатор картинки.
   id                     String      @id @default(cuid())
-  /// Дата добавления картинки.
   created_at             DateTime    @default(now()) @db.Timestamptz
-  /// Дата последнего обновления метаданных.
   updated_at             DateTime    @updatedAt @db.Timestamptz
-  /// MIME-тип файла (например "image/webp").
+  /// MIME type (e.g., "image/webp").
   mime_type              String
-  /// Относительный путь к файлу в хранилище (без домена).
+  /// Relative storage path (directory).
   path_dirname           String
+  /// Filename in storage.
   path_filename          String
-  /// Оригинальное имя загруженного файла (для отображения/лога).
+  /// Original uploaded filename.
   original_name          String
-  /// Профиль, которому принадлежит эта картинка. При удалении профиля — каскадно удаляется картинка.
+  /// Profile owning this avatar (cascade on delete).
   by_profile             UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-владельца картинки (уникально — 1:1 связь).
+  /// Owner profile id (1:1).
   by_profile_id          String      @unique
-  /// Ширина изображения в пикселях.
+  /// Image width (px).
   width                  Int
-  /// Высота изображения в пикселях.
+  /// Image height (px).
   height                 Int
-  /// Размер файла в байтах.
+  /// File size (bytes).
   size_bytes             Int
-  /// Версия алгоритма хеширования. 1 = Sha3-512 (локальная конвенция).
+  /// Hash algorithm version (e.g., 1 = sha3-512).
   hash_algorithm_version Int
-  /// Хеш файла в base64url.
+  /// File hash (base64url).
   file_hash              String
 
   @@unique([path_dirname, path_filename])
 }
 
-/// Изображение обложки профиля: путь, mime и метаданные.
+/// Cover image metadata.
 model ProfileCoverPicture {
   id                     String      @id @default(cuid())
   created_at             DateTime    @default(now()) @db.Timestamptz
   updated_at             DateTime    @updatedAt @db.Timestamptz
-  /// MIME-тип файла (например "image/webp").
+  /// MIME type.
   mime_type              String
-  /// Относительный путь к файлу обложки.
+  /// Relative storage path (directory).
   path_dirname           String
+  /// Filename in storage.
   path_filename          String
-  /// Оригинальное имя файла.
+  /// Original uploaded filename.
   original_name          String
-  /// Профиль, которому принадлежит обложка.
+  /// Profile owning this cover (cascade on delete).
   by_profile             UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-владельца (уникально — 1:1 связь).
+  /// Owner profile id (1:1).
   by_profile_id          String      @unique
-  /// Ширина в пикселях.
+  /// Image width (px).
   width                  Int
-  /// Высота в пикселя.
+  /// Image height (px).
   height                 Int
-  /// Размер файла в байтах.
+  /// File size (bytes).
   size_bytes             Int
-  /// Версия алгоритма хеширования. 1 = Sha3-512 (локальная конвенция).
+  /// Hash algorithm version.
   hash_algorithm_version Int
-  /// Хеш файла в base64url.
+  /// File hash (base64url).
   file_hash              String
 
   @@unique([path_dirname, path_filename])
 }
 
-/// Публичный профиль пользователя — био, ник, настройки приватности и связи с аккаунтом.
+/// Public user profile — bio, nickname and privacy settings.
 model UserProfile {
-  /// Уникальный идентификатор профиля.
   id                   String                    @id @default(cuid())
-  /// Дата создания профиля.
   created_at           DateTime                  @default(now()) @db.Timestamptz
-  /// Дата последнего обновления профиля.
   updated_at           DateTime                  @updatedAt @db.Timestamptz
-  /// Связанная аватарка (опционально).
+  /// Optional avatar.
   avatar               ProfileAvatarPicture?
-  /// Связанная обложка (опционально).
-  cover                ProfileCoverPicture?
-  /// Короткий текст о себе (биография), отображается на публичной странице.
-  bio                  String?
-  /// Аккаунт, которому принадлежит профиль. При удалении аккаунта профиль удаляется.
+  /// Optional cover.
+  cover                ProfileCoverPicture? 
+  bio  String? @db.VarChar(400)
+  /// Related account (cascade on delete).
   by_account           UserAccount               @relation(fields: [by_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди связанного аккаунта (уникально).
+  /// Related account id (unique).
   by_account_id        String                    @unique
-  /// Публичный псевдоним / никнейм.
+  /// Public nickname.
   nickname             String?
-  /// Жалобы, связанные с комментариями этого профиля.
+  /// Reports related to comments by this profile.
   reports_to_comments  ReportToComment[]
-  /// Жалобы на ответы, сделанные этим профилем.
+  /// Reports related to replies by this profile.
   reports_to_replies   ReportToReplyForComment[]
-  /// Жалобы на аккаунт владельца этого профиля.
+  /// Reports against this profile/account.
   reports_to_accounts  ReportToAccount[]
-  /// Дата рождения (только дата, без времени).
+  /// Birth date (date only).
   date_of_birth        DateTime?                 @db.Date
-  /// Настройка видимости даты рождения для других пользователей.
+  /// Birthdate visibility.
   birthdate_visibility BirthdateVisibilityEnum   @default(NONE)
-  /// Комментарии, оставленные этим профилем к аниме.
+  /// Comments by this profile on anime.
   comments_to_animes   CommentForAnime[]
-  /// Ответы, оставленные этим профилем на комментарии.
+  /// Replies by this profile.
   replies_to_comment   ReplyForComment[]
-  /// Лайки/дизлайки, поставленные ответам другими пользователями.
+  /// Votes on replies by others.
   votes_to_replies     VoteToReply[]
-  /// Лайки/дизлайки к комментариям.
+  /// Votes on comments.
   votes_to_comments    VoteToComment[]
-  /// Информация о гендере профиля.
+  /// Gender info.
   gender               GenderEnum                @default(UNSPECIFIED)
-  /// Текстовое поле для нетиповых описаний гендера.
-  other_gender         String?
-  /// Видимость информации о гендере для других пользователей.
+  /// Freeform gender text.
+  other_gender         String?                   @db.VarChar(32)
+  /// Gender visibility.
   gender_visibility    GenderVisibilityEnum      @default(NONE)
-  /// Лайки/дизлайки, поставленные аниме (предпочтения).
+  /// Votes on anime.
   votes_to_animes      VoteToAnime[]
-  /// Оценки аниме (1..10), выставленные этим профилем.
+  /// Anime ratings by this profile.
   anime_rates          AnimeRating[]
-  /// Закладки аниме, добавленные этим профилем.
+  /// Anime bookmarks by this profile.
   anime_bookmarks      AnimeBookmark[]
 }
 
-/// Оценка аниме профилем. Значение rating — от 1 до 10 (включительно).
+/// Anime rating by profile (1..10).
 model AnimeRating {
   id                String      @id @default(cuid())
   created_at        DateTime    @default(now()) @db.Timestamptz
   updated_at        DateTime    @updatedAt @db.Timestamptz
-  /// Профиль, который поставил оценку.
+  /// Profile who rated.
   by_profile        UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля, поставившего оценку.
+  /// Rater profile id.
   by_profile_id     String
-  /// Внешний идентификатор аниме (например, из внешнего сервиса).
+  /// External anime id.
   external_anime_id Int         @db.Integer
-  /// Значение оценки (int 1..10). Валидацию желательно выполнять в коде/ручных триггерах.
+  /// Rating value (1..10).
   rating            Int
 
   @@unique([by_profile_id, external_anime_id])
@@ -275,18 +253,18 @@ model AnimeRating {
   @@index([rating])
 }
 
-/// Закладки аниме для профиля с указанием статуса (watching/planned/completed и т.д.).
+/// Anime bookmark with status (WATCHING, PLANNED, etc.).
 model AnimeBookmark {
   id                String          @id @default(cuid())
   created_at        DateTime        @default(now()) @db.Timestamptz
   updated_at        DateTime        @updatedAt @db.Timestamptz
-  /// Профиль, который добавил закладку.
+  /// Profile who bookmarked.
   by_profile        UserProfile     @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-владельца закладки.
+  /// Owner profile id.
   by_profile_id     String
-  /// Внешний идентификатор аниме.
+  /// External anime id.
   external_anime_id Int             @db.Integer
-  /// Статус аниме в закладках (WATCHING, PLANNED и т.д.).
+  /// Bookmark status.
   status            AnimeStatusEnum
 
   @@unique([by_profile_id, external_anime_id])
@@ -295,18 +273,17 @@ model AnimeBookmark {
   @@index([status])
 }
 
-/// Лайк/дизлайк к аниме (value = 1 или -1). Для агрегации и быстрых запросов.
+/// Like/dislike for anime (value = 1 or -1).
 model VoteToAnime {
   id                String      @id @default(cuid())
   created_at        DateTime    @default(now()) @db.Timestamptz
   updated_at        DateTime    @updatedAt @db.Timestamptz
-  /// Профиль, который проголосовал.
+  /// Profile who voted.
   by_profile        UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-автора голоса.
   by_profile_id     String
-  /// Внешний идентификатор аниме.
+  /// External anime id.
   external_anime_id Int         @db.Integer
-  /// Значение: 1 = like, -1 = dislike. Валидацию на уровне приложения.
+  /// 1 = like, -1 = dislike.
   value             Int
 
   @@unique([by_profile_id, external_anime_id])
@@ -316,74 +293,69 @@ model VoteToAnime {
   @@index([external_anime_id, value])
 }
 
-/// Ответ на комментарий: текст, автор, к какому комменту привязан и связанные рейтинги/жалобы.
+/// Reply to a comment.
 model ReplyForComment {
   id         String   @id @default(cuid())
   created_at DateTime @default(now()) @db.Timestamptz
   updated_at DateTime @updatedAt @db.Timestamptz
 
-  /// Текст ответа (без ограничения по длине; используется тип TEXT в БД).
+  /// Reply text (DB TEXT).
   content       String                    @db.Text
-  /// Профиль-автор ответа.
+  /// Author profile.
   by_profile    UserProfile               @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-автора.
   by_profile_id String
-  /// Все жалобы, поданные на этот ответ.
+  /// Reports against this reply.
   reports       ReportToReplyForComment[]
-  /// Флаг видимости ответа для публичных страниц (false — скрыт).
+  /// Is reply visible publicly.
   is_visible    Boolean                   @default(true)
-  /// Комментарий, на который дан ответ.
+  /// Comment this reply is for.
   to_comment    CommentForAnime           @relation(fields: [to_comment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди комментария, на который ответили.
   to_comment_id String
-  /// Оценки (лайки/дизлайки) для этого ответа.
+  /// Votes for this reply.
   ratings       VoteToReply[]
 
   @@index([by_profile_id])
   @@index([to_comment_id])
 }
 
-/// Комментарий к аниме: текст, автор, привязка к аниме, рейтинги и ответы.
+/// Comment on an anime.
 model CommentForAnime {
   id                      String            @id @default(cuid())
   created_at              DateTime          @default(now()) @db.Timestamptz
   updated_at              DateTime          @updatedAt @db.Timestamptz
-  /// Текст комментария (TEXT в БД).
+  /// Comment text (DB TEXT).
   content                 String            @db.Text
-  /// Видимость комментария для пользователей (модерация).
+  /// Is comment visible.
   is_visible              Boolean           @default(true)
-  /// Жалобы, поданные на этот комментарий.
+  /// Reports against this comment.
   reports_to_this_comment ReportToComment[]
-  /// Профиль-автор комментария.
+  /// Author profile.
   by_profile              UserProfile       @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-автора.
   by_profile_id           String
-  /// Внешний идентификатор аниме, к которому относится комментарий.
+  /// External anime id.
   external_anime_id       Int               @db.Integer
-  /// Рейтинги (лайки/дизлайки) для этого комментария.
+  /// Votes for this comment.
   ratings                 VoteToComment[]
-  /// Ответы на этот комментарий.
+  /// Replies to this comment.
   replies_to_this_comment ReplyForComment[]
 
   @@index([external_anime_id])
 }
 
-/// Лайк/дизлайк на комментарий.
+/// Vote on a comment (1 = like, -1 = dislike).
 model VoteToComment {
   id         String   @id @default(cuid())
   created_at DateTime @default(now()) @db.Timestamptz
   updated_at DateTime @updatedAt @db.Timestamptz
 
-  /// Профиль, который проголосовал.
+  /// Profile who voted.
   by_profile    UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-голосующего.
   by_profile_id String
 
-  /// Комментарий, за который отдали голос.
+  /// Comment voted for.
   to_comment    CommentForAnime @relation(fields: [to_comment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди комментария.
   to_comment_id String
-  /// Значение голоса: 1 = like, -1 = dislike.
+  /// 1 = like, -1 = dislike.
   value         Int
 
   @@unique([by_profile_id, to_comment_id])
@@ -391,77 +363,71 @@ model VoteToComment {
   @@index([by_profile_id])
 }
 
-/// Лайк/дизлайк на ответ к комментарию.
+/// Vote on a reply (1 = like, -1 = dislike).
 model VoteToReply {
   id         String   @id @default(cuid())
   created_at DateTime @default(now()) @db.Timestamptz
   updated_at DateTime @updatedAt @db.Timestamptz
 
-  /// Профиль, который проголосовал.
+  /// Profile who voted.
   by_profile    UserProfile     @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-голосующего.
   by_profile_id String
-  /// Ответ, за который был отдан голос.
+  /// Reply voted for.
   to_reply      ReplyForComment @relation(fields: [to_reply_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди ответа.
   to_reply_id   String
-  /// Значение голоса: 1 = like, -1 = dislike.
+  /// 1 = like, -1 = dislike.
   value         Int
 
-  @@unique([by_profile_id, to_reply_id]) // Одна оценка для одного ответа на комментарий
+  /// One vote per profile per reply.
+  @@unique([by_profile_id, to_reply_id])
   @@index([to_reply_id])
   @@index([by_profile_id])
   @@index([value])
 }
 
-/// Жалоба на комментарий — кто, на какой комментарий и почему.
+/// Report on a comment.
 model ReportToComment {
   id            String      @id @default(cuid())
   created_at    DateTime    @default(now()) @db.Timestamptz
   updated_at    DateTime    @updatedAt @db.Timestamptz
-  /// Профиль, подавший жалобу.
+  /// Reporter profile.
   by_profile    UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-жалобщика.
   by_profile_id String
 
-  /// Комментарий, на который подана жалоба.
+  /// Comment reported.
   to_comment    CommentForAnime  @relation(fields: [to_comment_id], references: [id], onDelete: Cascade)
-  /// Айди комментария.
   to_comment_id String
-  /// Причина жалобы (enum). Используется для модерации/фильтрации.
+  /// Reason (enum).
   reason        ReportReasonEnum
-  /// Дополнительное пояснение (опционально), особенно если reason == OTHER.
+  /// Optional description.
   description   String?          @db.Text
-  /// Флаг, показывать ли запись жалобы в публичной истории (обычно true для аудита).
+  /// Show report in audit/history.
   is_visible    Boolean          @default(true)
 
-  // индексы / ограничения
-  @@unique([by_profile_id, to_comment_id]) // предотвращает дубль-репорт от одного профиля
-  @@index([to_comment_id]) // быстрый поиск по комментарию
+  @@unique([by_profile_id, to_comment_id])
+  @@index([to_comment_id])
   @@index([by_profile_id])
 }
 
-/// Жалоба на ответ на комментарий.
+/// Report on a reply.
 model ReportToReplyForComment {
   id         String   @id @default(cuid())
   created_at DateTime @default(now()) @db.Timestamptz
   updated_at DateTime @updatedAt @db.Timestamptz
 
-  /// Профиль-жалобщик.
+  /// Reporter profile.
   by_profile    UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-жалобщика.
   by_profile_id String
 
-  /// Ответ, на который подана жалоба.
+  /// Reply reported.
   to_reply    ReplyForComment @relation(fields: [to_reply_id], references: [id], onDelete: Cascade)
-  /// Айди ответа.
   to_reply_id String
 
-  /// Причина жалобы (enum).
+  /// Reason (enum).
   reason      ReportReasonEnum
-  /// Дополнительное описание (опционально).
+  /// Optional description.
   description String?          @db.Text
-  /// Видимость записи жалобы для истории.
+  /// Show report in audit/history.
   is_visible  Boolean          @default(true)
 
   @@unique([by_profile_id, to_reply_id])
@@ -469,26 +435,24 @@ model ReportToReplyForComment {
   @@index([by_profile_id])
 }
 
-/// Жалоба на аккаунт (профиль), кто, на какой аккаунт и причина.
+/// Report on an account/profile.
 model ReportToAccount {
   id         String   @id @default(cuid())
   created_at DateTime @default(now()) @db.Timestamptz
   updated_at DateTime @updatedAt @db.Timestamptz
 
-  /// Профиль, подавший жалобу.
+  /// Reporter profile.
   by_profile    UserProfile @relation(fields: [by_profile_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди профиля-жалобщика.
   by_profile_id String
 
-  /// Аккаунт, на который пожаловались.
+  /// Account reported.
   to_account    UserAccount      @relation(fields: [to_account_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// Айди аккаунта-жертвы жалобы.
   to_account_id String
-  /// Причина жалобы (enum).
+  /// Reason (enum).
   reason        ReportReasonEnum
-  /// Дополнительное описание (опционально).
+  /// Optional description.
   description   String?          @db.Text
-  /// Видимость записи жалобы в истории.
+  /// Show report in audit/history.
   is_visible    Boolean          @default(true)
 
   @@unique([by_profile_id, to_account_id])
@@ -496,101 +460,67 @@ model ReportToAccount {
   @@index([by_profile_id])
 }
 
-// -- Энумы (значения и описание для каждого варианта) --
+/// Enums
 
-/// Видимость даты рождения пользователя для других.
+/// Birthdate visibility options.
 enum BirthdateVisibilityEnum {
-  /// Полностью скрывать дату рождения от других пользователей.
-  NONE
-  /// Показывать только год рождения (год виден, день и месяц скрыты).
-  YEAR_ONLY
-  /// Показывать полную дату рождения (день, месяц, год).
-  FULL
+  NONE      // hide birthdate
+  YEAR_ONLY // show only year
+  FULL      // show full date
 }
 
+/// Email visibility.
 enum EmailVisibilityEnum {
-  /// Показывать пользователю публичный адрес электронной почты.
   SHOW
-  /// Не показывать публичный адрес электронной почты.
   HIDE
 }
 
-/// Видимость гендерной информации профиля.
+/// Gender visibility.
 enum GenderVisibilityEnum {
-  /// Не показывать гендер публично.
   NONE
-  /// Показывать гендер публично на странице профиля.
   PUBLIC
 }
 
-/// Гендер / пол профиля.
+/// Gender options.
 enum GenderEnum {
-  /// Мужской пол.
   MALE
-  /// Женский пол.
   FEMALE
-  /// Для тех, кто не вписывается в бинарную систему — нейтральная опция.
   OTHER
-  /// Значение по умолчанию, когда пользователь не указал пол.
   UNSPECIFIED
 }
 
-/// Статус аниме в закладках пользователя.
+/// Anime bookmark status.
 enum AnimeStatusEnum {
-  /// Аниме, которое пользователь сейчас смотрит.
   WATCHING
-  /// Аниме, которое пользователь забросил/перестал смотреть.
   ABANDONED
-  /// Аниме, которое пользователь планирует посмотреть.
   PLANNED
-  /// Аниме, которое пользователь досмотрел.
   COMPLETED
 }
 
-/// Типы аккаунтов и их семантика в системе.
+/// Account types.
 enum AccountTypeEnum {
-  /// Обычный пользователь с базовыми правами.
   COMMON
-  /// Аккаунт, заблокированный/запрещённый (ограничен в действиях).
   BANNED
-  /// Администратор с повышенными правами.
   ADMIN
-  /// Разработчик (может иметь доступ к внутренним инструментам).
   DEVELOPER
-  /// Тестовый аккаунт (может использоваться в QA/CI).
   TESTER
 }
 
-/// Причины жалоб — используемые категории для модерации.
+/// Report reasons for moderation.
 enum ReportReasonEnum {
-  /// Спам или массовые бессмысленные сообщения.
   SPAM
-  /// Навязчивая реклама, коммерческие ссылки без разрешения.
   ADVERTISEMENT
-  /// Мошенническая активность: скам, фишинг, выманивание денег.
   SCAM
-  /// Общие нарушения правил платформы (универсальная категория).
   ABUSE
-  /// Оскорбления, травля, целенаправленное преследование.
   HARASSMENT
-  /// Разжигание ненависти или дискриминация по защищённым признакам.
   HATE_SPEECH
-  /// Призывы к насилию, угрозы или поощрение вреда.
   VIOLENCE
-  /// Контент с обнажением или нежелательной/неуместной сексуальной графикой.
   NUDITY
-  /// Публикация персональных данных без согласия (doxing, утечки).
   PERSONAL_DATA_LEAK
-  /// Нарушение авторских прав или публикация защищённого контента.
   COPYRIGHT
-  /// Вводящая в заблуждение или заведомо ложная информация.
   MISINFORMATION
-  /// Выдача себя за другое лицо или организацию (имперсонация).
   IMPERSONATION
-  /// Пропаганда или инструкция по совершению незаконной деятельности.
   ILLEGAL_ACTIVITY
-  /// Поддержка, пропаганда или организация терроризма / экстремизма.
   TERRORISM
-  /// Другая причина, не покрытая перечисленными категориями.
   OTHER
 }
