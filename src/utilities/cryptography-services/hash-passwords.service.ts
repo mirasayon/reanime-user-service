@@ -1,5 +1,5 @@
 // hashing-service.ts
-import { envConfig } from "#src/configs/environment-variables-config.ts";
+import { envConfig } from "#src/configs/env-variables-config.ts";
 import { argon2, randomBytes, timingSafeEqual, type Argon2Parameters } from "node:crypto";
 type Argon2idDefaultsParameters = Omit<Argon2idHashResultType, "hash_base64" | "salt_base64">;
 export type Argon2idHashResultType = {

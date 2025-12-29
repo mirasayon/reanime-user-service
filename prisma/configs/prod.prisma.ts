@@ -7,7 +7,7 @@ loadEnvFile(mainPrismaPathConfig.prodEnvFilePath);
 export default {
     schema: mainPrismaPathConfig.schema,
     datasource: {
-        url: process.env["DATABASE_SERVER_CONNECTION_URL"],
+        url: process.env["DATABASE_URL"],
     },
     migrations: {
         path: mainPrismaPathConfig.migrationsPath,

@@ -9,11 +9,11 @@ const prismaPath = join(dirnamePath, "..");
 const rootPath = join(prismaPath, "..");
 
 export const mainPrismaPathConfig = {
-  schema: join(prismaPath, "schemas", "main.prisma"),
-  migrationsPath: join(prismaPath, "migrations"),
-  viewsPath: join(prismaPath, "views"),
-  typedSqlPath: join(prismaPath, "queries"),
-  devEnvFilePath: join(rootPath, ".env.development"),
-  testEnvFilePath: join(rootPath, ".env.test"),
-  prodEnvFilePath: join(rootPath, ".env.production"),
+    schema: join(prismaPath, "schemas", "main.prisma"),
+    migrationsPath: join(prismaPath, "migrations"),
+    viewsPath: join(prismaPath, "views"),
+    typedSqlPath: join(prismaPath, "queries"),
+    devEnvFilePath: join(rootPath, ".env.development"),
+    testEnvFilePath: join(rootPath, ".env.test"),
+    prodEnvFilePath: join(rootPath, ".env.production"),
 };

@@ -1,4 +1,4 @@
-import { envConfig } from "#src/configs/environment-variables-config.ts";
+import { envConfig } from "#src/configs/env-variables-config.ts";
 import { invalidSessionTokenErrorMessage } from "#src/constants/frequent-errors.ts";
 import type { LoginSession } from "#orm";
 import { prisma } from "#src/provider/database-connector.ts";

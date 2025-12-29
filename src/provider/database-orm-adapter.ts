@@ -1,7 +1,7 @@
 import { PrismaClient } from "#orm";
 import consola from "consola";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { envConfig } from "#src/configs/environment-variables-config.ts";
+import { envConfig } from "#src/configs/env-variables-config.ts";
 
 /** Prisma Client Instance Type */
 export type PrismaClientType = ReturnType<typeof createMainPrismaClient>;
@@ -19,7 +19,7 @@ export async function testTheDbForConnection(db: PrismaClientType) {
 /** Creates new Prisma Client */
 export const createMainPrismaClient = () => {
     try {
-        const adapter = new PrismaPg({ connectionString: envConfig.dbConnectionUrl });
+        const adapter = new PrismaPg({ connectionString: envConfig.databaseUrl });
         return new PrismaClient({ adapter });
     } catch (error) {
         consola.fail("Error while creating Prisma Client instance: ");

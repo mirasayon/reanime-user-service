@@ -1,6 +1,6 @@
 import { appLayoutRouter } from "#src/app/app-layout.routes.ts";
 import { requireClientIpMiddleware } from "#src/app/require-client-ip.guard.ts";
-import { envConfig } from "#src/configs/environment-variables-config.ts";
+import { envConfig } from "#src/configs/env-variables-config.ts";
 import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#src/handlers/client-side-errors-handler.ts";
 import { serverSideExceptionHandlerMiddleware, unknownServerSideExceptionHandlerLastMiddleware } from "#src/handlers/server-side-errors-handler.ts";
 import { mainDevServerLogger } from "#src/middlewares/development-env-logger-middleware.ts";

@@ -1,4 +1,4 @@
-import { envConfig } from "#src/configs/environment-variables-config.ts";
+import { envConfig } from "#src/configs/env-variables-config.ts";
 import type ExpressJS from "express";
 import { UseSecureHTTPException } from "#src/errors/client-side-exceptions.ts";
 export function secureHttpGuardMiddleware(req: ExpressJS.Request, res: ExpressJS.Response, next: ExpressJS.NextFunction) {
