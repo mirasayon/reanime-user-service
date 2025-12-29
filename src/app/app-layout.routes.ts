@@ -1,7 +1,7 @@
 import { apiKeyToServiceGuard } from "#src/app/api-key.guard.ts";
 import { createConfiguredRouter } from "#src/utilities/express-core-middlewares.ts";
 import { accountSectionRouter } from "#src/app/user-account/user-account.route.ts";
-import { administratorSectionRouter } from "#src/app/administrator/administrator.routes.ts";
+import { administrationSectionRouter } from "#src/app/administration/administrator.routes.ts";
 import { authenticationSectionRouter } from "#src/app/authentication/authentication.route.ts";
 import { commentForAnimeSectionRouter } from "#src/app/comment-for-anime/comment-for-anime.route.ts";
 import { voteToAnimeSectionRouter } from "#src/app/vote-to-anime/vote-to-anime.route.ts";
@@ -16,7 +16,7 @@ export const appLayoutRouter = (() => {
     const router = createConfiguredRouter();
     router.use(secureHttpGuardMiddleware);
     router.use("/authentication", apiKeyToServiceGuard, authenticationSectionRouter);
-    router.use("/administration", apiKeyToServiceGuard, administratorSectionRouter);
+    router.use("/administration", apiKeyToServiceGuard, administrationSectionRouter);
     router.use("/comment-to-anime", apiKeyToServiceGuard, commentForAnimeSectionRouter);
     router.use("/reply-to-comment", apiKeyToServiceGuard, replyToCommentSectionRouter);
     router.use("/user-profile", apiKeyToServiceGuard, profileSectionRouter);

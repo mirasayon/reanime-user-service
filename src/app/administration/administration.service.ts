@@ -1,7 +1,7 @@
 import { UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
 import { AccountTypeEnum } from "#orm";
 import { accountSectionModels } from "#src/app/user-account/user-account.model.ts";
-import { administratorSectionModel } from "./administrator.model.ts";
+import { administratorSectionModel } from "./administration.model.ts";
 import type { ResponseTypesForAdministratorSection } from "#src/shared/user-service-response-types-for-all.routes.ts";
 class AdminSectionService {
     get_all_users = async (account_id: string): Promise<ResponseTypesForAdministratorSection["get_all_users"]> => {
@@ -32,4 +32,4 @@ class AdminSectionService {
     };
 }
 /** UserAccount Service */
-export const adminSectionService = new AdminSectionService();
+export const AdministrationSectionService = new AdminSectionService();
