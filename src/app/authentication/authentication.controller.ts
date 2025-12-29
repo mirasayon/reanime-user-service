@@ -9,8 +9,8 @@ class AuthenticationSectionController {
     login_by_email = async (req: AuthenticationSectionRequestTypes["login_by_email"], reply: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await authenticationRouteService.login_via_email({
-            agent: dto.agent ?? null,
-            ip: dto.ip ?? null,
+            agent: req.headers["user-agent"] ?? null,
+            ip: req.ip!,
             password: dto.password,
             email: dto.email,
         });
@@ -22,8 +22,8 @@ class AuthenticationSectionController {
     login_by_username = async (req: AuthenticationSectionRequestTypes["login_by_username"], reply: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await authenticationRouteService.login_via_username({
-            agent: dto.agent ?? null,
-            ip: dto.ip ?? null,
+            agent: req.headers["user-agent"] ?? null,
+            ip: req.ip!,
             password: dto.password,
             username: dto.username,
         });
@@ -38,9 +38,9 @@ class AuthenticationSectionController {
             username: dto.username,
             password: dto.password,
             password_repeat: dto.password_repeat,
-            ip: dto.ip,
             email: dto.email ?? null,
-            agent: dto.agent ?? null,
+            agent: req.headers["user-agent"] ?? null,
+            ip: req.ip!,
         });
         const data: ResponseTypesForAuthentication["registration"] = token;
         const message = "Пользователь успешно зарегистрирован и вошёл в систему";

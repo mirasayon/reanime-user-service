@@ -28,6 +28,12 @@ class Profile_Service_Class {
             username: found_profile.account.username,
             bio: found_profile.profile.bio,
             nickname: found_profile.profile.nickname,
+            avatar: found_profile.profile.avatar
+                ? {
+                      path_dirname: found_profile.profile.avatar.path_dirname,
+                      path_filename: found_profile.profile.avatar.path_filename,
+                  }
+                : null,
         };
     };
     other_profiles = async (username: string): Promise<{ profile: UserProfile; avatar: ProfileAvatarPicture | null; account: UserAccount }> => {
