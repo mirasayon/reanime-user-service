@@ -14,17 +14,16 @@ import { mediaSectionRouter } from "#src/app/media/media.route.ts";
 /** Entry Point Router */
 export const appLayoutRouter = (() => {
     const router = createConfiguredRouter();
-    router.use(apiKeyToServiceGuard);
     router.use(secureHttpGuardMiddleware);
-    router.use("/authentication", authenticationSectionRouter);
-    router.use("/administration", administratorSectionRouter);
-    router.use("/comment-to-anime", commentForAnimeSectionRouter);
-    router.use("/reply-to-comment", replyToCommentSectionRouter);
-    router.use("/user-profile", profileSectionRouter);
+    router.use("/authentication", apiKeyToServiceGuard, authenticationSectionRouter);
+    router.use("/administration", apiKeyToServiceGuard, administratorSectionRouter);
+    router.use("/comment-to-anime", apiKeyToServiceGuard, commentForAnimeSectionRouter);
+    router.use("/reply-to-comment", apiKeyToServiceGuard, replyToCommentSectionRouter);
+    router.use("/user-profile", apiKeyToServiceGuard, profileSectionRouter);
     router.use("/media", mediaSectionRouter);
-    router.use("/user-account", accountSectionRouter);
-    router.use("/anime/anime-bookmark-collection", animeBookmarkSectionRouter);
-    router.use("/anime/vote-to-anime", voteToAnimeSectionRouter);
-    router.use("/ping", pingSectionRouter);
+    router.use("/user-account", apiKeyToServiceGuard, accountSectionRouter);
+    router.use("/anime/anime-bookmark-collection", apiKeyToServiceGuard, animeBookmarkSectionRouter);
+    router.use("/anime/vote-to-anime", apiKeyToServiceGuard, voteToAnimeSectionRouter);
+    router.use("/ping", apiKeyToServiceGuard, pingSectionRouter);
     return router;
 })();
