@@ -1,6 +1,6 @@
 import { BadRequestException, ConflictException, NotFoundException } from "#src/errors/client-side-exceptions.ts";
 import type { VoteToAnime } from "#orm";
-import { FavoriteAnimes_Model as model } from "#src/app/vote-to-anime/vote-to-anime.model.ts";
+import { voteToAnimeSectionModel as model } from "#src/app/vote-to-anime/vote-to-anime.model.ts";
 import {
     profileHasAlreadyLikeAnimeErrorMessage,
     profile_has_already_disliked_animeErrorMessage,
@@ -8,10 +8,10 @@ import {
     cannot_delete_like_if_there_is_dislikeErrorMessage,
     cannot_delete_dislike_if_there_is_likeErrorMessage,
 } from "#src/constants/frequent-errors.ts";
-export const voteToAnimeRouteService = new (class FavoriteAnimes_Services {
+class VoteToAnimeSectionService {
     explore_likes = async (profile_id: string) => {
         const likes = await model.get_all_likes_by_profile_id(profile_id);
-        return { likes };
+        return likes;
     };
 
     explore_dislikes = async (profile_id: string) => {
@@ -32,7 +32,7 @@ export const voteToAnimeRouteService = new (class FavoriteAnimes_Services {
             const updated_vote = await model.update_vote_by_its_id(if_exists.id, 1);
             return true;
         }
-        const created = await model.create_like_by_profile_id(profile_id, anime_id);
+        await model.create_like_by_profile_id(profile_id, anime_id);
         return true;
     };
     add_dislike_to_anime = async (profile_id: string, anime_id: number): Promise<boolean> => {
@@ -45,7 +45,7 @@ export const voteToAnimeRouteService = new (class FavoriteAnimes_Services {
             const updated_vote = await model.update_vote_by_its_id(if_exists.id, -1);
             return true;
         }
-        const created = await model.create_dislike_by_profile_id(profile_id, anime_id);
+        await model.create_dislike_by_profile_id(profile_id, anime_id);
         return true;
     };
     delete_like_from_anime = async (profile_id: string, anime_id: number) => {
@@ -56,8 +56,8 @@ export const voteToAnimeRouteService = new (class FavoriteAnimes_Services {
         if (if_exists.value === -1) {
             throw new ConflictException([cannot_delete_like_if_there_is_dislikeErrorMessage]);
         }
-        const deleted = await model.delete_like_by_profile_id(if_exists.by_profile_id, if_exists.external_anime_id);
-        return !!deleted;
+        await model.delete_like_by_profile_id(if_exists.by_profile_id, if_exists.external_anime_id);
+        return true;
     };
 
     delete_dislike_from_anime = async (profile_id: string, anime_id: number): Promise<boolean> => {
@@ -71,4 +71,5 @@ export const voteToAnimeRouteService = new (class FavoriteAnimes_Services {
         await model.delete_dislike_by_profile_id(if_exists.by_profile_id, if_exists.external_anime_id);
         return true;
     };
-})();
+}
+export const voteToAnimeSectionService = new VoteToAnimeSectionService();

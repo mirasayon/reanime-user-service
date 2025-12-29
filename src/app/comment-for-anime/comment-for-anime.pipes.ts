@@ -1,5 +1,5 @@
-import { get_universal_search_query_values_array } from "#src/utilities/util-functions.ts";
-import { validatorMiddlewareFactory } from "#src/utilities/validator-middleware-factory.ts";
+import { get_universal_search_query_values_array } from "#src/utilities/js-util-functions.ts";
+import { validatorMiddlewareFactory } from "#src/utilities/controller-utility-functions.ts";
 import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
 import {
     commentToAnimeSectionValidatorSchemas,

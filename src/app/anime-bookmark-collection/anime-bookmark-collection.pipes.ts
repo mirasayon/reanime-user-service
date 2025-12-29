@@ -3,7 +3,7 @@ import {
     type MarkedAnimeCollectionSectionValidationSchemaType,
 } from "#src/shared/request-validator-for-all.routes.ts";
 import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
-import { validatorMiddlewareFactory } from "#src/utilities/validator-middleware-factory.ts";
+import { validatorMiddlewareFactory } from "#src/utilities/controller-utility-functions.ts";
 
 export interface AnimeBookmarkSectionRequestTypes {
     get_all_list: RequestDtoTypeFactory<MarkedAnimeCollectionSectionValidationSchemaType["get_all_list"]>;

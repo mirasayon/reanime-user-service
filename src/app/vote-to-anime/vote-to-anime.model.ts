@@ -1,7 +1,5 @@
 import { prisma } from "#src/provider/database-connector.ts";
-import type { VoteToSomethingType } from "#src/types/utility-types-for-db-models.ts";
-
-export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
+class VoteToAnimeSectionModel {
     get_all_likes_by_profile_id = async (by_profile_id: string) => {
         return await prisma.voteToAnime.findMany({
             where: {
@@ -29,7 +27,7 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
             },
         });
     };
-    update_vote_by_its_id = async (vote_id: string, value: VoteToSomethingType) => {
+    update_vote_by_its_id = async (vote_id: string, value: -1 | 1) => {
         return await prisma.voteToAnime.update({
             where: {
                 id: vote_id,
@@ -80,4 +78,5 @@ export const FavoriteAnimes_Model = new (class FavoriteAnimes_Model {
             },
         });
     };
-})();
+}
+export const voteToAnimeSectionModel = new VoteToAnimeSectionModel();

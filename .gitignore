@@ -3,4 +3,4 @@
 /.env.development
 /.env.production
 /prisma/client
-/resources/storage
+/uploads

@@ -4,7 +4,7 @@ import type ExpressJS from "express";
 import { profileRouteModel } from "#src/app/user-profile/user-profile.model.ts";
 import { dirname, join } from "node:path";
 import { AVATAR_IMAGE_FILE_HEIGHT_PIXELS, AVATAR_IMAGE_FILE_WIDTH_PIXELS } from "#src/constants/media-module-config.ts";
-import { pathsConfigs } from "#src/configs/file-system-path-config.ts";
+import { fsPathsConfig } from "#src/configs/file-system-path-config.ts";
 import consola from "consola";
 import type { ExpressJSMulterFileType } from "#src/types/util-expressjs-types.ts";
 import { existsSync } from "node:fs";
@@ -90,12 +90,12 @@ class MediaRouteServiceClass {
         if (!avatar) {
             return res.redirect("/default-avatar/m.jpg");
         }
-        const filePath = join(pathsConfigs.profileAvatars, avatar.path_dirname, avatar.path_filename + ".webp");
+        const filePath = join(fsPathsConfig.profileAvatars, avatar.path_dirname, avatar.path_filename + ".webp");
         return await serveMediaFile(req, res, filePath);
     };
 
     private deleteAvatarFile = async (relPath: string): Promise<boolean> => {
-        const fullPath = join(pathsConfigs.profileAvatars, relPath);
+        const fullPath = join(fsPathsConfig.profileAvatars, relPath);
         const dirnamePath = dirname(fullPath);
         if (existsSync(fullPath)) {
             const dirInfo = await readdir(dirnamePath);
@@ -118,7 +118,7 @@ class MediaRouteServiceClass {
     };
     private genAvatarPath = async (): Promise<MediaPathPairAndFullPath> => {
         const { dirName, fileName } = mediaHashService.genFilenamePairForProduction();
-        const avatarPath = await this.makeDirnameEnsured(pathsConfigs.profileAvatars, dirName, `${fileName}.webp`);
+        const avatarPath = await this.makeDirnameEnsured(fsPathsConfig.profileAvatars, dirName, `${fileName}.webp`);
         if (existsSync(avatarPath)) {
             consola.warn(
                 "Просто уведомление о том, что аватар с таким идентификатором профиля уже существует - " + avatarPath,
