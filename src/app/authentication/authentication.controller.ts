@@ -34,7 +34,7 @@ class AuthenticationSectionController {
     registration = async (req: AuthenticationSectionRequestTypes["registration"], reply: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         const token = await authenticationRouteService.registration({
-            nickname: dto.nickname,
+            nickname: dto.nickname || null,
             username: dto.username,
             password: dto.password,
             password_repeat: dto.password_repeat,

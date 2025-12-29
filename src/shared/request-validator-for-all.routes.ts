@@ -76,11 +76,11 @@ class ZodRequiredSchemaBase {
     /**  UserProfile nickname validator. Min 1 chars. Max 30 chars */
     profileNickname = z
         .string({
-            error: `Требуется Никнейм`,
+            error: `Требуется никнейм`,
         })
         .trim()
         .min(1, {
-            error: `Требуется Никнейм`,
+            error: `Требуется никнейм`,
         })
         .max(30, {
             error: `Слишком длинный никнейм (максимум 30 символов)`,
@@ -308,7 +308,7 @@ export interface AdministratorSectionValidationSchemaType {
 export const authenticationSectionSchemas = {
     logout: zodRequiredSchemaBase.void,
     registration: strictObject({
-        nickname: zodRequiredSchemaBase.profileNickname,
+        nickname: zodRequiredSchemaBase.profileNickname.optional(),
         username: zodRequiredSchemaBase.accountUsernameValidatorSchema,
         email: zodRequiredSchemaBase.email.optional(),
         password: zodRequiredSchemaBase.account_password,
