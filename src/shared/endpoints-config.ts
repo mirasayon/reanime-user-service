@@ -18,7 +18,7 @@ export const endpointsConfig = {
         setEmail: "/set/email",
         updateEmail: "/update/email",
         updatePassword: "/update/password",
-        updateUsername: "/update/username",
+        updateUsername: "/update/username-to/:username",
         allSessions: "/get/all-sessions",
         terminateOtherSessions: "/sessions/terminate-other-sessions",
         terminateSpecificSession: "/sessions/terminate-specific-session/:session_id",

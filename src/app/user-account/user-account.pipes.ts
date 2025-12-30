@@ -7,7 +7,12 @@ export interface AccountSectionRequestWithDtoTypes {
     update_email: RequestDtoTypeFactory<AccountSectionValidationSchemaType["update_email"]>;
     set_email: RequestDtoTypeFactory<AccountSectionValidationSchemaType["set_email"]>;
     update_password: RequestDtoTypeFactory<AccountSectionValidationSchemaType["update_password"]>;
-    update_username: RequestDtoTypeFactory<AccountSectionValidationSchemaType["update_username"]>;
+    update_username: RequestDtoTypeFactory<
+        AccountSectionValidationSchemaType["update_username"],
+        {
+            username: string;
+        }
+    >;
     get_sessions: RequestDtoTypeFactory<AccountSectionValidationSchemaType["get_sessions"]>;
     terminate_other_sessions: RequestDtoTypeFactory<AccountSectionValidationSchemaType["terminate_other_sessions"]>;
     terminate_specific_session: RequestDtoTypeFactory<AccountSectionValidationSchemaType["terminate_specific_session"], { session_id: string }>;
@@ -28,7 +33,7 @@ export const accountSectionValidatorMiddlewares = {
     ),
     update_username: validatorMiddlewareFactory<AccountSectionRequestWithDtoTypes["update_username"]>(
         accountSectionSchemas.update_username,
-        (req) => req.body.username,
+        (req) => req.params.username,
     ),
     terminate_other_sessions: validatorMiddlewareFactory<AccountSectionRequestWithDtoTypes["terminate_other_sessions"]>(
         accountSectionSchemas.terminate_other_sessions,
