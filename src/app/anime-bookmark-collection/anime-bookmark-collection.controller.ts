@@ -69,7 +69,7 @@ class AnimeBookmarkSectionControllerClass {
 
     create_completed = async (req: AnimeBookmarkSectionRequestTypes["create_completed"], res: ExpressJS.Response) => {
         const { sessionDto, dto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
-        const created_planned_to_watch_anime = await animeBookmarkSectionService.create_planned(sessionDto.profile_id, dto);
+        const created_planned_to_watch_anime = await animeBookmarkSectionService.create_completed(sessionDto.profile_id, dto);
         const data: ResponseTypesFor_AnimeBookmark_Section["create_completed"] = created_planned_to_watch_anime;
         const message = "Успешно добавлен как завершенное аниме";
         return goReplyHttp.accepted(res, { data, message });

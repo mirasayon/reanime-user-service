@@ -6,7 +6,7 @@ import { endpointsConfig as e } from "#src/shared/endpoints-config.ts";
 export const animeBookmarkSectionRouter = createConfiguredRouter()
     .get(e.animeBookmarks.getAllList, v.get_all_list, auth, c.get_all_list)
 
-    .get(e.animeBookmarks.getForAnime, v.get_for_anime, auth, c.get_for_anime)
+    .get(e.animeBookmarks.getStatusForAnime, v.get_for_anime, auth, c.get_for_anime)
 
     .get(e.animeBookmarks.getListOfWatching, v.get_list_of_watching, auth, c.get_list_of_watching)
     .get(e.animeBookmarks.getListOfAbandoned, v.get_list_of_abandoned, auth, c.get_list_of_abandoned)

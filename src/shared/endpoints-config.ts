@@ -68,9 +68,9 @@ export const endpointsConfig = {
         UPLOAD_IMAGE_FILENAME: "one_image_file",
     },
     animeBookmarks: {
-        baseUrl: "/anime/anime-bookmark-collection",
-        getAllList: "/get/list/all",
-        getForAnime: "/get-status-from-one/:anime_id",
+        baseUrl: "/anime-bookmark-collection",
+        getAllList: "/get/all-list",
+        getStatusForAnime: "/get-status-for-one/:anime_id",
         getListOfWatching: "/get/list/watching",
         getListOfAbandoned: "/get/list/abandoned",
         getListOfPlanned: "/get/list/planned",
@@ -85,7 +85,7 @@ export const endpointsConfig = {
         deleteCompleted: "/delete/completed/:anime_id",
     },
     voteToAnime: {
-        baseUrl: "/anime/vote-to-anime",
+        baseUrl: "/vote-to-anime",
         exploreLikes: "/get/explore/likes",
         exploreDislikes: "/get/explore/dislikes",
         viewVoteOnAnime: "/get/view/vote/:anime_id",

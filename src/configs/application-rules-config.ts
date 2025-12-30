@@ -10,3 +10,5 @@ export const MAX_COMMENT_ON_ANIME_LIMIT = 5 as const;
 export const maxAvatarPayloadInMB = 5 as const;
 /** 5 MB */
 export const PAYLOAD_MAX_SIZE = maxAvatarPayloadInMB * 1_024 * 1_024;
+
+export const API_KEY_HEADER_NAME = "x-api-key";
