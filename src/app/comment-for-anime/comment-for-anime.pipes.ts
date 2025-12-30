@@ -11,7 +11,7 @@ export interface CommentToAnimeSectionRequestTypes {
     report: RequestDtoTypeFactory<CommentToAnimeSectionValidationSchemaType["report"]>;
     all_my_comments: RequestDtoTypeFactory<CommentToAnimeSectionValidationSchemaType["all_my_comments"]>;
     all_for_public_profile: RequestDtoTypeFactory<CommentToAnimeSectionValidationSchemaType["all_for_public_profile"], { username: string }>;
-    update: RequestDtoTypeFactory<CommentToAnimeSectionValidationSchemaType["update"], { comment_id: string }>;
+    update_comment: RequestDtoTypeFactory<CommentToAnimeSectionValidationSchemaType["update_comment"], { comment_id: string }>;
     delete_comment: RequestDtoTypeFactory<CommentToAnimeSectionValidationSchemaType["delete_comment"], { comment_id: string }>;
     add_dislike: RequestDtoTypeFactory<CommentToAnimeSectionValidationSchemaType["add_dislike"], { comment_id: string }>;
     add_like: RequestDtoTypeFactory<CommentToAnimeSectionValidationSchemaType["add_like"], { comment_id: string }>;
@@ -38,9 +38,12 @@ export const Comment_ReqPipes = {
         },
     ),
 
-    update: validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes["update"]>(commentToAnimeSectionValidatorSchemas.update, (req) => {
-        return { comment_id: req.params.comment_id, ...req.body };
-    }),
+    update_comment: validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes["update_comment"]>(
+        commentToAnimeSectionValidatorSchemas.update_comment,
+        (req) => {
+            return { comment_id: req.params.comment_id, ...req.body };
+        },
+    ),
 
     delete_comment: validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes["delete_comment"]>(
         commentToAnimeSectionValidatorSchemas.delete_comment,

@@ -420,7 +420,7 @@ export const commentToAnimeSectionValidatorSchemas = {
         limit: zodRequiredSchemaBase.pageSize,
     }),
 
-    update: strictObject({
+    update_comment: strictObject({
         new_content: zodRequiredSchemaBase.message("Новый комментарий"),
         comment_id: zodRequiredSchemaBase.comment_id,
     }),
@@ -443,7 +443,7 @@ export const commentToAnimeSectionValidatorSchemas = {
 export interface CommentToAnimeSectionValidationSchemaType {
     create: Z.infer<(typeof commentToAnimeSectionValidatorSchemas)["create"]>;
     get_all_for_anime: Z.infer<(typeof commentToAnimeSectionValidatorSchemas)["get_all_for_anime"]>;
-    update: Z.infer<(typeof commentToAnimeSectionValidatorSchemas)["update"]>;
+    update_comment: Z.infer<typeof commentToAnimeSectionValidatorSchemas.update_comment>;
     delete_comment: Z.infer<(typeof commentToAnimeSectionValidatorSchemas)["delete_comment"]>;
     report: Z.infer<(typeof commentToAnimeSectionValidatorSchemas)["report"]>;
     all_my_comments: Z.infer<(typeof commentToAnimeSectionValidatorSchemas)["all_my_comments"]>;

@@ -23,7 +23,7 @@ class CommentToAnimeRouteControllerClass {
     };
 
     /** Edit the comment by profile */
-    update_comment = async (req: CommentToAnimeSectionRequestTypes["update"], res: ExpressJS.Response) => {
+    update_comment = async (req: CommentToAnimeSectionRequestTypes["update_comment"], res: ExpressJS.Response) => {
         const { dto, sessionDto } = checkRequestForValidity(req, ["dto", "sessionDto"]);
 
         const updated_comment = await commentToAnimeSectionService.update_comment({
