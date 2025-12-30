@@ -1,6 +1,6 @@
 import { apiKeyToServiceGuard } from "#src/app/api-key.guard.ts";
 import { createConfiguredRouter } from "#src/utilities/express-core-middlewares.ts";
-import { accountSectionRouter } from "#src/app/user-account/user-account.route.ts";
+import { userAccountSectionRouter } from "#src/app/user-account/user-account.route.ts";
 import { administrationSectionRouter } from "#src/app/administration/administrator.routes.ts";
 import { authenticationSectionRouter } from "#src/app/authentication/authentication.route.ts";
 import { commentForAnimeSectionRouter } from "#src/app/comment-for-anime/comment-for-anime.route.ts";
@@ -11,19 +11,20 @@ import { profileSectionRouter } from "#src/app/user-profile/user-profile.route.t
 import { replyToCommentSectionRouter } from "#src/app/reply-to-comment/reply-to-comment.route.ts";
 import { secureHttpGuardMiddleware } from "./secure-http.guard.ts";
 import { mediaSectionRouter } from "#src/app/media/media.route.ts";
-/** Entry Point Router */
+import { endpointsConfig as e } from "#src/shared/endpoints-config.ts";
+
 export const appLayoutRouter = (() => {
     const router = createConfiguredRouter();
     router.use(secureHttpGuardMiddleware);
-    router.use("/authentication", apiKeyToServiceGuard, authenticationSectionRouter);
-    router.use("/administration", apiKeyToServiceGuard, administrationSectionRouter);
-    router.use("/comment-to-anime", apiKeyToServiceGuard, commentForAnimeSectionRouter);
-    router.use("/reply-to-comment", apiKeyToServiceGuard, replyToCommentSectionRouter);
-    router.use("/user-profile", apiKeyToServiceGuard, profileSectionRouter);
-    router.use("/media", mediaSectionRouter);
-    router.use("/user-account", apiKeyToServiceGuard, accountSectionRouter);
-    router.use("/anime/anime-bookmark-collection", apiKeyToServiceGuard, animeBookmarkSectionRouter);
-    router.use("/anime/vote-to-anime", apiKeyToServiceGuard, voteToAnimeSectionRouter);
-    router.use("/ping", apiKeyToServiceGuard, pingSectionRouter);
+    router.use(e.authentication.baseUrl, apiKeyToServiceGuard, authenticationSectionRouter);
+    router.use(e.administration.baseUrl, apiKeyToServiceGuard, administrationSectionRouter);
+    router.use(e.userAccount.baseUrl, apiKeyToServiceGuard, userAccountSectionRouter);
+    router.use(e.userProfile.baseUrl, apiKeyToServiceGuard, profileSectionRouter);
+    router.use(e.commentAboutAnime.baseUrl, apiKeyToServiceGuard, commentForAnimeSectionRouter);
+    router.use(e.replyToComment.baseUrl, apiKeyToServiceGuard, replyToCommentSectionRouter);
+    router.use(e.media.baseUrl, mediaSectionRouter);
+    router.use(e.animeBookmarks.baseUrl, apiKeyToServiceGuard, animeBookmarkSectionRouter);
+    router.use(e.voteToAnime.baseUrl, apiKeyToServiceGuard, voteToAnimeSectionRouter);
+    router.use(e.ping.baseUrl, apiKeyToServiceGuard, pingSectionRouter);
     return router;
 })();

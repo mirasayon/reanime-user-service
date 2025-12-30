@@ -36,7 +36,7 @@ class MediaSectionControllerClass {
         const message = "Аватарка успешно обновлена";
         return goReplyHttp.accepted(res, { data, message });
     };
-    avatar_view = async (req: MediaSectionRequestDtoType["avatar_view"], res: ExpressJS.Response) => {
+    avatar_view_by_username = async (req: MediaSectionRequestDtoType["avatar_view_by_username"], res: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         return await mediaSectionService.avatar_view(dto, req, res);
     };
