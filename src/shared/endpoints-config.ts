@@ -65,6 +65,7 @@ export const endpointsConfig = {
         avatarViewByUsername: "/avatar/view-by-username/:username",
         deleteAvatar: "/avatar/delete",
         viewAvatarByFs: "/avatar/view-fs",
+        UPLOAD_IMAGE_FILENAME: "one_image_file",
     },
     animeBookmarks: {
         baseUrl: "/anime/anime-bookmark-collection",

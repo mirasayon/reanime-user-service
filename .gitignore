@@ -4,3 +4,4 @@
 /.env.production
 /prisma/client
 /uploads
+/bruno-testing/environments

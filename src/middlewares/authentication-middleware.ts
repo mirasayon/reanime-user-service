@@ -61,8 +61,7 @@ export async function checkRequestForAlreadySession(req: ExpressJS.Request & Req
     return null;
 }
 
-/** Промежуточный обработчик запроса который проверяет, если пользователь уже вошел в систему. */
-export async function checkIfAccountAlreadyLoggedMiddleware(
+export async function alreadyLoggedMiddleware(
     req: ExpressJS.Request & RequestTypeWithDtoForAuthSession,
     res: ExpressJS.Response,
     next: ExpressJS.NextFunction,

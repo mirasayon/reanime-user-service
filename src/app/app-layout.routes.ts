@@ -13,18 +13,15 @@ import { secureHttpGuardMiddleware } from "./secure-http.guard.ts";
 import { mediaSectionRouter } from "#src/app/media/media.route.ts";
 import { endpointsConfig as e } from "#src/shared/endpoints-config.ts";
 
-export const appLayoutRouter = (() => {
-    const router = createConfiguredRouter();
-    router.use(secureHttpGuardMiddleware);
-    router.use(e.authentication.baseUrl, apiKeyToServiceGuard, authenticationSectionRouter);
-    router.use(e.administration.baseUrl, apiKeyToServiceGuard, administrationSectionRouter);
-    router.use(e.userAccount.baseUrl, apiKeyToServiceGuard, userAccountSectionRouter);
-    router.use(e.userProfile.baseUrl, apiKeyToServiceGuard, profileSectionRouter);
-    router.use(e.commentAboutAnime.baseUrl, apiKeyToServiceGuard, commentForAnimeSectionRouter);
-    router.use(e.replyToComment.baseUrl, apiKeyToServiceGuard, replyToCommentSectionRouter);
-    router.use(e.media.baseUrl, mediaSectionRouter);
-    router.use(e.animeBookmarks.baseUrl, apiKeyToServiceGuard, animeBookmarkSectionRouter);
-    router.use(e.voteToAnime.baseUrl, apiKeyToServiceGuard, voteToAnimeSectionRouter);
-    router.use(e.ping.baseUrl, apiKeyToServiceGuard, pingSectionRouter);
-    return router;
-})();
+export const appLayoutRouter = createConfiguredRouter()
+    .use(secureHttpGuardMiddleware)
+    .use(e.authentication.baseUrl, apiKeyToServiceGuard, authenticationSectionRouter)
+    .use(e.administration.baseUrl, apiKeyToServiceGuard, administrationSectionRouter)
+    .use(e.userAccount.baseUrl, apiKeyToServiceGuard, userAccountSectionRouter)
+    .use(e.userProfile.baseUrl, apiKeyToServiceGuard, profileSectionRouter)
+    .use(e.commentAboutAnime.baseUrl, apiKeyToServiceGuard, commentForAnimeSectionRouter)
+    .use(e.replyToComment.baseUrl, apiKeyToServiceGuard, replyToCommentSectionRouter)
+    .use(e.media.baseUrl, mediaSectionRouter)
+    .use(e.animeBookmarks.baseUrl, apiKeyToServiceGuard, animeBookmarkSectionRouter)
+    .use(e.voteToAnime.baseUrl, apiKeyToServiceGuard, voteToAnimeSectionRouter)
+    .use(e.ping.baseUrl, apiKeyToServiceGuard, pingSectionRouter);
