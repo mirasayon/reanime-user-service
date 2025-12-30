@@ -35,7 +35,7 @@ export const mediaSectionRouter = createConfiguredRouter()
         mediaFileStrictValidatorMiddleware,
         c.update_avatar,
     )
-    .get(e.media.avatarViewByUsername, v.avatar_view_by_username, c.avatar_view_by_username)
+    .get(e.media.avatarViewByUsername(":username"), v.avatar_view_by_username, c.avatar_view_by_username)
     .use(
         e.media.viewAvatarByFs,
         expressJs.static(fsPathsConfig.profileAvatars, {

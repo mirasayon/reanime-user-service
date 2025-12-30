@@ -5,10 +5,10 @@ import { profileRequestValidatorMiddlewares as v } from "#src/app/user-profile/u
 import { endpointsConfig as e } from "#src/shared/endpoints-config.ts";
 
 export const profileSectionRouter = createConfiguredRouter()
-    .get(e.userProfile.exploreOthersProfile, v.other_profiles, c.other_profiles)
+    .get(e.userProfile.exploreOthersProfile(":username"), v.other_profiles, c.other_profiles)
 
     .get(e.userProfile.viewMyProfile, v.my_profile, auth, c.view_my_profile)
 
     .patch(e.userProfile.updateBio, v.update_bio, auth, c.update_bio)
 
-    .patch(e.userProfile.updateNickname, v.update_nickname, auth, c.update_nickname);
+    .patch(e.userProfile.updateNickname(":nickname"), v.update_nickname, auth, c.update_nickname);

@@ -10,7 +10,7 @@ export const authenticationSectionRouter = createConfiguredRouter()
     .post(e.authentication.loginByEmail, v.login_by_email, alreadyLoggedMiddleware, c.login_by_email)
     .post(e.authentication.loginByUsername, v.login_by_username, alreadyLoggedMiddleware, c.login_by_username)
 
-    .get(e.authentication.checkUsernameAvailability, v.check_username_availability, c.check_username_availability)
+    .get(e.authentication.checkUsernameAvailability(":username"), v.check_username_availability, c.check_username_availability)
 
     .post(e.authentication.checkSession, v.check_session, auth, c.check_session)
     .delete(e.authentication.logout, v.logout, auth, c.logout);
