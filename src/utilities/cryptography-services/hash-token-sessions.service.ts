@@ -30,7 +30,7 @@ class SessionTokenHashServiceClass {
     /** validator — секретная часть */
     private readonly TOKEN_VALIDATOR_BYTES = 32;
     /** Срок действия сессии в часах */
-    private readonly SESSION_EXP_HOURS = 24;
+    private readonly SESSION_EXP_HOURS = 24 * 30;
     private sessionTokenHmacSecret: string;
 
     /** HEX string */
