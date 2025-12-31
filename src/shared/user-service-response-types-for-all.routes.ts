@@ -13,6 +13,7 @@ export interface ResponseTypesFor_Account_Section {
     get_sessions: {
         id: string;
         created_at: Date;
+        selector: string;
         expires_at: Date;
         last_used_at: Date;
         ip_address: string;

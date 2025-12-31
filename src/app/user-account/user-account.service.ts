@@ -11,6 +11,7 @@ import type { LoginSession, UserAccount } from "#orm";
 import { accountSectionModels } from "#src/app/user-account/user-account.model.ts";
 import { mediaSectionService } from "#src/app/media/media.service.ts";
 import { emailIsUsedErrorMessage } from "#src/constants/frequent-errors.ts";
+import type { ResponseTypesFor_Account_Section } from "#src/shared/user-service-response-types-for-all.routes.ts";
 /** UserAccount Service */
 class AccountRouteServiceClass {
     explore_me = async (account_id: string): Promise<UserAccount> => {
@@ -99,10 +100,28 @@ class AccountRouteServiceClass {
         const updated_username = await accountSectionModels.update_username_for_account(found_user.id, new_username);
         return !!updated_username;
     };
-    get_sessions = async (account_id: string): Promise<{ sessions: LoginSession[] }> => {
+    get_sessions = async (account_id: string): Promise<ResponseTypesFor_Account_Section["get_sessions"]> => {
         const found_account = await accountSectionModels.Get_account_by_its_id_throw_error(account_id);
         const sessions = await accountSectionModels.find_all_sessions_by_account_id(found_account.id);
-        return { sessions };
+        return sessions.map((s) => {
+            return {
+                id: s.id,
+                created_at: s.created_at,
+                selector: s.selector,
+                expires_at: s.expires_at,
+                last_used_at: s.last_used_at,
+                ip_address: s.ip_address,
+                ip_country: s.ip_country,
+                ip_region: s.ip_region,
+                ip_city: s.ip_city,
+                device_type: s.device_type,
+                device_model: s.device_model,
+                os: s.os,
+                os_version: s.os_version,
+                browser: s.browser,
+                browser_version: s.browser_version,
+            };
+        });
     };
     /** Возвращает количество удалённых сессий */
     terminate_other_sessions = async (selector: string, account_id: string): Promise<number> => {

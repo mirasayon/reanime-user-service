@@ -55,7 +55,7 @@ class AccountRouteControllerClass {
     };
     get_sessions = async (req: AccountSectionRequestWithDtoTypes["get_sessions"], res: ExpressJS.Response) => {
         const { sessionDto } = checkRequestForValidity(req, ["sessionDto"]);
-        const { sessions } = await accountRouteService.get_sessions(sessionDto.account_id);
+        const sessions = await accountRouteService.get_sessions(sessionDto.account_id);
         const data: ResponseTypesFor_Account_Section["get_sessions"] = sessions;
         const message = "Сеансы успешно получены";
         return goReplyHttp.ok(res, { data, message });
