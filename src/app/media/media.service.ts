@@ -83,7 +83,7 @@ class MediaRouteServiceClass {
         await mediaRouteModel.delete_avatar_by_id(id);
         return true;
     };
-    avatar_view = async (username: string, req: ExpressJS.Request, res: ExpressJS.Response) => {
+    avatar_view_by_username = async (username: string, req: ExpressJS.Request, res: ExpressJS.Response) => {
         const foundProfile = await profileRouteModel.find_profile_by_username(username);
 
         const avatar = await profileRouteModel.findAvatarByProfileId(foundProfile.profile.id).catch(() => null);
