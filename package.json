@@ -12,7 +12,7 @@
         "studio:prod": "prisma studio --port 4647 --config ./prisma/configs/prod.prisma.ts",
         "type:watch": "tsc --watch --noEmit -p ./tsconfig.json",
         "type:check": "tsc --noEmit -p ./tsconfig.json",
-        "prisma:format": "prisma format --config ./prisma/configs/dev.prisma.ts",
+        "prisma:format": "prisma format --schema ./prisma/schemas/main.prisma",
         "prisma:generate": "node ./scripts/remove-prisma-client.ts && prisma generate --schema ./prisma/schemas/main.prisma",
         "prisma:migrate:dev": "prisma migrate dev --config ./prisma/configs/dev.prisma.ts",
         "prisma:migrate:deploy": "prisma migrate deploy --config ./prisma/configs/prod.prisma.ts"
