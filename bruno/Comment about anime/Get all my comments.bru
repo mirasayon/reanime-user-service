@@ -1,0 +1,16 @@
+meta {
+  name: Get all my comments
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASEURL}}/v1/comment/get/all_my_comments?page=1&limit=100
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 1
+  limit: 100
+}

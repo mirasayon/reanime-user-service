@@ -1,0 +1,15 @@
+meta {
+  name: Delete completed anime
+  type: http
+  seq: 12
+}
+
+delete {
+  url: {{BASEURL}}/v1/anime-bookmark-collection/delete/completed/:anime_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  anime_id: 20
+}

@@ -1,0 +1,17 @@
+meta {
+  name: Delete dislike from comment
+  type: http
+  seq: 12
+}
+
+delete {
+  url: {{BASEURL}}/v1/comment/delete/dislike
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "comment_id": ""
+  }
+}

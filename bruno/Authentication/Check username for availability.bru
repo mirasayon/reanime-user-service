@@ -1,0 +1,15 @@
+meta {
+  name: Check username for availability
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{BASEURL}}/v1/authentication/check-username-availability/:username
+  body: none
+  auth: inherit
+}
+
+params:path {
+  username: username
+}

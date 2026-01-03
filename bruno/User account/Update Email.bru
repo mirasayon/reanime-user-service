@@ -1,0 +1,18 @@
+meta {
+  name: Update Email
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{BASEURL}}/v1/user-account/update/email
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "current_email":"",
+      "new_email":""
+  }
+}

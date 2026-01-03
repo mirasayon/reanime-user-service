@@ -1,0 +1,20 @@
+meta {
+  name: Avatar View
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{BASEURL}}/v1/media/avatar/view/by-username/:username
+  body: none
+  auth: inherit
+}
+
+params:path {
+  username: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

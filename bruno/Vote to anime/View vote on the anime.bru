@@ -1,0 +1,15 @@
+meta {
+  name: View vote on the anime
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASEURL}}/v1/vote-to-anime/get/view/vote/:anime_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  anime_id: 
+}

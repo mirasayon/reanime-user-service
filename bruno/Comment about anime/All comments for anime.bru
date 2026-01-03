@@ -1,0 +1,20 @@
+meta {
+  name: All comments for anime
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{BASEURL}}/v1/comment/get/all_comments_for_anime/:anime_id?page=1&limit=100
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 1
+  limit: 100
+}
+
+params:path {
+  anime_id: 
+}

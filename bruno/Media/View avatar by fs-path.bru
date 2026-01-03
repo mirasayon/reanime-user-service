@@ -1,0 +1,20 @@
+meta {
+  name: View avatar by fs-path
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{BASEURL}}/v1/media/avatar/view-fs/:path
+  body: none
+  auth: none
+}
+
+params:path {
+  path: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

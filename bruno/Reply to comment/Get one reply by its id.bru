@@ -1,0 +1,15 @@
+meta {
+  name: Get one reply by its id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASEURL}}/v1/reply/get/one/:reply_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  reply_id: 
+}

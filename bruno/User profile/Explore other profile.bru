@@ -1,0 +1,15 @@
+meta {
+  name: Explore other profile
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{BASEURL}}/v1/user-profile/explore/others-profile/:username
+  body: none
+  auth: inherit
+}
+
+params:path {
+  username: 
+}

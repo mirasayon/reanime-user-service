@@ -1,0 +1,15 @@
+meta {
+  name: Dislike anime
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{BASEURL}}/v1/vote-to-anime/add/dislike/:anime_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  anime_id: 
+}

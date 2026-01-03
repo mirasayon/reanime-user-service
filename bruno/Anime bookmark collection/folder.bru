@@ -1,0 +1,18 @@
+meta {
+  name: Anime bookmark collection
+  seq: 10
+}
+
+auth {
+  mode: inherit
+}
+
+vars:pre-request {
+  CATE_URL: /anime/marked_collection/my
+  V: /v1
+  FULL_CATE_URL: {{BASEURL}}{{V}}{{CATE_URL}}
+}
+
+docs {
+  Marked animes module
+}

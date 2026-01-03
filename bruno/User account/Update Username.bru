@@ -1,0 +1,15 @@
+meta {
+  name: Update Username
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{BASEURL}}/v1/user-account/update/username-to/:username
+  body: json
+  auth: inherit
+}
+
+params:path {
+  username: 
+}

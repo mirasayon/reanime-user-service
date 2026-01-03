@@ -1,0 +1,11 @@
+meta {
+  name: Terminate other sessions
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{BASEURL}}/v1/user-account/sessions/terminate-other-sessions
+  body: none
+  auth: inherit
+}

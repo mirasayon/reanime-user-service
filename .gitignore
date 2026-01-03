@@ -4,5 +4,5 @@
 /.env.production
 /prisma/client
 /uploads
-/bruno-testing/environments
 /.vscode
+/bruno/.env

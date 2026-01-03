@@ -1,0 +1,15 @@
+meta {
+  name: Add abandoned anime
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{BASEURL}}/v1/anime-bookmark-collection/add/abandoned/:anime_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  anime_id: 20
+}

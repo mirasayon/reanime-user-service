@@ -1,0 +1,11 @@
+meta {
+  name: Logout
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{BASEURL}}/v1/authentication/logout
+  body: none
+  auth: inherit
+}

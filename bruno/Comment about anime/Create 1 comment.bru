@@ -1,0 +1,21 @@
+meta {
+  name: Create 1 comment
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{BASEURL}}/v1/comment/create/:anime_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  anime_id: 
+}
+
+body:json {
+  {
+      "content": ""
+  }
+}

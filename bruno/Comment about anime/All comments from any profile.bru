@@ -1,0 +1,20 @@
+meta {
+  name: All comments from any profile
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{BASEURL}}/v1/comment-about-anime/get/all-for-public-profile/:username?page=1&limit=100
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 1
+  limit: 100
+}
+
+params:path {
+  username: 
+}

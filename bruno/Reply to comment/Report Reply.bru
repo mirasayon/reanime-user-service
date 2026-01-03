@@ -1,0 +1,22 @@
+meta {
+  name: Report Reply
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{BASEURL}}/v1/reply/report/:type/:reply_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  type: 
+  reply_id: 
+}
+
+body:json {
+  {
+      "details":""
+  }
+}

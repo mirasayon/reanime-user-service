@@ -1,0 +1,11 @@
+meta {
+  name: Check for session
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{BASEURL}}/v1/authentication/check-session
+  body: none
+  auth: inherit
+}

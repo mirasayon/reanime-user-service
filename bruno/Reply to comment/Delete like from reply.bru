@@ -1,0 +1,15 @@
+meta {
+  name: Delete like from reply
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{BASEURL}}/v1/reply/vote/delete/like/:reply_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  reply_id: 
+}

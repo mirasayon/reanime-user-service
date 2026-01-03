@@ -1,0 +1,15 @@
+meta {
+  name: Delete Reply
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{BASEURL}}/v1/reply/delete/:reply_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  reply_id: 
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Add like to reply
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{BASEURL}}/v1/reply/vote/add/like/:reply_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  reply_id: 
+}

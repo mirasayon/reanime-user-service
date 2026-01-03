@@ -1,0 +1,15 @@
+meta {
+  name: get status for anime
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{BASEURL}}/v1/anime-bookmark-collection/get-status-for-one/:anime_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  anime_id: 
+}

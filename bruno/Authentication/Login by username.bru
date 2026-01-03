@@ -1,0 +1,18 @@
+meta {
+  name: Login by username
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{BASEURL}}/v1/authentication/login/by/username
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "password":"",
+      "username":""
+  }
+}

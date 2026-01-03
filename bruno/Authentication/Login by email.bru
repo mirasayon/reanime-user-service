@@ -1,0 +1,18 @@
+meta {
+  name: Login by email
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{BASEURL}}/v1/authentication/login/by/email
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "password":"",
+      "email":""
+  }
+}

@@ -1,0 +1,11 @@
+meta {
+  name: Get All Likes
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{BASEURL}}/v1/vote-to-anime/get/explore/likes
+  body: none
+  auth: inherit
+}

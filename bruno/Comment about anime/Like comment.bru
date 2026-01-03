@@ -1,0 +1,17 @@
+meta {
+  name: Like comment
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{BASEURL}}/v1/comment/add/like
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "comment_id": ""
+  }
+}

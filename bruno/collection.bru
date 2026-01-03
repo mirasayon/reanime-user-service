@@ -1,0 +1,13 @@
+headers {
+  Authorization: {{SESSION_TOKEN}}
+}
+
+auth {
+  mode: apikey
+}
+
+auth:apikey {
+  key: x-api-key
+  value: {{API_KEY}}
+  placement: header
+}

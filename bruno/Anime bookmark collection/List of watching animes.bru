@@ -1,0 +1,11 @@
+meta {
+  name: List of watching animes
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{BASEURL}}/v1/anime-bookmark-collection/get/list/watching
+  body: none
+  auth: inherit
+}

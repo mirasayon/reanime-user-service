@@ -1,0 +1,15 @@
+meta {
+  name: Delete watching anime
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{BASEURL}}/v1/anime-bookmark-collection/delete/watching/:anime_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  anime_id: 20
+}

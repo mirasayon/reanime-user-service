@@ -1,0 +1,17 @@
+meta {
+  name: Delete like from comment
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{BASEURL}}/v1/comment/delete/like
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "comment_id": ""
+  }
+}

@@ -1,0 +1,17 @@
+meta {
+  name: Update bio
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{BASEURL}}/v1/user-profile/update/bio
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "bio": ""
+  }
+}

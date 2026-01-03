@@ -1,0 +1,21 @@
+meta {
+  name: Register
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{BASEURL}}/v1/authentication/registration
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "password":"",
+      "password_repeat":"",
+      "username":"", 
+      "nickname":"",
+      "email":""
+  }
+}

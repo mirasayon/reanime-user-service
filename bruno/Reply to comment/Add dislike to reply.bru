@@ -1,0 +1,15 @@
+meta {
+  name: Add dislike to reply
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{BASEURL}}/v1/reply/vote/add/dislike/:reply_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  reply_id: 
+}

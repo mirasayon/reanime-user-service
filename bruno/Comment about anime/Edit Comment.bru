@@ -1,0 +1,18 @@
+meta {
+  name: Edit Comment
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{BASEURL}}/v1/comment/update
+  body: json
+  auth: inherit
+}
+
+body:json {
+  { 
+      "new_content": "",
+      "comment_id": ""
+  }
+}

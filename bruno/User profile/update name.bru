@@ -1,0 +1,15 @@
+meta {
+  name: update name
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{BASEURL}}/v1/user-profile/update/nickname/to/:nickname
+  body: none
+  auth: inherit
+}
+
+params:path {
+  nickname: 
+}
