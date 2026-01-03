@@ -31,7 +31,7 @@
         "date-fns": "^4.1.0",
         "multer": "^2.0.2",
         "helmet": "^8.1.0",
-        "maxmind": "^5.0.1",
+        "maxmind": "^5.0.3",
         "morgan": "^1.10.1",
         "better-psl": "^1.0.1",
         "log-it-colored": "^0.0.3",
