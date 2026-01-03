@@ -1,3 +1,3 @@
-export const Service_Setting = new (class Service_Settings {
-    name = "Reanime.Art User Service" as const;
-})();
+export const appConstants = {
+    name: "User Service for reanime.art",
+} as const;

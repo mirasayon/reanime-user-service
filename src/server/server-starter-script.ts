@@ -1,5 +1,5 @@
 import { envConfig } from "#src/configs/env-variables-config.ts";
-import { Service_Setting } from "#src/constants/web-server-constants.ts";
+import { appConstants } from "#src/constants/web-server-constants.ts";
 import { prisma } from "#src/provider/database-connector.ts";
 import { startListeningTheServer } from "#src/utilities/express-core-middlewares.ts";
 import consola from "consola";
@@ -16,7 +16,7 @@ export async function startMainServerScript(): Promise<void> {
         const time = format(new Date(), "HH:mm:ss dd.MM.yyyy");
         const url = `http://${envConfig.server.host}:${port}`;
         const altUrl = `http://${address}:${port}`;
-        Logger.blue(`${Service_Setting.name}. Launched at ${time}`);
+        Logger.blue(`${appConstants.name}. Launched at ${time}`);
         Logger.success(`${family}: ${chalk.magenta(url)} / ${altUrl} ${chalk.magenta(envConfig.NODE_ENV)}`);
         Logger.slate(
             "Node.js: " + chalk.bold("v" + process.versions.node) + ". Arch: " + chalk.bold(arch()) + ". Platform: " + chalk.bold(platform()),
