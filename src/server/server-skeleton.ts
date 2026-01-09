@@ -20,12 +20,13 @@ export const expressMainApplication = (() => {
     app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
     app.use(compression());
     app.use(cors());
+    /** Logging */
+    app.use(morgan("combined"));
 
     app.use(staticPublicFolderMiddleware);
     app.use(jsonBodyParserMiddleware);
     app.use(requireClientIpMiddleware);
-    /** Logger Middlewares */
-    app.use(morgan("combined"));
+    // only in dev
     if (envConfig.isDev) {
         app.use(mainDevServerLogger);
     }
