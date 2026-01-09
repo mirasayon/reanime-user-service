@@ -4,10 +4,10 @@ User service for **reanime.art**.
 
 ### Tech stack
 
--   Node.js
--   Express.js
--   PostgreSQL
--   Prisma ORM
+- Node.js
+- Express.js
+- PostgreSQL
+- Prisma ORM
 
 ### License
 

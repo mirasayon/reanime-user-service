@@ -28,8 +28,8 @@ class ProfileSectionController {
                 ? sr.profile.birthdate_visibility === "FULL"
                     ? sr.profile.date_of_birth
                     : sr.profile.birthdate_visibility === "YEAR_ONLY"
-                    ? sr.profile.date_of_birth.getFullYear()
-                    : sr.profile.date_of_birth
+                      ? sr.profile.date_of_birth.getFullYear()
+                      : sr.profile.date_of_birth
                 : null,
         };
         const message = "Информация профиля другого пользователя успешно получена";
