@@ -24,7 +24,7 @@ export const expressMainApplication = (() => {
     app.use(cors());
     /** Logging */
     app.use(morgan("combined"));
-
+    app.use(secureHttpGuardMiddleware);
     app.use("/", staticPublicFolderMiddleware);
     app.use(
         "/v1" + endpointsConfig.media.baseUrl + endpointsConfig.media.viewAvatarByFs,
@@ -43,7 +43,6 @@ export const expressMainApplication = (() => {
 
     // App
     app.use(apiKeyToServiceGuard);
-    app.use(secureHttpGuardMiddleware);
     app.use("/v1", v1ApiLayout);
 
     // Error handlers
