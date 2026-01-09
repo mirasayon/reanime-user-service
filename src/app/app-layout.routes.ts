@@ -8,12 +8,10 @@ import { animeBookmarkSectionRouter } from "#src/app/anime-bookmark-collection/a
 import { pingSectionRouter } from "#src/app/ping/ping.route.ts";
 import { profileSectionRouter } from "#src/app/user-profile/user-profile.route.ts";
 import { replyToCommentSectionRouter } from "#src/app/reply-to-comment/reply-to-comment.route.ts";
-import { secureHttpGuardMiddleware } from "./secure-http.guard.ts";
 import { mediaSectionRouter } from "#src/app/media/media.route.ts";
 import { endpointsConfig as e } from "#src/shared/endpoints-config.ts";
 
-export const appLayoutRouter = createConfiguredRouter()
-    .use(secureHttpGuardMiddleware)
+export const v1ApiLayout = createConfiguredRouter()
     .use(e.authentication.baseUrl, authenticationSectionRouter)
     .use(e.administration.baseUrl, administrationSectionRouter)
     .use(e.userAccount.baseUrl, userAccountSectionRouter)

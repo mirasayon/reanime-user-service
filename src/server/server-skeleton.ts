@@ -1,4 +1,4 @@
-import { appLayoutRouter } from "#src/app/app-layout.routes.ts";
+import { v1ApiLayout } from "#src/app/app-layout.routes.ts";
 import { requireClientIpMiddleware } from "#src/app/require-client-ip.guard.ts";
 import { envConfig } from "#src/configs/env-variables-config.ts";
 import { notFoundRouteErrorMiddleware, clientSideErrorMiddleware } from "#src/handlers/client-side-errors-handler.ts";
@@ -11,7 +11,9 @@ import expressJs from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { apiKeyToServiceGuard } from "#src/app/api-key.guard.ts";
-
+import { secureHttpGuardMiddleware } from "#src/app/secure-http.guard.ts";
+import { endpointsConfig } from "#src/shared/endpoints-config.ts";
+import { fsPathsConfig } from "#src/configs/file-system-path-config.ts";
 /** Express application */
 export const expressMainApplication = (() => {
     const app = expressJs();
@@ -23,17 +25,26 @@ export const expressMainApplication = (() => {
     /** Logging */
     app.use(morgan("combined"));
 
-    app.use(staticPublicFolderMiddleware);
-    app.use(jsonBodyParserMiddleware);
+    app.use("/", staticPublicFolderMiddleware);
+    app.use(
+        "/v1" + endpointsConfig.media.baseUrl + endpointsConfig.media.viewAvatarByFs,
+        expressJs.static(fsPathsConfig.profileAvatars, {
+            etag: false,
+            index: false,
+            lastModified: false,
+        }),
+    );
     app.use(requireClientIpMiddleware);
-    // only in dev
+    app.use(jsonBodyParserMiddleware);
+
     if (envConfig.isDev) {
         app.use(mainDevServerLogger);
     }
 
     // App
     app.use(apiKeyToServiceGuard);
-    app.use("/v1", appLayoutRouter);
+    app.use(secureHttpGuardMiddleware);
+    app.use("/v1", v1ApiLayout);
 
     // Error handlers
     app.use(notFoundRouteErrorMiddleware);

@@ -32,12 +32,4 @@ export const mediaSectionRouter = createConfiguredRouter()
         mediaFileStrictValidatorMiddleware,
         c.update_avatar,
     )
-    .use(
-        e.media.viewAvatarByFs,
-        expressJs.static(fsPathsConfig.profileAvatars, {
-            etag: false,
-            index: false,
-            lastModified: false,
-        }),
-    )
     .delete(e.media.deleteAvatar, v.delete_avatar, auth, c.delete_avatar);
