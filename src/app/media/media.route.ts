@@ -6,7 +6,6 @@ import multer from "multer";
 import { mediaFileStrictValidatorMiddleware, requestContentLengthValidatorMiddleware } from "./media.middleware.ts";
 import expressJs from "express";
 import { fsPathsConfig } from "#src/configs/file-system-path-config.ts";
-import { apiKeyToServiceGuard } from "../api-key.guard.ts";
 import { endpointsConfig as e } from "#src/shared/endpoints-config.ts";
 const uploadOneFileMiddleware = multer({
     storage: multer.memoryStorage(),
@@ -17,7 +16,6 @@ const uploadOneFileMiddleware = multer({
 export const mediaSectionRouter = createConfiguredRouter()
     .post(
         e.media.setAvatar,
-        apiKeyToServiceGuard,
         requestContentLengthValidatorMiddleware,
         v.set_avatar,
         auth,
@@ -27,7 +25,6 @@ export const mediaSectionRouter = createConfiguredRouter()
     )
     .patch(
         e.media.updateAvatar,
-        apiKeyToServiceGuard,
         requestContentLengthValidatorMiddleware,
         v.update_avatar,
         auth,
@@ -35,7 +32,6 @@ export const mediaSectionRouter = createConfiguredRouter()
         mediaFileStrictValidatorMiddleware,
         c.update_avatar,
     )
-    .get(e.media.avatarViewByUsername(":username"), v.avatar_view_by_username, c.avatar_view_by_username)
     .use(
         e.media.viewAvatarByFs,
         expressJs.static(fsPathsConfig.profileAvatars, {
@@ -44,4 +40,4 @@ export const mediaSectionRouter = createConfiguredRouter()
             lastModified: false,
         }),
     )
-    .delete(e.media.deleteAvatar, apiKeyToServiceGuard, v.delete_avatar, auth, c.delete_avatar);
+    .delete(e.media.deleteAvatar, v.delete_avatar, auth, c.delete_avatar);

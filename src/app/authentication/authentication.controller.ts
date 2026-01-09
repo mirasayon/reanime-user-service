@@ -58,10 +58,15 @@ class AuthenticationSectionController {
         const data: ResponseTypesForAuthentication["check_session"] = {
             id: account.id,
             profile_id: profile.id,
-            avatar_url: avatar ? avatar.path_dirname + "/" + avatar.path_filename : null,
             username: account.username,
             nickname: profile.nickname || null,
             email: account.email || null,
+            avatar: avatar
+                ? {
+                      path_dirname: avatar.path_dirname,
+                      path_filename: avatar.path_filename,
+                  }
+                : null,
             selector: sessionDto.selector,
         };
         const message = "Ваша текущая сессия";

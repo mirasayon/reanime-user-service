@@ -7,7 +7,7 @@ import { endpointsConfig as e } from "#src/shared/endpoints-config.ts";
 export const profileSectionRouter = createConfiguredRouter()
     .get(e.userProfile.exploreOthersProfile(":username"), v.other_profiles, c.other_profiles)
 
-    .get(e.userProfile.viewMyProfile, v.my_profile, auth, c.view_my_profile)
+    .get(e.userProfile.viewMyProfile, v.view_my_profile, auth, c.view_my_profile)
 
     .patch(e.userProfile.updateBio, v.update_bio, auth, c.update_bio)
 

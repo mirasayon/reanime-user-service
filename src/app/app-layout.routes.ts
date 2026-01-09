@@ -1,4 +1,3 @@
-import { apiKeyToServiceGuard } from "#src/app/api-key.guard.ts";
 import { createConfiguredRouter } from "#src/utilities/express-core-middlewares.ts";
 import { userAccountSectionRouter } from "#src/app/user-account/user-account.route.ts";
 import { administrationSectionRouter } from "#src/app/administration/administrator.routes.ts";
@@ -15,13 +14,13 @@ import { endpointsConfig as e } from "#src/shared/endpoints-config.ts";
 
 export const appLayoutRouter = createConfiguredRouter()
     .use(secureHttpGuardMiddleware)
-    .use(e.authentication.baseUrl, apiKeyToServiceGuard, authenticationSectionRouter)
-    .use(e.administration.baseUrl, apiKeyToServiceGuard, administrationSectionRouter)
-    .use(e.userAccount.baseUrl, apiKeyToServiceGuard, userAccountSectionRouter)
-    .use(e.userProfile.baseUrl, apiKeyToServiceGuard, profileSectionRouter)
-    .use(e.commentAboutAnime.baseUrl, apiKeyToServiceGuard, commentForAnimeSectionRouter)
-    .use(e.replyToComment.baseUrl, apiKeyToServiceGuard, replyToCommentSectionRouter)
+    .use(e.authentication.baseUrl, authenticationSectionRouter)
+    .use(e.administration.baseUrl, administrationSectionRouter)
+    .use(e.userAccount.baseUrl, userAccountSectionRouter)
+    .use(e.userProfile.baseUrl, profileSectionRouter)
+    .use(e.commentAboutAnime.baseUrl, commentForAnimeSectionRouter)
+    .use(e.replyToComment.baseUrl, replyToCommentSectionRouter)
     .use(e.media.baseUrl, mediaSectionRouter)
-    .use(e.animeBookmarks.baseUrl, apiKeyToServiceGuard, animeBookmarkSectionRouter)
-    .use(e.voteToAnime.baseUrl, apiKeyToServiceGuard, voteToAnimeSectionRouter)
-    .use(e.ping.baseUrl, apiKeyToServiceGuard, pingSectionRouter);
+    .use(e.animeBookmarks.baseUrl, animeBookmarkSectionRouter)
+    .use(e.voteToAnime.baseUrl, voteToAnimeSectionRouter)
+    .use(e.ping.baseUrl, pingSectionRouter);

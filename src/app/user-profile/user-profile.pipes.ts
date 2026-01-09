@@ -13,7 +13,7 @@ export const profileRequestValidatorMiddlewares = {
         profileRouteValidatorSchemas.other_profiles,
         (req) => req.params.username,
     ),
-    my_profile: validatorMiddlewareFactory<ProfileSectionRequestTypes["my_profile"]>(profileRouteValidatorSchemas.my_profile),
+    view_my_profile: validatorMiddlewareFactory<ProfileSectionRequestTypes["my_profile"]>(profileRouteValidatorSchemas.my_profile),
     update_nickname: validatorMiddlewareFactory<ProfileSectionRequestTypes["update_name"]>(
         profileRouteValidatorSchemas.update_name,
         (req) => req.params.nickname,

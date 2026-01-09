@@ -516,7 +516,6 @@ export interface MarkedAnimeCollectionSectionValidationSchemaType {
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 export const mediaRouteValidatorSchemas = {
-    avatar_view_by_username: zodRequiredSchemaBase.accountUsernameValidatorSchema,
     set_avatar: zodRequiredSchemaBase.void,
     update_avatar: zodRequiredSchemaBase.void,
     delete_avatar: zodRequiredSchemaBase.void,
@@ -524,7 +523,6 @@ export const mediaRouteValidatorSchemas = {
 
 /** Request Validator DTO Types */
 export interface MediaRouteValidationSchemaType {
-    avatar_view_by_username: Z.infer<typeof mediaRouteValidatorSchemas.avatar_view_by_username>;
     set_avatar: Z.infer<typeof mediaRouteValidatorSchemas.set_avatar>;
     update_avatar: Z.infer<(typeof mediaRouteValidatorSchemas)["update_avatar"]>;
     delete_avatar: Z.infer<(typeof mediaRouteValidatorSchemas)["delete_avatar"]>;

@@ -10,6 +10,8 @@ import cors from "cors";
 import expressJs from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import { apiKeyToServiceGuard } from "#src/app/api-key.guard.ts";
+
 /** Main Express Application */
 export const expressMainApplication = (() => {
     const app = expressJs();
@@ -29,6 +31,7 @@ export const expressMainApplication = (() => {
     }
 
     // Entry Point Router (Main API)
+    app.use(apiKeyToServiceGuard);
     app.use("/v1", appLayoutRouter);
 
     // Error handlers

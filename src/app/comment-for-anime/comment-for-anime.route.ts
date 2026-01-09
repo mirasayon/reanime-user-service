@@ -8,7 +8,7 @@ export const commentForAnimeSectionRouter = createConfiguredRouter()
     .get(e.commentAboutAnime.allCommentsForAnime(":anime_id"), v.get_all_for_anime, c.get_all_for_anime)
 
     .get(e.commentAboutAnime.getAllMyComments, v.all_my_comments, auth, c.all_my_comments)
-    .get(e.commentAboutAnime.getAllCommentsFromAnyProfile(":username"), v.all_for_public_profile, c.all_for_public_profile)
+    .get(e.commentAboutAnime.getAllCommentsFromProfile(":username"), v.all_for_public_profile, c.all_for_public_profile)
     .post(e.commentAboutAnime.createComment(":anime_id"), v.create, auth, c.create_comment)
     .patch(e.commentAboutAnime.updateComment(":comment_id"), v.update_comment, auth, c.update_comment)
     .delete(e.commentAboutAnime.deleteComment(":comment_id"), v.delete_comment, auth, c.delete_comment)

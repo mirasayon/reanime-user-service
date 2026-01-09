@@ -83,16 +83,6 @@ class MediaRouteServiceClass {
         await mediaRouteModel.delete_avatar_by_id(id);
         return true;
     };
-    avatar_view_by_username = async (username: string, req: ExpressJS.Request, res: ExpressJS.Response) => {
-        const foundProfile = await profileRouteModel.find_profile_by_username(username);
-
-        const avatar = await profileRouteModel.findAvatarByProfileId(foundProfile.profile.id).catch(() => null);
-        if (!avatar) {
-            return res.redirect("/default-avatar/m.jpg");
-        }
-        const filePath = join(fsPathsConfig.profileAvatars, avatar.path_dirname, avatar.path_filename + ".webp");
-        return await serveMediaFile(req, res, filePath);
-    };
 
     private deleteAvatarFile = async (relPath: string): Promise<boolean> => {
         const fullPath = join(fsPathsConfig.profileAvatars, relPath);
