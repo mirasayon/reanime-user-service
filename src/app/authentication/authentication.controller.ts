@@ -4,13 +4,13 @@ import type ExpressJS from "express";
 import type { AuthenticationSectionRequestTypes } from "#src/app/authentication/authentication.pipes.ts";
 import { authenticationRouteService } from "#src/app/authentication/authentication.service.ts";
 import type { ResponseTypesForAuthentication } from "#src/shared/user-service-response-types-for-all.routes.ts";
+import { getIpAndAgentFromRequest } from "#src/utilities/dto-factory-utils/get-session-meta.ts";
 
 class AuthenticationSectionController {
     login_by_email = async (req: AuthenticationSectionRequestTypes["login_by_email"], reply: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await authenticationRouteService.login_via_email({
-            agent: req.headers["user-agent"] ?? null,
-            ip: req.ip!,
+            ...getIpAndAgentFromRequest(req.headers),
             password: dto.password,
             email: dto.email,
         });
@@ -22,8 +22,7 @@ class AuthenticationSectionController {
     login_by_username = async (req: AuthenticationSectionRequestTypes["login_by_username"], reply: ExpressJS.Response) => {
         const { dto } = checkRequestForValidity(req, ["dto"]);
         const sr = await authenticationRouteService.login_via_username({
-            agent: req.headers["user-agent"] ?? null,
-            ip: req.ip!,
+            ...getIpAndAgentFromRequest(req.headers),
             password: dto.password,
             username: dto.username,
         });
@@ -39,8 +38,7 @@ class AuthenticationSectionController {
             password: dto.password,
             password_repeat: dto.password_repeat,
             email: dto.email ?? null,
-            agent: req.headers["user-agent"] ?? null,
-            ip: req.ip!,
+            ...getIpAndAgentFromRequest(req.headers),
         });
         const data: ResponseTypesForAuthentication["registration"] = token;
         const message = "Пользователь успешно зарегистрирован и вошёл в систему";

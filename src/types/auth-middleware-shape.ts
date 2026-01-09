@@ -10,6 +10,6 @@ export type RequestTypeWithDtoForAuthSession = {
 
 /** IP and User-Agent */
 export type SessionMetadataType = {
-    ip: string | undefined;
-    agent: string | undefined;
+    ip: string;
+    agent: string | null;
 };

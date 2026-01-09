@@ -1,6 +1,6 @@
 import { BadRequestException, UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
 import type { RequestTypeWithDtoForAuthSession } from "#src/types/auth-middleware-shape.ts";
-import { getSessionMetaFromClientDto, getSessionMetaFromDbDto } from "#src/utilities/dto-factory-utils/get-session-meta.ts";
+import { getIpAndAgentFromRequest, getIpAndAgentFromSessionDb } from "#src/utilities/dto-factory-utils/get-session-meta.ts";
 import type ExpressJS from "express";
 import { getSessionTokenFromHeadersDto } from "#src/utilities/dto-factory-utils/get-session-token.ts";
 import type { LoginSession } from "#orm";
@@ -9,9 +9,9 @@ import { sessionTokenHashService } from "#src/utilities/cryptography-services/ha
 import { sessionMetaDoNotMatchErrorMessage } from "#src/constants/frequent-errors.ts";
 
 /** Function for comparing metadatas of request and session */
-function reqAndSessionMetaValidator(session: LoginSession, requestMeta: ExpressJS.Request): void | UnauthorizedException {
-    const session_Meta = getSessionMetaFromDbDto(session);
-    const request_Meta = getSessionMetaFromClientDto(requestMeta);
+function reqAndSessionMetaValidator(session: LoginSession, requestMeta: ExpressJS.Request["headers"]): void | UnauthorizedException {
+    const session_Meta = getIpAndAgentFromSessionDb(session);
+    const request_Meta = getIpAndAgentFromRequest(requestMeta);
     if (isDeepStrictEqual(session_Meta, request_Meta)) {
         return;
     }
@@ -20,8 +20,8 @@ function reqAndSessionMetaValidator(session: LoginSession, requestMeta: ExpressJ
 
 /** Function for comparing metadatas of request and session */
 function justCompareReqAndSessionMeta(session: LoginSession, req: ExpressJS.Request): boolean {
-    const sessionMeta = getSessionMetaFromDbDto(session);
-    const reqMeta = getSessionMetaFromClientDto(req);
+    const sessionMeta = getIpAndAgentFromSessionDb(session);
+    const reqMeta = getIpAndAgentFromRequest(req.headers);
     if (isDeepStrictEqual(sessionMeta, reqMeta)) {
         return true;
     }
@@ -39,7 +39,7 @@ export async function mainAuthenticationMiddleware(
         throw new UnauthorizedException();
     }
     const session = await sessionTokenHashService.verifySessionToken(token.validator, token.selector);
-    reqAndSessionMetaValidator(session.session, req);
+    reqAndSessionMetaValidator(session.session, req.headers);
     req.sessionDto = session.dto;
     return next();
 }

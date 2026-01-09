@@ -1,15 +1,16 @@
 import type { SessionMetadataType } from "#src/types/auth-middleware-shape.ts";
 import type { LoginSession } from "#orm";
 import type ExpressJS from "express";
+import { USER_AGENT_HEADER_NAME, USER_IP_HEADER_NAME } from "#src/app/require-client-ip.guard.ts";
 /**
  * Returns meta from DB LoginSession
  * @param session DB LoginSession record from DB
  * @returns meta from DB LoginSession
  */
-export function getSessionMetaFromDbDto(session: LoginSession): SessionMetadataType {
+export function getIpAndAgentFromSessionDb(session: LoginSession): SessionMetadataType {
     return {
-        ip: session.ip_address ?? undefined,
-        agent: session.user_agent ?? undefined,
+        ip: session.ip_address,
+        agent: session.user_agent || null,
     };
 }
 
@@ -18,9 +19,9 @@ export function getSessionMetaFromDbDto(session: LoginSession): SessionMetadataT
  * @param req Request object itself
  * @returns meta from web request
  */
-export function getSessionMetaFromClientDto(req: ExpressJS.Request): SessionMetadataType {
+export function getIpAndAgentFromRequest(headers: ExpressJS.Request["headers"]): SessionMetadataType {
     return {
-        ip: req.ip ?? undefined,
-        agent: req.headers["user-agent"] ?? undefined,
+        ip: headers[USER_IP_HEADER_NAME] as string,
+        agent: (headers[USER_AGENT_HEADER_NAME] as string) ?? null,
     };
 }
