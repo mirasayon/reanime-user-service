@@ -6,7 +6,7 @@ export function createConfiguredRouter(): ReturnType<typeof expressJs.Router> {
     return expressJs.Router({ caseSensitive: true, strict: true });
 }
 /** Static Folder middleware */
-export const mainStaticServerMiddleware = expressJs.static(fsPathsConfig.static, {
+export const staticPublicFolderMiddleware = expressJs.static(fsPathsConfig.static, {
     etag: false,
     index: false,
     lastModified: false,
