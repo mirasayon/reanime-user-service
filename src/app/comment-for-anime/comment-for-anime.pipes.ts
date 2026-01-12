@@ -1,4 +1,4 @@
-import { get_universal_search_query_values_array } from "#src/utilities/js-util-functions.ts";
+import { getReqQueryFields } from "#src/utilities/util-functions.ts";
 import { validatorMiddlewareFactory } from "#src/utilities/controller-utility-functions.ts";
 import type { RequestDtoTypeFactory } from "#src/types/dto-middleware-shape.ts";
 import {
@@ -32,7 +32,7 @@ export const Comment_ReqPipes = {
     get_all_for_anime: validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes["get_all_for_anime"]>(
         commentToAnimeSectionValidatorSchemas.get_all_for_anime,
         (req) => {
-            const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
+            const { limit, page } = getReqQueryFields(req.query, ["page", "limit"]);
             const { anime_id } = req.params;
             return { page, limit, anime_id };
         },
@@ -55,7 +55,7 @@ export const Comment_ReqPipes = {
     all_my_comments: validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes["all_my_comments"]>(
         commentToAnimeSectionValidatorSchemas.all_my_comments,
         (req) => {
-            const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
+            const { limit, page } = getReqQueryFields(req.query, ["page", "limit"]);
             return {
                 limit: limit,
                 page: page,
@@ -66,7 +66,7 @@ export const Comment_ReqPipes = {
     all_for_public_profile: validatorMiddlewareFactory<CommentToAnimeSectionRequestTypes["all_for_public_profile"]>(
         commentToAnimeSectionValidatorSchemas.all_for_public_profile,
         (req) => {
-            const { limit, page } = get_universal_search_query_values_array(req.query, ["page", "limit"]);
+            const { limit, page } = getReqQueryFields(req.query, ["page", "limit"]);
             return {
                 limit: limit,
                 page: page,

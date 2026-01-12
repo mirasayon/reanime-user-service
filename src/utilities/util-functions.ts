@@ -26,54 +26,54 @@ export function allDeepEqual<T>(objs: T[]): boolean {
 }
 
 /**
- * Gets specified value of the search params
+ * Get specified value of the search params
  * @param query
- * @param spName
- * @returns
+ * @param field
+ * @returns value of query
  */
-export function get_universal_search_query_value(query: ExpressJS.Request["query"], spName: string) {
-    let spNameV: null | string = null;
+export function getReqQueryField(query: ExpressJS.Request["query"], field: string) {
+    let fieldValue: null | string = null;
     for (const sqKey in query) {
         if (Object.hasOwn(query, sqKey)) {
             const SQName = query[sqKey];
-            if (spName !== sqKey) {
+            if (field !== sqKey) {
                 throw new BadRequestException([searchQueriesAreOutOfRangeErrorMessage]);
             }
-            spNameV = String(SQName);
+            fieldValue = String(SQName);
         }
     }
-    if (spNameV === null) {
+    if (fieldValue === null) {
         throw new BadRequestException(["требуется параметр поиска страницы"]);
     }
-    return spNameV;
+    return fieldValue;
 }
 /**
  * Gets specified array of values of the search params
  * @param query
- * @param spNames
+ * @param fields
  * @returns
  */
-export function get_universal_search_query_values_array<search_query_names extends string[]>(
+export function getReqQueryFields<SearchQueryFields extends string[]>(
     query: ExpressJS.Request["query"],
-    spNames: search_query_names,
+    fields: SearchQueryFields,
 ) {
-    const spAccumulator: { [keys: string]: string } = {};
-    for (const sqKey in query) {
-        if (Object.hasOwn(query, sqKey)) {
-            const SQName = query[sqKey];
-            spAccumulator[sqKey] = String(SQName);
+    const fieldsValueObject: { [keys: string]: string } = {};
+    for (const objectKey in query) {
+        if (Object.hasOwn(query, objectKey)) {
+            const field = query[objectKey];
+            fieldsValueObject[objectKey] = String(field);
         }
     }
-    const avKeys = Object.keys(spAccumulator);
-    for (const neededSP of spNames) {
-        if (!Object.hasOwn(spAccumulator, neededSP)) {
+    const avKeys = Object.keys(fieldsValueObject);
+    for (const neededSP of fields) {
+        if (!Object.hasOwn(fieldsValueObject, neededSP)) {
             throw new BadRequestException([`Требуется параметр поиска для \'${neededSP}\'`]);
         }
     }
-    if (!allDeepEqual([avKeys, spNames])) {
+    if (!allDeepEqual([avKeys, fields])) {
         throw new BadRequestException([searchQueriesAreOutOfRangeErrorMessage]);
     }
-    return spAccumulator as {
-        [keys in search_query_names[number]]: string;
+    return fieldsValueObject as {
+        [keys in SearchQueryFields[number]]: string;
     };
 }
