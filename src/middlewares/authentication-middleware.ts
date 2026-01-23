@@ -7,27 +7,36 @@ import type { LoginSession } from "#orm";
 import { isDeepStrictEqual } from "node:util";
 import { sessionTokenHashService } from "#src/utilities/cryptography-services/hash-token-sessions.service.ts";
 import { sessionMetaDoNotMatchErrorMessage } from "#src/constants/frequent-errors.ts";
+import { authenticationRouteModels } from "#src/app/authentication/authentication.model.ts";
 
 /** Function for comparing metadatas of request and session */
-function reqAndSessionMetaValidator(session: LoginSession, requestMeta: ExpressJS.Request["headers"]): void | UnauthorizedException {
-    const session_Meta = getIpAndAgentFromSessionDb(session);
-    const request_Meta = getIpAndAgentFromRequest(requestMeta);
-    if (isDeepStrictEqual(session_Meta, request_Meta)) {
+async function reqAndSessionMetaValidator(dbSession: LoginSession, reqHeaders: ExpressJS.Request["headers"]): Promise<void | UnauthorizedException> {
+    const sessionMeta = getIpAndAgentFromSessionDb(dbSession);
+    const requestMeta = getIpAndAgentFromRequest(reqHeaders);
+
+    if (isDeepStrictEqual(sessionMeta, requestMeta)) {
+        return;
+    }
+    if (sessionMeta.agent === requestMeta.agent) {
+        await authenticationRouteModels.updateSessionIp(dbSession.id, requestMeta.ip);
+        return;
+    }
+    if (sessionMeta.ip === requestMeta.ip) {
+        await authenticationRouteModels.updateSessionUserAgent(dbSession.id, requestMeta.agent);
         return;
     }
     throw new UnauthorizedException([sessionMetaDoNotMatchErrorMessage]);
 }
 
 /** Function for comparing metadatas of request and session */
-function justCompareReqAndSessionMeta(session: LoginSession, req: ExpressJS.Request): boolean {
+function compareReqAndSessionMeta(session: LoginSession, reqHeaders: ExpressJS.Request["headers"]): boolean {
     const sessionMeta = getIpAndAgentFromSessionDb(session);
-    const reqMeta = getIpAndAgentFromRequest(req.headers);
+    const reqMeta = getIpAndAgentFromRequest(reqHeaders);
     if (isDeepStrictEqual(sessionMeta, reqMeta)) {
         return true;
     }
     return false;
 }
-
 /** Main middleware for authentication */
 export async function mainAuthenticationMiddleware(
     req: ExpressJS.Request & RequestTypeWithDtoForAuthSession,
@@ -54,7 +63,7 @@ export async function checkRequestForAlreadySession(req: ExpressJS.Request & Req
     if (!session) {
         return null;
     }
-    const is_valid = justCompareReqAndSessionMeta(session, req);
+    const is_valid = compareReqAndSessionMeta(session, req.headers);
     if (is_valid) {
         return session;
     }

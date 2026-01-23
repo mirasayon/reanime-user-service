@@ -3,6 +3,7 @@ import { prisma } from "#src/provider/database-connector.ts";
 import { NotFoundException, UnauthorizedException } from "#src/errors/client-side-exceptions.ts";
 import type { Argon2idHashResultType } from "#src/utilities/cryptography-services/hash-passwords.service.ts";
 import type { AccountPassword, LoginSession, UserAccount } from "#orm";
+import { authenticationRouteService } from "./authentication.service.ts";
 
 class AuthenticationRouteModelClass {
     getPasswordDataFromAccountId = async (account_id: string): Promise<AccountPassword> => {
@@ -17,6 +18,28 @@ class AuthenticationRouteModelClass {
 
         return found_password;
     };
+    updateSessionIp = async (id: string, newIp: string) => {
+        await prisma.loginSession.update({
+            where: {
+                id: id,
+            },
+            data: {
+                ...authenticationRouteService.getIpInfo(newIp),
+            },
+        });
+    };
+
+    updateSessionUserAgent = async (id: string, newAgent: string | null) => {
+        await prisma.loginSession.update({
+            where: {
+                id: id,
+            },
+            data: {
+                ...authenticationRouteService.getAgentInfo(newAgent),
+            },
+        });
+    };
+
     find_account_by_ids_id = async (account_id: string): Promise<UserAccount> => {
         const account = await prisma.userAccount.findUnique({
             where: {

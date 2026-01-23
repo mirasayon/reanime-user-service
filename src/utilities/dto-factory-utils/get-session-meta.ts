@@ -22,6 +22,6 @@ export function getIpAndAgentFromSessionDb(session: LoginSession): SessionMetada
 export function getIpAndAgentFromRequest(headers: ExpressJS.Request["headers"]): SessionMetadataType {
     return {
         ip: headers[USER_IP_HEADER_NAME] as string,
-        agent: (headers[USER_AGENT_HEADER_NAME] as string) ?? null,
+        agent: (headers[USER_AGENT_HEADER_NAME] as string) || null,
     };
 }

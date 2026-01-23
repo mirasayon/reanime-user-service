@@ -129,14 +129,16 @@ class AuthenticationRouteServiceClass {
         }
         return;
     };
-    private getAllInfoFromIpAndUserAgent = (ip: string, user_agent: string | null): SessionMetaFromIpAndUserAgentType => {
+    getIpInfo = (ip: string) => {
         const country = getCountryByIp(ip);
-        if (!user_agent) {
+        return { ip_country: country, ip_address: ip };
+    };
+
+    getAgentInfo = (agent: string | null) => {
+        if (!agent) {
             return {
-                ip_country: country,
                 ip_region: null,
                 ip_city: null,
-                ip_address: ip,
                 user_agent: null,
                 device_type: null,
                 device_model: null,
@@ -146,19 +148,24 @@ class AuthenticationRouteServiceClass {
                 browser_version: null,
             };
         }
-        const ua = parseUA(user_agent);
+        const ua = parseUA(agent);
         return {
-            ip_country: country,
-            ip_region: null,
-            ip_city: null,
-            ip_address: ip,
-            user_agent: user_agent,
+            user_agent: agent,
             device_type: ua.deviceType,
             device_model: ua.deviceModel,
             os: ua.os,
             os_version: ua.osVersion,
             browser: ua.browser,
             browser_version: ua.browserVersion,
+        };
+    };
+
+    private getAllInfoFromIpAndUserAgent = (ip: string, user_agent: string | null): SessionMetaFromIpAndUserAgentType => {
+        return {
+            ip_region: null,
+            ip_city: null,
+            ...this.getIpInfo(ip),
+            ...this.getAgentInfo(user_agent),
         };
     };
 }
