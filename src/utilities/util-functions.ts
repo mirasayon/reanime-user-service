@@ -53,10 +53,7 @@ export function getReqQueryField(query: ExpressJS.Request["query"], field: strin
  * @param fields
  * @returns
  */
-export function getReqQueryFields<SearchQueryFields extends string[]>(
-    query: ExpressJS.Request["query"],
-    fields: SearchQueryFields,
-) {
+export function getReqQueryFields<SearchQueryFields extends string[]>(query: ExpressJS.Request["query"], fields: SearchQueryFields) {
     const fieldsValueObject: { [keys: string]: string } = {};
     for (const objectKey in query) {
         if (Object.hasOwn(query, objectKey)) {
