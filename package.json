@@ -16,7 +16,8 @@
         "prisma:generate": "node ./scripts/remove-prisma-client.ts && prisma generate --schema ./prisma/schemas/main.prisma",
         "prisma:migrate:dev": "prisma migrate dev --config ./prisma/configs/dev.prisma.ts",
         "prisma:migrate:deploy": "prisma migrate deploy --config ./prisma/configs/prod.prisma.ts",
-        "format": "prettier . --write --ignore-unknown --config prettier.config.ts"
+        "format": "prettier . --write --ignore-unknown --config prettier.config.ts",
+        "format:dev": "onchange \"**/*\" -- prettier . --write --ignore-unknown {{changed}}"
     },
     "dependencies": {
         "@prisma/adapter-pg": "^7.3.0",
@@ -46,6 +47,7 @@
         "@types/multer": "^2.0.0",
         "@types/node": "^25.0.10",
         "@types/pg": "^8.16.0",
+        "onchange": "^7.1.0",
         "prettier": "^3.8.1",
         "prisma": "^7.3.0",
         "typescript": "^5.9.3"
