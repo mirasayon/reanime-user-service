@@ -48,7 +48,7 @@ export async function mainAuthenticationMiddleware(
         throw new UnauthorizedException();
     }
     const session = await sessionTokenHashService.verifySessionToken(token.validator, token.selector);
-    reqAndSessionMetaValidator(session.session, req.headers);
+    await reqAndSessionMetaValidator(session.session, req.headers);
     req.sessionDto = session.dto;
     return next();
 }
