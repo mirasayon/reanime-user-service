@@ -6,6 +6,7 @@ generator client {
   generatedFileExtension = "ts"
   importFileExtension    = "ts"
   engineType             = "client"
+  compilerBuild          = "fast"
 }
 
 datasource db {
