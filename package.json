@@ -1,6 +1,6 @@
 {
     "name": "reanime-user-service",
-    "version": "1.12.0",
+    "version": "2.0.0",
     "type": "module",
     "scripts": {
         "dev": "node --watch --env-file=.env.development ./src/server/entry-point.ts",
@@ -19,12 +19,12 @@
         "format": "prettier . --write --ignore-unknown --config prettier.config.ts"
     },
     "dependencies": {
-        "@prisma/adapter-pg": "^7.2.0",
-        "@prisma/client": "^7.2.0",
+        "@prisma/adapter-pg": "^7.3.0",
+        "@prisma/client": "^7.3.0",
         "better-psl": "^1.0.1",
         "compression": "^1.8.1",
         "consola": "^3.4.2",
-        "cors": "^2.8.5",
+        "cors": "^2.8.6",
         "date-fns": "^4.1.0",
         "express": "^5.2.1",
         "helmet": "^8.1.0",
@@ -32,11 +32,11 @@
         "maxmind": "^5.0.3",
         "morgan": "^1.10.1",
         "multer": "^2.0.2",
-        "pg": "^8.17.0",
+        "pg": "^8.17.2",
         "safest-env": "^0.0.1",
         "sharp": "^0.34.5",
         "ua-parser-js": "^2.0.8",
-        "zod": "^4.3.5"
+        "zod": "^4.3.6"
     },
     "devDependencies": {
         "@types/compression": "^1.8.1",
@@ -44,10 +44,10 @@
         "@types/express": "^5.0.6",
         "@types/morgan": "^1.9.10",
         "@types/multer": "^2.0.0",
-        "@types/node": "^25.0.8",
+        "@types/node": "^25.0.10",
         "@types/pg": "^8.16.0",
-        "prettier": "^3.7.4",
-        "prisma": "^7.2.0",
+        "prettier": "^3.8.1",
+        "prisma": "^7.3.0",
         "typescript": "^5.9.3"
     },
     "author": {
@@ -57,7 +57,7 @@
     },
     "private": true,
     "license": "MIT",
-    "description": "Reanime.art Backend User Service",
+    "description": "Reanime.art User Service",
     "engines": {
         "node": ">=24"
     },
