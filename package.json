@@ -17,7 +17,7 @@
         "prisma:migrate:dev": "prisma migrate dev --config ./prisma/configs/dev.prisma.ts",
         "prisma:migrate:deploy": "prisma migrate deploy --config ./prisma/configs/prod.prisma.ts",
         "format": "prettier . --write --ignore-unknown --config prettier.config.ts",
-        "format:dev": "onchange \"**/*\" -- prettier . --write --ignore-unknown {{changed}}"
+        "format:dev": "onchange \"./src\" -- prettier ./src --write --ignore-unknown {{changed}}"
     },
     "dependencies": {
         "@prisma/adapter-pg": "^7.3.0",
