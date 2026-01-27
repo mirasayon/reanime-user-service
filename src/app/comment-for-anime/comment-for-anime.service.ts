@@ -110,8 +110,8 @@ class CommentToAnimeSectionService {
         if (existedVote.value === -1) {
             throw new ConflictException(["У этого аниме дизлайк"]);
         }
-        await commentRouteModel.delete_1_vote_from_comment(existedVote.id);
-        return true;
+        const deleted = await commentRouteModel.delete_1_vote_from_comment(existedVote.id);
+        return !!deleted;
     };
     report_comment = async (args: { comment_id: string; report_details: string; profile_id: string }): Promise<boolean> => {
         throw new NotImplementedException(["Еще не реализовано"]);
@@ -119,8 +119,8 @@ class CommentToAnimeSectionService {
     /** Deletes a comment */
     delete_comment = async (args: { profile_id: string; comment_id: string }): Promise<boolean> => {
         const found_comment = await commentRouteModel.find_1_comment_by_its_id(args.comment_id);
-        await commentRouteModel.delete_1_comment(found_comment.id);
-        return !true;
+        const deleted = await commentRouteModel.delete_1_comment(found_comment.id);
+        return !!deleted;
     };
     /** Edits the comment by its ID and profile ID */
     update_comment = async (args: { new_content: string; comment_id: string; profile_id: string }): Promise<boolean> => {
